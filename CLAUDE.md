@@ -106,13 +106,18 @@ on a missing env var without surfacing that clearly in the UI — see
 - Python (14/14 modules — done), Data Structures (7/7), Algorithms (6/6),
   NumPy (5/5), Pandas (6/6), Probability (4/4), Statistics (4/4), SQL
   (7/10 — select-where, group-by-aggregates, joins, subqueries, ctes,
-  window-functions, interview-patterns), and Linear Algebra (2/3 —
+  window-functions, interview-patterns), Linear Algebra (2/3 —
   vectors-matrices, eigenvalues; taught from first principles in plain
   Python on purpose, distinct from `numpy/linear-algebra-ops`'s
-  "use the library" angle on the same operations) have real lesson
-  content; the rest of the technology catalog is metadata-only (by
-  design — see
-  `docs/COURSE_CONTENT_SPEC.md`). SQL's last 3 modules
+  "use the library" angle on the same operations), and Monte Carlo
+  Simulation (3/3 — random-sampling, simulating-stock-paths,
+  variance-reduction) have real lesson content; the rest of the
+  technology catalog is metadata-only (by design — see
+  `docs/COURSE_CONTENT_SPEC.md`). Monte Carlo content needs genuine
+  randomness — made gradeable via `random.seed()`, only after verifying
+  seeded `random.random()`/`.gauss()`/`.choices()` produce bit-identical
+  output between Pyodide's WASM build and local CPython (same Mersenne
+  Twister C implementation compiled either way). SQL's last 3 modules
   (indexes-query-plans, schema-design, transactions-isolation) don't fit
   the sql-query exercise type's "does your SELECT return these rows"
   grading model at all — each is fundamentally about something else

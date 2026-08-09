@@ -15,7 +15,7 @@ same change as any feature work.
   Marketplace (`vercel integration add neon|clerk`) and connected to the
   project — all env vars live in Production/Preview/Development. DB
   schema pushed (`npm run db:push`) and content seeded
-  (`npm run content:sync` against the live DB — 99 skills, 9 built;
+  (`npm run content:sync` against the live DB — 99 skills, 10 built;
   re-run after any content change and redeploy, both steps are manual).
   Clerk is currently a **development-mode** instance (free marketplace
   default) — fine for now, but note this if real user signups/production
@@ -182,6 +182,16 @@ same change as any feature work.
   dot-product/eigenvalues are; that module needs NumPy (`packages:
   ["numpy"]`, infra already proven), a deliberate exception to this
   track's "no NumPy" rule, not an oversight.
+- Fully built: Monte Carlo Simulation (3/3 modules — random-sampling,
+  simulating-stock-paths, variance-reduction) — **Done**. First track
+  needing genuine randomness in graded content — made gradeable via
+  `random.seed()`, after first verifying `random.random()`/`.gauss()`/
+  `.choices()` produce bit-identical output between Pyodide's WASM build
+  and local CPython for the same seed (same Mersenne Twister C
+  implementation compiled either way — confirmed, not assumed).
+  `simulating-stock-paths` implements real (simplified) GBM path
+  simulation and Monte Carlo European call option pricing;
+  `variance-reduction` implements antithetic variates.
 - Git, Linux, PyTorch, C++ — **Planned** (metadata skeletons done as part
   of the wider ~70-90 skill catalog; module content not yet authored).
   Git/Linux need the CLI-simulation exercise type, which isn't
