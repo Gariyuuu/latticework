@@ -15,7 +15,7 @@ same change as any feature work.
   Marketplace (`vercel integration add neon|clerk`) and connected to the
   project — all env vars live in Production/Preview/Development. DB
   schema pushed (`npm run db:push`) and content seeded
-  (`npm run content:sync` against the live DB — 99 skills, 8 built;
+  (`npm run content:sync` against the live DB — 99 skills, 9 built;
   re-run after any content change and redeploy, both steps are manual).
   Clerk is currently a **development-mode** instance (free marketplace
   default) — fine for now, but note this if real user signups/production
@@ -151,7 +151,7 @@ same change as any feature work.
   t-distribution, since Python's stdlib has no t-distribution CDF/PPF;
   OLS regression implemented from the slope/intercept formulas directly,
   no scipy needed)
-- Fully built: SQL (3/10 modules — select-where, group-by-aggregates,
+- Fully built: SQL (7/10 modules — select-where, group-by-aggregates,
   joins, subqueries, ctes, window-functions, interview-patterns) —
   **In Progress**. Runs against a real in-browser SQLite (sql.js) seeded
   per-exercise via `setupSql`; every reference query verified against
@@ -170,12 +170,24 @@ same change as any feature work.
   can't simulate. Each would need its own exercise type (or at minimum
   a different grading mode) — not written as a stopgap sql-query
   exercise that wouldn't actually test the concept.
+- Fully built: Linear Algebra (2/3 modules — vectors-matrices,
+  eigenvalues) — **In Progress**. First quant/math track built —
+  deliberately taught from first principles in plain Python (dot
+  product, magnitude, determinant, 2×2 eigenvalues via the trace/
+  determinant formula), not via NumPy, to keep it conceptually distinct
+  from `numpy/linear-algebra-ops` (same underlying operations, but that
+  course teaches "use the library efficiently," this one teaches "what
+  is actually happening"). `matrix-decompositions` is left planned on
+  purpose — LU/QR/SVD aren't reasonably hand-implementable the way
+  dot-product/eigenvalues are; that module needs NumPy (`packages:
+  ["numpy"]`, infra already proven), a deliberate exception to this
+  track's "no NumPy" rule, not an oversight.
 - Git, Linux, PyTorch, C++ — **Planned** (metadata skeletons done as part
   of the wider ~70-90 skill catalog; module content not yet authored).
   Git/Linux need the CLI-simulation exercise type, which isn't
   implemented yet (see "Learning engine" above); PyTorch/C++ need their
   own execution infra decisions.
-- Remaining ~48-68 technologies from the brief — **Done** as metadata-only
+- Remaining ~47-67 technologies from the brief — **Done** as metadata-only
   skeletons (appear correctly in graph/Explore/roadmap, no lesson content)
 
 `python/modules/files.mdx` (file I/O) was originally deferred because it

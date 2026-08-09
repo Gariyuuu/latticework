@@ -104,10 +104,14 @@ on a missing env var without surfacing that clearly in the UI — see
 ## Known limitations (see ROADMAP.md for the full, current list)
 
 - Python (14/14 modules — done), Data Structures (7/7), Algorithms (6/6),
-  NumPy (5/5), Pandas (6/6), Probability (4/4), Statistics (4/4), and SQL
+  NumPy (5/5), Pandas (6/6), Probability (4/4), Statistics (4/4), SQL
   (7/10 — select-where, group-by-aggregates, joins, subqueries, ctes,
-  window-functions, interview-patterns) have real lesson content; the
-  rest of the technology catalog is metadata-only (by design — see
+  window-functions, interview-patterns), and Linear Algebra (2/3 —
+  vectors-matrices, eigenvalues; taught from first principles in plain
+  Python on purpose, distinct from `numpy/linear-algebra-ops`'s
+  "use the library" angle on the same operations) have real lesson
+  content; the rest of the technology catalog is metadata-only (by
+  design — see
   `docs/COURSE_CONTENT_SPEC.md`). SQL's last 3 modules
   (indexes-query-plans, schema-design, transactions-isolation) don't fit
   the sql-query exercise type's "does your SELECT return these rows"
