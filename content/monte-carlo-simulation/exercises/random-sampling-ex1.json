@@ -1,0 +1,11 @@
+{
+  "id": "random-sampling-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import random\n\ndef simulate_coin_flips(n, seed=42):\n    ...\n",
+  "cases": [
+    { "call": "simulate_coin_flips(100)", "expect": "50" },
+    { "call": "simulate_coin_flips(1000)", "expect": "480" },
+    { "call": "simulate_coin_flips(10, seed=1)", "expect": "6" }
+  ]
+}

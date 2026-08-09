@@ -1,0 +1,11 @@
+{
+  "id": "random-sampling-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import random\n\ndef estimate_pi(n, seed=42):\n    ...\n",
+  "cases": [
+    { "call": "estimate_pi(1000)", "expect": "3.18" },
+    { "call": "estimate_pi(10000)", "expect": "3.1392" },
+    { "call": "estimate_pi(100, seed=7)", "expect": "3.2" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "variance-reduction-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import random\n\ndef antithetic_pairs(n, seed=42):\n    ...\n",
+  "cases": [
+    { "call": "antithetic_pairs(4)", "expect": "[-0.14409, -0.172904, 0.14409, 0.172904]" },
+    { "call": "antithetic_pairs(6, seed=1)", "expect": "[1.288185, 1.449446, 0.066336, -1.288185, -1.449446, -0.066336]" },
+    { "call": "antithetic_pairs(2)", "expect": "[-0.14409, 0.14409]" }
+  ]
+}

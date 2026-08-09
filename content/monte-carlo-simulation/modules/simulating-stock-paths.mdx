@@ -1,0 +1,103 @@
+---
+slug: simulating-stock-paths
+title: Simulating Stock Paths
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: option-pricing
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: simulating-stock-paths-ex1
+    difficulty: beginner
+    concept: monte-carlo-gbm
+    prompt: "Write `simulate_gbm_path(s0, mu, sigma, days, seed=42)`: simulate a stock price path over `days` trading days using geometric Brownian motion (`dt = 1/252`; each step: `price *= exp((mu - 0.5*sigma**2)*dt + sigma*sqrt(dt)*z)` where `z = random.gauss(0, 1)`), starting from `s0`. Return the final price rounded to 2 decimals."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: simulating-stock-paths-ex2
+    difficulty: intermediate
+    concept: monte-carlo-gbm
+    prompt: "Write `monte_carlo_call_price(s0, k, r, sigma, days, n_sims, seed=42)`: estimate a European call option's price by simulating `n_sims` final prices (each via one GBM step over the full period, `T = days/252`), computing each payoff `max(S_T - k, 0)`, discounting the average payoff by `exp(-r*T)`, and returning the result rounded to 2 decimals."
+  - id: quiz-1
+    type: quiz
+    concept: monte-carlo-gbm
+    question: "In geometric Brownian motion, what does increasing sigma (volatility) do to the spread of simulated final prices?"
+    options: ["Widens it — higher volatility means more variation from one simulated path to the next", "Has no effect — sigma only affects returns, not prices", "Always increases the expected final price", "Makes every simulated path identical"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Geometric Brownian motion (GBM)** is the standard model for simulating
+a stock price path: each tiny time step, the price is multiplied by a
+random factor built from a drift term (`mu`, the expected return) and a
+random shock scaled by volatility (`sigma`):
+
+```python
+import random, math
+
+random.seed(42)
+price = 100.0
+dt = 1 / 252   # one trading day, as a fraction of a year
+mu, sigma = 0.08, 0.20   # 8% expected annual return, 20% annual volatility
+
+for _ in range(252):   # simulate one year, day by day
+    z = random.gauss(0, 1)   # a standard normal random shock
+    price *= math.exp((mu - 0.5*sigma**2)*dt + sigma*math.sqrt(dt)*z)
+
+print(round(price, 2))
+```
+
+The `- 0.5*sigma**2` term looks odd at first — it's a correction so that
+the AVERAGE simulated price actually grows at rate `mu`, compensating for
+the fact that multiplying by random factors and then averaging isn't the
+same as averaging first (a consequence of how lognormal distributions
+work, not a typo).
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`import random, math\n\nrandom.seed(1)\nprice = 100.0\ndt = 1 / 252\nfor _ in range(21):   # one month\n    z = random.gauss(0, 1)\n    price *= math.exp((0.05 - 0.5*0.3**2)*dt + 0.3*math.sqrt(dt)*z)\nprint(round(price, 2))`} caption="A single simulated path is just one possible future — real usage always runs thousands of paths and looks at the distribution of outcomes, which is exactly what the next exercise does for option pricing." />
+
+<Explanation id="option-pricing">
+
+A single price path only tells you one possible future. Monte Carlo
+**option pricing** runs thousands of independent simulated paths, computes
+each one's payoff, and averages — the same "many random samples,
+average the results" idea from the previous module, applied to finance:
+
+```python
+payoffs = []
+for _ in range(10_000):
+    z = random.gauss(0, 1)
+    s_t = s0 * math.exp((r - 0.5*sigma**2)*T + sigma*math.sqrt(T)*z)
+    payoffs.append(max(s_t - strike, 0))   # call option payoff
+
+price_today = math.exp(-r * T) * (sum(payoffs) / len(payoffs))
+```
+
+`max(s_t - strike, 0)` is a call option's payoff: worth `s_t - strike` if
+the stock finishes above the strike price, worthless otherwise.
+`exp(-r*T)` discounts the average future payoff back to today's dollars.
+This is a real, working (simplified) implementation of Monte Carlo option
+pricing — the same core idea underlies far more sophisticated versions
+used in practice.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can simulate a GBM stock price path and use Monte Carlo simulation to estimate an option's price by averaging discounted payoffs across many simulated paths.
+</Checkpoint>

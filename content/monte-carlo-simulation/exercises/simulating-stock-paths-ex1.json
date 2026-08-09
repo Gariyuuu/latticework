@@ -1,0 +1,11 @@
+{
+  "id": "simulating-stock-paths-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import random, math\n\ndef simulate_gbm_path(s0, mu, sigma, days, seed=42):\n    ...\n",
+  "cases": [
+    { "call": "simulate_gbm_path(100, 0.08, 0.2, 252)", "expect": "146.77" },
+    { "call": "simulate_gbm_path(50, 0.05, 0.3, 21, seed=1)", "expect": "51.42" },
+    { "call": "simulate_gbm_path(100, 0, 0, 10)", "expect": "100.0" }
+  ]
+}

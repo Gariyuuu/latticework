@@ -13,22 +13,23 @@
     "quant-researcher",
     "quant-trader"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "Estimating hard-to-compute quantities by repeating a random experiment many times — the core technique behind option pricing, risk simulation, and a huge share of practical quant work.",
   "modules": [
     {
       "slug": "random-sampling",
       "title": "Random Sampling",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "simulating-stock-paths",
       "title": "Simulating Stock Paths",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "variance-reduction",
       "title": "Variance Reduction",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

@@ -1,0 +1,95 @@
+---
+slug: random-sampling
+title: Random Sampling
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: law-of-large-numbers
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: random-sampling-ex1
+    difficulty: beginner
+    concept: monte-carlo-random-sampling
+    prompt: "Write `simulate_coin_flips(n, seed=42)`: seed the RNG with `seed`, simulate `n` fair coin flips (`random.random() < 0.5` counts as heads), and return the number of heads."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: random-sampling-ex2
+    difficulty: intermediate
+    concept: monte-carlo-random-sampling
+    prompt: "Write `estimate_pi(n, seed=42)`: estimate π by throwing `n` random points into the square from (-1,-1) to (1,1), counting how many land inside the unit circle (`x*x + y*y <= 1`), and returning `4 * count / n` rounded to 4 decimal places."
+  - id: quiz-1
+    type: quiz
+    concept: monte-carlo-random-sampling
+    question: "Why does a Monte Carlo estimate generally get more accurate as the number of samples increases?"
+    options: ["By the Law of Large Numbers, a sample average converges toward the true expected value as sample size grows", "Random number generators become more accurate the more times you call them", "It doesn't — Monte Carlo accuracy is independent of sample count", "More samples make each individual random draw more precise"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A **Monte Carlo simulation** estimates something hard to compute exactly
+by repeating a random experiment many times and averaging the results.
+The technique needs nothing fancier than `random.seed()` (for
+reproducibility — the same seed always produces the same sequence of
+"random" numbers) and a loop.
+
+```python
+import random
+
+random.seed(42)   # same seed -> identical sequence, every run
+print(random.random())   # a float in [0, 1)
+print(random.uniform(-1, 1))   # a float in [-1, 1)
+print(random.gauss(0, 1))       # a draw from a standard normal distribution
+```
+
+Exercises in this course always seed the RNG explicitly — real Monte
+Carlo code in production wouldn't (you want genuine randomness), but a
+graded exercise needs a reproducible, checkable answer.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`import random\n\nrandom.seed(42)\nrolls = [random.randint(1, 6) for _ in range(10)]\nprint(rolls)\nprint(f"average: {sum(rolls) / len(rolls):.2f}")`} caption="random.seed(42) followed by the same sequence of random calls always produces the exact same output — that's what makes a seeded simulation gradeable at all." />
+
+<Explanation id="law-of-large-numbers">
+
+Estimating π by throwing random points at a square is a classic
+demonstration: a quarter-circle of radius 1 covers `π/4` of the unit
+square's area, so the fraction of random points that land inside it
+approximates `π/4` — multiply by 4 to estimate π itself.
+
+```python
+random.seed(0)
+count = 0
+n = 100_000
+for _ in range(n):
+    x, y = random.uniform(-1, 1), random.uniform(-1, 1)
+    if x*x + y*y <= 1:
+        count += 1
+print(4 * count / n)   # close to 3.14159..., gets closer as n grows
+```
+
+This is the **Law of Large Numbers** in action: as `n` grows, the sample
+average (fraction of points inside the circle) converges to the true
+probability. It's also why Monte Carlo error shrinks proportionally to
+`1/√n` — quadrupling your sample count only halves your error.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can write a seeded Monte Carlo simulation and understand why more samples means a more accurate (but only √n-scaling) estimate.
+</Checkpoint>

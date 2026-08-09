@@ -1,0 +1,97 @@
+---
+slug: variance-reduction
+title: Variance Reduction
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: why-it-works
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: variance-reduction-ex1
+    difficulty: beginner
+    concept: monte-carlo-variance-reduction
+    prompt: "Write `antithetic_pairs(n, seed=42)`: generate `n // 2` standard normal draws (`random.gauss(0, 1)`), then return a list of all `n` values — the `n // 2` draws followed by their negatives, each rounded to 6 decimal places, in the order generated."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: variance-reduction-ex2
+    difficulty: intermediate
+    concept: monte-carlo-variance-reduction
+    prompt: "Write `estimate_exp_z_antithetic(n, seed=42)`: estimate E[e^Z] for a standard normal Z using antithetic variates. Generate `n // 2` draws; for each `z`, include both `exp(z)` and `exp(-z)` in the average. Return the result rounded to 4 decimal places. (The true value is e^0.5 ≈ 1.6487.)"
+  - id: quiz-1
+    type: quiz
+    concept: monte-carlo-variance-reduction
+    question: "What's the core idea behind the antithetic variates technique?"
+    options: ["Pair each random draw Z with its mirror -Z, so extreme highs and lows partially cancel in the average, reducing the estimator's variance without introducing bias", "Generate twice as many fully independent random samples instead", "Always reuse a fixed seed instead of drawing new randomness", "Discard outlier samples before averaging"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Monte Carlo error shrinks with `1/√n` — halving your error means
+quadrupling your sample count, which gets expensive fast. **Variance
+reduction** techniques squeeze a more accurate estimate out of the SAME
+number of samples, without introducing bias.
+
+**Antithetic variates** is the simplest one: for every random draw `z`,
+also use its mirror image `-z`. Since a standard normal distribution is
+symmetric around 0, `-z` is exactly as likely as `z` — but pairing them
+means an unusually high draw is automatically balanced by an unusually
+low one in the same batch, instead of relying on luck to average out over
+many independent draws.
+
+```python
+import random
+
+random.seed(0)
+z = random.gauss(0, 1)
+pair = [z, -z]   # both equally valid draws from the same distribution
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`import random\n\nrandom.seed(0)\nn = 6\nzs = [random.gauss(0, 1) for _ in range(n // 2)]\npairs = zs + [-z for z in zs]\nprint([round(v, 3) for v in pairs])\nprint(f"mean: {sum(pairs) / len(pairs):.6f}")  # always exactly 0 -- every z is cancelled by its pair`} caption="The mean of an antithetic-paired sample of Z itself is ALWAYS exactly 0, by construction -- that's not the useful part. The technique shines when averaging something NONLINEAR in Z, like the next exercise's exp(Z)." />
+
+<Explanation id="why-it-works">
+
+Averaging `Z` itself with antithetic pairs gives exactly 0 every time —
+not a useful demonstration on its own, since it doesn't actually reduce
+variance in anything interesting (the true mean of Z is already 0). The
+technique earns its keep on a NONLINEAR function of Z, like `exp(Z)`
+(closely related to how a stock price is computed from a random shock in
+GBM) — there, `exp(z)` and `exp(-z)` are NOT mirror images of each other,
+so averaging the pair genuinely pulls the estimate toward the true
+expected value faster than the same number of fully independent draws
+would.
+
+```python
+# without antithetic variates: n fully independent draws
+total = sum(math.exp(random.gauss(0, 1)) for _ in range(n))
+
+# with antithetic variates: n // 2 draws, each contributing TWO terms
+total = sum(math.exp(z) + math.exp(-z) for z in [random.gauss(0, 1) for _ in range(n // 2)])
+```
+
+Both use the same total number of `exp()` evaluations — the antithetic
+version just tends to converge to the true value with less sample-to-
+sample noise.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can generate antithetic variate pairs and use them to reduce variance when estimating the expectation of a nonlinear function of a random variable.
+</Checkpoint>

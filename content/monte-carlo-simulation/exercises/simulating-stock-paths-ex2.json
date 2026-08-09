@@ -1,0 +1,10 @@
+{
+  "id": "simulating-stock-paths-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import random, math\n\ndef monte_carlo_call_price(s0, k, r, sigma, days, n_sims, seed=42):\n    ...\n",
+  "cases": [
+    { "call": "monte_carlo_call_price(100, 105, 0.03, 0.25, 63, 5000)", "expect": "3.25" },
+    { "call": "monte_carlo_call_price(100, 95, 0.02, 0.2, 252, 10000, seed=1)", "expect": "11.59" }
+  ]
+}

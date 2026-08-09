@@ -1,0 +1,11 @@
+{
+  "id": "variance-reduction-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import random, math\n\ndef estimate_exp_z_antithetic(n, seed=42):\n    ...\n",
+  "cases": [
+    { "call": "estimate_exp_z_antithetic(1000)", "expect": "1.647" },
+    { "call": "estimate_exp_z_antithetic(10000)", "expect": "1.6537" },
+    { "call": "estimate_exp_z_antithetic(100, seed=7)", "expect": "1.4172" }
+  ]
+}
