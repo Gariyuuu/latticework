@@ -7,13 +7,32 @@ This file is intentionally granular and maps to the numbered sections of the
 original product brief so nothing gets silently dropped. Update it in the
 same change as any feature work.
 
+## Deployment
+- GitHub — **Done**: github.com/Gariyuuu/latticework (public, `main`)
+- Vercel — **Done**: **https://latticework-gilt.vercel.app** (production,
+  GitHub-connected for auto-deploy-on-push, SSO deployment protection
+  disabled). Neon Postgres + Clerk both provisioned via the Vercel
+  Marketplace (`vercel integration add neon|clerk`) and connected to the
+  project — all env vars live in Production/Preview/Development. DB
+  schema pushed (`npm run db:push`) and content seeded
+  (`npm run content:sync` against the live DB — 99 skills, 7 built).
+  Clerk is currently a **development-mode** instance (free marketplace
+  default) — fine for now, but note this if real user signups/production
+  auth guarantees are ever needed; upgrading is a Clerk dashboard step,
+  not a code change.
+
 ## Foundation
 - Next.js + TS strict + Tailwind + shadcn app shell — **Done**
 - Design tokens (dark-first palette, motion rules) — **Done**
-- Neon + Drizzle schema (full model set from spec §52) — **Done**
-- Clerk auth wiring (sign-in/up, middleware, protected routes) — **Done**
-  (needs real Clerk keys — see `.env.example` — to actually authenticate;
-  code path is real, not mocked)
+- Neon + Drizzle schema (full model set from spec §52) — **Done**, live
+  DB provisioned and pushed (see "Deployment" above)
+- Clerk auth wiring (sign-in/up, middleware, protected routes) — **Done**,
+  live keys provisioned and working in production (see "Deployment"
+  above). Note: `clerkMiddleware()` in `src/proxy.ts` crashes with a
+  generic 500 on EVERY route if Clerk keys are missing in a deployed
+  (non-dev) environment — Clerk's "keyless mode" only works with
+  `next dev` locally, not on Vercel. Always confirm Clerk keys are set
+  before/immediately after any fresh Vercel deploy of this repo.
 - Content architecture (MDX + block components + loader/validator) — **Done**
   (`npm run content:sync` was previously unrunnable outside Next's webpack
   build — it transitively imported `"server-only"`, which throws

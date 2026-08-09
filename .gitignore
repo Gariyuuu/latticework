@@ -43,3 +43,9 @@ next-env.d.ts
 
 # clerk configuration (can include secrets)
 /.clerk/
+
+# marketplace-integration agent-skill docs (installed by
+# `vercel integration add neon|clerk`, not part of the app)
+/.agents/
+/.claude/
+skills-lock.json

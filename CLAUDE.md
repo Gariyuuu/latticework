@@ -26,6 +26,16 @@ Next.js (App Router) + TypeScript strict + Tailwind v4 + shadcn/ui (Radix/
 Nova preset) + Clerk auth + Neon Postgres via Drizzle ORM + Monaco editor +
 Pyodide/sql.js for in-browser sandboxed code execution.
 
+## Deployment
+
+Live at **https://latticework-gilt.vercel.app** (GitHub-connected, auto-
+deploys on push to `main`). Repo: github.com/Gariyuuu/latticework. Neon +
+Clerk both provisioned via Vercel Marketplace and connected — real env
+vars live in Vercel, DB schema pushed, content seeded. See ROADMAP.md
+"Deployment" for the full setup trail and gotchas (notably: Clerk keys
+missing in production = a generic 500 on every route, since keyless mode
+is dev-only).
+
 ## Folder structure
 
 See `docs/ARCHITECTURE.md` "Folder structure" section — kept in sync there,
