@@ -1,0 +1,11 @@
+{
+  "id": "code-smells-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def has_magic_number(code_values, allowed):\n    ...\n",
+  "cases": [
+    { "call": "has_magic_number([0, 1, 86400], {0, 1})", "expect": "True" },
+    { "call": "has_magic_number([0, 1, -1], {0, 1, -1})", "expect": "False" },
+    { "call": "has_magic_number([100], {0, 1})", "expect": "True" }
+  ]
+}

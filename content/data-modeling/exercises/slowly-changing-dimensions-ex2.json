@@ -1,0 +1,9 @@
+{
+  "id": "slowly-changing-dimensions-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def scd_type2_update(dimension_row, changes, new_effective_date):\n    ...\n",
+  "cases": [
+    { "call": "scd_type2_update({'id': 1, 'name': 'Alice', 'city': 'NYC', 'effective_date': '2020-01-01', 'end_date': None, 'is_current': True}, {'city': 'LA'}, '2023-06-01')", "expect": "({'id': 1, 'name': 'Alice', 'city': 'NYC', 'effective_date': '2020-01-01', 'end_date': '2023-06-01', 'is_current': False}, {'id': 1, 'name': 'Alice', 'city': 'LA', 'effective_date': '2023-06-01', 'end_date': None, 'is_current': True})" }
+  ]
+}

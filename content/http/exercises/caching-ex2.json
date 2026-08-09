@@ -1,0 +1,11 @@
+{
+  "id": "caching-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def is_cache_fresh(age_seconds, max_age):\n    ...\n",
+  "cases": [
+    { "call": "is_cache_fresh(100, 3600)", "expect": "True" },
+    { "call": "is_cache_fresh(4000, 3600)", "expect": "False" },
+    { "call": "is_cache_fresh(0, 0)", "expect": "False" }
+  ]
+}

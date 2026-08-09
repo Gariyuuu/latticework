@@ -1,0 +1,11 @@
+{
+  "id": "mocking-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "class FakePaymentGateway:\n    def __init__(self):\n        self.charges = []\n\n    def charge(self, amount):\n        receipt_id = len(self.charges) + 1\n        self.charges.append(amount)\n        return receipt_id\n\ndef process_order(amount, gateway):\n    ...\n",
+  "cases": [
+    { "call": "process_order(50, FakePaymentGateway())", "expect": "{'success': True, 'receipt_id': 1}" },
+    { "call": "process_order(-10, FakePaymentGateway())", "expect": "{'success': False, 'receipt_id': None}" },
+    { "call": "process_order(0, FakePaymentGateway())", "expect": "{'success': False, 'receipt_id': None}" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "constraints-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "from collections import Counter\n\ndef check_unique(rows, field):\n    ...\n",
+  "cases": [
+    { "call": "check_unique([{'email': 'a@b.com'}, {'email': 'c@d.com'}, {'email': 'a@b.com'}], 'email')", "expect": "['a@b.com']" },
+    { "call": "check_unique([{'id': 1}, {'id': 2}], 'id')", "expect": "[]" },
+    { "call": "check_unique([{'x': 'p'}, {'x': 'p'}, {'x': 'p'}], 'x')", "expect": "['p']" }
+  ]
+}

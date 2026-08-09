@@ -1,0 +1,95 @@
+---
+slug: mocking
+title: Mocking
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: why
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: mocking-ex1
+    difficulty: beginner
+    concept: testing-mocking
+    prompt: "Given `FakeEmailSender` and a module-level `emailer` instance below, implement `send(self, to, subject)`: append `(to, subject)` to `self.sent`, and return the new length of `self.sent`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: mocking-ex2
+    difficulty: intermediate
+    concept: testing-mocking
+    prompt: "Given `FakePaymentGateway` below, write `process_order(amount, gateway)`: if `amount <= 0`, return `{'success': False, 'receipt_id': None}`. Otherwise call `gateway.charge(amount)` and return `{'success': True, 'receipt_id': <that result>}`."
+  - id: quiz-1
+    type: quiz
+    concept: testing-mocking
+    question: "Why use a 'fake' or 'mock' object instead of a real dependency (like a real payment gateway) when writing a unit test?"
+    options: ["It isolates the test from external systems (network calls, real charges, real emails) that would make tests slow, flaky, or have real side effects", "Fakes always run slower than the real dependency", "Mocks are required by Python syntax for testing any external call", "Using a fake object means that code never needs to be tested again"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Testing code that talks to something external — a database, a payment
+processor, an email service — is risky if the test uses the REAL thing:
+slow (network calls), unreliable (the external service might be down),
+and dangerous (you really don't want a test suite sending real emails or
+charging real credit cards every time it runs).
+
+A **fake** (or **mock**) replaces the real dependency with a simple
+stand-in that mimics its interface without any real side effects:
+
+```python
+class FakeEmailSender:
+    def __init__(self):
+        self.sent = []
+
+    def send(self, to, subject):
+        self.sent.append((to, subject))
+        return len(self.sent)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`class FakeEmailSender:\n    def __init__(self):\n        self.sent = []\n    def send(self, to, subject):\n        self.sent.append((to, subject))\n        return len(self.sent)\n\ndef notify_user(email, message, sender):\n    sender.send(email, message)\n\nfake = FakeEmailSender()\nnotify_user("alice@example.com", "Welcome!", fake)\nnotify_user("bob@example.com", "Welcome!", fake)\nprint(fake.sent)   # both "emails" captured, none actually sent`} caption="notify_user doesn't know or care that it's talking to a fake -- it just calls sender.send(...), exactly as it would with a real email service. That's dependency injection: pass the dependency in, don't hardcode which implementation you're using." />
+
+<Explanation id="why">
+
+A fake also gives your test something to ASSERT against — after running
+code that should have sent an email, checking `fake.sent` confirms it
+actually happened, without needing a real inbox to check:
+
+```python
+class FakePaymentGateway:
+    def __init__(self):
+        self.charges = []
+
+    def charge(self, amount):
+        receipt_id = len(self.charges) + 1
+        self.charges.append(amount)
+        return receipt_id
+```
+
+Real testing frameworks (like `unittest.mock` in Python's standard
+library) provide tools to generate fakes automatically and make
+assertions about how they were called — but understanding the concept by
+hand-writing one, like here, makes it obvious what those tools are
+actually doing under the hood.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can write a fake/mock object that stands in for an external dependency, letting you test code's behavior without real side effects.
+</Checkpoint>

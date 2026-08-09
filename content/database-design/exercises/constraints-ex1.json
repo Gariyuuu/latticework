@@ -1,0 +1,11 @@
+{
+  "id": "constraints-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def check_not_null(row, required_fields):\n    ...\n",
+  "cases": [
+    { "call": "check_not_null({'id': 1, 'name': 'Alice', 'email': None}, ['id', 'name', 'email'])", "expect": "['email']" },
+    { "call": "check_not_null({'id': 1, 'name': 'Bob'}, ['id', 'name'])", "expect": "[]" },
+    { "call": "check_not_null({}, ['id'])", "expect": "['id']" }
+  ]
+}

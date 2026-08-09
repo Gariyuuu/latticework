@@ -1,0 +1,11 @@
+{
+  "id": "star-snowflake-schema-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def is_valid_star_schema(fact_fks, dimension_tables):\n    ...\n",
+  "cases": [
+    { "call": "is_valid_star_schema(['customer', 'product'], ['customer', 'product', 'date'])", "expect": "True" },
+    { "call": "is_valid_star_schema(['customer', 'region'], ['customer', 'product'])", "expect": "False" },
+    { "call": "is_valid_star_schema([], ['customer'])", "expect": "True" }
+  ]
+}

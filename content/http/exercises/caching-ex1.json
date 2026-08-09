@@ -1,0 +1,11 @@
+{
+  "id": "caching-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def parse_cache_control(header_value):\n    ...\n",
+  "cases": [
+    { "call": "parse_cache_control('max-age=3600, no-cache')", "expect": "{'max-age': '3600', 'no-cache': True}" },
+    { "call": "parse_cache_control('no-store')", "expect": "{'no-store': True}" },
+    { "call": "parse_cache_control('max-age=0')", "expect": "{'max-age': '0'}" }
+  ]
+}

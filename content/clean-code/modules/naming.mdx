@@ -1,0 +1,88 @@
+---
+slug: naming
+title: Naming
+estimatedMinutes: 14
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: booleans
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: naming-ex1
+    difficulty: beginner
+    concept: clean-code-naming
+    prompt: "Write `is_snake_case(name)`: return True if `name` matches Python's `snake_case` convention — lowercase letters, digits, and underscores only, not starting with a digit."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: naming-ex2
+    difficulty: beginner
+    concept: clean-code-naming
+    prompt: "Write `is_boolean_name_clear(name)`: return True if `name` starts with a conventional boolean prefix — `is_`, `has_`, `can_`, or `should_`."
+  - id: quiz-1
+    type: quiz
+    concept: clean-code-naming
+    question: "Why is `is_active` a better boolean variable name than `active` or `flag`?"
+    options: ["The is_ prefix makes it immediately obvious the variable is a boolean, and reads naturally in a conditional (if is_active:)", "Shorter names are always better regardless of clarity", "Python requires boolean variables to start with is_", "There's no real difference — it's purely a style preference with no functional benefit"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Good names are the cheapest, highest-leverage form of documentation —
+`def calc(d, n)` tells you nothing; `def calculate_average(daily_sales,
+num_days)` tells you almost everything without a single comment.
+Python's own convention (PEP 8) for variables and functions is
+`snake_case`: lowercase words separated by underscores.
+
+```python
+import re
+
+def is_snake_case(name):
+    return bool(re.match(r"^[a-z_][a-z0-9_]*$", name))
+
+print(is_snake_case("user_name"))   # True
+print(is_snake_case("userName"))     # False -- camelCase, not Python's convention
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`# Which of these tells you more, at a glance, with zero other context?\ndef f(x, y):\n    return x * y * 0.08\n\ndef calculate_sales_tax(price, quantity):\n    TAX_RATE = 0.08\n    return price * quantity * TAX_RATE`} caption="Same logic, same number of lines of actual computation -- but the second version needs zero comments to understand, because the names ALREADY explain what's happening. That's the entire goal of naming well." />
+
+<Explanation id="booleans">
+
+Boolean names deserve special care — a name like `active` is ambiguous
+(is it a question? a command? a state?), while `is_active` reads
+naturally wherever booleans get used, especially in conditionals:
+
+```python
+def is_boolean_name_clear(name):
+    return name.startswith(("is_", "has_", "can_", "should_"))
+
+print(is_boolean_name_clear("is_valid"))    # True
+print(is_boolean_name_clear("valid"))        # False -- ambiguous on its own
+```
+
+`if is_valid:` reads like an English sentence. `if valid:` is fine too,
+honestly — but `is_`/`has_`/`can_`/`should_` prefixes remove any
+ambiguity about whether a name is a boolean at all, which matters more
+the bigger and less-familiar a codebase gets.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can recognize Python's snake_case naming convention and write clear boolean names using conventional prefixes.
+</Checkpoint>

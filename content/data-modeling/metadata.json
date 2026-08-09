@@ -10,17 +10,18 @@
   "usefulFor": [
     "data-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "Star/snowflake schema design and Slowly Changing Dimensions (Type 1 vs Type 2) — the data-warehouse modeling patterns behind accurate historical reporting.",
   "modules": [
     {
       "slug": "star-snowflake-schema",
       "title": "Star/Snowflake Schema",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "slowly-changing-dimensions",
       "title": "Slowly Changing Dimensions",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

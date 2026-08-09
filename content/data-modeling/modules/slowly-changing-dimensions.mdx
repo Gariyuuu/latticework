@@ -1,0 +1,105 @@
+---
+slug: slowly-changing-dimensions
+title: Slowly Changing Dimensions
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: type2
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: slowly-changing-dimensions-ex1
+    difficulty: beginner
+    concept: data-modeling-scd
+    prompt: "Write `scd_type1_update(dimension_row, changes)`: SCD Type 1 — overwrite in place, no history kept. Return a new dict with `changes` merged into `dimension_row`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: slowly-changing-dimensions-ex2
+    difficulty: advanced
+    concept: data-modeling-scd
+    prompt: "Write `scd_type2_update(dimension_row, changes, new_effective_date)`: SCD Type 2 — preserve history. Return `(closed_row, new_row)`: `closed_row` is `dimension_row` with `is_current=False` and `end_date=new_effective_date`; `new_row` is `dimension_row` with `changes` applied, `is_current=True`, `effective_date=new_effective_date`, `end_date=None`."
+  - id: quiz-1
+    type: quiz
+    concept: data-modeling-scd
+    question: "What's the key difference between SCD Type 1 and SCD Type 2 dimension updates?"
+    options: ["Type 1 overwrites the old value with no history kept; Type 2 preserves history by inserting a new row with effective dates instead of overwriting", "Type 1 is only used for fact tables, Type 2 only for dimensions", "Type 2 is always faster to query than Type 1", "There is no meaningful difference between them"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A dimension's attributes change over time — a customer moves cities, a
+product gets reclassified into a different category. A **Slowly
+Changing Dimension (SCD)** strategy decides what happens to historical
+fact rows when that happens. **Type 1** is the simplest: just overwrite,
+no history:
+
+```python
+def scd_type1_update(dimension_row, changes):
+    updated = dict(dimension_row)
+    updated.update(changes)
+    return updated
+
+customer = {"id": 1, "name": "Alice", "city": "NYC"}
+print(scd_type1_update(customer, {"city": "LA"}))
+# {'id': 1, 'name': 'Alice', 'city': 'LA'}
+```
+
+Type 1 is simple, but loses information: every historical sale to
+Alice now shows "LA," even the ones that genuinely happened while she
+lived in NYC. Fine for correcting typos; wrong for anything you actually
+want historical accuracy on.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def scd_type1_update(dimension_row, changes):\n    updated = dict(dimension_row)\n    updated.update(changes)\n    return updated\n\ncustomer = {"id": 1, "name": "Alice", "city": "NYC"}\nupdated = scd_type1_update(customer, {"city": "LA"})\nprint(customer)   # unchanged -- we returned a NEW dict, didn't mutate the original\nprint(updated)`} caption="scd_type1_update doesn't mutate its input -- same 'return a new value, don't mutate' discipline from the Functional Programming course's pure functions, applied to a data-warehouse update pattern." />
+
+<Explanation id="type2">
+
+**Type 2** preserves history by never overwriting — instead, it closes
+out the old row (marks it no-longer-current, stamps an end date) and
+inserts a brand-new row for the updated values:
+
+```python
+def scd_type2_update(dimension_row, changes, new_effective_date):
+    closed_row = dict(dimension_row)
+    closed_row["is_current"] = False
+    closed_row["end_date"] = new_effective_date
+
+    new_row = dict(dimension_row)
+    new_row.update(changes)
+    new_row["is_current"] = True
+    new_row["effective_date"] = new_effective_date
+    new_row["end_date"] = None
+
+    return closed_row, new_row
+```
+
+Now every historical fact row joins against the dimension row that was
+ACTUALLY current at the time that fact happened — a sale from 2021 still
+correctly shows Alice's NYC address, even though her CURRENT record
+shows LA. This is exactly how real data warehouses answer "what did
+things look like at this point in the past?" — genuinely important for
+accurate historical reporting, at the cost of real added complexity
+(every query about a dimension attribute now needs to consider which
+version of the row was current at the relevant time).
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement both SCD Type 1 (overwrite) and Type 2 (preserve history via new rows with effective dates), and understand why Type 2 matters for accurate historical reporting.
+</Checkpoint>

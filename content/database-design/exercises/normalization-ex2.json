@@ -1,0 +1,11 @@
+{
+  "id": "normalization-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def violates_2nf(functional_dependencies, primary_key):\n    ...\n",
+  "cases": [
+    { "call": "violates_2nf([(('order_id', 'product_id'), 'quantity'), (('product_id',), 'product_name')], ('order_id', 'product_id'))", "expect": "True" },
+    { "call": "violates_2nf([(('order_id', 'product_id'), 'quantity')], ('order_id', 'product_id'))", "expect": "False" },
+    { "call": "violates_2nf([(('id',), 'name')], ('id',))", "expect": "False" }
+  ]
+}

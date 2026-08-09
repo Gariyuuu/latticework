@@ -1,0 +1,11 @@
+{
+  "id": "headers-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def is_json_request(headers):\n    ...\n",
+  "cases": [
+    { "call": "is_json_request({'Content-Type': 'application/json'})", "expect": "True" },
+    { "call": "is_json_request({'Content-Type': 'text/html'})", "expect": "False" },
+    { "call": "is_json_request({})", "expect": "False" }
+  ]
+}

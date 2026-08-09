@@ -1,0 +1,11 @@
+{
+  "id": "sessions-vs-tokens-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def is_token_expired(issued_at, ttl_seconds, current_time):\n    ...\n",
+  "cases": [
+    { "call": "is_token_expired(1000, 3600, 1500)", "expect": "False" },
+    { "call": "is_token_expired(1000, 3600, 5000)", "expect": "True" },
+    { "call": "is_token_expired(0, 60, 60)", "expect": "False" }
+  ]
+}

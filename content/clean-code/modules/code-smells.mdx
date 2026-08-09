@@ -1,0 +1,93 @@
+---
+slug: code-smells
+title: Code Smells
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: duplication
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: code-smells-ex1
+    difficulty: beginner
+    concept: clean-code-smells
+    prompt: "Write `has_magic_number(code_values, allowed)`: given a list of numeric literals found in some code and a set of self-explanatory `allowed` values (like `{0, 1}`), return True if any value ISN'T in `allowed` — a 'magic number' that should probably be a named constant."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: code-smells-ex2
+    difficulty: intermediate
+    concept: clean-code-smells
+    prompt: "Write `count_duplicate_lines(lines)`: given a list of code lines, return how many DISTINCT lines appear more than once — a simple proxy for duplicated logic."
+  - id: quiz-1
+    type: quiz
+    concept: clean-code-smells
+    question: "What is a 'code smell'?"
+    options: ["A pattern in code that isn't necessarily a bug, but signals a deeper design problem worth investigating (like duplicated logic or an unexplained magic number)", "A syntax error that prevents the code from running at all", "A performance benchmark score", "A required code review comment format"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A **code smell** isn't a bug — the code runs fine — but it's a signal
+that something about the design will likely cause pain later. A **magic
+number** is a classic one: an unexplained numeric literal buried in the
+middle of logic, with no indication of what it means or why that
+specific value was chosen.
+
+```python
+def has_magic_number(code_values, allowed):
+    return any(v not in allowed for v in code_values)
+
+# 86400 shows up with no explanation -- what IS 86400?
+print(has_magic_number([0, 1, 86400], {0, 1}))   # True -- flagged
+```
+
+`86400` is the number of seconds in a day — obvious once you know that,
+completely opaque otherwise. `SECONDS_PER_DAY = 86400` fixes it
+immediately: now the constant explains itself everywhere it's used.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`# magic numbers everywhere -- what do these mean?\ndef calculate_late_fee(days_late):\n    if days_late > 30:\n        return days_late * 5\n    return 0\n\n# named constants -- self-documenting\nGRACE_PERIOD_DAYS = 30\nLATE_FEE_PER_DAY = 5\n\ndef calculate_late_fee_clear(days_late):\n    if days_late > GRACE_PERIOD_DAYS:\n        return days_late * LATE_FEE_PER_DAY\n    return 0`} caption="Both functions compute the exact same thing -- but only the second one tells you WHY '30' and '5' matter, and only the second one is safe to change (rename GRACE_PERIOD_DAYS's value once, instead of hunting for every '30' that might or might not mean 'grace period')." />
+
+<Explanation id="duplication">
+
+**Duplicated code** is another classic smell — the same logic copy-pasted
+in multiple places means every future bugfix or change has to be applied
+EVERYWHERE it was copied, and it's easy to miss a spot:
+
+```python
+from collections import Counter
+
+def count_duplicate_lines(lines):
+    counts = Counter(lines)
+    return sum(1 for line, c in counts.items() if c > 1)
+
+code = ["x = compute_total()", "y = 2", "x = compute_total()"]
+print(count_duplicate_lines(code))   # 1 -- that line appears twice
+```
+
+The fix for duplication is usually extraction: pull the repeated logic
+into its own function, called from every place that needs it — exactly
+the single-responsibility principle from the previous module, applied to
+eliminate the duplication rather than just tolerate it.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can identify magic numbers and duplicated code as code smells, and know the standard fix for each (named constants; extraction into a shared function).
+</Checkpoint>

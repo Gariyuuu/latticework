@@ -4,7 +4,7 @@
   "category": "cs",
   "difficulty": "beginner",
   "estimatedHours": 5,
-  "prerequisites": [],
+  "prerequisites": ["python"],
   "usefulFor": [
     "software-engineer",
     "full-stack-engineer",
@@ -19,7 +19,8 @@
     "quant-researcher",
     "quant-trader"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "Mocking/fakes and boundary-value test design — the broader testing-methodology angle, distinct from python/testing's assert-syntax-focused module.",
   "modules": [
     {
       "slug": "unit-tests",
@@ -29,7 +30,7 @@
     {
       "slug": "mocking",
       "title": "Mocking",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "integration-tests",
@@ -39,7 +40,7 @@
     {
       "slug": "test-design",
       "title": "Test Design",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

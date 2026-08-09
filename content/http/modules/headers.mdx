@@ -1,0 +1,89 @@
+---
+slug: headers
+title: Headers
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: content-type
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: headers-ex1
+    difficulty: beginner
+    concept: http-headers
+    prompt: "Write `parse_headers(lines)`: given a list of `'Key: Value'` strings, return a dict mapping key to value."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: headers-ex2
+    difficulty: intermediate
+    concept: http-headers
+    prompt: "Write `is_json_request(headers)`: return True if the `Content-Type` header (if present) contains `'application/json'`."
+  - id: quiz-1
+    type: quiz
+    concept: http-headers
+    question: "What does the Content-Type header tell the receiver of a request or response?"
+    options: ["The format/media type of the body, so the receiver knows how to correctly parse it", "The total time the request took to process", "The server's IP address", "Whether the connection is encrypted"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Headers** are key-value metadata attached to a request or response —
+everything about the exchange EXCEPT the actual body content: what
+format the body is in, how large it is, whether it's cached, who's
+asking, and much more.
+
+```python
+def parse_headers(lines):
+    headers = {}
+    for line in lines:
+        key, value = line.split(": ", 1)
+        headers[key] = value
+    return headers
+
+raw = ["Content-Type: application/json", "Content-Length: 128", "Host: api.example.com"]
+print(parse_headers(raw))
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def parse_headers(lines):\n    headers = {}\n    for line in lines:\n        key, value = line.split(": ", 1)\n        headers[key] = value\n    return headers\n\nraw = ["Authorization: Bearer abc123", "Accept: application/json", "User-Agent: MyApp/1.0"]\nheaders = parse_headers(raw)\nprint(headers["Authorization"])`} caption="split(': ', 1) with maxsplit=1 matters here -- some header VALUES contain colons themselves (like a URL or a timestamp), so splitting on every colon would break those." />
+
+<Explanation id="content-type">
+
+**Content-Type** is one of the most important headers — it tells the
+receiver exactly how to interpret the body: `application/json` for JSON,
+`text/html` for HTML, `multipart/form-data` for file uploads, and so on.
+A server that receives a request without checking Content-Type risks
+trying to parse the wrong format entirely.
+
+```python
+def is_json_request(headers):
+    content_type = headers.get("Content-Type", "")
+    return "application/json" in content_type
+```
+
+Other common headers worth knowing: `Authorization` (credentials —
+usually `Bearer <token>`), `Accept` (what response formats the CLIENT
+can handle), `User-Agent` (identifies the client software), and
+`Cache-Control` (covered in depth next module).
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can parse raw header lines into a usable dict, and check a request's Content-Type to determine how to handle its body.
+</Checkpoint>

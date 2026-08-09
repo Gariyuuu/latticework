@@ -4,29 +4,30 @@
   "category": "cs",
   "difficulty": "beginner",
   "estimatedHours": 4,
-  "prerequisites": [],
+  "prerequisites": ["python"],
   "usefulFor": [
     "software-engineer",
     "full-stack-engineer",
     "backend-engineer",
     "research-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "Naming, function design, and code smells — the everyday judgment calls that separate code that merely works from code that stays maintainable.",
   "modules": [
     {
       "slug": "naming",
       "title": "Naming",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "functions",
       "title": "Functions",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "code-smells",
       "title": "Code Smells",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

@@ -1,0 +1,93 @@
+---
+slug: caching
+title: Caching
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: freshness
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: caching-ex1
+    difficulty: beginner
+    concept: http-caching
+    prompt: "Write `parse_cache_control(header_value)`: parse a Cache-Control header value like `'max-age=3600, no-cache'` into a dict — directives with a value map key to value; directives without one (like `no-cache`) map to `True`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: caching-ex2
+    difficulty: intermediate
+    concept: http-caching
+    prompt: "Write `is_cache_fresh(age_seconds, max_age)`, returning True if `age_seconds` is still less than `max_age`."
+  - id: quiz-1
+    type: quiz
+    concept: http-caching
+    question: "What does the Cache-Control: max-age=3600 header mean?"
+    options: ["The cached response can be reused without re-fetching for up to 3600 seconds", "The server will wait 3600 seconds before responding", "The response body is 3600 bytes long", "The cache must be cleared every 3600 requests"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**HTTP caching** avoids re-fetching data that hasn't changed — the
+`Cache-Control` header (on a response) tells clients and intermediate
+caches (like a CDN) how long they're allowed to reuse a cached copy
+before checking back with the server:
+
+```python
+def parse_cache_control(header_value):
+    result = {}
+    for part in header_value.split(", "):
+        if "=" in part:
+            k, v = part.split("=")
+            result[k] = v
+        else:
+            result[part] = True
+    return result
+
+print(parse_cache_control("max-age=3600, no-cache"))
+# {'max-age': '3600', 'no-cache': True}
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def parse_cache_control(header_value):\n    result = {}\n    for part in header_value.split(", "):\n        if "=" in part:\n            k, v = part.split("=")\n            result[k] = v\n        else:\n            result[part] = True\n    return result\n\nprint(parse_cache_control("public, max-age=86400"))    # cacheable by anyone, fresh for a day\nprint(parse_cache_control("private, no-store"))          # never cache this at all`} caption="'no-store' (never cache) is stronger than 'no-cache' (can cache, but must revalidate before reusing) -- a common source of confusion since the names sound almost identical but mean genuinely different things." />
+
+<Explanation id="freshness">
+
+A cached response is **fresh** as long as its age (time since it was
+fetched) hasn't exceeded `max-age` — fresh responses can be reused
+immediately, with zero network round-trip:
+
+```python
+def is_cache_fresh(age_seconds, max_age):
+    return age_seconds < max_age
+
+print(is_cache_fresh(100, 3600))    # True -- cached 100s ago, still good for another ~3500s
+print(is_cache_fresh(4000, 3600))    # False -- stale, needs to be re-fetched
+```
+
+Once stale, a well-behaved client doesn't necessarily re-download the
+whole response — it can send a **conditional request** (using an `ETag`
+or `Last-Modified` header) asking "has this changed since I last saw
+it?" If not, the server responds `304 Not Modified` with no body at all,
+saving bandwidth even on a cache miss.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can parse Cache-Control directives and determine whether a cached response is still fresh enough to reuse.
+</Checkpoint>

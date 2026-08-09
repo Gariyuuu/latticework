@@ -1,0 +1,11 @@
+{
+  "id": "headers-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def parse_headers(lines):\n    ...\n",
+  "cases": [
+    { "call": "parse_headers(['Content-Type: application/json', 'Content-Length: 42'])", "expect": "{'Content-Type': 'application/json', 'Content-Length': '42'}" },
+    { "call": "parse_headers([])", "expect": "{}" },
+    { "call": "parse_headers(['Host: example.com'])", "expect": "{'Host': 'example.com'}" }
+  ]
+}

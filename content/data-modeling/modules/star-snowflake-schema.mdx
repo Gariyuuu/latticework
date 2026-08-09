@@ -1,0 +1,95 @@
+---
+slug: star-snowflake-schema
+title: Star & Snowflake Schema
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: referential-integrity
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: star-snowflake-schema-ex1
+    difficulty: beginner
+    concept: data-modeling-star-schema
+    prompt: "Write `is_valid_star_schema(fact_fks, dimension_tables)`: return True if every foreign key in `fact_fks` has a matching entry in `dimension_tables` (i.e. `fact_fks` is a subset of `dimension_tables`)."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: star-snowflake-schema-ex2
+    difficulty: intermediate
+    concept: data-modeling-star-schema
+    prompt: "Write `find_orphaned_fact_rows(fact_rows, dimension_keys)`: `dimension_keys` maps each dimension column name to the set of valid keys in that dimension. Return a list of `(row_index, dimension)` pairs for every fact row whose foreign key doesn't exist in its dimension."
+  - id: quiz-1
+    type: quiz
+    concept: data-modeling-star-schema
+    question: "In a star schema, what's the key structural difference between the fact table and the dimension tables?"
+    options: ["The fact table holds measurable events/metrics plus foreign keys to dimensions; dimension tables hold descriptive attributes used for filtering and grouping", "Dimension tables always have more rows than the fact table", "The fact table can never have any foreign keys", "There's no real structural difference — the names are interchangeable"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A **star schema** is the standard shape for analytics/data-warehouse
+tables: one central **fact table** (every row is a measurable event —
+"this sale happened, for this amount, at this time"), surrounded by
+**dimension tables** it references via foreign keys (customer, product,
+date, store — the "who/what/when/where" you'd filter or group by).
+
+```python
+def is_valid_star_schema(fact_fks, dimension_tables):
+    return set(fact_fks).issubset(set(dimension_tables))
+
+fact_sales_fks = ["customer", "product", "date"]
+dimensions = ["customer", "product", "date", "store"]
+print(is_valid_star_schema(fact_sales_fks, dimensions))   # True
+```
+
+A **snowflake schema** is the same idea, but with dimension tables
+further normalized (e.g. `product` splitting off into its own
+`category` and `department` tables) — more normalized, less redundant,
+but requires more joins to query.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`# star: dimensions are flat\nproduct_star = {"id": 1, "name": "Widget", "category": "Hardware", "department": "Retail"}\n\n# snowflake: category/department normalized into their OWN tables\nproduct_snowflake = {"id": 1, "name": "Widget", "category_id": 10}\ncategories = {"id": 10, "name": "Hardware", "department_id": 100}\ndepartments = {"id": 100, "name": "Retail"}\n\nprint("star: one row has everything")\nprint("snowflake: three joins needed to get the same info")`} caption="Star schemas favor query SIMPLICITY (fewer joins, faster analytics queries) at the cost of some redundancy; snowflake schemas favor normalization (less redundancy, smaller storage) at the cost of needing more joins -- exactly the same time/space-flavored tradeoff from the Complexity Analysis course, applied to schema design." />
+
+<Explanation id="referential-integrity">
+
+Every foreign key in the fact table should point to a REAL row in its
+dimension — a fact row referencing a `product_id` that doesn't exist in
+the `products` dimension is an **orphaned row**, usually a sign of a
+broken ETL pipeline (a product got deleted from the dimension, but
+historical fact rows still reference it):
+
+```python
+def find_orphaned_fact_rows(fact_rows, dimension_keys):
+    orphans = []
+    for i, row in enumerate(fact_rows):
+        for dim, valid_keys in dimension_keys.items():
+            if row.get(dim) not in valid_keys:
+                orphans.append((i, dim))
+    return orphans
+```
+
+Real data warehouses run exactly this kind of check as part of their
+data-quality pipeline — catching orphaned fact rows before they corrupt
+a dashboard or report downstream.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You understand the fact/dimension split in a star schema, the star-vs-snowflake tradeoff, and can check fact rows for referential integrity against their dimensions.
+</Checkpoint>

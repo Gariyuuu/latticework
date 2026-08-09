@@ -1,0 +1,11 @@
+{
+  "id": "sessions-vs-tokens-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def validate_session(session_store, session_id):\n    ...\n",
+  "cases": [
+    { "call": "validate_session({'abc123': 'alice'}, 'abc123')", "expect": "alice" },
+    { "call": "validate_session({'abc123': 'alice'}, 'xyz')", "expect": "None" },
+    { "call": "validate_session({}, 'abc')", "expect": "None" }
+  ]
+}

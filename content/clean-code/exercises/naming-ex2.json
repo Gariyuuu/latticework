@@ -1,0 +1,11 @@
+{
+  "id": "naming-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def is_boolean_name_clear(name):\n    ...\n",
+  "cases": [
+    { "call": "is_boolean_name_clear('is_valid')", "expect": "True" },
+    { "call": "is_boolean_name_clear('valid')", "expect": "False" },
+    { "call": "is_boolean_name_clear('has_permission')", "expect": "True" }
+  ]
+}

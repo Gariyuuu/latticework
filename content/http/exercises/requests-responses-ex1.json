@@ -1,0 +1,11 @@
+{
+  "id": "requests-responses-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def parse_request_line(line):\n    ...\n",
+  "cases": [
+    { "call": "parse_request_line('GET /api/users HTTP/1.1')", "expect": "('GET', '/api/users', 'HTTP/1.1')" },
+    { "call": "parse_request_line('POST /login HTTP/1.1')", "expect": "('POST', '/login', 'HTTP/1.1')" },
+    { "call": "parse_request_line('DELETE /items/5 HTTP/2')", "expect": "('DELETE', '/items/5', 'HTTP/2')" }
+  ]
+}

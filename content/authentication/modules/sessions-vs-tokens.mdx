@@ -1,0 +1,85 @@
+---
+slug: sessions-vs-tokens
+title: Sessions vs Tokens
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: tradeoffs
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: sessions-vs-tokens-ex1
+    difficulty: beginner
+    concept: auth-sessions-vs-tokens
+    prompt: "Write `is_token_expired(issued_at, ttl_seconds, current_time)`, returning True if `current_time` is strictly after `issued_at + ttl_seconds`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: sessions-vs-tokens-ex2
+    difficulty: intermediate
+    concept: auth-sessions-vs-tokens
+    prompt: "Write `validate_session(session_store, session_id)`: look up `session_id` in the `session_store` dict, returning the associated user info, or None if it isn't found."
+  - id: quiz-1
+    type: quiz
+    concept: auth-sessions-vs-tokens
+    question: "What's a key architectural difference between session-based auth and token-based (e.g. JWT) auth?"
+    options: ["Sessions require server-side storage that's looked up on every request; tokens are self-contained and can be verified without a server-side lookup", "Sessions are always more secure than tokens in every situation", "Tokens can only ever be used exactly once", "Sessions don't use cookies while tokens always do"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+After a user logs in, the server needs a way to recognize them on every
+SUBSequent request without asking for a password again. Two dominant
+approaches:
+
+**Session-based**: the server generates a random session ID, stores it
+(with the user's info) in a server-side store (memory, Redis, a
+database), and sends the ID to the client as a cookie. Every request,
+the server looks up the session ID to find out who's asking.
+
+```python
+def validate_session(session_store, session_id):
+    return session_store.get(session_id)   # None if not found/expired
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`sessions = {}\n\ndef create_session(user_id, session_store):\n    import random\n    session_id = f"sess_{random.randint(100000, 999999)}"\n    session_store[session_id] = user_id\n    return session_id\n\nsession_id = create_session("alice", sessions)\nprint(sessions)\nprint(validate_session(sessions, session_id))\nprint(validate_session(sessions, "made_up_id"))`} caption="Every validate_session call requires a lookup against server-side state -- that lookup is the defining cost (and the defining SIMPLICITY -- instant revocation, just delete the entry) of the session approach." />
+
+<Explanation id="tradeoffs">
+
+**Token-based** (e.g. JWT): the server issues a signed token containing
+the user's info directly, with an EXPIRATION time baked in. The server
+verifies the signature (fast, no database lookup) instead of looking
+anything up:
+
+```python
+def is_token_expired(issued_at, ttl_seconds, current_time):
+    return current_time > issued_at + ttl_seconds
+```
+
+Tokens scale better (no shared session store needed across servers) but
+can't be instantly revoked — once issued, a token stays valid until it
+expires, even if you'd want to cut it off sooner (a compromised account,
+for example). Sessions trade that scalability for instant control:
+delete the server-side entry, and the session is dead immediately.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You understand the session-vs-token tradeoff (server-side lookup + instant revocation vs. self-contained + no revocation until expiry), and can implement expiration checking and session lookup.
+</Checkpoint>

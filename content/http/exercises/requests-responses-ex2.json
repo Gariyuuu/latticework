@@ -1,0 +1,11 @@
+{
+  "id": "requests-responses-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def status_line_ok(status_code):\n    ...\n",
+  "cases": [
+    { "call": "status_line_ok(200)", "expect": "True" },
+    { "call": "status_line_ok(404)", "expect": "False" },
+    { "call": "status_line_ok(299)", "expect": "True" }
+  ]
+}

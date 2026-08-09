@@ -1,0 +1,93 @@
+---
+slug: normalization
+title: Normalization
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: 2nf
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: normalization-ex1
+    difficulty: beginner
+    concept: database-design-normalization
+    prompt: "Write `has_repeating_group(row)`: given a row represented as a dict, return True if any value is a `list` — a repeating group, the classic First Normal Form (1NF) violation."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: normalization-ex2
+    difficulty: advanced
+    concept: database-design-normalization
+    prompt: "Write `violates_2nf(functional_dependencies, primary_key)`: each dependency is `(determinant_tuple, dependent_column)`. Return True if any dependency's determinant is a PROPER SUBSET of `primary_key` — a partial dependency, the Second Normal Form (2NF) violation."
+  - id: quiz-1
+    type: quiz
+    concept: database-design-normalization
+    question: "What is a 'partial dependency' — the specific problem Second Normal Form (2NF) eliminates?"
+    options: ["A non-key column that depends on only PART of a composite primary key, rather than the whole key", "Any column that's allowed to be NULL", "A foreign key referencing a row that's been deleted", "A table that has no primary key at all"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Normalization** is the process of structuring tables to eliminate
+redundancy and prevent certain classes of update bugs. **First Normal
+Form (1NF)** is the starting requirement: every column must hold a
+single, atomic value — no repeating groups (like a "phone numbers"
+column holding a whole list).
+
+```python
+def has_repeating_group(row):
+    return any(isinstance(v, list) for v in row.values())
+
+bad_row = {"id": 1, "name": "Alice", "phones": ["555-1234", "555-5678"]}
+print(has_repeating_group(bad_row))   # True -- phones should be its own table
+```
+
+The fix: a separate `phone_numbers` table with a foreign key back to
+`id`, one row per phone number — exactly the kind of table-splitting
+normalization is all about.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`# violates 1NF -- phones is a list, not an atomic value\nbad = {"id": 1, "name": "Alice", "phones": ["555-1234", "555-5678"]}\n\n# 1NF-compliant: one row per phone number, in a separate table\ngood_customers = [{"id": 1, "name": "Alice"}]\ngood_phones = [{"customer_id": 1, "phone": "555-1234"}, {"customer_id": 1, "phone": "555-5678"}]\nprint(good_phones)`} caption="Splitting phones into its own table with a foreign key lets Alice have ANY number of phone numbers (0, 1, or 50) without changing the schema -- a list column caps you at whatever your application code expects to find there." />
+
+<Explanation id="2nf">
+
+**Second Normal Form (2NF)** goes further, but only matters for tables
+with a COMPOSITE primary key (more than one column). It requires every
+non-key column to depend on the WHOLE key, not just part of it:
+
+```python
+# order_items table, primary key = (order_id, product_id)
+dependencies = [
+    (("order_id", "product_id"), "quantity"),      # depends on the FULL key -- fine
+    (("product_id",), "product_name"),                # depends on ONLY product_id -- 2NF violation!
+]
+```
+
+`product_name` doesn't actually depend on WHICH ORDER it's in — it only
+depends on the product. Storing it in `order_items` means it's
+needlessly repeated for every order line, AND creates an update
+anomaly: change a product's name, and now you have to update every
+single order row that references it, or the data goes inconsistent. The
+fix: move `product_name` into its own `products` table, keyed by
+`product_id` alone.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can detect a 1NF violation (repeating groups) and a 2NF violation (partial dependencies on a composite key), and understand why each causes real update anomalies.
+</Checkpoint>

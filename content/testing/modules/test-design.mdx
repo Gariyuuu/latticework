@@ -1,0 +1,86 @@
+---
+slug: test-design
+title: Test Design
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: why-boundaries
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: test-design-ex1
+    difficulty: beginner
+    concept: testing-test-design
+    prompt: "Write `boundary_test_values(min_val, max_val)`: return the four classic boundary-value-analysis test points for a valid range — `[min_val - 1, min_val, max_val, max_val + 1]`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: test-design-ex2
+    difficulty: beginner
+    concept: testing-test-design
+    prompt: "Write `is_valid_boundary_case(value, min_val, max_val)`: return True if `value` falls within the INCLUSIVE range `[min_val, max_val]`."
+  - id: quiz-1
+    type: quiz
+    concept: testing-test-design
+    question: "What is 'boundary value analysis' in test design?"
+    options: ["Testing at and just outside the edges of valid input ranges, since bugs (like off-by-one errors) disproportionately cluster there", "Testing only with the largest possible input value", "Testing only with completely random inputs", "A technique that only applies to string inputs"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Good test DESIGN isn't about writing MORE tests — it's about writing the
+RIGHT tests, ones likely to actually catch bugs. **Boundary value
+analysis** is a systematic technique: bugs cluster disproportionately at
+the EDGES of valid ranges (off-by-one errors are the classic example), so
+test exactly at and just outside every boundary, not just "typical"
+values in the middle.
+
+```python
+def boundary_test_values(min_val, max_val):
+    return [min_val - 1, min_val, max_val, max_val + 1]
+
+print(boundary_test_values(1, 10))   # [0, 1, 10, 11]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def is_valid_age(age):\n    return 0 <= age <= 120   # the function under test\n\ndef boundary_test_values(min_val, max_val):\n    return [min_val - 1, min_val, max_val, max_val + 1]\n\nfor age in boundary_test_values(0, 120):\n    print(age, is_valid_age(age))`} caption="Testing age=60 (a typical, 'safe' middle value) would never catch an off-by-one bug in the boundary check -- testing age=-1, 0, 120, and 121 specifically targets exactly where an off-by-one error would actually show up." />
+
+<Explanation id="why-boundaries">
+
+The insight behind boundary testing: an off-by-one bug (`<` instead of
+`<=`, or a range that's one too wide/narrow) is invisible everywhere
+EXCEPT right at the boundary. Testing `age = 60` would pass regardless
+of whether the check used `<` or `<=` — testing `age = 120` and `age =
+121` specifically is what actually distinguishes correct from
+off-by-one-wrong:
+
+```python
+def is_valid_boundary_case(value, min_val, max_val):
+    return min_val <= value <= max_val
+```
+
+This same principle generalizes beyond numeric ranges: empty lists (the
+"boundary" of collection size), empty strings, the first/last element of
+a sequence — anywhere a range or size has an edge is exactly where
+boundary-focused test design pays off most.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can design boundary-value test cases that specifically target off-by-one bugs, rather than only testing "typical" middle-of-the-range inputs.
+</Checkpoint>

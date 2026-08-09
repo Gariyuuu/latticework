@@ -1,0 +1,89 @@
+---
+slug: constraints
+title: Constraints
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: unique
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: constraints-ex1
+    difficulty: beginner
+    concept: database-design-constraints
+    prompt: "Write `check_not_null(row, required_fields)`: return a list of every field in `required_fields` that is missing from `row` or set to None — a NOT NULL constraint violation check."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: constraints-ex2
+    difficulty: intermediate
+    concept: database-design-constraints
+    prompt: "Write `check_unique(rows, field)`: given a list of row dicts, return a sorted list of the DISTINCT values in `field` that appear in more than one row — a UNIQUE constraint violation check."
+  - id: quiz-1
+    type: quiz
+    concept: database-design-constraints
+    question: "What does a UNIQUE constraint enforce on a database column?"
+    options: ["No two rows in the table can have the same value in that column (or combination of columns)", "The column can never be NULL", "The column must always hold a number", "The table can only ever contain one row total"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Constraints** let the database itself enforce data integrity rules,
+instead of hoping every piece of application code remembers to check.
+`NOT NULL` is the simplest: a required field can never be left empty.
+
+```python
+def check_not_null(row, required_fields):
+    return [f for f in required_fields if row.get(f) is None]
+
+user = {"id": 1, "name": "Alice", "email": None}
+print(check_not_null(user, ["id", "name", "email"]))   # ['email']
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def check_not_null(row, required_fields):\n    return [f for f in required_fields if row.get(f) is None]\n\nusers = [\n    {"id": 1, "name": "Alice", "email": "alice@example.com"},\n    {"id": 2, "name": "Bob", "email": None},\n]\nfor user in users:\n    missing = check_not_null(user, ["id", "name", "email"])\n    if missing:\n        print(f"user {user['id']} is missing: {missing}")`} caption="A real database with a NOT NULL constraint on email would reject Bob's row at insert time, guaranteeing this situation can never occur -- application-level checking (like this) is a useful backstop, but the database constraint is what actually GUARANTEES the rule." />
+
+<Explanation id="unique">
+
+A `UNIQUE` constraint prevents duplicate values in a column (or
+combination of columns) — most commonly used for things like email
+addresses or usernames, where a duplicate would be a genuine data
+integrity problem, not just an inconvenience:
+
+```python
+from collections import Counter
+
+def check_unique(rows, field):
+    values = [r[field] for r in rows]
+    counts = Counter(values)
+    return sorted(v for v, c in counts.items() if c > 1)
+```
+
+Like `NOT NULL`, this check running in application code is useful, but
+it has a real gap: if two requests insert the SAME email at nearly the
+same instant, both might pass an application-level uniqueness check
+before either has actually been saved (a race condition). A real
+`UNIQUE` constraint at the database level closes that gap — the database
+itself will reject the second insert, atomically, no matter how the
+application code raced.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can check for NOT NULL and UNIQUE constraint violations, and understand why database-level constraints are more reliable than application-level checks alone.
+</Checkpoint>

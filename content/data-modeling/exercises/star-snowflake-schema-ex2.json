@@ -1,0 +1,10 @@
+{
+  "id": "star-snowflake-schema-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def find_orphaned_fact_rows(fact_rows, dimension_keys):\n    ...\n",
+  "cases": [
+    { "call": "find_orphaned_fact_rows([{'customer_id': 1, 'product_id': 10}, {'customer_id': 2, 'product_id': 99}], {'customer_id': {1, 2}, 'product_id': {10, 20}})", "expect": "[(1, 'product_id')]" },
+    { "call": "find_orphaned_fact_rows([{'customer_id': 1, 'product_id': 10}], {'customer_id': {1}, 'product_id': {10}})", "expect": "[]" }
+  ]
+}

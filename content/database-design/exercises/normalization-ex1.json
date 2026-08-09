@@ -1,0 +1,11 @@
+{
+  "id": "normalization-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def has_repeating_group(row):\n    ...\n",
+  "cases": [
+    { "call": "has_repeating_group({'id': 1, 'name': 'Alice', 'phones': ['555-1234', '555-5678']})", "expect": "True" },
+    { "call": "has_repeating_group({'id': 1, 'name': 'Alice'})", "expect": "False" },
+    { "call": "has_repeating_group({'id': 1, 'tags': []})", "expect": "True" }
+  ]
+}

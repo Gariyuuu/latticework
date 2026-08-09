@@ -1,0 +1,11 @@
+{
+  "id": "code-smells-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "from collections import Counter\n\ndef count_duplicate_lines(lines):\n    ...\n",
+  "cases": [
+    { "call": "count_duplicate_lines(['x=1', 'y=2', 'x=1'])", "expect": "1" },
+    { "call": "count_duplicate_lines(['a', 'b', 'c'])", "expect": "0" },
+    { "call": "count_duplicate_lines(['x', 'x', 'x', 'y', 'y'])", "expect": "2" }
+  ]
+}

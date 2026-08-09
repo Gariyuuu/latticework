@@ -1,0 +1,11 @@
+{
+  "id": "functions-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def calculate_total_with_discount(price, quantity, discount_pct):\n    ...\n",
+  "cases": [
+    { "call": "calculate_total_with_discount(10, 3, 10)", "expect": "27.0" },
+    { "call": "calculate_total_with_discount(5, 2, 0)", "expect": "10.0" },
+    { "call": "calculate_total_with_discount(100, 1, 50)", "expect": "50.0" }
+  ]
+}

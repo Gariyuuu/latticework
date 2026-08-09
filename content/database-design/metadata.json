@@ -14,12 +14,13 @@
     "research-engineer",
     "data-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "Normalization (1NF/2NF violation detection) and constraints (NOT NULL/UNIQUE), represented as checkable Python data structures — the reasoning behind schema design, not just diagrams.",
   "modules": [
     {
       "slug": "normalization",
       "title": "Normalization",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "er-modeling",
@@ -29,7 +30,7 @@
     {
       "slug": "constraints",
       "title": "Constraints",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

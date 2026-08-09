@@ -1,0 +1,11 @@
+{
+  "id": "functions-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def is_function_too_long(line_count, max_lines=20):\n    ...\n",
+  "cases": [
+    { "call": "is_function_too_long(15)", "expect": "False" },
+    { "call": "is_function_too_long(25)", "expect": "True" },
+    { "call": "is_function_too_long(20)", "expect": "False" }
+  ]
+}

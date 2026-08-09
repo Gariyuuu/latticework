@@ -1,0 +1,93 @@
+---
+slug: requests-responses
+title: Requests & Responses
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: status-codes
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: requests-responses-ex1
+    difficulty: beginner
+    concept: http-requests-responses
+    prompt: "Write `parse_request_line(line)`: split a raw HTTP request line like `'GET /api/users HTTP/1.1'` into `(method, path, version)`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: requests-responses-ex2
+    difficulty: beginner
+    concept: http-requests-responses
+    prompt: "Write `status_line_ok(status_code)`, returning True if the status code is in the 2xx success range (200-299)."
+  - id: quiz-1
+    type: quiz
+    concept: http-requests-responses
+    question: "What HTTP status code range indicates a successful response?"
+    options: ["200-299", "300-399", "400-499", "100-199"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Every HTTP exchange is a **request** (client → server) followed by a
+**response** (server → client), each with the same basic shape: a
+start line, headers, and an optional body. A request's start line has
+three parts:
+
+```
+GET /api/users HTTP/1.1
+```
+
+`GET` (the **method** — what kind of action), `/api/users` (the
+**path** — which resource), `HTTP/1.1` (the **protocol version**).
+
+```python
+def parse_request_line(line):
+    method, path, version = line.split(" ")
+    return method, path, version
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def parse_request_line(line):\n    method, path, version = line.split(" ")\n    return method, path, version\n\nrequests = [\n    "GET /users HTTP/1.1",\n    "POST /users HTTP/1.1",\n    "DELETE /users/42 HTTP/1.1",\n]\nfor req in requests:\n    method, path, version = parse_request_line(req)\n    print(f"{method} -> {path}")`} caption="The method tells you the INTENT (GET = read, POST = create, DELETE = remove...) -- REST APIs lean heavily on this convention rather than encoding the action into the path itself." />
+
+<Explanation id="status-codes">
+
+A response's start line begins with a **status code** — a 3-digit number
+whose FIRST digit tells you the general category:
+
+| Range | Meaning |
+|---|---|
+| 2xx | Success (`200 OK`, `201 Created`) |
+| 3xx | Redirection (`301 Moved`, `304 Not Modified`) |
+| 4xx | Client error (`404 Not Found`, `401 Unauthorized`) |
+| 5xx | Server error (`500 Internal Server Error`) |
+
+```python
+def status_line_ok(status_code):
+    return 200 <= status_code < 300
+```
+
+A 4xx means "you (the client) did something wrong" — a 5xx means "the
+server broke, and it wasn't your request's fault." That distinction
+matters a lot when debugging: a 4xx points you at your request, a 5xx
+points you at the server.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can parse an HTTP request line into its three components, and classify a status code by its category.
+</Checkpoint>

@@ -1,0 +1,11 @@
+{
+  "id": "mocking-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "class FakeEmailSender:\n    def __init__(self):\n        self.sent = []\n\n    def send(self, to, subject):\n        ...\n\nemailer = FakeEmailSender()\n",
+  "cases": [
+    { "call": "emailer.send('a@b.com', 'hi')", "expect": "1" },
+    { "call": "emailer.send('c@d.com', 'bye')", "expect": "2" },
+    { "call": "emailer.sent", "expect": "[('a@b.com', 'hi'), ('c@d.com', 'bye')]" }
+  ]
+}

@@ -4,19 +4,20 @@
   "category": "web",
   "difficulty": "intermediate",
   "estimatedHours": 4,
-  "prerequisites": [],
+  "prerequisites": ["python"],
   "usefulFor": [
     "software-engineer",
     "full-stack-engineer",
     "backend-engineer",
     "research-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "Sessions vs tokens and secure password storage (hashing + salting), implemented as real code rather than just described.",
   "modules": [
     {
       "slug": "sessions-vs-tokens",
       "title": "Sessions vs Tokens",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "oauth-basics",
@@ -26,7 +27,7 @@
     {
       "slug": "password-storage",
       "title": "Password Storage",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

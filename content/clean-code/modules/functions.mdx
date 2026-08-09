@@ -1,0 +1,88 @@
+---
+slug: functions
+title: Functions
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: length
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: functions-ex1
+    difficulty: beginner
+    concept: clean-code-functions
+    prompt: "Write `calculate_total_with_discount(price, quantity, discount_pct)`: one clearly-named function, one job — compute the subtotal, apply the percentage discount, and return the result rounded to 2 decimals."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: functions-ex2
+    difficulty: beginner
+    concept: clean-code-functions
+    prompt: "Write `is_function_too_long(line_count, max_lines=20)`, returning True if `line_count` exceeds `max_lines` — a simple heuristic for 'this function is probably doing too much.'"
+  - id: quiz-1
+    type: quiz
+    concept: clean-code-functions
+    question: "What's the 'single responsibility principle' as applied to functions?"
+    options: ["Each function should do one clear thing well, rather than mixing several unrelated responsibilities together", "Each function should have exactly one parameter", "Each function should be exactly one line long", "Each function should only ever be called once in the whole program"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A function that does ONE clear thing is easier to name, test, reuse, and
+reason about than one that does five things at once. The **single
+responsibility principle** is the guiding rule: if you find yourself
+struggling to name a function without using "and," it's probably doing
+too much.
+
+```python
+def calculate_total_with_discount(price, quantity, discount_pct):
+    subtotal = price * quantity
+    discount = subtotal * (discount_pct / 100)
+    return round(subtotal - discount, 2)
+
+print(calculate_total_with_discount(10, 3, 10))   # 27.0
+```
+
+One job — computing a discounted total — clearly named, easy to test in
+isolation.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`# doing too much at once -- validates, calculates, AND formats a message\ndef process_order_bad(price, quantity, discount_pct):\n    if price < 0 or quantity < 0:\n        return "Invalid order"\n    subtotal = price * quantity\n    total = subtotal - subtotal * (discount_pct / 100)\n    return f"Total: \${round(total, 2)}"\n\n# separated -- each function does ONE job, and can be tested/reused independently\ndef is_valid_order(price, quantity):\n    return price >= 0 and quantity >= 0\n\ndef calculate_total_with_discount(price, quantity, discount_pct):\n    subtotal = price * quantity\n    return round(subtotal - subtotal * (discount_pct / 100), 2)`} caption="The 'bad' version works fine for a single use case -- the split version is what actually stays maintainable once you need to validate orders somewhere else, or format the total differently in a different context." />
+
+<Explanation id="length">
+
+Function LENGTH is a rough proxy (not a perfect one, but a genuinely
+useful early-warning sign) for whether a function has taken on too many
+responsibilities:
+
+```python
+def is_function_too_long(line_count, max_lines=20):
+    return line_count > max_lines
+```
+
+There's no universally "correct" line limit — some teams enforce 20,
+some 50, some none at all — but if a function has grown so long you need
+to scroll to see its whole body, that's usually a sign it's doing
+several distinct things that could be split into smaller, separately
+named, separately testable pieces.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can write a single-responsibility function with a clear name, and recognize function length as a rough signal for when a function is doing too much.
+</Checkpoint>

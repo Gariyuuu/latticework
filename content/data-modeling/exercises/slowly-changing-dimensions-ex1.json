@@ -1,0 +1,10 @@
+{
+  "id": "slowly-changing-dimensions-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def scd_type1_update(dimension_row, changes):\n    ...\n",
+  "cases": [
+    { "call": "scd_type1_update({'id': 1, 'name': 'Alice', 'city': 'NYC'}, {'city': 'LA'})", "expect": "{'id': 1, 'name': 'Alice', 'city': 'LA'}" },
+    { "call": "scd_type1_update({'id': 2, 'status': 'active'}, {'status': 'inactive'})", "expect": "{'id': 2, 'status': 'inactive'}" }
+  ]
+}

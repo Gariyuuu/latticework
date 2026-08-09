@@ -1,0 +1,11 @@
+{
+  "id": "naming-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import re\n\ndef is_snake_case(name):\n    ...\n",
+  "cases": [
+    { "call": "is_snake_case('user_name')", "expect": "True" },
+    { "call": "is_snake_case('userName')", "expect": "False" },
+    { "call": "is_snake_case('UserName')", "expect": "False" }
+  ]
+}

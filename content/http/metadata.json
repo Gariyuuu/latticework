@@ -4,29 +4,30 @@
   "category": "web",
   "difficulty": "beginner",
   "estimatedHours": 3,
-  "prerequisites": [],
+  "prerequisites": ["python"],
   "usefulFor": [
     "software-engineer",
     "full-stack-engineer",
     "backend-engineer",
     "research-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "Requests/responses, headers, and caching — parsing and reasoning about the raw HTTP exchange every web app is built on top of.",
   "modules": [
     {
       "slug": "requests-responses",
       "title": "Requests & Responses",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "headers",
       "title": "Headers",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "caching",
       "title": "Caching",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

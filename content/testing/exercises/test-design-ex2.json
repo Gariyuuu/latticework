@@ -1,0 +1,11 @@
+{
+  "id": "test-design-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def is_valid_boundary_case(value, min_val, max_val):\n    ...\n",
+  "cases": [
+    { "call": "is_valid_boundary_case(0, 1, 10)", "expect": "False" },
+    { "call": "is_valid_boundary_case(1, 1, 10)", "expect": "True" },
+    { "call": "is_valid_boundary_case(11, 1, 10)", "expect": "False" }
+  ]
+}

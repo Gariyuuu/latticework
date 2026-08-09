@@ -1,0 +1,11 @@
+{
+  "id": "test-design-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def boundary_test_values(min_val, max_val):\n    ...\n",
+  "cases": [
+    { "call": "boundary_test_values(1, 10)", "expect": "[0, 1, 10, 11]" },
+    { "call": "boundary_test_values(0, 100)", "expect": "[-1, 0, 100, 101]" },
+    { "call": "boundary_test_values(5, 5)", "expect": "[4, 5, 5, 6]" }
+  ]
+}
