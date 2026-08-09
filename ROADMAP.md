@@ -15,7 +15,7 @@ same change as any feature work.
   Marketplace (`vercel integration add neon|clerk`) and connected to the
   project — all env vars live in Production/Preview/Development. DB
   schema pushed (`npm run db:push`) and content seeded
-  (`npm run content:sync` against the live DB — 99 skills, 21 built;
+  (`npm run content:sync` against the live DB — 99 skills, 24 built;
   re-run after any content change and redeploy, both steps are manual).
   Clerk is currently a **development-mode** instance (free marketplace
   default) — fine for now, but note this if real user signups/production
@@ -238,12 +238,23 @@ same change as any feature work.
   compare). Remaining 4 modules (derivatives-basics, risk,
   factor-models, market-microstructure-basics) left planned — same
   don't-force-fit principle as SQL's unbuilt modules.
+- Fully built: Model Evaluation (3/3 — metrics, cross-validation,
+  bias-variance), Debugging (3/3 — reading-stack-traces, bisection,
+  tooling), Time Series (4/4 — stationarity, autocorrelation,
+  arima-intuition, rolling-windows) — all **Done**. Debugging's
+  `bisection` module reuses the O(log n) idea from Complexity Analysis,
+  applied to finding a regression across a commit history (the `git
+  bisect` algorithm). Time Series is deliberately distinct from
+  `pandas/time-series` — this course is the STATISTICAL angle
+  (stationarity, ACF, AR models), pandas' module is the date-handling/
+  API angle on the same subject, same differentiation pattern as
+  Linear Algebra vs. `numpy/linear-algebra-ops`.
 - Git, Linux, PyTorch, C++ — **Planned** (metadata skeletons done as part
   of the wider ~70-90 skill catalog; module content not yet authored).
   Git/Linux need the CLI-simulation exercise type, which isn't
   implemented yet (see "Learning engine" above); PyTorch/C++ need their
   own execution infra decisions.
-- Remaining ~45-65 technologies from the brief — **Done** as metadata-only
+- Remaining ~42-62 technologies from the brief — **Done** as metadata-only
   skeletons (appear correctly in graph/Explore/roadmap, no lesson content)
 
 `python/modules/files.mdx` (file I/O) was originally deferred because it
