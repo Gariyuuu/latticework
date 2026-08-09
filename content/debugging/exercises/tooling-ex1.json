@@ -1,0 +1,11 @@
+{
+  "id": "tooling-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def trace_calls(func, *args):\n    ...\n",
+  "cases": [
+    { "call": "trace_calls(lambda x, y: x + y, 2, 3)", "expect": "(5, 'called with args: (2, 3)')" },
+    { "call": "trace_calls(lambda x: x * 2, 5)", "expect": "(10, 'called with args: (5,)')" },
+    { "call": "trace_calls(lambda: 42)", "expect": "(42, 'called with args: ()')" }
+  ]
+}

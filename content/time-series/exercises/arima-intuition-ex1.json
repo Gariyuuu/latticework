@@ -1,0 +1,11 @@
+{
+  "id": "arima-intuition-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def ar1_forecast(x_prev, phi, c):\n    ...\n",
+  "cases": [
+    { "call": "ar1_forecast(10, 0.5, 2)", "expect": "7.0" },
+    { "call": "ar1_forecast(0, 0.8, 1)", "expect": "1.0" },
+    { "call": "ar1_forecast(100, 0, 5)", "expect": "5" }
+  ]
+}

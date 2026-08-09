@@ -1,0 +1,11 @@
+{
+  "id": "bisection-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def find_first_failing_index(results):\n    ...\n",
+  "cases": [
+    { "call": "find_first_failing_index([True, True, True, False, False])", "expect": "3" },
+    { "call": "find_first_failing_index([True, True, True])", "expect": "-1" },
+    { "call": "find_first_failing_index([False, False])", "expect": "0" }
+  ]
+}

@@ -1,0 +1,92 @@
+---
+slug: autocorrelation
+title: Autocorrelation
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: acf
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: autocorrelation-ex1
+    difficulty: intermediate
+    concept: time-series-autocorrelation
+    prompt: "Write `autocorrelation(series, lag)`: the correlation of `series` with itself shifted by `lag` steps — `sum((x[i]-mean)*(x[i+lag]-mean))` for valid `i`, divided by `sum((x-mean)**2)` over the whole series. Round to 4 decimals."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: autocorrelation-ex2
+    difficulty: advanced
+    concept: time-series-autocorrelation
+    prompt: "Given `autocorrelation` below, write `first_significant_lag(series, threshold)`: return the smallest lag (starting at 1) where `abs(autocorrelation(series, lag)) < threshold`, or -1 if none is found."
+  - id: quiz-1
+    type: quiz
+    concept: time-series-autocorrelation
+    question: "What does the autocorrelation function (ACF) measure?"
+    options: ["How correlated a time series is with a lagged (shifted-in-time) version of itself", "The correlation between two entirely different time series", "The average value of the series", "Whether the series has any missing data points"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Autocorrelation** measures how correlated a series is with a shifted
+(lagged) version of itself — "does knowing today's value help predict
+the value `lag` steps from now?" It's the ordinary correlation
+coefficient formula, applied to a series against itself instead of two
+separate variables:
+
+```python
+def autocorrelation(series, lag):
+    n = len(series)
+    mean = sum(series) / n
+    numerator = sum((series[i] - mean) * (series[i + lag] - mean) for i in range(n - lag))
+    denominator = sum((x - mean) ** 2 for x in series)
+    return numerator / denominator
+
+alternating = [1, 2, 1, 2, 1, 2, 1, 2]
+print(autocorrelation(alternating, 1))   # strongly negative -- each value is the OPPOSITE of the last
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def autocorrelation(series, lag):\n    n = len(series)\n    mean = sum(series) / n\n    numerator = sum((series[i] - mean) * (series[i + lag] - mean) for i in range(n - lag))\n    denominator = sum((x - mean) ** 2 for x in series)\n    return round(numerator / denominator, 3)\n\ntrend = [1, 2, 3, 4, 5, 6, 7, 8]\nfor lag in range(1, 4):\n    print(lag, autocorrelation(trend, lag))`} caption="A trending series has strong POSITIVE autocorrelation at every lag -- values near each other in time are similar, since they're all part of the same upward march. That positive autocorrelation across all lags is itself a sign the series isn't stationary." />
+
+<Explanation id="acf">
+
+The full **ACF** (autocorrelation function) computes this at every lag
+(1, 2, 3, ...) and plots how it decays. A series with no real time
+structure (pure noise) has autocorrelation near zero at every lag beyond
+0. A series with real dependence on its own past has autocorrelation
+that stays meaningfully nonzero for a while before decaying:
+
+```python
+def first_significant_lag(series, threshold):
+    for lag in range(1, len(series)):
+        if abs(autocorrelation(series, lag)) < threshold:
+            return lag
+    return -1
+```
+
+This is exactly the diagnostic quant researchers and forecasters use to
+decide how many past values a model actually needs to look at — feeding
+a model 20 lags of history is wasted complexity if the ACF shows
+autocorrelation has already decayed to near-zero by lag 3.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute a series' autocorrelation at a given lag, and use the ACF to determine how far back in time a series' values actually depend on themselves.
+</Checkpoint>

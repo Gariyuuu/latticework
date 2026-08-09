@@ -1,0 +1,11 @@
+{
+  "id": "stationarity-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def is_approximately_stationary(series, threshold):\n    ...\n",
+  "cases": [
+    { "call": "is_approximately_stationary([1, 2, 1, 2, 1, 2, 1, 2], 0.5)", "expect": "True" },
+    { "call": "is_approximately_stationary([1, 2, 3, 10, 11, 12], 1.0)", "expect": "False" },
+    { "call": "is_approximately_stationary([5, 5, 5, 5], 0.1)", "expect": "True" }
+  ]
+}

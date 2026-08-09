@@ -1,0 +1,98 @@
+---
+slug: cross-validation
+title: Cross-Validation
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: why
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: cross-validation-ex1
+    difficulty: beginner
+    concept: model-evaluation-cross-validation
+    prompt: "Write `kfold_split_indices(n, k)`: split indices `0..n-1` into `k` contiguous folds as evenly as possible (the last fold absorbs any remainder). Return a list of `k` lists of indices."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: cross-validation-ex2
+    difficulty: intermediate
+    concept: model-evaluation-cross-validation
+    prompt: "Given `kfold_split_indices` below, write `cross_val_scores(y_true, y_pred, k)`: split into `k` folds, and return a list of the ACCURACY computed within each fold separately, each rounded to 4 decimals."
+  - id: quiz-1
+    type: quiz
+    concept: model-evaluation-cross-validation
+    question: "What's the main purpose of k-fold cross-validation?"
+    options: ["It estimates how well a model generalizes by testing on multiple different train/test splits, reducing the risk that one lucky (or unlucky) split gives a misleading performance estimate", "It always improves the model's actual underlying accuracy", "It completely replaces the need for a held-out test set in production", "It only works when k is exactly 10"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A single train/test split gives you ONE performance estimate — but that
+estimate depends on which specific examples happened to land in the test
+set. **K-fold cross-validation** splits the data into `k` equal-sized
+folds, then repeats training/testing `k` times, each time using a
+DIFFERENT fold as the test set:
+
+```python
+def kfold_split_indices(n, k):
+    fold_size = n // k
+    folds = []
+    for i in range(k):
+        start = i * fold_size
+        end = start + fold_size if i < k - 1 else n
+        folds.append(list(range(start, end)))
+    return folds
+
+print(kfold_split_indices(10, 5))
+# [[0, 1], [2, 3], [4, 5], [6, 7], [8, 9]]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def kfold_split_indices(n, k):\n    fold_size = n // k\n    folds = []\n    for i in range(k):\n        start = i * fold_size\n        end = start + fold_size if i < k - 1 else n\n        folds.append(list(range(start, end)))\n    return folds\n\nfor k in [2, 3, 5]:\n    print(k, kfold_split_indices(20, k))`} caption="Real cross-validation implementations shuffle the data before splitting into folds (this simplified version doesn't, for determinism) -- without shuffling, any pattern in how the data happens to be ORDERED could bias individual folds." />
+
+<Explanation id="why">
+
+Each fold's score gives an independent-ish estimate of performance —
+averaging them (and looking at their SPREAD, not just the average) tells
+you far more than one score would:
+
+```python
+def cross_val_scores(y_true, y_pred, k):
+    folds = kfold_split_indices(len(y_true), k)
+    scores = []
+    for fold in folds:
+        correct = sum(1 for i in fold if y_true[i] == y_pred[i])
+        scores.append(correct / len(fold))
+    return scores
+
+scores = cross_val_scores(y_true, y_pred, k=5)
+print(f"mean: {sum(scores)/len(scores):.3f}, range: {min(scores):.3f}-{max(scores):.3f}")
+```
+
+If the fold scores are all close together, you can trust the average
+number. If they vary wildly (0.95 on one fold, 0.60 on another), that's
+a signal the model's performance is unstable — worth investigating
+BEFORE trusting a single "88% accuracy" headline number from just one
+split.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can split data into k folds and compute per-fold performance, understanding why cross-validation gives a more trustworthy estimate than a single train/test split.
+</Checkpoint>

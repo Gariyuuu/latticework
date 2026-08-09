@@ -1,0 +1,11 @@
+{
+  "id": "bisection-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def bisect_call_count(results):\n    ...\n",
+  "cases": [
+    { "call": "bisect_call_count([True] * 100 + [False] * 100)", "expect": "7" },
+    { "call": "bisect_call_count([True, True, True, False, False])", "expect": "3" },
+    { "call": "bisect_call_count([False] * 10)", "expect": "4" }
+  ]
+}

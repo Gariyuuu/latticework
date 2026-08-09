@@ -1,0 +1,93 @@
+---
+slug: stationarity
+title: Stationarity
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: differencing
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: stationarity-ex1
+    difficulty: beginner
+    concept: time-series-stationarity
+    prompt: "Write `is_approximately_stationary(series, threshold)`: split `series` into two halves, compute each half's mean, and return True if their absolute difference is below `threshold`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: stationarity-ex2
+    difficulty: intermediate
+    concept: time-series-stationarity
+    prompt: "Write `difference_series(series)`: return the first differences — `series[i] - series[i-1]` for every valid `i` — a standard technique for removing a trend."
+  - id: quiz-1
+    type: quiz
+    concept: time-series-stationarity
+    question: "What does it mean for a time series to be 'stationary'?"
+    options: ["Its statistical properties (mean, variance) don't change systematically over time", "Its values never change at all", "It has no seasonal pattern", "It's always trending upward"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A **stationary** time series has statistical properties (mean, variance)
+that stay roughly constant over time — it might wiggle up and down, but
+it doesn't systematically drift. Most time series models (including
+ARIMA, in the next module but one) assume stationarity — applying them to
+non-stationary data (like a stock price with a clear upward trend) gives
+unreliable results.
+
+```python
+def is_approximately_stationary(series, threshold):
+    n = len(series)
+    half = n // 2
+    mean1 = sum(series[:half]) / half
+    mean2 = sum(series[half:]) / (n - half)
+    return abs(mean1 - mean2) < threshold
+```
+
+Comparing the mean of the first half against the second half is a crude
+but genuinely useful stationarity check — a real trend shows up as a
+large difference between them.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def is_approximately_stationary(series, threshold):\n    n = len(series)\n    half = n // 2\n    mean1 = sum(series[:half]) / half\n    mean2 = sum(series[half:]) / (n - half)\n    return abs(mean1 - mean2) < threshold\n\nstable = [10, 12, 9, 11, 10, 13, 9, 11]\ntrending = [10, 12, 14, 16, 18, 20, 22, 24]\nprint(is_approximately_stationary(stable, 1.0))     # True -- no systematic drift\nprint(is_approximately_stationary(trending, 1.0))    # False -- clearly trending up`} caption="A real stationarity test (like the Augmented Dickey-Fuller test) is more statistically rigorous than this split-in-half comparison -- but the core intuition (does the series' behavior change systematically over its length?) is exactly the same." />
+
+<Explanation id="differencing">
+
+**Differencing** — replacing each value with the CHANGE from the
+previous one — is the standard fix for a trending, non-stationary
+series:
+
+```python
+def difference_series(series):
+    return [series[i] - series[i - 1] for i in range(1, len(series))]
+
+trending = [10, 12, 14, 16, 18]
+print(difference_series(trending))   # [2, 2, 2, 2] -- constant differences, much more stationary
+```
+
+A series with a steady upward trend has wildly non-constant VALUES, but
+its DIFFERENCES can be nearly constant — that's exactly what "removing
+the trend" means. The "I" in ARIMA (covered next) stands for
+"Integrated" — literally referring to how many times you need to
+difference a series before it becomes stationary.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can check a series for approximate stationarity, and apply differencing to remove a trend and make a series more stationary.
+</Checkpoint>

@@ -1,0 +1,11 @@
+{
+  "id": "reading-stack-traces-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def divide_safely(a, b):\n    ...\n",
+  "cases": [
+    { "call": "divide_safely(10, 2)", "expect": "5.0" },
+    { "call": "divide_safely(5, 0)", "expect": "Error: division by zero" },
+    { "call": "divide_safely(-9, 3)", "expect": "-3.0" }
+  ]
+}

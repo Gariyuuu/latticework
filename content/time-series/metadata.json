@@ -11,27 +11,28 @@
     "data-scientist",
     "quant-researcher"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "Stationarity, autocorrelation, AR(1)/ARIMA intuition, and rolling-window statistics — the statistical toolkit behind forecasting and anomaly detection, distinct from pandas' date-handling angle on time series.",
   "modules": [
     {
       "slug": "stationarity",
       "title": "Stationarity",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "autocorrelation",
       "title": "Autocorrelation",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "arima-intuition",
       "title": "ARIMA Intuition",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "rolling-windows",
       "title": "Rolling Windows",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

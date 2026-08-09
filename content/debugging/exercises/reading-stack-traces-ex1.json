@@ -1,0 +1,11 @@
+{
+  "id": "reading-stack-traces-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def safe_first_char(s):\n    ...\n",
+  "cases": [
+    { "call": "safe_first_char('hello')", "expect": "h" },
+    { "call": "safe_first_char('')", "expect": "" },
+    { "call": "safe_first_char('a')", "expect": "a" }
+  ]
+}

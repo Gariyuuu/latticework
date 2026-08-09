@@ -1,0 +1,94 @@
+---
+slug: bisection
+title: Bisection Debugging
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: complexity
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: bisection-ex1
+    difficulty: beginner
+    concept: debugging-bisection
+    prompt: "Write `find_first_failing_index(results)`: `results` is a list of booleans (True = passed) where, once a version starts failing, every later version also fails. Using BINARY SEARCH (not a linear scan), return the index of the first failing version, or -1 if none fail."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: bisection-ex2
+    difficulty: intermediate
+    concept: debugging-bisection
+    prompt: "Write `bisect_call_count(results)`: same bisection logic, but return the NUMBER of comparisons (midpoint checks) it actually took."
+  - id: quiz-1
+    type: quiz
+    concept: debugging-bisection
+    question: "Why is bisecting through a sequence of commits (like `git bisect`) to find which one introduced a bug more efficient than checking each commit one by one?"
+    options: ["It's O(log n) instead of O(n) — each check eliminates half the remaining candidates, exactly the same principle as binary search", "It randomly guesses instead of checking systematically", "It only works if there's exactly one commit to check", "It requires rewriting the commit history first"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+When a bug was introduced somewhere in a long history of commits (or a
+long sequence of steps, or a huge input), checking every single one
+one-by-one is slow. **Bisection debugging** — the same idea as `git
+bisect` — applies binary search (from the Algorithms course) directly to
+the debugging process itself: check the MIDDLE candidate, and the result
+tells you which half to search next.
+
+```python
+def find_first_failing_index(results):
+    lo, hi = 0, len(results)
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if results[mid]:
+            lo = mid + 1   # this one passed -- bug is later
+        else:
+            hi = mid        # this one failed -- bug is here or earlier
+    return lo if lo < len(results) else -1
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def find_first_failing_index(results):\n    lo, hi = 0, len(results)\n    while lo < hi:\n        mid = (lo + hi) // 2\n        if results[mid]:\n            lo = mid + 1\n        else:\n            hi = mid\n    return lo if lo < len(results) else -1\n\n# imagine 1000 commits, and commit #742 introduced a regression\nresults = [True] * 742 + [False] * 258\nprint(find_first_failing_index(results))   # 742 -- found without checking all 1000`} caption="This precondition -- once it starts failing, it KEEPS failing -- is essential. Bisection gives a wrong answer on a 'flaky' bug that fails intermittently rather than consistently after some point." />
+
+<Explanation id="complexity">
+
+This is precisely the O(log n) idea from the Complexity Analysis
+course, applied to debugging: 1,000 commits takes at most ~10
+comparisons to bisect, not 1,000. `git bisect` automates exactly this
+loop — you tell it "good" or "bad" for whatever commit it checks out,
+and it narrows the search the same way.
+
+```python
+def bisect_call_count(results):
+    lo, hi = 0, len(results)
+    count = 0
+    while lo < hi:
+        mid = (lo + hi) // 2
+        count += 1
+        if results[mid]:
+            lo = mid + 1
+        else:
+            hi = mid
+    return count
+```
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can apply binary search to find where a bug was introduced across a long sequence, instead of checking every candidate one by one.
+</Checkpoint>

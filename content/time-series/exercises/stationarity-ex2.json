@@ -1,0 +1,11 @@
+{
+  "id": "stationarity-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def difference_series(series):\n    ...\n",
+  "cases": [
+    { "call": "difference_series([1, 3, 6, 10])", "expect": "[2, 3, 4]" },
+    { "call": "difference_series([5, 5, 5])", "expect": "[0, 0]" },
+    { "call": "difference_series([10, 7, 4])", "expect": "[-3, -3]" }
+  ]
+}

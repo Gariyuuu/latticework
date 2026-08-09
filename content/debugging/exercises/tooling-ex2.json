@@ -1,0 +1,11 @@
+{
+  "id": "tooling-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def assert_invariant(condition, message):\n    ...\n",
+  "cases": [
+    { "call": "assert_invariant(1 + 1 == 2, 'math is broken')", "expect": "True" },
+    { "call": "assert_invariant(len([1, 2, 3]) == 3, 'wrong length')", "expect": "True" },
+    { "call": "assert_invariant('a' in 'abc', 'missing char')", "expect": "True" }
+  ]
+}

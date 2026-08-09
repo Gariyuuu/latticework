@@ -1,0 +1,11 @@
+{
+  "id": "bias-variance-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def detect_overfitting(train_errors, test_errors):\n    ...\n",
+  "cases": [
+    { "call": "detect_overfitting([0.5, 0.3, 0.2, 0.15, 0.12], [0.5, 0.35, 0.3, 0.32, 0.4])", "expect": "3" },
+    { "call": "detect_overfitting([0.5, 0.4, 0.3], [0.5, 0.4, 0.3])", "expect": "-1" },
+    { "call": "detect_overfitting([0.5, 0.3], [0.6, 0.7])", "expect": "1" }
+  ]
+}

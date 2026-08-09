@@ -1,0 +1,98 @@
+---
+slug: rolling-windows
+title: Rolling Windows
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: zscore
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: rolling-windows-ex1
+    difficulty: beginner
+    concept: time-series-rolling-windows
+    prompt: "Write `rolling_std(series, window)`: for every position with a full window available, compute the (population) standard deviation of that window. Return a list, each value rounded to 4 decimals."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: rolling-windows-ex2
+    difficulty: advanced
+    concept: time-series-rolling-windows
+    prompt: "Write `rolling_zscore(series, window)`: for every position with a full window available, compute how many rolling standard deviations away from the rolling mean the LAST value in that window is — `(series[i] - window_mean) / window_std`. Use 0.0 if the window's std is 0. Round to 4 decimals."
+  - id: quiz-1
+    type: quiz
+    concept: time-series-rolling-windows
+    question: "Why is a ROLLING z-score (computed from a nearby window) often more useful for anomaly detection than a GLOBAL z-score (computed from the whole series' mean/std)?"
+    options: ["It adapts to LOCAL behavior — a value can be a genuine local anomaly even if it's well within the range of the series' overall history, and vice versa", "Rolling and global z-scores always give identical results", "Rolling z-scores don't require a mean or standard deviation at all", "Global z-scores are always more accurate for every use case"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A **rolling window** computes a statistic over a moving slice of the
+most recent `n` points, sliding forward one point at a time — you
+already used this exact pattern for moving averages in the Quant Finance
+Fundamentals course's Backtesting module. The same technique applies to
+ANY statistic, not just the mean:
+
+```python
+def rolling_std(series, window):
+    result = []
+    for i in range(window - 1, len(series)):
+        chunk = series[i - window + 1 : i + 1]
+        mean = sum(chunk) / window
+        variance = sum((x - mean) ** 2 for x in chunk) / window
+        result.append(variance ** 0.5)
+    return result
+```
+
+A rolling standard deviation tracks how VOLATILE the series has been
+recently — rising rolling std means the series has gotten choppier;
+falling means it's calmed down.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def rolling_std(series, window):\n    result = []\n    for i in range(window - 1, len(series)):\n        chunk = series[i - window + 1 : i + 1]\n        mean = sum(chunk) / window\n        variance = sum((x - mean) ** 2 for x in chunk) / window\n        result.append(round(variance ** 0.5, 2))\n    return result\n\ncalm = [10, 10.1, 9.9, 10.2, 9.8]\nvolatile = [10, 15, 5, 18, 3]\nprint(rolling_std(calm, 3))\nprint(rolling_std(volatile, 3))`} caption="Same window size, wildly different rolling std -- exactly the signal you'd want for something like a volatility-based trading strategy, or flagging when a system's behavior has become unusually erratic." />
+
+<Explanation id="zscore">
+
+A **rolling z-score** flags anomalies relative to RECENT behavior, not
+the series' entire history:
+
+```python
+def rolling_zscore(series, window):
+    result = []
+    for i in range(window - 1, len(series)):
+        chunk = series[i - window + 1 : i + 1]
+        mean = sum(chunk) / window
+        variance = sum((x - mean) ** 2 for x in chunk) / window
+        std = variance ** 0.5
+        result.append(0.0 if std == 0 else (series[i] - mean) / std)
+    return result
+```
+
+A value that's only slightly above the series' ALL-TIME average might
+still be a big local anomaly if recent values have all clustered tightly
+together — a rolling z-score catches that; a single global z-score
+computed once over the whole series would miss it entirely. This is
+exactly how real-time anomaly detection systems (fraud detection, server
+monitoring) actually work.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute rolling standard deviation and rolling z-scores, and understand why local (rolling) statistics catch anomalies that global statistics miss.
+</Checkpoint>

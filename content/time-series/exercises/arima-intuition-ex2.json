@@ -1,0 +1,11 @@
+{
+  "id": "arima-intuition-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def ar1_simulate(x0, phi, c, n):\n    ...\n",
+  "cases": [
+    { "call": "ar1_simulate(10, 0.5, 0, 3)", "expect": "[10, 5.0, 2.5, 1.25]" },
+    { "call": "ar1_simulate(0, 1, 1, 4)", "expect": "[0, 1, 2, 3, 4]" },
+    { "call": "ar1_simulate(5, 0, 2, 2)", "expect": "[5, 2, 2]" }
+  ]
+}

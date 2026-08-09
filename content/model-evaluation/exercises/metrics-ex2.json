@@ -1,0 +1,11 @@
+{
+  "id": "metrics-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def precision_recall_f1(y_true, y_pred):\n    ...\n",
+  "cases": [
+    { "call": "precision_recall_f1([1, 1, 0, 1, 0, 0], [1, 0, 0, 1, 1, 0])", "expect": "[0.6667, 0.6667, 0.6667]" },
+    { "call": "precision_recall_f1([1, 1, 1], [1, 1, 1])", "expect": "[1.0, 1.0, 1.0]" },
+    { "call": "precision_recall_f1([1, 0], [0, 1])", "expect": "[0.0, 0.0, 0.0]" }
+  ]
+}

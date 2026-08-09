@@ -4,7 +4,7 @@
   "category": "cs",
   "difficulty": "beginner",
   "estimatedHours": 3,
-  "prerequisites": [],
+  "prerequisites": ["python"],
   "usefulFor": [
     "software-engineer",
     "full-stack-engineer",
@@ -19,22 +19,23 @@
     "quant-researcher",
     "quant-trader"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "Reading tracebacks, bisecting through history to find a regression (the same idea as git bisect), and assertion/tracing tools — a signature 'find and fix real bugs' course, not just syntax.",
   "modules": [
     {
       "slug": "reading-stack-traces",
       "title": "Reading Stack Traces",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "bisection",
       "title": "Bisection",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "tooling",
       "title": "Tooling",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

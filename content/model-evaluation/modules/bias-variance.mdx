@@ -1,0 +1,92 @@
+---
+slug: bias-variance
+title: Bias-Variance Tradeoff
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: detecting
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: bias-variance-ex1
+    difficulty: beginner
+    concept: model-evaluation-bias-variance
+    prompt: "Write `total_error(bias_squared, variance, irreducible_error)`, returning the sum of all three components, rounded to 4 decimals."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: bias-variance-ex2
+    difficulty: intermediate
+    concept: model-evaluation-bias-variance
+    prompt: "Write `detect_overfitting(train_errors, test_errors)`: given error at increasing model complexity, return the first index where test error INCREASES while train error still DECREASES (the onset of overfitting). Return -1 if that never happens."
+  - id: quiz-1
+    type: quiz
+    concept: model-evaluation-bias-variance
+    question: "What does it mean when training error keeps decreasing but test error starts increasing as model complexity grows?"
+    options: ["The model is overfitting — memorizing noise specific to the training data instead of learning patterns that generalize to new data", "The model is underfitting", "This pattern is impossible and always indicates a bug", "The model needs even MORE complexity to fix the problem"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A model's total expected error decomposes into three pieces: **bias**
+(error from a model too simple to capture the real pattern —
+underfitting), **variance** (error from a model so sensitive to the
+specific training data that it captures noise, not signal — overfitting),
+and **irreducible error** (noise in the data itself that no model could
+ever predict away).
+
+```python
+def total_error(bias_squared, variance, irreducible_error):
+    return bias_squared + variance + irreducible_error
+```
+
+Bias and variance trade off against each other as model complexity
+changes: a very simple model (like fitting a straight line to obviously
+curved data) has high bias, low variance. A very complex model (fitting
+every wiggle in the training data) has low bias, high variance. The best
+model complexity sits somewhere in between.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`# simulated error at increasing model complexity (e.g. polynomial degree 1..5)\ntrain_errors = [0.50, 0.30, 0.20, 0.15, 0.12]   # keeps improving -- more complexity always fits training data better\ntest_errors  = [0.55, 0.35, 0.30, 0.32, 0.40]   # improves, then gets WORSE\n\nfor i, (tr, te) in enumerate(zip(train_errors, test_errors)):\n    print(f"complexity {i+1}: train={tr}, test={te}")`} caption="Train error monotonically improves with more complexity -- that's expected, a more flexible model can always fit its own training data better. Test error improving then WORSENING is the classic overfitting signature." />
+
+<Explanation id="detecting">
+
+The gap between train and test error, and specifically the point where
+test error starts getting WORSE while train error keeps improving, is
+exactly how you detect overfitting has begun:
+
+```python
+def detect_overfitting(train_errors, test_errors):
+    for i in range(1, len(train_errors)):
+        if test_errors[i] > test_errors[i - 1] and train_errors[i] < train_errors[i - 1]:
+            return i   # complexity level where overfitting starts
+    return -1
+```
+
+In practice, you'd pick the model complexity right BEFORE this point —
+complex enough to capture the real pattern (low bias), but not so complex
+it starts fitting noise (rising variance). This is exactly what
+cross-validation from the previous module is used FOR in practice:
+trying several complexity levels and picking whichever one cross-validates
+best, not whichever fits the training data best.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You understand the bias-variance decomposition of model error, and can detect the onset of overfitting from a train/test error curve.
+</Checkpoint>

@@ -11,22 +11,23 @@
     "data-scientist",
     "ml-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "Accuracy/precision/recall/F1, k-fold cross-validation, and the bias-variance tradeoff — how to tell whether a model is actually good, not just whether it ran.",
   "modules": [
     {
       "slug": "metrics",
       "title": "Metrics",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "cross-validation",
       "title": "Cross-validation",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "bias-variance",
       "title": "Bias/Variance",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

@@ -1,0 +1,11 @@
+{
+  "id": "autocorrelation-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def autocorrelation(series, lag):\n    ...\n",
+  "cases": [
+    { "call": "autocorrelation([1, 2, 1, 2, 1, 2, 1, 2], 1)", "expect": "-0.875" },
+    { "call": "autocorrelation([1, 2, 1, 2, 1, 2, 1, 2], 2)", "expect": "0.75" },
+    { "call": "autocorrelation([1, 2, 3, 4, 5, 6, 7, 8], 1)", "expect": "0.625" }
+  ]
+}

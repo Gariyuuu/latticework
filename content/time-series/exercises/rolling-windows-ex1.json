@@ -1,0 +1,10 @@
+{
+  "id": "rolling-windows-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def rolling_std(series, window):\n    ...\n",
+  "cases": [
+    { "call": "rolling_std([1, 2, 3, 4, 5], 3)", "expect": "[0.8165, 0.8165, 0.8165]" },
+    { "call": "rolling_std([10, 10, 10], 3)", "expect": "[0.0]" }
+  ]
+}

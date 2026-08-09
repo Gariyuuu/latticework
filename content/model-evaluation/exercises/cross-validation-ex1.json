@@ -1,0 +1,11 @@
+{
+  "id": "cross-validation-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def kfold_split_indices(n, k):\n    ...\n",
+  "cases": [
+    { "call": "kfold_split_indices(10, 5)", "expect": "[[0, 1], [2, 3], [4, 5], [6, 7], [8, 9]]" },
+    { "call": "kfold_split_indices(9, 3)", "expect": "[[0, 1, 2], [3, 4, 5], [6, 7, 8]]" },
+    { "call": "kfold_split_indices(7, 2)", "expect": "[[0, 1, 2], [3, 4, 5, 6]]" }
+  ]
+}

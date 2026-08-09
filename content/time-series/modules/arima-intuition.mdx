@@ -1,0 +1,89 @@
+---
+slug: arima-intuition
+title: ARIMA Intuition
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: stability
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: arima-intuition-ex1
+    difficulty: beginner
+    concept: time-series-arima
+    prompt: "Write `ar1_forecast(x_prev, phi, c)`: one step of an AR(1) model — return `c + phi * x_prev`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: arima-intuition-ex2
+    difficulty: intermediate
+    concept: time-series-arima
+    prompt: "Write `ar1_simulate(x0, phi, c, n)`: simulate `n` steps of the AR(1) process starting from `x0`, returning the full list of `n + 1` values (including `x0`)."
+  - id: quiz-1
+    type: quiz
+    concept: time-series-arima
+    question: "In an AR(1) model x_t = c + phi·x_(t-1), what determines whether the series is stable (mean-reverting) or explosive over time?"
+    options: ["Whether |phi| < 1 (stable, reverts toward a long-run level) or |phi| >= 1 (explosive, or a random walk when phi = 1)", "The value of c alone determines stability", "AR(1) models are always stable, regardless of phi", "The starting value x0 determines long-run stability"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**ARIMA** (AutoRegressive Integrated Moving Average) is the classic
+time-series forecasting model, built from three pieces: **AR**
+(autoregressive — the value depends on its own past values, exactly the
+relationship the Autocorrelation module measures), **I** (integrated —
+how many times you difference the series to make it stationary, from
+the Stationarity module), and **MA** (moving average — the value depends
+on past FORECAST ERRORS, not covered here).
+
+The simplest AR model, AR(1), predicts the next value from just the
+previous one:
+
+```python
+def ar1_forecast(x_prev, phi, c):
+    return c + phi * x_prev
+
+print(ar1_forecast(10, 0.5, 2))   # 7.0
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def ar1_simulate(x0, phi, c, n):\n    series = [x0]\n    for _ in range(n):\n        series.append(c + phi * series[-1])\n    return series\n\nprint(ar1_simulate(10, 0.5, 0, 8))   # decays toward 0\nprint(ar1_simulate(10, 1.0, 0, 8))    # stays exactly at 10 forever (phi=1, c=0)`} caption="phi controls how much the series 'remembers' its previous value -- phi=0.5 means each step is half of the last (decaying toward 0), phi=1 means the series never moves at all with c=0 (or drifts linearly with c != 0 -- that's a random walk with drift)." />
+
+<Explanation id="stability">
+
+Whether `phi` is less than 1 in absolute value determines the whole
+character of the series:
+
+- `|phi| < 1`: **stable** — the series reverts toward a long-run
+  equilibrium value (`c / (1 - phi)`), regardless of starting point.
+- `phi = 1`: a **random walk** — no reversion at all, drifts forever
+  (this is exactly the random walk from the Stochastic Processes course).
+- `|phi| > 1`: **explosive** — deviations grow without bound.
+
+Real ARIMA fitting estimates `phi` (and the MA/differencing parameters)
+from historical data via maximum likelihood — a genuinely involved
+optimization problem, well beyond what's practical to hand-implement.
+Understanding what `phi` MEANS, and why its magnitude matters, is the
+conceptual foundation that makes the fitted model's output interpretable
+once you do reach for a real ARIMA library.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You understand what ARIMA's AR component does, can simulate a simple AR(1) process, and know how phi's magnitude determines whether the series is stable, a random walk, or explosive.
+</Checkpoint>

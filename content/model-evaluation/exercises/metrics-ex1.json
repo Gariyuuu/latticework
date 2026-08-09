@@ -1,0 +1,11 @@
+{
+  "id": "metrics-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def accuracy(y_true, y_pred):\n    ...\n",
+  "cases": [
+    { "call": "accuracy([1, 0, 1, 1], [1, 0, 0, 1])", "expect": "0.75" },
+    { "call": "accuracy([1, 1, 1], [1, 1, 1])", "expect": "1.0" },
+    { "call": "accuracy([0, 0], [1, 1])", "expect": "0.0" }
+  ]
+}

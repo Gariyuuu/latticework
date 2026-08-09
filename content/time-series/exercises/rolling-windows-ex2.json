@@ -1,0 +1,10 @@
+{
+  "id": "rolling-windows-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def rolling_zscore(series, window):\n    ...\n",
+  "cases": [
+    { "call": "rolling_zscore([1, 2, 3, 4, 20], 4)", "expect": "[1.3416, 1.7241]" },
+    { "call": "rolling_zscore([5, 5, 5, 5], 3)", "expect": "[0.0, 0.0]" }
+  ]
+}

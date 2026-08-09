@@ -1,0 +1,99 @@
+---
+slug: metrics
+title: Metrics
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: precision-recall
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: metrics-ex1
+    difficulty: beginner
+    concept: model-evaluation-metrics
+    prompt: "Write `accuracy(y_true, y_pred)`: the fraction of predictions that exactly match the true labels, rounded to 4 decimals."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: metrics-ex2
+    difficulty: intermediate
+    concept: model-evaluation-metrics
+    prompt: "Write `precision_recall_f1(y_true, y_pred)` for binary labels (1 = positive class): compute precision (`TP/(TP+FP)`), recall (`TP/(TP+FN)`), and F1 (`2·precision·recall/(precision+recall)`). Return `[precision, recall, f1]`, each rounded to 4 decimals (use 0.0 if a denominator is 0)."
+  - id: quiz-1
+    type: quiz
+    concept: model-evaluation-metrics
+    question: "In a medical test for a rare disease (1% of patients actually have it), why can accuracy alone be a misleading metric?"
+    options: ["A model that always predicts 'no disease' scores 99% accuracy while catching zero real cases — precision/recall expose this failure, accuracy hides it", "Accuracy is always the best metric to use regardless of context", "Precision and recall only apply to regression problems, not classification", "Accuracy can't be computed at all when classes are imbalanced"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Accuracy** — the fraction of predictions that were correct — is the
+most intuitive classification metric, but it can be dangerously
+misleading on **imbalanced** data:
+
+```python
+def accuracy(y_true, y_pred):
+    correct = sum(1 for a, b in zip(y_true, y_pred) if a == b)
+    return correct / len(y_true)
+
+# a "model" that never predicts fraud, on data that's 99% not-fraud
+y_true = [0]*99 + [1]
+y_pred = [0]*100
+print(accuracy(y_true, y_pred))   # 0.99 -- looks great, catches ZERO fraud
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def accuracy(y_true, y_pred):\n    correct = sum(1 for a, b in zip(y_true, y_pred) if a == b)\n    return round(correct / len(y_true), 2)\n\ny_true = [1, 0, 1, 1, 0, 1, 0, 0]\ny_pred = [1, 0, 0, 1, 0, 1, 1, 0]\nprint(accuracy(y_true, y_pred))`} caption="Six of eight predictions match -- 0.75. Accuracy is a fine starting metric when classes are roughly balanced; the problems start once one class dominates." />
+
+<Explanation id="precision-recall">
+
+**Precision** and **recall** decompose errors by TYPE, which is exactly
+what a single accuracy number hides:
+
+- **Precision**: of everything you predicted positive, how much was
+  actually positive? (`TP / (TP + FP)`) — low precision means lots of
+  false alarms.
+- **Recall**: of everything that was ACTUALLY positive, how much did you
+  catch? (`TP / (TP + FN)`) — low recall means you're missing real cases.
+
+```python
+def precision_recall_f1(y_true, y_pred):
+    tp = sum(1 for a, b in zip(y_true, y_pred) if a == 1 and b == 1)
+    fp = sum(1 for a, b in zip(y_true, y_pred) if a == 0 and b == 1)
+    fn = sum(1 for a, b in zip(y_true, y_pred) if a == 1 and b == 0)
+    precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
+    recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
+    f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
+    return precision, recall, f1
+```
+
+**F1** combines both into one number (their harmonic mean) — useful when
+you need a single metric but care about both false alarms AND missed
+cases, not just one or the other. There's usually a tradeoff between
+precision and recall (a model that predicts positive more aggressively
+catches more real cases — higher recall — but also raises more false
+alarms — lower precision) — which one matters more depends entirely on
+what a false positive vs. a false negative actually costs in your
+specific problem.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute accuracy, precision, recall, and F1, and know why accuracy alone is misleading on imbalanced classification problems.
+</Checkpoint>
