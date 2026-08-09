@@ -15,7 +15,7 @@ same change as any feature work.
   Marketplace (`vercel integration add neon|clerk`) and connected to the
   project — all env vars live in Production/Preview/Development. DB
   schema pushed (`npm run db:push`) and content seeded
-  (`npm run content:sync` against the live DB — 99 skills, 24 built;
+  (`npm run content:sync` against the live DB — 99 skills, 30 built;
   re-run after any content change and redeploy, both steps are manual).
   Clerk is currently a **development-mode** instance (free marketplace
   default) — fine for now, but note this if real user signups/production
@@ -249,12 +249,27 @@ same change as any feature work.
   (stationarity, ACF, AR models), pandas' module is the date-handling/
   API angle on the same subject, same differentiation pattern as
   Linear Algebra vs. `numpy/linear-algebra-ops`.
+- Fully built: HTTP (3/3 — requests-responses, headers, caching),
+  Authentication (2/3 — sessions-vs-tokens, password-storage;
+  oauth-basics left planned, pure protocol-flow with no code-testable
+  angle), Clean Code (3/3 — naming, functions, code-smells), Testing
+  (2/4 — mocking, test-design; unit-tests/integration-tests left planned
+  since they'd mostly restate `python/testing`'s ground rather than add
+  a genuinely distinct angle), Database Design (2/3 — normalization,
+  constraints; er-modeling left planned — pure diagramming, no code
+  angle), Data Modeling (2/2 — star-snowflake-schema,
+  slowly-changing-dimensions) — **Done**. This batch is the first pass
+  at general SWE/CS topics beyond math/quant — normalization and SCD
+  Type 2 represent DB concepts as checkable Python data structures
+  (functional dependencies as tuples, dimension rows as dicts) rather
+  than skipping them for being "conceptual." Reaches **30/99 skills
+  built**, the number requested for this session's content push.
 - Git, Linux, PyTorch, C++ — **Planned** (metadata skeletons done as part
   of the wider ~70-90 skill catalog; module content not yet authored).
   Git/Linux need the CLI-simulation exercise type, which isn't
   implemented yet (see "Learning engine" above); PyTorch/C++ need their
   own execution infra decisions.
-- Remaining ~42-62 technologies from the brief — **Done** as metadata-only
+- Remaining ~36-56 technologies from the brief — **Done** as metadata-only
   skeletons (appear correctly in graph/Explore/roadmap, no lesson content)
 
 `python/modules/files.mdx` (file I/O) was originally deferred because it
