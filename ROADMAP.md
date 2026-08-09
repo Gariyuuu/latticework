@@ -15,7 +15,7 @@ same change as any feature work.
   Marketplace (`vercel integration add neon|clerk`) and connected to the
   project — all env vars live in Production/Preview/Development. DB
   schema pushed (`npm run db:push`) and content seeded
-  (`npm run content:sync` against the live DB — 99 skills, 11 built;
+  (`npm run content:sync` against the live DB — 99 skills, 12 built;
   re-run after any content change and redeploy, both steps are manual).
   Clerk is currently a **development-mode** instance (free marketplace
   default) — fine for now, but note this if real user signups/production
@@ -199,6 +199,16 @@ same change as any feature work.
   estimate (0.8334 at n=10,000) was cross-checked against the true
   balance-equation value (5/6 ≈ 0.8333) as an extra correctness signal
   beyond just "the code ran."
+- Fully built: Calculus Review (3/3 modules — derivatives, gradients,
+  chain-rule-for-backprop) — **Done**. Derivatives/gradients computed
+  numerically (central-difference), matching real gradient-checking
+  practice; chain rule computed analytically and cross-checked against
+  the numerical estimate in the lesson prose. `gradients`'s
+  `gradient_magnitude` exercise deliberately reuses the exact
+  `magnitude()` computation from `linear-algebra/vectors-matrices` —
+  the gradient IS a vector, so vector operations apply directly.
+  Satisfies Optimization's prerequisite (`calculus-review`) — that's
+  the natural next track.
 - Git, Linux, PyTorch, C++ — **Planned** (metadata skeletons done as part
   of the wider ~70-90 skill catalog; module content not yet authored).
   Git/Linux need the CLI-simulation exercise type, which isn't

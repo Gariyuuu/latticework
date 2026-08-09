@@ -111,10 +111,14 @@ on a missing env var without surfacing that clearly in the UI — see
   Python on purpose, distinct from `numpy/linear-algebra-ops`'s
   "use the library" angle on the same operations), Monte Carlo
   Simulation (3/3 — random-sampling, simulating-stock-paths,
-  variance-reduction), and Stochastic Processes Fundamentals (3/3 —
-  random-walks, brownian-motion-intuition, markov-chains) have real
-  lesson content; the rest of the technology catalog is metadata-only
-  (by design — see `docs/COURSE_CONTENT_SPEC.md`). Both Monte Carlo and
+  variance-reduction), Stochastic Processes Fundamentals (3/3 —
+  random-walks, brownian-motion-intuition, markov-chains), and Calculus
+  Review (3/3 — derivatives, gradients, chain-rule-for-backprop; all
+  computed numerically via central differences except the chain-rule
+  module, which is analytical and cross-checked against a numerical
+  estimate in the prose) have real lesson content; the rest of the
+  technology catalog is metadata-only (by design — see
+  `docs/COURSE_CONTENT_SPEC.md`). Both Monte Carlo and
   Stochastic Processes content need genuine randomness — made gradeable
   via `random.seed()`, only after verifying seeded `random.random()`/
   `.gauss()`/`.choices()` produce bit-identical output between Pyodide's
