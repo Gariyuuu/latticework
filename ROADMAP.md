@@ -15,7 +15,7 @@ same change as any feature work.
   Marketplace (`vercel integration add neon|clerk`) and connected to the
   project — all env vars live in Production/Preview/Development. DB
   schema pushed (`npm run db:push`) and content seeded
-  (`npm run content:sync` against the live DB — 99 skills, 12 built;
+  (`npm run content:sync` against the live DB — 99 skills, 19 built;
   re-run after any content change and redeploy, both steps are manual).
   Clerk is currently a **development-mode** instance (free marketplace
   default) — fine for now, but note this if real user signups/production
@@ -209,6 +209,22 @@ same change as any feature work.
   the gradient IS a vector, so vector operations apply directly.
   Satisfies Optimization's prerequisite (`calculus-review`) — that's
   the natural next track.
+- Fully built: Optimization (3/3 — gradient-descent, convexity-intuition,
+  constrained-optimization), Numerical Methods (3/3 — root-finding,
+  numerical-integration, solving-linear-systems), Complexity Analysis
+  (3/3 — big-o, time-vs-space, amortized-analysis), Functional
+  Programming (3/3 — pure-functions, immutability, map-filter-reduce),
+  OOP (4/4 — classes-objects, inheritance, polymorphism, encapsulation),
+  Design Patterns (3/3 — creational, structural, behavioral), Feature
+  Engineering (3/3 — encoding, scaling, interaction-features) — all
+  **Done**. 22 modules, 44 exercises in one batch. Complexity Analysis
+  measures growth by counting real operations across inputs (not
+  wall-clock timing, which wouldn't be deterministic enough to grade).
+  OOP/Design Patterns build a running Shape/Inventory/BankAccount
+  example across all 7 modules. Feature Engineering verified against
+  the real pandas package via Pyodide-in-Node, same discipline as every
+  other pandas-dependent track. Optimization builds directly on Calculus
+  Review's derivative/gradient functions.
 - Git, Linux, PyTorch, C++ — **Planned** (metadata skeletons done as part
   of the wider ~70-90 skill catalog; module content not yet authored).
   Git/Linux need the CLI-simulation exercise type, which isn't

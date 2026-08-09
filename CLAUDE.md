@@ -103,22 +103,17 @@ on a missing env var without surfacing that clearly in the UI — see
 
 ## Known limitations (see ROADMAP.md for the full, current list)
 
-- Python (14/14 modules — done), Data Structures (7/7), Algorithms (6/6),
-  NumPy (5/5), Pandas (6/6), Probability (4/4), Statistics (4/4), SQL
-  (7/10 — select-where, group-by-aggregates, joins, subqueries, ctes,
-  window-functions, interview-patterns), Linear Algebra (2/3 —
-  vectors-matrices, eigenvalues; taught from first principles in plain
-  Python on purpose, distinct from `numpy/linear-algebra-ops`'s
-  "use the library" angle on the same operations), Monte Carlo
-  Simulation (3/3 — random-sampling, simulating-stock-paths,
-  variance-reduction), Stochastic Processes Fundamentals (3/3 —
-  random-walks, brownian-motion-intuition, markov-chains), and Calculus
-  Review (3/3 — derivatives, gradients, chain-rule-for-backprop; all
-  computed numerically via central differences except the chain-rule
-  module, which is analytical and cross-checked against a numerical
-  estimate in the prose) have real lesson content; the rest of the
-  technology catalog is metadata-only (by design — see
-  `docs/COURSE_CONTENT_SPEC.md`). Both Monte Carlo and
+- 19 skills have real lesson content (up from the original Python-only
+  MVP) — full per-track module counts and design notes are in
+  ROADMAP.md "Content coverage," not duplicated here since it changes
+  every session. Quick index: Python/Data Structures/Algorithms/NumPy/
+  Pandas/Probability/Statistics (all complete), SQL (7/10), Linear
+  Algebra (2/3), Monte Carlo Simulation, Stochastic Processes
+  Fundamentals, Calculus Review, Optimization, Numerical Methods,
+  Complexity Analysis, Functional Programming, OOP, Design Patterns,
+  Feature Engineering (all complete). The rest of the technology
+  catalog is metadata-only (by design — see
+  `docs/COURSE_CONTENT_SPEC.md`). Monte Carlo and
   Stochastic Processes content need genuine randomness — made gradeable
   via `random.seed()`, only after verifying seeded `random.random()`/
   `.gauss()`/`.choices()` produce bit-identical output between Pyodide's
