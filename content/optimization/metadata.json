@@ -1,0 +1,36 @@
+{
+  "slug": "optimization",
+  "name": "Optimization",
+  "category": "math",
+  "difficulty": "intermediate",
+  "estimatedHours": 6,
+  "prerequisites": [
+    "calculus-review"
+  ],
+  "usefulFor": [
+    "ml-engineer",
+    "ai-engineer",
+    "research-engineer",
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "gradient-descent",
+      "title": "Gradient Descent",
+      "status": "planned"
+    },
+    {
+      "slug": "convexity-intuition",
+      "title": "Convexity Intuition",
+      "status": "planned"
+    },
+    {
+      "slug": "constrained-optimization",
+      "title": "Constrained Optimization",
+      "status": "planned"
+    }
+  ]
+}

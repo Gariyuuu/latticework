@@ -1,0 +1,90 @@
+---
+slug: recursion
+title: Recursion
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: memo
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: recursion-ex1
+    difficulty: beginner
+    concept: recursion
+    prompt: "Write a function `factorial(n)` that computes n! recursively (n * (n-1) * ... * 1, with `factorial(0) == 1`)."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: recursion-ex2
+    difficulty: intermediate
+    concept: recursion
+    prompt: "Write a function `fib_memo(n, memo=None)` that returns the nth Fibonacci number (0-indexed: fib(0)=0, fib(1)=1) using recursion WITH memoization, so repeated calls don't redo work."
+  - id: quiz-1
+    type: quiz
+    concept: recursion
+    question: "What happens if a recursive function is missing a proper base case?"
+    options: ["Infinite recursion, eventually a stack overflow / RecursionError", "It runs faster", "Python auto-detects and fixes it", "It silently returns None"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A recursive function calls itself on a smaller version of the problem,
+until it hits a **base case** simple enough to answer directly. Every
+recursive function needs both pieces:
+
+```python
+def factorial(n):
+    if n == 0:          # base case — stops the recursion
+        return 1
+    return n * factorial(n - 1)   # recursive case — smaller subproblem
+```
+
+Each call to `factorial` waits on a "call stack" for the call below it to
+return — that's the same stack data structure from the previous course.
+Forget the base case, and you recurse forever until Python raises a
+`RecursionError`.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nprint([fib(i) for i in range(8)])  # [0, 1, 1, 2, 3, 5, 8, 13]`} caption="Correct, but exponentially slow — fib(30) alone makes over a million calls, because fib(28) gets recomputed from scratch many times over." />
+
+<Explanation id="memo">
+
+Naive recursive Fibonacci is O(2ⁿ) because it re-solves the same
+subproblems repeatedly. **Memoization** — caching results you've already
+computed — turns it into O(n):
+
+```python
+def fib_memo(n, memo=None):
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n <= 1:
+        return n
+    memo[n] = fib_memo(n - 1, memo) + fib_memo(n - 2, memo)
+    return memo[n]
+```
+
+This is your first taste of **dynamic programming**: recursion plus a cache
+of subproblem results, so no subproblem is ever solved twice.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can write a recursive function with a correct base case, and add memoization to avoid redundant recursive work.
+</Checkpoint>

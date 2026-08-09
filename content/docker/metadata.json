@@ -1,0 +1,41 @@
+{
+  "slug": "docker",
+  "name": "Docker",
+  "category": "devops",
+  "difficulty": "intermediate",
+  "estimatedHours": 6,
+  "prerequisites": [
+    "linux"
+  ],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer",
+    "data-engineer",
+    "ml-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "images-containers",
+      "title": "Images & Containers",
+      "status": "planned"
+    },
+    {
+      "slug": "dockerfile",
+      "title": "Dockerfile",
+      "status": "planned"
+    },
+    {
+      "slug": "volumes-networking",
+      "title": "Volumes & Networking",
+      "status": "planned"
+    },
+    {
+      "slug": "compose",
+      "title": "Compose",
+      "status": "planned"
+    }
+  ]
+}

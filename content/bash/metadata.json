@@ -1,0 +1,45 @@
+{
+  "slug": "bash",
+  "name": "Bash / Shell",
+  "category": "tooling",
+  "difficulty": "beginner",
+  "estimatedHours": 5,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer",
+    "data-engineer",
+    "data-scientist",
+    "ml-engineer",
+    "ai-engineer",
+    "research-engineer",
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "shell-basics",
+      "title": "Shell Basics",
+      "status": "planned"
+    },
+    {
+      "slug": "pipes-redirection",
+      "title": "Pipes & Redirection",
+      "status": "planned"
+    },
+    {
+      "slug": "scripting",
+      "title": "Scripting",
+      "status": "planned"
+    },
+    {
+      "slug": "text-processing-grep-sed-awk",
+      "title": "Text Processing (grep/sed/awk)",
+      "status": "planned"
+    }
+  ]
+}

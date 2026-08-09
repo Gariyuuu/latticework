@@ -1,0 +1,12 @@
+{
+  "id": "arrays-ex2",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["numpy"],
+  "starterCode": "import numpy as np\n\ndef zeros_like_shape(rows, cols):\n    ...\n",
+  "cases": [
+    { "call": "zeros_like_shape(2, 3).tolist()", "expect": "[[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]" },
+    { "call": "zeros_like_shape(1, 1).tolist()", "expect": "[[0.0]]" },
+    { "call": "zeros_like_shape(0, 2).tolist()", "expect": "[]" }
+  ]
+}

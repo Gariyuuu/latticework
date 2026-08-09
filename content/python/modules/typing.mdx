@@ -1,0 +1,79 @@
+---
+slug: typing
+title: Typing
+estimatedMinutes: 12
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: enforcement
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: typing-ex1
+    difficulty: beginner
+    concept: python-typing
+    prompt: "Write a function `safe_get(d: dict, key: str, default=None)` with type hints on `d` and `key`, that returns `d[key]` if `key` is in `d`, otherwise `default`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: typing-ex2
+    difficulty: intermediate
+    concept: python-typing
+    prompt: "Using the `Optional`/`List` imports below, write `first_or_none(items: List[int]) -> Optional[int]` that returns the first element of `items`, or None if `items` is empty."
+  - id: quiz-1
+    type: quiz
+    concept: python-typing
+    question: "Do Python type hints get enforced by the interpreter at runtime?"
+    options: ["No — they're documentation/tooling hints; Python doesn't check them at runtime", "Yes — Python raises TypeError if you violate them", "Only in Python 3.12 and later", "Only inside functions decorated with @typed"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Type hints annotate what a function expects and returns — they make code
+easier to read and let editors/tools catch mistakes before you run
+anything.
+
+```python
+def add(a: int, b: int) -> int:
+    return a + b
+```
+
+`a: int` says "a is expected to be an int," `-> int` says "this returns an
+int." None of that changes what the function actually does at runtime —
+Python still runs `add("2", "3")` and returns `"23"` without complaint.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`from typing import Optional\n\ndef find_user(user_id: int, users: dict) -> Optional[str]:\n    return users.get(user_id)\n\nprint(find_user(1, {1: "Ada"}))  # Ada\nprint(find_user(2, {1: "Ada"}))  # None`} caption="Optional[str] means 'a str, or None' — shorthand for Union[str, None]. It documents that callers need to handle the None case." />
+
+<Explanation id="enforcement">
+
+Type hints are checked by a separate **static type checker** (like mypy or
+Pyright), not by the Python interpreter itself. That's why they're
+sometimes called "gradual typing" — you can add them incrementally to an
+existing codebase without breaking anything, and the interpreter simply
+ignores them at runtime. The benefit comes from tooling: your editor can
+warn you immediately if you pass the wrong type, and a type checker can
+catch bugs in CI before they ever run.
+
+Common generic hints you'll see constantly: `list[int]`, `dict[str, int]`,
+`Optional[X]` (X or None), `Union[X, Y]` (X or Y).
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can annotate function signatures with type hints and know they're a tooling aid, not a runtime enforcement mechanism.
+</Checkpoint>

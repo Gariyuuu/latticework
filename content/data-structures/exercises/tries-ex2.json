@@ -1,0 +1,11 @@
+{
+  "id": "tries-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def trie_insert(trie, word):\n    node = trie\n    for ch in word:\n        node = node.setdefault(ch, {})\n    node[\"#\"] = True\n    return trie\n\ndef build_trie(words):\n    trie = {}\n    for w in words:\n        trie_insert(trie, w)\n    return trie\n\ndef count_words_with_prefix(trie, prefix):\n    ...\n",
+  "cases": [
+    { "call": "count_words_with_prefix(build_trie(['cat', 'car', 'cart', 'dog']), 'ca')", "expect": "3" },
+    { "call": "count_words_with_prefix(build_trie(['cat', 'car', 'cart', 'dog']), 'do')", "expect": "1" },
+    { "call": "count_words_with_prefix(build_trie(['cat', 'car', 'cart', 'dog']), 'z')", "expect": "0" }
+  ]
+}

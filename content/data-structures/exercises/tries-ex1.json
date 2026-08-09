@@ -1,0 +1,11 @@
+{
+  "id": "tries-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def trie_search(trie, word):\n    node = trie\n    for ch in word:\n        if ch not in node:\n            return False\n        node = node[ch]\n    return \"#\" in node\n\ndef trie_insert(trie, word):\n    ...\n",
+  "cases": [
+    { "call": "trie_search(trie_insert(trie_insert({}, 'cat'), 'car'), 'cat')", "expect": "True" },
+    { "call": "trie_search(trie_insert({}, 'dog'), 'do')", "expect": "False" },
+    { "call": "trie_search(trie_insert({}, 'a'), 'a')", "expect": "True" }
+  ]
+}

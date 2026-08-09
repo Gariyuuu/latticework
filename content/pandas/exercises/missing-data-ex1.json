@@ -1,0 +1,12 @@
+{
+  "id": "missing-data-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["pandas"],
+  "starterCode": "import pandas as pd\n\ndef fill_missing(data, col, value):\n    ...\n",
+  "cases": [
+    { "call": "fill_missing({'x': [1, None, 3]}, 'x', 0)", "expect": "[1.0, 0.0, 3.0]" },
+    { "call": "fill_missing({'x': [None, 2, None]}, 'x', 5)", "expect": "[5.0, 2.0, 5.0]" },
+    { "call": "fill_missing({'x': [1, 2, 3]}, 'x', 0)", "expect": "[1, 2, 3]" }
+  ]
+}

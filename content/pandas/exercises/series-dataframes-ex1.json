@@ -1,0 +1,12 @@
+{
+  "id": "series-dataframes-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["pandas"],
+  "starterCode": "import pandas as pd\n\ndef make_series(values, labels):\n    ...\n",
+  "cases": [
+    { "call": "make_series([10, 20, 30], ['a', 'b', 'c'])['b']", "expect": "20" },
+    { "call": "make_series([1, 2], ['x', 'y'])['x']", "expect": "1" },
+    { "call": "make_series([5], ['only'])['only']", "expect": "5" }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "slug": "html",
+  "name": "HTML",
+  "category": "web",
+  "difficulty": "intro",
+  "estimatedHours": 4,
+  "prerequisites": [],
+  "usefulFor": [
+    "full-stack-engineer",
+    "software-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "document-structure",
+      "title": "Document Structure",
+      "status": "planned"
+    },
+    {
+      "slug": "forms",
+      "title": "Forms",
+      "status": "planned"
+    },
+    {
+      "slug": "semantic-elements",
+      "title": "Semantic Elements",
+      "status": "planned"
+    },
+    {
+      "slug": "accessibility-basics",
+      "title": "Accessibility Basics",
+      "status": "planned"
+    }
+  ]
+}

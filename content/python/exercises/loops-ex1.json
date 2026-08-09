@@ -1,0 +1,11 @@
+{
+  "id": "loops-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def sum_to_n(n):\n    ...\n",
+  "cases": [
+    { "call": "sum_to_n(1)", "expect": "1" },
+    { "call": "sum_to_n(5)", "expect": "15" },
+    { "call": "sum_to_n(10)", "expect": "55" }
+  ]
+}

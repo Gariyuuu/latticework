@@ -1,0 +1,32 @@
+{
+  "slug": "spark",
+  "name": "Apache Spark Fundamentals",
+  "category": "database",
+  "difficulty": "intermediate",
+  "estimatedHours": 8,
+  "prerequisites": [
+    "python",
+    "sql"
+  ],
+  "usefulFor": [
+    "data-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "rdds-dataframes",
+      "title": "RDDs & DataFrames",
+      "status": "planned"
+    },
+    {
+      "slug": "transformations-actions",
+      "title": "Transformations & Actions",
+      "status": "planned"
+    },
+    {
+      "slug": "partitioning",
+      "title": "Partitioning",
+      "status": "planned"
+    }
+  ]
+}

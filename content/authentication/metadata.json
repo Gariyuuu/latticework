@@ -1,0 +1,32 @@
+{
+  "slug": "authentication",
+  "name": "Authentication",
+  "category": "web",
+  "difficulty": "intermediate",
+  "estimatedHours": 4,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "sessions-vs-tokens",
+      "title": "Sessions vs Tokens",
+      "status": "planned"
+    },
+    {
+      "slug": "oauth-basics",
+      "title": "OAuth Basics",
+      "status": "planned"
+    },
+    {
+      "slug": "password-storage",
+      "title": "Password Storage",
+      "status": "planned"
+    }
+  ]
+}

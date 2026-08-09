@@ -1,0 +1,82 @@
+---
+slug: indexing-slicing
+title: Indexing & Slicing
+estimatedMinutes: 15
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: masking
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: indexing-slicing-ex1
+    difficulty: beginner
+    concept: numpy-indexing
+    prompt: "Write `every_other(arr)`, returning every other element of `arr` starting at index 0, using slicing (`arr[::2]`)."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: indexing-slicing-ex2
+    difficulty: intermediate
+    concept: numpy-indexing
+    prompt: "Write `mask_positive(arr)`, returning only the positive elements of `arr`, using boolean masking (`arr[arr > 0]`) — not a loop or list comprehension."
+  - id: quiz-1
+    type: quiz
+    concept: numpy-indexing
+    question: "What does `arr[arr > 0]` do?"
+    options: ["Returns a new array containing only the elements of arr that are greater than 0", "Returns True or False for the whole array", "Raises an error — you can't index with a comparison", "Replaces every negative element with 0"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+NumPy slicing extends Python's `list[start:stop:step]` syntax to any
+number of dimensions, and — unlike a Python list slice — an array slice is
+a *view* into the original data, not a copy.
+
+```python
+import numpy as np
+
+arr = np.array([10, 20, 30, 40, 50])
+print(arr[1:4])    # [20 30 40]
+print(arr[::-1])    # [50 40 30 20 10] — reversed
+print(arr[::2])      # [10 30 50] — every other element
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["numpy"]} code={`import numpy as np\n\ngrid = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])\nprint(grid[1, 2])     # 6 -- row 1, column 2\nprint(grid[:, 0])      # [1 4 7] -- every row, column 0\nprint(grid[0:2, 1:3])   # [[2 3]\n                        #  [5 6]] -- rows 0-1, columns 1-2`} caption="grid[row, col] with a comma is NumPy's multi-dimensional indexing — very different from Python's nested-list grid[row][col], and much more powerful for slicing." />
+
+<Explanation id="masking">
+
+**Boolean masking** is how you filter an array without writing a loop —
+compare the array to get a True/False array, then index with it:
+
+```python
+temps = np.array([68, 72, 55, 90, 61])
+hot = temps[temps > 70]     # [72 90] — only the elements where temps > 70 was True
+temps[temps < 60] = 60       # clip: replace every element under 60 with 60
+```
+
+Because array slices are views (not copies), `arr[1:4] = 0` mutates the
+original array — if you need an independent copy, call `.copy()`
+explicitly. Boolean masking (`arr[mask]`) does return a copy, so this
+particular gotcha doesn't apply there.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can slice arrays (including multi-dimensional), and filter them with boolean masks instead of a loop.
+</Checkpoint>

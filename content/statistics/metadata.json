@@ -1,0 +1,44 @@
+{
+  "slug": "statistics",
+  "name": "Statistics",
+  "category": "math",
+  "difficulty": "beginner",
+  "estimatedHours": 8,
+  "prerequisites": [
+    "probability"
+  ],
+  "usefulFor": [
+    "data-engineer",
+    "data-scientist",
+    "ml-engineer",
+    "ai-engineer",
+    "research-engineer",
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "built",
+  "description": "Practical inferential statistics — hypothesis testing, confidence intervals, regression, and A/B testing — for reasoning rigorously about data and experiments.",
+  "modules": [
+    {
+      "slug": "hypothesis-testing",
+      "title": "Hypothesis Testing",
+      "status": "built"
+    },
+    {
+      "slug": "confidence-intervals",
+      "title": "Confidence Intervals",
+      "status": "built"
+    },
+    {
+      "slug": "regression",
+      "title": "Regression",
+      "status": "built"
+    },
+    {
+      "slug": "a-b-testing",
+      "title": "A/B Testing",
+      "status": "built"
+    }
+  ]
+}

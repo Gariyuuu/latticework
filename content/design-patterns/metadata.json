@@ -1,0 +1,34 @@
+{
+  "slug": "design-patterns",
+  "name": "Design Patterns",
+  "category": "cs",
+  "difficulty": "intermediate",
+  "estimatedHours": 6,
+  "prerequisites": [
+    "oop"
+  ],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "creational",
+      "title": "Creational",
+      "status": "planned"
+    },
+    {
+      "slug": "structural",
+      "title": "Structural",
+      "status": "planned"
+    },
+    {
+      "slug": "behavioral",
+      "title": "Behavioral",
+      "status": "planned"
+    }
+  ]
+}

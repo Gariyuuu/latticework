@@ -1,0 +1,11 @@
+{
+  "id": "sorting-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def bubble_sort(nums):\n    ...\n",
+  "cases": [
+    { "call": "bubble_sort([5, 2, 4, 1, 3])", "expect": "[1, 2, 3, 4, 5]" },
+    { "call": "bubble_sort([])", "expect": "[]" },
+    { "call": "bubble_sort([1])", "expect": "[1]" }
+  ]
+}

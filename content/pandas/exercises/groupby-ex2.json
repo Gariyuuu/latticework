@@ -1,0 +1,12 @@
+{
+  "id": "groupby-ex2",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["pandas"],
+  "starterCode": "import pandas as pd\n\ndef group_mean_sorted(data, group_col, value_col):\n    ...\n",
+  "cases": [
+    { "call": "group_mean_sorted({'dept': ['eng', 'eng', 'sales', 'sales'], 'salary': [100, 200, 100, 300]}, 'dept', 'salary')", "expect": "[('sales', 200.0), ('eng', 150.0)]" },
+    { "call": "group_mean_sorted({'g': ['a', 'b'], 'v': [10, 20]}, 'g', 'v')", "expect": "[('b', 20.0), ('a', 10.0)]" },
+    { "call": "group_mean_sorted({'g': ['x', 'x'], 'v': [4, 6]}, 'g', 'v')", "expect": "[('x', 5.0)]" }
+  ]
+}

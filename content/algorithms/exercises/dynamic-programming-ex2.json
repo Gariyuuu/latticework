@@ -1,0 +1,11 @@
+{
+  "id": "dynamic-programming-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def coin_change(coins, amount):\n    ...\n",
+  "cases": [
+    { "call": "coin_change([1, 2, 5], 11)", "expect": "3" },
+    { "call": "coin_change([2], 3)", "expect": "-1" },
+    { "call": "coin_change([1], 0)", "expect": "0" }
+  ]
+}

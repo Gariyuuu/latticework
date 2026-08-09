@@ -1,0 +1,11 @@
+{
+  "id": "performance-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def build_greeting_fast(names):\n    ...\n",
+  "cases": [
+    { "call": "build_greeting_fast(['Alice', 'Bob'])", "expect": "Alice, Bob" },
+    { "call": "build_greeting_fast([])", "expect": "" },
+    { "call": "build_greeting_fast(['Solo'])", "expect": "Solo" }
+  ]
+}

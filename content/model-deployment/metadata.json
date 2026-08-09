@@ -1,0 +1,29 @@
+{
+  "slug": "model-deployment",
+  "name": "Model Deployment",
+  "category": "ai-ml",
+  "difficulty": "intermediate",
+  "estimatedHours": 5,
+  "prerequisites": [],
+  "usefulFor": [
+    "ml-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "serving-patterns",
+      "title": "Serving Patterns",
+      "status": "planned"
+    },
+    {
+      "slug": "batch-vs-real-time",
+      "title": "Batch vs Real-time",
+      "status": "planned"
+    },
+    {
+      "slug": "versioning",
+      "title": "Versioning",
+      "status": "planned"
+    }
+  ]
+}

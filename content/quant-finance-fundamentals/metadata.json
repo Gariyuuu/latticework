@@ -1,0 +1,64 @@
+{
+  "slug": "quant-finance-fundamentals",
+  "name": "Quantitative Finance Fundamentals",
+  "category": "quant",
+  "difficulty": "intermediate",
+  "estimatedHours": 8,
+  "prerequisites": [
+    "financial-markets",
+    "statistics"
+  ],
+  "usefulFor": [
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "options-basics",
+      "title": "Options Basics",
+      "status": "planned"
+    },
+    {
+      "slug": "derivatives-basics",
+      "title": "Derivatives Basics",
+      "status": "planned"
+    },
+    {
+      "slug": "black-scholes-intuition",
+      "title": "Black-Scholes Intuition",
+      "status": "planned"
+    },
+    {
+      "slug": "greeks-intuition",
+      "title": "Greeks Intuition",
+      "status": "planned"
+    },
+    {
+      "slug": "portfolio-theory",
+      "title": "Portfolio Theory",
+      "status": "planned"
+    },
+    {
+      "slug": "risk",
+      "title": "Risk",
+      "status": "planned"
+    },
+    {
+      "slug": "factor-models",
+      "title": "Factor Models",
+      "status": "planned"
+    },
+    {
+      "slug": "backtesting",
+      "title": "Backtesting",
+      "status": "planned"
+    },
+    {
+      "slug": "market-microstructure-basics",
+      "title": "Market Microstructure Basics",
+      "status": "planned"
+    }
+  ]
+}

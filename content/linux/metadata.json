@@ -1,0 +1,47 @@
+{
+  "slug": "linux",
+  "name": "Linux",
+  "category": "devops",
+  "difficulty": "beginner",
+  "estimatedHours": 6,
+  "prerequisites": [
+    "bash"
+  ],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer",
+    "data-engineer",
+    "data-scientist",
+    "ml-engineer",
+    "ai-engineer",
+    "research-engineer",
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "filesystem",
+      "title": "Filesystem",
+      "status": "planned"
+    },
+    {
+      "slug": "permissions",
+      "title": "Permissions",
+      "status": "planned"
+    },
+    {
+      "slug": "processes",
+      "title": "Processes",
+      "status": "planned"
+    },
+    {
+      "slug": "package-management",
+      "title": "Package Management",
+      "status": "planned"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "comprehensions-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def squares_of_evens(nums):\n    ...\n",
+  "cases": [
+    { "call": "squares_of_evens([1, 2, 3, 4, 5, 6])", "expect": "[4, 16, 36]" },
+    { "call": "squares_of_evens([1, 3, 5])", "expect": "[]" },
+    { "call": "squares_of_evens([2, 4])", "expect": "[4, 16]" }
+  ]
+}

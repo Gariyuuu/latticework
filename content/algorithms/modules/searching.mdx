@@ -1,0 +1,83 @@
+---
+slug: searching
+title: Searching
+estimatedMinutes: 14
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: bisect
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: searching-ex1
+    difficulty: beginner
+    concept: searching
+    prompt: "Write a function `linear_search(nums, target)` that returns the index of the first occurrence of `target` in `nums`, or -1 if it isn't present."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: searching-ex2
+    difficulty: intermediate
+    concept: searching
+    prompt: "Write a function `binary_search(nums, target)`, where `nums` is sorted ascending. Return the index of `target`, or -1 if absent — using binary search, not a linear scan."
+  - id: quiz-1
+    type: quiz
+    concept: searching
+    question: "Binary search requires the input to be ______ before it can be applied."
+    options: ["sorted", "unique", "stored as an array (not a list)", "reversed"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Linear search** checks every element in order — O(n), but works on any
+iterable, sorted or not.
+
+**Binary search** only works on *sorted* data, but is O(log n): compare the
+target to the middle element, and eliminate half the remaining range every
+step. That's the same halving idea behind BSTs from the previous course.
+
+```python
+def linear_search(nums, target):
+    for i, x in enumerate(nums):
+        if x == target:
+            return i
+    return -1
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def binary_search(nums, target):\n    lo, hi = 0, len(nums) - 1\n    while lo <= hi:\n        mid = (lo + hi) // 2\n        if nums[mid] == target:\n            return mid\n        elif nums[mid] < target:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1\n\nprint(binary_search([1, 3, 5, 7, 9, 11], 7))  # 3`} caption="Each iteration halves the search space — 1,000,000 elements take at most ~20 comparisons instead of up to 1,000,000." />
+
+<Explanation id="bisect">
+
+Python's `bisect` module does this for you in production code:
+
+```python
+import bisect
+
+nums = [1, 3, 5, 7, 9]
+bisect.bisect_left(nums, 5)   # 2 — index where 5 is (or would be inserted)
+bisect.insort(nums, 6)         # inserts 6 keeping the list sorted
+```
+
+Writing binary search by hand is worth doing once for the mental model —
+in real code, reach for `bisect`.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement both linear and binary search, and know when each applies.
+</Checkpoint>

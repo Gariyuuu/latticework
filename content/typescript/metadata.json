@@ -1,0 +1,45 @@
+{
+  "slug": "typescript",
+  "name": "TypeScript",
+  "category": "language",
+  "difficulty": "intermediate",
+  "estimatedHours": 10,
+  "prerequisites": [
+    "javascript"
+  ],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer",
+    "full-stack-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "types-interfaces",
+      "title": "Types & Interfaces",
+      "status": "planned"
+    },
+    {
+      "slug": "generics",
+      "title": "Generics",
+      "status": "planned"
+    },
+    {
+      "slug": "narrowing",
+      "title": "Narrowing",
+      "status": "planned"
+    },
+    {
+      "slug": "utility-types",
+      "title": "Utility Types",
+      "status": "planned"
+    },
+    {
+      "slug": "configuring-strict-mode",
+      "title": "Configuring strict mode",
+      "status": "planned"
+    }
+  ]
+}

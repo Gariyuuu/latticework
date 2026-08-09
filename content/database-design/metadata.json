@@ -1,0 +1,35 @@
+{
+  "slug": "database-design",
+  "name": "Database Design",
+  "category": "database",
+  "difficulty": "intermediate",
+  "estimatedHours": 6,
+  "prerequisites": [
+    "sql"
+  ],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer",
+    "data-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "normalization",
+      "title": "Normalization",
+      "status": "planned"
+    },
+    {
+      "slug": "er-modeling",
+      "title": "ER Modeling",
+      "status": "planned"
+    },
+    {
+      "slug": "constraints",
+      "title": "Constraints",
+      "status": "planned"
+    }
+  ]
+}

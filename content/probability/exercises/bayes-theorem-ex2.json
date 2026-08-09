@@ -1,0 +1,11 @@
+{
+  "id": "bayes-theorem-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def bayes_full(p_a, p_b_given_a, p_b_given_not_a):\n    ...\n",
+  "cases": [
+    { "call": "round(bayes_full(0.01, 0.99, 0.05), 4)", "expect": "0.1667" },
+    { "call": "round(bayes_full(0.5, 1.0, 0.0), 4)", "expect": "1.0" },
+    { "call": "round(bayes_full(0.1, 0.8, 0.1), 4)", "expect": "0.4706" }
+  ]
+}

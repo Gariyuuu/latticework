@@ -1,0 +1,89 @@
+---
+slug: expectation-variance
+title: Expectation & Variance
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: sample-stats
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: expectation-variance-ex1
+    difficulty: beginner
+    concept: probability-expectation-variance
+    prompt: "Write `variance(pmf)`, where `pmf` is a dict of numeric value → probability. Return Var(X) using Var(X) = E[X²] − (E[X])²."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: expectation-variance-ex2
+    difficulty: intermediate
+    concept: probability-expectation-variance
+    prompt: "Write `sample_std(values)`, returning the sample standard deviation of a list of numbers (using Bessel's correction — divide by n−1, not n). Use `statistics.stdev`."
+  - id: quiz-1
+    type: quiz
+    concept: probability-expectation-variance
+    question: "What does Var(X) = E[X²] − (E[X])² measure?"
+    options: ["How spread out a random variable's values are around its mean", "The most likely single value of X", "The probability that X equals its own mean", "The sum of all the probabilities in the PMF"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Variance** measures how spread out a random variable's outcomes are
+around its expected value — a random variable that's always exactly its
+mean has variance 0; one that swings wildly has high variance. The
+standard formula:
+
+```
+Var(X) = E[(X − E[X])²]
+```
+
+which expands algebraically to the equivalent, easier-to-compute form:
+
+```
+Var(X) = E[X²] − (E[X])²
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def variance(pmf):\n    ex = sum(v * p for v, p in pmf.items())\n    ex2 = sum((v ** 2) * p for v, p in pmf.items())\n    return ex2 - ex ** 2\n\n# A fair coin flip: 0 = tails, 1 = heads\nprint(variance({0: 0.5, 1: 0.5}))  # 0.25`} caption="E[X²] − (E[X])² is almost always the formula used in practice — computing E[(X − E[X])²] directly would require knowing E[X] before you could even start the sum." />
+
+<Explanation id="sample-stats">
+
+Given actual **sample data** (rather than a known PMF), you compute the
+same ideas slightly differently — the sample variance divides by `n − 1`,
+not `n` (Bessel's correction), because using the sample's own mean
+instead of the true population mean slightly underestimates spread,
+and `n - 1` corrects for that bias.
+
+```python
+import statistics
+
+data = [2, 4, 4, 4, 5, 5, 7, 9]
+print(statistics.mean(data))     # 5 -- statistics.mean returns an int here since it computes exactly (via Fraction internally), not a float
+print(statistics.variance(data))  # 4.571... -- sample variance (n-1)
+print(statistics.stdev(data))      # 2.138... -- sample standard deviation
+```
+
+Standard deviation is just `sqrt(variance)` — it's preferred for
+reporting because it's in the same units as the original data (variance
+is in squared units, which is hard to interpret directly).
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute variance from a PMF using the E[X²] − (E[X])² shortcut, and compute sample standard deviation from raw data with Bessel's correction.
+</Checkpoint>

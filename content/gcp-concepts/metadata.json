@@ -1,0 +1,32 @@
+{
+  "slug": "gcp-concepts",
+  "name": "GCP Concepts",
+  "category": "cloud",
+  "difficulty": "intermediate",
+  "estimatedHours": 5,
+  "prerequisites": [
+    "cloud-fundamentals"
+  ],
+  "usefulFor": [
+    "data-engineer",
+    "ml-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "compute-engine-gcs",
+      "title": "Compute Engine/GCS",
+      "status": "planned"
+    },
+    {
+      "slug": "bigquery",
+      "title": "BigQuery",
+      "status": "planned"
+    },
+    {
+      "slug": "iam",
+      "title": "IAM",
+      "status": "planned"
+    }
+  ]
+}

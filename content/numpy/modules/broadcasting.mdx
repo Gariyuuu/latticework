@@ -1,0 +1,83 @@
+---
+slug: broadcasting
+title: Broadcasting
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: rules
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: broadcasting-ex1
+    difficulty: beginner
+    concept: numpy-broadcasting
+    prompt: "Write `add_scalar(arr, scalar)`, returning `arr` with `scalar` added to every element, using broadcasting (`arr + scalar`) — not a loop."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: broadcasting-ex2
+    difficulty: intermediate
+    concept: numpy-broadcasting
+    prompt: "Write `subtract_col_means(matrix)`: given a 2D list, compute the mean of each column (`arr.mean(axis=0)`), subtract it from every row via broadcasting, and return `np.round(result, 2)`."
+  - id: quiz-1
+    type: quiz
+    concept: numpy-broadcasting
+    question: "What does NumPy do when you add a 1D array of shape (3,) to a 2D array of shape (4, 3)?"
+    options: ["It broadcasts the 1D array across every one of the 4 rows automatically", "It raises an error — shapes must match exactly", "It only adds to the first row", "It flattens the 2D array to 1D first"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Broadcasting** is what lets `arr + 5` work even though `arr` is an array
+and `5` is a single number — NumPy conceptually "stretches" the smaller
+shape to match the larger one, without actually copying any data.
+
+```python
+import numpy as np
+
+prices = np.array([100, 105, 98])
+print(prices + 10)     # [110, 115, 108] — 10 is broadcast to every element
+print(prices * 1.1)     # a 10% increase applied to every element at once
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["numpy"]} code={`import numpy as np\n\nmatrix = np.array([[1, 2, 3], [4, 5, 6]])\nrow = np.array([10, 20, 30])\nprint(matrix + row)\n# [[11 22 33]\n#  [14 25 36]] -- 'row' (shape (3,)) is broadcast across both rows of 'matrix' (shape (2,3))`} caption="A shape-(3,) array added to a shape-(2,3) array gets broadcast across every row — this is the single most useful broadcasting pattern you'll use in practice." />
+
+<Explanation id="rules">
+
+The actual rule: NumPy compares shapes element-wise from the *right*.
+Two dimensions are compatible if they're equal, or if one of them is 1
+(or missing — treated as 1). `(2, 3)` and `(3,)` are compatible because
+the trailing `3` matches and the missing leading dimension is implicitly
+1, which broadcasts to 2.
+
+```python
+(2, 3) + (3,)    # OK — (3,) broadcasts to (2, 3)
+(2, 3) + (2, 1)   # OK — the 1 broadcasts across the 3 columns
+(2, 3) + (2,)     # ERROR — 3 and 2 don't match, and neither is 1
+```
+
+Getting a `ValueError: operands could not be broadcast together` is
+almost always a sign your shapes don't line up the way you think — check
+`.shape` on both arrays first.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can predict when two array shapes will broadcast together, and use broadcasting to apply a scalar or a row/column vector across a whole array.
+</Checkpoint>

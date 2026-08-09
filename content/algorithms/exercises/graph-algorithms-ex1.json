@@ -1,0 +1,11 @@
+{
+  "id": "graph-algorithms-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "from collections import deque\n\ndef shortest_path_length(graph, start, end):\n    ...\n",
+  "cases": [
+    { "call": "shortest_path_length({'A': ['B', 'C'], 'B': ['D'], 'C': ['D'], 'D': []}, 'A', 'D')", "expect": "2" },
+    { "call": "shortest_path_length({'A': ['B'], 'B': []}, 'A', 'A')", "expect": "0" },
+    { "call": "shortest_path_length({'A': ['B'], 'B': [], 'C': []}, 'A', 'C')", "expect": "-1" }
+  ]
+}

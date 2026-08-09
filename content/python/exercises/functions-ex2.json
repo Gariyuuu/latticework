@@ -1,0 +1,10 @@
+{
+  "id": "functions-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def apply_twice(f, x):\n    ...\n",
+  "cases": [
+    { "call": "apply_twice(lambda x: x + 1, 3)", "expect": "5" },
+    { "call": "apply_twice(lambda x: x * 2, 3)", "expect": "12" }
+  ]
+}

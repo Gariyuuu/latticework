@@ -1,0 +1,80 @@
+---
+slug: hash-tables
+title: Hash Tables
+estimatedMinutes: 14
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: collisions
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: hash-tables-ex1
+    difficulty: beginner
+    concept: hash-tables
+    prompt: "Write a function `most_frequent(items)` that returns the most frequent element in a list, breaking ties by whichever value appears first in the list."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: hash-tables-ex2
+    difficulty: intermediate
+    concept: hash-tables
+    prompt: "Write a function `two_sum(nums, target)` that returns a list `[i, j]` (i < j) of indices whose values sum to `target`, using a single pass with a dict — no nested loops."
+  - id: quiz-1
+    type: quiz
+    concept: hash-tables
+    question: "What is the average-case time complexity of a lookup (`x in some_dict`) in a Python dict?"
+    options: ["O(1)", "O(n)", "O(log n)", "O(n log n)"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A hash table maps keys to values by running the key through a **hash
+function** to compute a bucket index — giving average O(1) lookup, insert,
+and delete regardless of how many items it holds. Python's `dict` and `set`
+are both hash tables.
+
+```python
+counts = {}
+for word in ["a", "b", "a", "c", "a"]:
+    counts[word] = counts.get(word, 0) + 1
+print(counts)   # {'a': 3, 'b': 1, 'c': 1}
+```
+
+`dict.get(key, default)` avoids a `KeyError` when the key might not exist
+yet — the single most common pattern for counting with a dict.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`from collections import Counter\n\nwords = ["apple", "banana", "apple", "cherry", "banana", "apple"]\ncounts = Counter(words)\nprint(counts.most_common(2))  # [('apple', 3), ('banana', 2)]`} caption="collections.Counter is a dict subclass built exactly for this — reach for it instead of hand-rolling counting logic in real code." />
+
+<Explanation id="collisions">
+
+A hash function can map two different keys to the same bucket — a
+**collision**. Python's dict handles this internally (open addressing), so
+you never have to think about it directly, but it's why:
+
+- Dict keys must be hashable (immutable) — you can't use a `list` as a key,
+  but you can use a `tuple`.
+- Worst-case lookup is O(n) if *everything* collides (essentially never
+  happens in practice with a good hash function), which is why textbooks
+  always say "average-case O(1)," not "guaranteed O(1)."
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can use a dict for O(1) average counting and lookups, and recognize the "hash map instead of nested loop" pattern.
+</Checkpoint>

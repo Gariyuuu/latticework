@@ -1,0 +1,32 @@
+{
+  "slug": "feature-engineering",
+  "name": "Feature Engineering",
+  "category": "ai-ml",
+  "difficulty": "intermediate",
+  "estimatedHours": 5,
+  "prerequisites": [
+    "pandas"
+  ],
+  "usefulFor": [
+    "data-scientist",
+    "ml-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "encoding",
+      "title": "Encoding",
+      "status": "planned"
+    },
+    {
+      "slug": "scaling",
+      "title": "Scaling",
+      "status": "planned"
+    },
+    {
+      "slug": "interaction-features",
+      "title": "Interaction Features",
+      "status": "planned"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "id": "conditionals-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def classify(x):\n    ...\n",
+  "cases": [
+    { "call": "classify(0)", "expect": "zero" },
+    { "call": "classify(4)", "expect": "positive even" },
+    { "call": "classify(7)", "expect": "positive odd" },
+    { "call": "classify(-3)", "expect": "negative" }
+  ]
+}

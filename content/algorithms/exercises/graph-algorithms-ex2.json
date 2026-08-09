@@ -1,0 +1,11 @@
+{
+  "id": "graph-algorithms-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def topological_sort(graph):\n    ...\n",
+  "cases": [
+    { "call": "topological_sort({'A': ['B'], 'B': ['C'], 'C': ['D'], 'D': []})", "expect": "['A', 'B', 'C', 'D']" },
+    { "call": "topological_sort({'X': ['Y'], 'Y': []})", "expect": "['X', 'Y']" },
+    { "call": "topological_sort({'M': ['N'], 'N': ['O'], 'O': []})", "expect": "['M', 'N', 'O']" }
+  ]
+}

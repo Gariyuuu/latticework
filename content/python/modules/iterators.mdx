@@ -1,0 +1,91 @@
+---
+slug: iterators
+title: Iterators & Generators
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: protocol
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: iterators-ex1
+    difficulty: beginner
+    concept: python-iterators
+    prompt: "Write a generator function `squares_gen(n)` that yields the squares 0², 1², ..., (n-1)², one at a time, using `yield`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: iterators-ex2
+    difficulty: intermediate
+    concept: python-iterators
+    prompt: "Complete the `Countdown` class below by implementing `__next__(self)`. It should return `self.current`, decrement it, and raise `StopIteration` once `self.current` reaches 0."
+  - id: quiz-1
+    type: quiz
+    concept: python-iterators
+    question: "What exception must a custom __next__ method raise to signal there are no more items?"
+    options: ["StopIteration", "IndexError", "EOFError", "ValueError"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Every `for` loop you've written works because the object being looped over
+is **iterable** — it can produce an **iterator**, which yields one value at
+a time via `__next__()` until it raises `StopIteration`.
+
+The easiest way to write your own iterator is a **generator function**:
+any function containing `yield` instead of `return`. Calling it doesn't run
+the body immediately — it returns a generator object that runs up to the
+next `yield` each time you ask it for a value.
+
+```python
+def count_up_to(n):
+    i = 1
+    while i <= n:
+        yield i
+        i += 1
+
+for x in count_up_to(3):
+    print(x)   # 1, 2, 3
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def fibonacci_gen(count):\n    a, b = 0, 1\n    for _ in range(count):\n        yield a\n        a, b = b, a + b\n\nprint(list(fibonacci_gen(6)))  # [0, 1, 1, 2, 3, 5]`} caption="A generator never builds the whole sequence in memory at once — it computes each value lazily, one yield at a time. That matters a lot once 'count' is huge." />
+
+<Explanation id="protocol">
+
+Under the hood, `for x in thing:` is really doing:
+
+```python
+it = iter(thing)      # calls thing.__iter__()
+while True:
+    try:
+        x = next(it)   # calls it.__next__()
+    except StopIteration:
+        break
+    # loop body with x
+```
+
+A generator function handles all of this for you automatically. Writing a
+class with `__iter__`/`__next__` by hand — like `Countdown` below — shows
+you exactly what a generator is doing behind the scenes.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can write a generator function with yield, and understand the __iter__/__next__/StopIteration protocol it's built on.
+</Checkpoint>

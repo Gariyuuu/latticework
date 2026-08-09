@@ -1,0 +1,11 @@
+{
+  "id": "expectation-variance-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import statistics\n\ndef sample_std(values):\n    ...\n",
+  "cases": [
+    { "call": "round(sample_std([2, 4, 4, 4, 5, 5, 7, 9]), 4)", "expect": "2.1381" },
+    { "call": "round(sample_std([1, 1, 1]), 4)", "expect": "0.0" },
+    { "call": "round(sample_std([1, 2]), 4)", "expect": "0.7071" }
+  ]
+}

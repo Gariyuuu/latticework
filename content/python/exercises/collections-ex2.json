@@ -1,0 +1,11 @@
+{
+  "id": "collections-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def common_elements(a, b):\n    ...\n",
+  "cases": [
+    { "call": "common_elements([1, 2, 3, 4], [3, 4, 5, 6])", "expect": "[3, 4]" },
+    { "call": "common_elements([1, 2], [3, 4])", "expect": "[]" },
+    { "call": "common_elements([1, 1, 2], [1, 2, 2])", "expect": "[1, 2]" }
+  ]
+}

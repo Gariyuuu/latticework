@@ -1,0 +1,29 @@
+{
+  "slug": "openai-api-concepts",
+  "name": "OpenAI-style API Concepts",
+  "category": "ai-ml",
+  "difficulty": "beginner",
+  "estimatedHours": 3,
+  "prerequisites": [],
+  "usefulFor": [
+    "ai-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "chat-completions",
+      "title": "Chat Completions",
+      "status": "planned"
+    },
+    {
+      "slug": "streaming",
+      "title": "Streaming",
+      "status": "planned"
+    },
+    {
+      "slug": "function-tool-calling",
+      "title": "Function/Tool Calling",
+      "status": "planned"
+    }
+  ]
+}

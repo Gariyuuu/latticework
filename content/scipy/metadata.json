@@ -1,0 +1,38 @@
+{
+  "slug": "scipy",
+  "name": "SciPy",
+  "category": "data-science",
+  "difficulty": "intermediate",
+  "estimatedHours": 6,
+  "prerequisites": [
+    "numpy"
+  ],
+  "usefulFor": [
+    "data-engineer",
+    "data-scientist",
+    "quant-researcher"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "optimization",
+      "title": "Optimization",
+      "status": "planned"
+    },
+    {
+      "slug": "statistics",
+      "title": "Statistics",
+      "status": "planned"
+    },
+    {
+      "slug": "linear-algebra",
+      "title": "Linear Algebra",
+      "status": "planned"
+    },
+    {
+      "slug": "interpolation",
+      "title": "Interpolation",
+      "status": "planned"
+    }
+  ]
+}

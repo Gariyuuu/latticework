@@ -1,0 +1,35 @@
+{
+  "slug": "aws-concepts",
+  "name": "AWS Concepts",
+  "category": "cloud",
+  "difficulty": "intermediate",
+  "estimatedHours": 6,
+  "prerequisites": [
+    "cloud-fundamentals"
+  ],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer",
+    "data-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "ec2-s3-iam",
+      "title": "EC2/S3/IAM",
+      "status": "planned"
+    },
+    {
+      "slug": "lambda",
+      "title": "Lambda",
+      "status": "planned"
+    },
+    {
+      "slug": "rds",
+      "title": "RDS",
+      "status": "planned"
+    }
+  ]
+}

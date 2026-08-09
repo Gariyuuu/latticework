@@ -1,0 +1,12 @@
+{
+  "id": "linear-algebra-ops-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["numpy"],
+  "starterCode": "import numpy as np\n\ndef dot_product(a, b):\n    ...\n",
+  "cases": [
+    { "call": "dot_product([1, 2, 3], [4, 5, 6])", "expect": "32" },
+    { "call": "dot_product([0, 0], [1, 1])", "expect": "0" },
+    { "call": "dot_product([1], [5])", "expect": "5" }
+  ]
+}

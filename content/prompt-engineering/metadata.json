@@ -1,0 +1,29 @@
+{
+  "slug": "prompt-engineering",
+  "name": "Prompt Engineering",
+  "category": "ai-ml",
+  "difficulty": "beginner",
+  "estimatedHours": 4,
+  "prerequisites": [],
+  "usefulFor": [
+    "ai-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "instruction-design",
+      "title": "Instruction Design",
+      "status": "planned"
+    },
+    {
+      "slug": "few-shot-examples",
+      "title": "Few-shot Examples",
+      "status": "planned"
+    },
+    {
+      "slug": "structured-output",
+      "title": "Structured Output",
+      "status": "planned"
+    }
+  ]
+}

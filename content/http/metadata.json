@@ -1,0 +1,32 @@
+{
+  "slug": "http",
+  "name": "HTTP",
+  "category": "web",
+  "difficulty": "beginner",
+  "estimatedHours": 3,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "requests-responses",
+      "title": "Requests & Responses",
+      "status": "planned"
+    },
+    {
+      "slug": "headers",
+      "title": "Headers",
+      "status": "planned"
+    },
+    {
+      "slug": "caching",
+      "title": "Caching",
+      "status": "planned"
+    }
+  ]
+}

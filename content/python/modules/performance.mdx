@@ -1,0 +1,92 @@
+---
+slug: performance
+title: Performance
+estimatedMinutes: 15
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: strings
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: performance-ex1
+    difficulty: beginner
+    concept: python-performance
+    prompt: "Write `has_duplicates_fast(nums)`, returning True if `nums` contains any duplicate value. Use a set for O(n) — don't compare every pair (that's O(n²))."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: performance-ex2
+    difficulty: intermediate
+    concept: python-performance
+    prompt: "Write `build_greeting_fast(names)` that joins every name in `names` with ', ' into a single string. Use `str.join`, not `+=` in a loop."
+  - id: quiz-1
+    type: quiz
+    concept: python-performance
+    question: "Why is repeatedly doing `result += item` to build a large string in a loop O(n²), while `''.join(items)` is O(n)?"
+    options: ["Strings are immutable, so += creates a brand-new string and copies everything each time", "Python doesn't actually support += for strings", "join() runs across multiple CPU cores", "+= is only slow for numbers, not strings"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+You've already met the tools for this course — hash tables, sets, sorting,
+comprehensions. This module is about a habit: noticing when everyday code
+is accidentally doing more work than it needs to, usually by hiding an
+O(n) operation inside a loop that runs n times, silently turning O(n) work
+into O(n²).
+
+The classic trap: checking membership in a list inside a loop.
+
+```python
+# O(n * m) — "x in slow_list" is O(n) each time, called m times
+def find_common_slow(a, slow_list):
+    return [x for x in a if x in slow_list]
+
+# O(n + m) — build a set once, "x in fast_set" is O(1) each time
+def find_common_fast(a, b):
+    fast_set = set(b)
+    return [x for x in a if x in fast_set]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def has_duplicates_slow(nums):\n    for i in range(len(nums)):\n        for j in range(i + 1, len(nums)):\n            if nums[i] == nums[j]:\n                return True\n    return False\n\ndef has_duplicates_fast(nums):\n    seen = set()\n    for n in nums:\n        if n in seen:\n            return True\n        seen.add(n)\n    return False`} caption="Both return the same answer — but has_duplicates_slow does up to n²/2 comparisons, while has_duplicates_fast does at most n, trading a little memory (the set) for a lot of speed." />
+
+<Explanation id="strings">
+
+Another common trap: building a large string with repeated `+=` in a
+loop. Because Python strings are immutable, every `+=` allocates a brand
+new string and copies the old contents into it — do that n times and
+you've copied O(n²) characters total.
+
+```python
+# O(n²) — each += copies everything accumulated so far
+result = ""
+for word in words:
+    result += word + " "
+
+# O(n) — join does exactly one pass, allocating once
+result = " ".join(words)
+```
+
+`str.join` is the standard fix — reach for it any time you're building a
+string from many pieces in a loop.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can spot an accidental O(n²) hiding in "membership check inside a loop" or "string += inside a loop," and fix both with a set and str.join.
+</Checkpoint>

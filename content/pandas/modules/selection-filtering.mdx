@@ -1,0 +1,88 @@
+---
+slug: selection-filtering
+title: Selection & Filtering
+estimatedMinutes: 15
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: loc-iloc
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: selection-filtering-ex1
+    difficulty: beginner
+    concept: pandas-filtering
+    prompt: "Write `rows_where(data, col, threshold)`: build a DataFrame from `data`, and return the rows where `col` is greater than `threshold`, as a list of dicts (`.to_dict('records')`)."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: selection-filtering-ex2
+    difficulty: intermediate
+    concept: pandas-filtering
+    prompt: "Write `select_columns(data, cols)`: build a DataFrame from `data`, and return only the columns named in `cols`, as `.to_dict('list')`."
+  - id: quiz-1
+    type: quiz
+    concept: pandas-filtering
+    question: "What does df[df['score'] > 60] return?"
+    options: ["A new DataFrame containing only the rows where the 'score' column is greater than 60", "True or False for the whole DataFrame", "An error — you can't index with a comparison", "Only the 'score' column"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Filtering a DataFrame uses the same boolean-masking idea as NumPy:
+compare a column to get a True/False Series, then index the DataFrame
+with it.
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({
+    "name": ["Ada", "Grace", "Alan"],
+    "score": [92, 65, 78],
+})
+passing = df[df["score"] >= 70]
+print(passing)
+#     name  score
+# 0    Ada     92
+# 2   Alan     78
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["pandas"]} code={`import pandas as pd\n\ndf = pd.DataFrame({"name": ["Ada", "Grace", "Alan"], "dept": ["eng", "sales", "eng"]})\nprint(df[df["dept"] == "eng"])\nprint(df[df["dept"] == "eng"]["name"].tolist())  # ['Ada', 'Alan']`} caption="Chaining a column selection after a row filter is one of the most common pandas patterns — filter rows, then pull out just the column you need." />
+
+<Explanation id="loc-iloc">
+
+Two more selection tools you'll use constantly:
+
+- `df.loc[label]` — select by index **label** (row or column name).
+- `df.iloc[position]` — select by integer **position**, like a list.
+
+```python
+df.loc[0, "name"]     # the 'name' value in the row labeled 0
+df.iloc[0, 0]           # the value in the first row, first column — by position
+df.loc[df["dept"] == "eng", "name"]   # filter rows AND pick one column, in one call
+```
+
+Combine multiple conditions with `&` (and) / `|` (or) — not Python's
+`and`/`or`, which don't work element-wise on a Series — and wrap each
+condition in parentheses: `df[(df["a"] > 1) & (df["b"] < 5)]`.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can filter DataFrame rows with a boolean mask and select specific columns, including chaining both together.
+</Checkpoint>

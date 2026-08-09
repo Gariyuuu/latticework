@@ -1,0 +1,11 @@
+{
+  "id": "random-variables-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def expected_value(pmf):\n    ...\n",
+  "cases": [
+    { "call": "expected_value({1: 0.5, 2: 0.5})", "expect": "1.5" },
+    { "call": "expected_value({0: 0.2, 1: 0.3, 2: 0.5})", "expect": "1.3" },
+    { "call": "expected_value({10: 1.0})", "expect": "10.0" }
+  ]
+}

@@ -1,0 +1,85 @@
+---
+slug: time-series
+title: Time Series
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: rolling
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: time-series-ex1
+    difficulty: beginner
+    concept: pandas-time-series
+    prompt: "Write `date_range_list(start, periods)`, returning a list of `periods` consecutive date strings (format 'YYYY-MM-DD') starting at `start`, using `pd.date_range`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: time-series-ex2
+    difficulty: intermediate
+    concept: pandas-time-series
+    prompt: "Write `rolling_mean_3(values)`, returning the 3-period rolling mean of `values` as a list, dropping the leading positions that don't have a full window (`.rolling(3).mean().dropna().tolist()`)."
+  - id: quiz-1
+    type: quiz
+    concept: pandas-time-series
+    question: "Why does a 3-period rolling mean produce NaN for the first two positions of a series?"
+    options: ["There aren't yet 3 values available to average over", "Rolling means always skip the first row", "It's a pandas bug", "The window size must be even"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+pandas has first-class support for dates — `pd.date_range` generates a
+sequence of dates, and a `DatetimeIndex` lets you slice a Series by
+calendar range the same way you'd slice by position.
+
+```python
+import pandas as pd
+
+dates = pd.date_range("2024-01-01", periods=5)
+print(dates)
+# DatetimeIndex(['2024-01-01', '2024-01-02', ..., '2024-01-05'], dtype='datetime64[ns]', freq='D')
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["pandas"]} code={`import pandas as pd\n\nprices = pd.Series(\n    [100, 102, 101, 105, 108],\n    index=pd.date_range("2024-01-01", periods=5),\n)\nprint(prices["2024-01-03":])  # every price from Jan 3rd onward -- date-range slicing`} caption="With a DatetimeIndex, slicing accepts date strings directly — no need to compute positions yourself, and the range is inclusive on both ends." />
+
+<Explanation id="rolling">
+
+A **rolling window** computes a statistic over a sliding N-period range —
+the standard way to smooth noisy time series data, like a moving average
+of stock prices.
+
+```python
+prices = pd.Series([100, 102, 101, 105, 108])
+print(prices.rolling(3).mean())
+# 0      NaN         -- fewer than 3 values available yet
+# 1      NaN
+# 2    101.0          -- mean of [100, 102, 101]
+# 3    102.667         -- mean of [102, 101, 105]
+# 4    104.667         -- mean of [101, 105, 108]
+```
+
+The first `window - 1` positions are always NaN — there simply aren't
+enough preceding values yet to fill the window. `.dropna()` afterward is
+the usual way to discard them once you only want the fully-computed part.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can generate a date range, index a Series by date, and compute a rolling window statistic like a moving average.
+</Checkpoint>

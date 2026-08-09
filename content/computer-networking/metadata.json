@@ -1,0 +1,31 @@
+{
+  "slug": "computer-networking",
+  "name": "Computer Networking",
+  "category": "cs",
+  "difficulty": "intermediate",
+  "estimatedHours": 6,
+  "prerequisites": [
+    "networking-basics"
+  ],
+  "usefulFor": [
+    "software-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "osi-model",
+      "title": "OSI Model",
+      "status": "planned"
+    },
+    {
+      "slug": "routing-basics",
+      "title": "Routing Basics",
+      "status": "planned"
+    },
+    {
+      "slug": "sockets",
+      "title": "Sockets",
+      "status": "planned"
+    }
+  ]
+}

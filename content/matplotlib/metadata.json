@@ -1,0 +1,40 @@
+{
+  "slug": "matplotlib",
+  "name": "Matplotlib",
+  "category": "data-science",
+  "difficulty": "beginner",
+  "estimatedHours": 4,
+  "prerequisites": [
+    "numpy"
+  ],
+  "usefulFor": [
+    "data-engineer",
+    "data-scientist",
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "basic-plots",
+      "title": "Basic Plots",
+      "status": "planned"
+    },
+    {
+      "slug": "subplots",
+      "title": "Subplots",
+      "status": "planned"
+    },
+    {
+      "slug": "styling",
+      "title": "Styling",
+      "status": "planned"
+    },
+    {
+      "slug": "saving-figures",
+      "title": "Saving Figures",
+      "status": "planned"
+    }
+  ]
+}

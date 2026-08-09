@@ -1,0 +1,53 @@
+{
+  "slug": "javascript",
+  "name": "JavaScript",
+  "category": "language",
+  "difficulty": "beginner",
+  "estimatedHours": 14,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer",
+    "full-stack-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "syntax-variables",
+      "title": "Syntax & Variables",
+      "status": "planned"
+    },
+    {
+      "slug": "functions",
+      "title": "Functions",
+      "status": "planned"
+    },
+    {
+      "slug": "objects-arrays",
+      "title": "Objects & Arrays",
+      "status": "planned"
+    },
+    {
+      "slug": "async-promises",
+      "title": "Async/Promises",
+      "status": "planned"
+    },
+    {
+      "slug": "dom-basics",
+      "title": "DOM Basics",
+      "status": "planned"
+    },
+    {
+      "slug": "modules",
+      "title": "Modules",
+      "status": "planned"
+    },
+    {
+      "slug": "error-handling",
+      "title": "Error Handling",
+      "status": "planned"
+    }
+  ]
+}

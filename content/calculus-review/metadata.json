@@ -1,0 +1,34 @@
+{
+  "slug": "calculus-review",
+  "name": "Calculus Review",
+  "category": "math",
+  "difficulty": "beginner",
+  "estimatedHours": 5,
+  "prerequisites": [],
+  "usefulFor": [
+    "ml-engineer",
+    "ai-engineer",
+    "research-engineer",
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "derivatives",
+      "title": "Derivatives",
+      "status": "planned"
+    },
+    {
+      "slug": "gradients",
+      "title": "Gradients",
+      "status": "planned"
+    },
+    {
+      "slug": "chain-rule-for-backprop",
+      "title": "Chain Rule for Backprop",
+      "status": "planned"
+    }
+  ]
+}

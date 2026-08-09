@@ -1,0 +1,11 @@
+{
+  "id": "iterators-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "class Countdown:\n    def __init__(self, start):\n        self.current = start\n\n    def __iter__(self):\n        return self\n\n    def __next__(self):\n        ...\n",
+  "cases": [
+    { "call": "list(Countdown(3))", "expect": "[3, 2, 1]" },
+    { "call": "list(Countdown(0))", "expect": "[]" },
+    { "call": "list(Countdown(1))", "expect": "[1]" }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "slug": "model-evaluation",
+  "name": "Model Evaluation",
+  "category": "ai-ml",
+  "difficulty": "intermediate",
+  "estimatedHours": 5,
+  "prerequisites": [
+    "statistics"
+  ],
+  "usefulFor": [
+    "data-scientist",
+    "ml-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "metrics",
+      "title": "Metrics",
+      "status": "planned"
+    },
+    {
+      "slug": "cross-validation",
+      "title": "Cross-validation",
+      "status": "planned"
+    },
+    {
+      "slug": "bias-variance",
+      "title": "Bias/Variance",
+      "status": "planned"
+    }
+  ]
+}

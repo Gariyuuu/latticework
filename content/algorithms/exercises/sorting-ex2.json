@@ -1,0 +1,10 @@
+{
+  "id": "sorting-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def sort_by_length_then_alpha(words):\n    ...\n",
+  "cases": [
+    { "call": "sort_by_length_then_alpha(['banana', 'kiwi', 'fig', 'apple'])", "expect": "['fig', 'kiwi', 'apple', 'banana']" },
+    { "call": "sort_by_length_then_alpha(['bb', 'aa', 'c'])", "expect": "['c', 'aa', 'bb']" }
+  ]
+}

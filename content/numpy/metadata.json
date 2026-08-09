@@ -1,0 +1,49 @@
+{
+  "slug": "numpy",
+  "name": "NumPy",
+  "category": "data-science",
+  "difficulty": "beginner",
+  "estimatedHours": 6,
+  "prerequisites": [
+    "python"
+  ],
+  "usefulFor": [
+    "data-engineer",
+    "data-scientist",
+    "ml-engineer",
+    "ai-engineer",
+    "research-engineer",
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "built",
+  "description": "The array library almost every data/ML/quant library in Python builds on — vectorized math, broadcasting, and linear algebra without hand-written loops.",
+  "modules": [
+    {
+      "slug": "arrays",
+      "title": "Arrays",
+      "status": "built"
+    },
+    {
+      "slug": "vectorization",
+      "title": "Vectorization",
+      "status": "built"
+    },
+    {
+      "slug": "broadcasting",
+      "title": "Broadcasting",
+      "status": "built"
+    },
+    {
+      "slug": "indexing-slicing",
+      "title": "Indexing & Slicing",
+      "status": "built"
+    },
+    {
+      "slug": "linear-algebra-ops",
+      "title": "Linear Algebra Ops",
+      "status": "built"
+    }
+  ]
+}

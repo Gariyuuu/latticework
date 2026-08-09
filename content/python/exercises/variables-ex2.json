@@ -1,0 +1,10 @@
+{
+  "id": "variables-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def swap(a, b):\n    ...\n",
+  "cases": [
+    { "call": "swap(1, 2)", "expect": "(2, 1)" },
+    { "call": "swap('x', 'y')", "expect": "('y', 'x')" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "heaps-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import heapq\n\ndef merge_sorted_lists(lists):\n    ...\n",
+  "cases": [
+    { "call": "merge_sorted_lists([[1, 4, 7], [2, 5, 8], [3, 6, 9]])", "expect": "[1, 2, 3, 4, 5, 6, 7, 8, 9]" },
+    { "call": "merge_sorted_lists([[1, 3], [2]])", "expect": "[1, 2, 3]" },
+    { "call": "merge_sorted_lists([[]])", "expect": "[]" }
+  ]
+}

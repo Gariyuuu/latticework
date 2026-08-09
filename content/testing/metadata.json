@@ -1,0 +1,45 @@
+{
+  "slug": "testing",
+  "name": "Testing",
+  "category": "cs",
+  "difficulty": "beginner",
+  "estimatedHours": 5,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer",
+    "data-engineer",
+    "data-scientist",
+    "ml-engineer",
+    "ai-engineer",
+    "research-engineer",
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "unit-tests",
+      "title": "Unit Tests",
+      "status": "planned"
+    },
+    {
+      "slug": "mocking",
+      "title": "Mocking",
+      "status": "planned"
+    },
+    {
+      "slug": "integration-tests",
+      "title": "Integration Tests",
+      "status": "planned"
+    },
+    {
+      "slug": "test-design",
+      "title": "Test Design",
+      "status": "planned"
+    }
+  ]
+}

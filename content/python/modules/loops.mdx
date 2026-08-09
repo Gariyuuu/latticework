@@ -1,0 +1,80 @@
+---
+slug: loops
+title: Loops
+estimatedMinutes: 12
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: control
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: loops-ex1
+    difficulty: beginner
+    concept: python-loops
+    prompt: "Write a function `sum_to_n(n)` that returns the sum of all integers from 1 to n (inclusive), using a loop."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: loops-ex2
+    difficulty: intermediate
+    concept: python-loops
+    prompt: "Write a function `count_vowels(s)` that returns how many characters in the string s are vowels (a, e, i, o, u — case-insensitive), using a loop."
+  - id: quiz-1
+    type: quiz
+    concept: python-loops
+    question: "What values does `range(3)` produce when iterated?"
+    options: ["0, 1, 2", "1, 2, 3", "0, 1, 2, 3", "Just 3"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Python has two loop constructs: `for`, which iterates over any sequence
+(strings, lists, ranges...), and `while`, which repeats as long as a
+condition holds.
+
+```python
+for i in range(5):
+    print(i)   # 0 1 2 3 4
+
+n = 0
+while n < 3:
+    print(n)
+    n += 1
+```
+
+Most of the time you'll reach for `for` — it's harder to accidentally write
+an infinite loop with it.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`total = 0\nfor n in [1, 2, 3, 4, 5]:\n    total += n\nprint(total)`} caption="A for loop accumulating a running total — one of the most common loop shapes you'll write." />
+
+<Explanation id="control">
+
+Two keywords change a loop's flow:
+
+- `break` — exit the loop immediately.
+- `continue` — skip to the next iteration.
+
+`range(start, stop, step)` is the usual way to loop a fixed number of
+times — `range(5)` is `0..4`, `range(2, 10, 2)` is even numbers `2..8`.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can write for/while loops and use break/continue to control them.
+</Checkpoint>

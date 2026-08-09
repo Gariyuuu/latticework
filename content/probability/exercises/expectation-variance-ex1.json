@@ -1,0 +1,11 @@
+{
+  "id": "expectation-variance-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def variance(pmf):\n    ...\n",
+  "cases": [
+    { "call": "round(variance({0: 0.5, 1: 0.5}), 4)", "expect": "0.25" },
+    { "call": "round(variance({1: 1.0}), 4)", "expect": "0.0" },
+    { "call": "round(variance({-1: 0.5, 1: 0.5}), 4)", "expect": "1.0" }
+  ]
+}

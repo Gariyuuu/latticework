@@ -1,0 +1,83 @@
+---
+slug: confidence-intervals
+title: Confidence Intervals
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: interpretation
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: confidence-intervals-ex1
+    difficulty: beginner
+    concept: statistics-confidence-intervals
+    prompt: "Write `margin_of_error(std, n, z=1.96)`, returning the margin of error: z × (std / √n)."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: confidence-intervals-ex2
+    difficulty: intermediate
+    concept: statistics-confidence-intervals
+    prompt: "Write `confidence_interval(sample_mean, std, n, z=1.96)`, returning a `(lower, upper)` tuple: the sample mean plus and minus the margin of error."
+  - id: quiz-1
+    type: quiz
+    concept: statistics-confidence-intervals
+    question: "What does a 95% confidence interval actually mean?"
+    options: ["If we repeated this sampling process many times, about 95% of the resulting intervals would contain the true population parameter", "There's a 95% chance the true value falls in this specific interval", "95% of the individual data points fall within this interval", "The sample mean is accurate to within 95%"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A single sample mean is just an estimate — a **confidence interval** gives
+a range that's likely to contain the true population value, instead of
+one specific number pretending to be exact.
+
+```python
+import math
+
+def margin_of_error(std, n, z=1.96):
+    return z * (std / math.sqrt(n))
+```
+
+`z=1.96` corresponds to a 95% confidence level for a normal distribution
+— it's the number of standard errors on each side of the mean that
+captures the middle 95% of the distribution.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`import math\n\ndef confidence_interval(sample_mean, std, n, z=1.96):\n    moe = z * (std / math.sqrt(n))\n    return (sample_mean - moe, sample_mean + moe)\n\n# 100 customers rated a product; mean rating 4.2, std 0.8\nlower, upper = confidence_interval(sample_mean=4.2, std=0.8, n=100)\nprint(round(lower, 3), round(upper, 3))  # 4.043 4.357`} caption="A tighter interval (smaller n gives a wider one) comes from either a bigger sample or a lower confidence level — there's no way to get 'more confident AND more precise' for free from the same data." />
+
+<Explanation id="interpretation">
+
+The correct interpretation of "95% confidence" is about the *procedure*,
+not this one specific interval: if you repeated the whole sampling
+process many times and built a new interval each time, about 95% of
+those intervals would contain the true population value. Once you have
+one actual interval in front of you, the true value either is or isn't
+in it — there's no probability left to talk about for that specific
+interval.
+
+A **wider** interval (bigger `z`, like 2.58 for 99% confidence) trades
+precision for more confidence that you've captured the true value — you
+can always be "more confident" by being willing to say less precisely
+where the value is.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute a margin of error and build a confidence interval around a sample mean, and can state the correct (frequentist) interpretation of what "95% confidence" means.
+</Checkpoint>

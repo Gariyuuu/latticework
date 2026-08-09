@@ -1,0 +1,42 @@
+{
+  "slug": "probability",
+  "name": "Probability",
+  "category": "math",
+  "difficulty": "beginner",
+  "estimatedHours": 8,
+  "prerequisites": [],
+  "usefulFor": [
+    "data-engineer",
+    "data-scientist",
+    "ml-engineer",
+    "ai-engineer",
+    "research-engineer",
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "built",
+  "description": "The probability foundations statistics, ML, and quant work all build on — random variables, distributions, Bayes' theorem, and expectation/variance.",
+  "modules": [
+    {
+      "slug": "random-variables",
+      "title": "Random Variables",
+      "status": "built"
+    },
+    {
+      "slug": "distributions",
+      "title": "Distributions",
+      "status": "built"
+    },
+    {
+      "slug": "bayes-theorem",
+      "title": "Bayes' Theorem",
+      "status": "built"
+    },
+    {
+      "slug": "expectation-variance",
+      "title": "Expectation & Variance",
+      "status": "built"
+    }
+  ]
+}

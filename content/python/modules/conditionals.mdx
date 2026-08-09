@@ -1,0 +1,84 @@
+---
+slug: conditionals
+title: Conditionals
+estimatedMinutes: 12
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: truthy
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: conditionals-ex1
+    difficulty: beginner
+    concept: python-conditionals
+    prompt: "Write a function `grade(score)` that returns a letter grade string for a 0-100 score: 'A' for 90+, 'B' for 80+, 'C' for 70+, 'D' for 60+, otherwise 'F'."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: conditionals-ex2
+    difficulty: intermediate
+    concept: python-conditionals
+    prompt: "Write a function `classify(x)` that returns 'zero' if x is 0, 'positive even' if x is a positive even number, 'positive odd' if x is a positive odd number, and 'negative' if x is negative."
+  - id: quiz-1
+    type: quiz
+    concept: python-conditionals
+    question: "Which of these values is falsy in Python (evaluates as False in an if-statement)?"
+    options: ["[] (an empty list)", "[0] (a list containing zero)", "the string \"False\"", "-1"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+`if` / `elif` / `else` branch on conditions, checked top to bottom — the
+first True branch runs, and the rest are skipped entirely, even if they'd
+also be True.
+
+```python
+def sign(n):
+    if n > 0:
+        return "positive"
+    elif n < 0:
+        return "negative"
+    else:
+        return "zero"
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`age = 20\nif age < 13:\n    category = "child"\nelif age < 20:\n    category = "teen"\nelse:\n    category = "adult"\nprint(category)  # adult`} caption="Order matters: 'elif age < 20' only runs if age >= 13 already failed, so it effectively means 13 <= age < 20." />
+
+<Explanation id="truthy">
+
+Python doesn't require a boolean — any value can be used in an `if`, and
+each type has a notion of "truthy" or "falsy." Falsy values: `0`, `0.0`,
+`""` (empty string), `[]`, `{}`, `set()`, and `None`. Everything else is
+truthy, including non-empty containers, non-zero numbers, and the string
+`"False"` (a non-empty string is always truthy, regardless of its
+contents).
+
+```python
+items = []
+if items:
+    print("has items")
+else:
+    print("empty")   # this runs — empty list is falsy
+```
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can chain if/elif/else conditions and know which Python values are truthy vs falsy.
+</Checkpoint>

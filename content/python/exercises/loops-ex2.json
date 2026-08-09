@@ -1,0 +1,11 @@
+{
+  "id": "loops-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def count_vowels(s):\n    ...\n",
+  "cases": [
+    { "call": "count_vowels('hello world')", "expect": "3" },
+    { "call": "count_vowels('PYTHON')", "expect": "1" },
+    { "call": "count_vowels('xyz')", "expect": "0" }
+  ]
+}

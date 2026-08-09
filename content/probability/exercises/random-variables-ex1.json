@@ -1,0 +1,11 @@
+{
+  "id": "random-variables-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def pmf_from_counts(counts):\n    ...\n",
+  "cases": [
+    { "call": "pmf_from_counts({'H': 3, 'T': 7})", "expect": "{'H': 0.3, 'T': 0.7}" },
+    { "call": "pmf_from_counts({'a': 1, 'b': 1, 'c': 2})", "expect": "{'a': 0.25, 'b': 0.25, 'c': 0.5}" },
+    { "call": "pmf_from_counts({'x': 5})", "expect": "{'x': 1.0}" }
+  ]
+}

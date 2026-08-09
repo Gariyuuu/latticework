@@ -1,0 +1,40 @@
+{
+  "slug": "go",
+  "name": "Go",
+  "category": "language",
+  "difficulty": "intermediate",
+  "estimatedHours": 10,
+  "prerequisites": [],
+  "usefulFor": [
+    "backend-engineer",
+    "software-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "syntax-types",
+      "title": "Syntax & Types",
+      "status": "planned"
+    },
+    {
+      "slug": "goroutines-channels",
+      "title": "Goroutines & Channels",
+      "status": "planned"
+    },
+    {
+      "slug": "interfaces",
+      "title": "Interfaces",
+      "status": "planned"
+    },
+    {
+      "slug": "error-handling",
+      "title": "Error Handling",
+      "status": "planned"
+    },
+    {
+      "slug": "modules-tooling",
+      "title": "Modules & Tooling",
+      "status": "planned"
+    }
+  ]
+}

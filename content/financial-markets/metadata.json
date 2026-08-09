@@ -1,0 +1,31 @@
+{
+  "slug": "financial-markets",
+  "name": "Financial Markets Fundamentals",
+  "category": "quant",
+  "difficulty": "beginner",
+  "estimatedHours": 5,
+  "prerequisites": [],
+  "usefulFor": [
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "asset-classes",
+      "title": "Asset Classes",
+      "status": "planned"
+    },
+    {
+      "slug": "order-types",
+      "title": "Order Types",
+      "status": "planned"
+    },
+    {
+      "slug": "market-structure",
+      "title": "Market Structure",
+      "status": "planned"
+    }
+  ]
+}

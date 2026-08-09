@@ -1,0 +1,35 @@
+{
+  "slug": "ci-cd",
+  "name": "CI/CD",
+  "category": "devops",
+  "difficulty": "intermediate",
+  "estimatedHours": 4,
+  "prerequisites": [
+    "github",
+    "testing"
+  ],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "pipelines",
+      "title": "Pipelines",
+      "status": "planned"
+    },
+    {
+      "slug": "automated-testing-gates",
+      "title": "Automated Testing Gates",
+      "status": "planned"
+    },
+    {
+      "slug": "deployment-strategies",
+      "title": "Deployment Strategies",
+      "status": "planned"
+    }
+  ]
+}

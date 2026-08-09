@@ -1,0 +1,35 @@
+{
+  "slug": "julia",
+  "name": "Julia",
+  "category": "language",
+  "difficulty": "intermediate",
+  "estimatedHours": 8,
+  "prerequisites": [],
+  "usefulFor": [
+    "quant-researcher",
+    "research-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "syntax-types",
+      "title": "Syntax & Types",
+      "status": "planned"
+    },
+    {
+      "slug": "arrays-broadcasting",
+      "title": "Arrays & Broadcasting",
+      "status": "planned"
+    },
+    {
+      "slug": "multiple-dispatch",
+      "title": "Multiple Dispatch",
+      "status": "planned"
+    },
+    {
+      "slug": "performance",
+      "title": "Performance",
+      "status": "planned"
+    }
+  ]
+}

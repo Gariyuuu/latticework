@@ -1,0 +1,106 @@
+---
+slug: graph-algorithms
+title: Graph Algorithms
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: toposort
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: graph-algorithms-ex1
+    difficulty: beginner
+    concept: graph-algorithms
+    prompt: "Write a function `shortest_path_length(graph, start, end)` that returns the number of edges on the shortest path from `start` to `end` in an unweighted graph (adjacency dict), or -1 if `end` is unreachable. Use BFS."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: graph-algorithms-ex2
+    difficulty: intermediate
+    concept: graph-algorithms
+    prompt: "Write a function `topological_sort(graph)` that returns a valid topological ordering of the nodes in a DAG (adjacency dict). All test graphs here have exactly one valid ordering, so there's no ambiguity to worry about."
+  - id: quiz-1
+    type: quiz
+    concept: graph-algorithms
+    question: "What must be true of a graph for topological sort to be possible?"
+    options: ["It must be a Directed Acyclic Graph (DAG)", "It must be undirected", "It must have exactly one root node", "It must be a tree"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Two algorithms you'll use constantly once you're past basic traversal:
+
+**Shortest path in an unweighted graph** is just BFS with a distance
+counter — since BFS explores level by level, the first time you reach a
+node IS the shortest path to it, in number of edges.
+
+```python
+from collections import deque
+
+def shortest_path_length(graph, start, end):
+    if start == end:
+        return 0
+    visited = {start}
+    queue = deque([(start, 0)])
+    while queue:
+        node, dist = queue.popleft()
+        for neighbor in graph[node]:
+            if neighbor == end:
+                return dist + 1
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, dist + 1))
+    return -1
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`graph = {"A": ["B", "C"], "B": ["D"], "C": ["D"], "D": []}\nprint(shortest_path_length(graph, "A", "D"))  # 2 — A->B->D or A->C->D, either way 2 edges`} caption="Both A->B->D and A->C->D reach D in 2 edges — BFS finds the shortest DISTANCE, not necessarily a unique path." />
+
+<Explanation id="toposort">
+
+**Topological sort** orders the nodes of a DAG (Directed Acyclic Graph) so
+that every edge points from earlier to later in the ordering — "finish
+task A before starting task B" scheduling, or resolving package/import
+dependencies. A DFS-based approach: run DFS from every unvisited node,
+and each node is added to the front of the result only after ALL of its
+descendants have already been added (a post-order DFS, reversed).
+
+```python
+def topological_sort(graph):
+    visited = set()
+    order = []
+    def dfs(node):
+        visited.add(node)
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                dfs(neighbor)
+        order.append(node)
+    for node in graph:
+        if node not in visited:
+            dfs(node)
+    return order[::-1]
+```
+
+If the graph has a cycle, no valid ordering exists — topological sort is
+only defined for DAGs.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute unweighted shortest-path distance with BFS and produce a topological ordering with DFS.
+</Checkpoint>

@@ -1,0 +1,58 @@
+{
+  "slug": "algorithms",
+  "name": "Algorithms",
+  "category": "cs",
+  "difficulty": "intermediate",
+  "estimatedHours": 14,
+  "prerequisites": [
+    "data-structures"
+  ],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer",
+    "data-engineer",
+    "data-scientist",
+    "ml-engineer",
+    "ai-engineer",
+    "research-engineer",
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "built",
+  "description": "Classic algorithmic patterns — sorting, searching, recursion, DP, graphs, and greedy — that show up constantly in interviews and in everyday engineering work.",
+  "modules": [
+    {
+      "slug": "sorting",
+      "title": "Sorting",
+      "status": "built"
+    },
+    {
+      "slug": "searching",
+      "title": "Searching",
+      "status": "built"
+    },
+    {
+      "slug": "recursion",
+      "title": "Recursion",
+      "status": "built"
+    },
+    {
+      "slug": "dynamic-programming",
+      "title": "Dynamic Programming",
+      "status": "built"
+    },
+    {
+      "slug": "graph-algorithms",
+      "title": "Graph Algorithms",
+      "status": "built"
+    },
+    {
+      "slug": "greedy",
+      "title": "Greedy",
+      "status": "built"
+    }
+  ]
+}

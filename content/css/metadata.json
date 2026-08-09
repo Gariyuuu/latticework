@@ -1,0 +1,37 @@
+{
+  "slug": "css",
+  "name": "CSS",
+  "category": "web",
+  "difficulty": "beginner",
+  "estimatedHours": 6,
+  "prerequisites": [
+    "html"
+  ],
+  "usefulFor": [
+    "full-stack-engineer",
+    "software-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "box-model",
+      "title": "Box Model",
+      "status": "planned"
+    },
+    {
+      "slug": "flexbox",
+      "title": "Flexbox",
+      "status": "planned"
+    },
+    {
+      "slug": "grid",
+      "title": "Grid",
+      "status": "planned"
+    },
+    {
+      "slug": "responsive-design",
+      "title": "Responsive Design",
+      "status": "planned"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "slug": "python",
+  "name": "Python",
+  "category": "language",
+  "difficulty": "beginner",
+  "estimatedHours": 14,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "data-engineer",
+    "data-scientist",
+    "ml-engineer",
+    "ai-engineer",
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader",
+    "research-engineer"
+  ],
+  "status": "built",
+  "description": "The general-purpose language underneath almost every other track on Latticework — data, ML, quant, and backend all build on it.",
+  "modules": [
+    { "slug": "variables", "title": "Variables & Types", "status": "built" },
+    { "slug": "loops", "title": "Loops", "status": "built" },
+    { "slug": "functions", "title": "Functions", "status": "built" },
+    { "slug": "conditionals", "title": "Conditionals", "status": "built" },
+    { "slug": "collections", "title": "Collections", "status": "built" },
+    { "slug": "classes", "title": "Classes", "status": "built" },
+    { "slug": "files", "title": "Files", "status": "planned" },
+    { "slug": "exceptions", "title": "Exceptions", "status": "built" },
+    { "slug": "comprehensions", "title": "Comprehensions", "status": "built" },
+    { "slug": "iterators", "title": "Iterators & Generators", "status": "built" },
+    { "slug": "decorators", "title": "Decorators", "status": "built" },
+    { "slug": "typing", "title": "Typing", "status": "built" },
+    { "slug": "testing", "title": "Testing", "status": "built" },
+    { "slug": "performance", "title": "Performance", "status": "built" }
+  ]
+}

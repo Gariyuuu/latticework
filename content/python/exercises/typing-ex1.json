@@ -1,0 +1,11 @@
+{
+  "id": "typing-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def safe_get(d: dict, key: str, default=None):\n    ...\n",
+  "cases": [
+    { "call": "safe_get({'a': 1, 'b': 2}, 'a')", "expect": "1" },
+    { "call": "safe_get({'a': 1}, 'z')", "expect": "None" },
+    { "call": "safe_get({'a': 1}, 'z', 0)", "expect": "0" }
+  ]
+}

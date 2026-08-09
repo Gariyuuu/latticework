@@ -1,0 +1,25 @@
+{
+  "slug": "plotly",
+  "name": "Plotly",
+  "category": "data-science",
+  "difficulty": "beginner",
+  "estimatedHours": 4,
+  "prerequisites": [],
+  "usefulFor": [
+    "data-engineer",
+    "data-scientist"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "interactive-charts",
+      "title": "Interactive Charts",
+      "status": "planned"
+    },
+    {
+      "slug": "dashboards-basics",
+      "title": "Dashboards Basics",
+      "status": "planned"
+    }
+  ]
+}

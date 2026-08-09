@@ -1,0 +1,31 @@
+{
+  "slug": "vector-databases",
+  "name": "Vector Databases",
+  "category": "ai-ml",
+  "difficulty": "intermediate",
+  "estimatedHours": 4,
+  "prerequisites": [
+    "embeddings"
+  ],
+  "usefulFor": [
+    "ai-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "indexing-hnsw-ivf",
+      "title": "Indexing (HNSW/IVF)",
+      "status": "planned"
+    },
+    {
+      "slug": "hybrid-search",
+      "title": "Hybrid Search",
+      "status": "planned"
+    },
+    {
+      "slug": "tradeoffs",
+      "title": "Tradeoffs",
+      "status": "planned"
+    }
+  ]
+}

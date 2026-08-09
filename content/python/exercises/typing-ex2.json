@@ -1,0 +1,11 @@
+{
+  "id": "typing-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "from typing import Optional, List\n\ndef first_or_none(items: List[int]) -> Optional[int]:\n    ...\n",
+  "cases": [
+    { "call": "first_or_none([5, 2, 8])", "expect": "5" },
+    { "call": "first_or_none([])", "expect": "None" },
+    { "call": "first_or_none([42])", "expect": "42" }
+  ]
+}

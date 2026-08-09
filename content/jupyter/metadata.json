@@ -1,0 +1,33 @@
+{
+  "slug": "jupyter",
+  "name": "Jupyter",
+  "category": "tooling",
+  "difficulty": "intro",
+  "estimatedHours": 2,
+  "prerequisites": [],
+  "usefulFor": [
+    "data-engineer",
+    "data-scientist",
+    "ml-engineer",
+    "ai-engineer",
+    "research-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "notebook-basics",
+      "title": "Notebook Basics",
+      "status": "planned"
+    },
+    {
+      "slug": "magic-commands",
+      "title": "Magic Commands",
+      "status": "planned"
+    },
+    {
+      "slug": "kernel-management",
+      "title": "Kernel Management",
+      "status": "planned"
+    }
+  ]
+}

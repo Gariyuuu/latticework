@@ -1,0 +1,34 @@
+{
+  "slug": "linear-algebra",
+  "name": "Linear Algebra",
+  "category": "math",
+  "difficulty": "beginner",
+  "estimatedHours": 8,
+  "prerequisites": [],
+  "usefulFor": [
+    "ml-engineer",
+    "ai-engineer",
+    "research-engineer",
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "vectors-matrices",
+      "title": "Vectors & Matrices",
+      "status": "planned"
+    },
+    {
+      "slug": "eigenvalues",
+      "title": "Eigenvalues",
+      "status": "planned"
+    },
+    {
+      "slug": "matrix-decompositions",
+      "title": "Matrix Decompositions",
+      "status": "planned"
+    }
+  ]
+}

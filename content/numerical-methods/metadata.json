@@ -1,0 +1,32 @@
+{
+  "slug": "numerical-methods",
+  "name": "Numerical Methods",
+  "category": "quant",
+  "difficulty": "intermediate",
+  "estimatedHours": 6,
+  "prerequisites": [
+    "linear-algebra"
+  ],
+  "usefulFor": [
+    "quant-developer",
+    "research-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "root-finding",
+      "title": "Root Finding",
+      "status": "planned"
+    },
+    {
+      "slug": "numerical-integration",
+      "title": "Numerical Integration",
+      "status": "planned"
+    },
+    {
+      "slug": "solving-linear-systems",
+      "title": "Solving Linear Systems",
+      "status": "planned"
+    }
+  ]
+}

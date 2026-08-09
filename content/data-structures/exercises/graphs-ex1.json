@@ -1,0 +1,11 @@
+{
+  "id": "graphs-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "from collections import deque\n\ndef bfs_order(graph, start):\n    ...\n",
+  "cases": [
+    { "call": "bfs_order({'A': ['B', 'C'], 'B': ['D'], 'C': ['D'], 'D': []}, 'A')", "expect": "['A', 'B', 'C', 'D']" },
+    { "call": "bfs_order({1: [2, 3], 2: [4], 3: [4], 4: []}, 1)", "expect": "[1, 2, 3, 4]" },
+    { "call": "bfs_order({'X': []}, 'X')", "expect": "['X']" }
+  ]
+}

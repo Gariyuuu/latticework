@@ -1,0 +1,11 @@
+{
+  "id": "hypothesis-testing-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import math\n\ndef z_score(sample_mean, pop_mean, pop_std, n):\n    ...\n",
+  "cases": [
+    { "call": "z_score(105, 100, 15, 36)", "expect": "2.0" },
+    { "call": "z_score(100, 100, 10, 25)", "expect": "0.0" },
+    { "call": "z_score(98, 100, 8, 16)", "expect": "-1.0" }
+  ]
+}

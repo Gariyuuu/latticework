@@ -1,0 +1,63 @@
+{
+  "slug": "data-structures",
+  "name": "Data Structures",
+  "category": "cs",
+  "difficulty": "beginner",
+  "estimatedHours": 12,
+  "prerequisites": [
+    "python"
+  ],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer",
+    "data-engineer",
+    "data-scientist",
+    "ml-engineer",
+    "ai-engineer",
+    "research-engineer",
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "built",
+  "description": "Core building blocks for reasoning about how programs store and access data — the foundation algorithms, interviews, and system design all build on.",
+  "modules": [
+    {
+      "slug": "arrays-lists",
+      "title": "Arrays & Lists",
+      "status": "built"
+    },
+    {
+      "slug": "stacks-queues",
+      "title": "Stacks & Queues",
+      "status": "built"
+    },
+    {
+      "slug": "hash-tables",
+      "title": "Hash Tables",
+      "status": "built"
+    },
+    {
+      "slug": "trees-bsts",
+      "title": "Trees & BSTs",
+      "status": "built"
+    },
+    {
+      "slug": "heaps",
+      "title": "Heaps",
+      "status": "built"
+    },
+    {
+      "slug": "graphs",
+      "title": "Graphs",
+      "status": "built"
+    },
+    {
+      "slug": "tries",
+      "title": "Tries",
+      "status": "built"
+    }
+  ]
+}

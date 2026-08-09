@@ -1,0 +1,90 @@
+---
+slug: linear-algebra-ops
+title: Linear Algebra Ops
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: matmul
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: linear-algebra-ops-ex1
+    difficulty: beginner
+    concept: numpy-linalg
+    prompt: "Write `dot_product(a, b)`, returning the dot product of two equal-length vectors `a` and `b` as a plain Python int, using `np.dot`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: linear-algebra-ops-ex2
+    difficulty: intermediate
+    concept: numpy-linalg
+    prompt: "Write `matrix_multiply(a, b)`, returning the matrix product of two 2D lists `a` and `b`, using `np.matmul`."
+  - id: quiz-1
+    type: quiz
+    concept: numpy-linalg
+    question: "What's required for two matrices A (shape m×n) and B (shape p×q) to be multipliable as A @ B?"
+    options: ["n must equal p — A's number of columns must match B's number of rows", "A and B must have the same shape", "Both must be square matrices", "m must equal q"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+NumPy's linear algebra operations are the computational core of ML and
+quant work — every neural network layer and every portfolio-weights
+calculation ultimately comes down to dot products and matrix
+multiplication.
+
+The **dot product** of two vectors multiplies corresponding elements and
+sums the results:
+
+```python
+import numpy as np
+
+a = np.array([1, 2, 3])
+b = np.array([4, 5, 6])
+print(np.dot(a, b))   # 1*4 + 2*5 + 3*6 = 32
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["numpy"]} code={`import numpy as np\n\nweights = np.array([0.3, 0.5, 0.2])\nreturns = np.array([0.10, -0.02, 0.08])\nportfolio_return = np.dot(weights, returns)\nprint(round(float(portfolio_return), 4))  # 0.036 -- a weighted sum, computed with one call`} caption="A portfolio's return is exactly a dot product: weight-of-each-asset times return-of-each-asset, summed. You'll use this exact pattern again in the Quant courses." />
+
+<Explanation id="matmul">
+
+**Matrix multiplication** (`@` or `np.matmul`) generalizes the dot product
+to two dimensions: each element of the result is the dot product of a row
+from the first matrix and a column from the second. That's why the inner
+dimensions must match — A's columns must equal B's rows.
+
+```python
+A = np.array([[1, 2], [3, 4]])
+B = np.array([[5, 6], [7, 8]])
+print(A @ B)
+# [[1*5+2*7, 1*6+2*8],
+#  [3*5+4*7, 3*6+4*8]]
+# = [[19 22]
+#    [43 50]]
+```
+
+`np.dot` and `@` do the same thing for 2D arrays — `@` (added in Python
+3.5) is generally preferred for matrix multiplication since it reads more
+like standard math notation.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute a dot product and a matrix product with NumPy, and know the shape-compatibility rule that determines whether two matrices can be multiplied.
+</Checkpoint>

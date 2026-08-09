@@ -1,0 +1,81 @@
+---
+slug: sorting
+title: Sorting
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: keys
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: sorting-ex1
+    difficulty: beginner
+    concept: sorting
+    prompt: "Write a function `bubble_sort(nums)` that returns a NEW list containing the elements of `nums` sorted in ascending order, implemented with the bubble sort algorithm (repeatedly swap adjacent out-of-order pairs)."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: sorting-ex2
+    difficulty: intermediate
+    concept: sorting
+    prompt: "Write a function `sort_by_length_then_alpha(words)` that returns `words` sorted first by string length (ascending), then alphabetically to break ties. Use `sorted()` with a `key`."
+  - id: quiz-1
+    type: quiz
+    concept: sorting
+    question: "What sorting algorithm does Python's built-in `sorted()` / `list.sort()` use, and what's its average time complexity?"
+    options: ["Timsort, O(n log n)", "Quicksort, O(n log n)", "Bubble sort, O(n^2)", "Merge sort, O(n^2)"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Sorting is one of the most-studied problems in computer science because
+almost everything else — search, deduplication, grouping — gets easier once
+data is ordered. In real code you'll almost always call `sorted()`, but
+understanding how a simple sort works builds the intuition you need for
+harder algorithms later.
+
+**Bubble sort** repeatedly walks the list, swapping any adjacent pair that's
+out of order, until a full pass makes no swaps. It's O(n²) — never use it in
+real code — but it's the clearest place to see "comparison-based sorting" in
+action.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def bubble_sort(nums):\n    nums = list(nums)\n    n = len(nums)\n    for i in range(n):\n        swapped = False\n        for j in range(n - 1 - i):\n            if nums[j] > nums[j + 1]:\n                nums[j], nums[j + 1] = nums[j + 1], nums[j]\n                swapped = True\n        if not swapped:\n            break\n    return nums\n\nprint(bubble_sort([5, 2, 4, 1, 3]))  # [1, 2, 3, 4, 5]`} caption="Each outer pass 'bubbles' the largest remaining element to its final position — after i passes, the last i elements are guaranteed sorted." />
+
+<Explanation id="keys">
+
+In practice, Python's `sorted()` (Timsort — O(n log n), and *stable*,
+meaning equal elements keep their relative order) is what you'll use. The
+`key` argument is how you sort by something other than the raw value:
+
+```python
+words = ["banana", "kiwi", "fig"]
+sorted(words, key=len)                    # ['fig', 'kiwi', 'banana']
+sorted(words, key=lambda w: (len(w), w))  # sort by length, then alphabetically
+sorted(words, reverse=True)                # descending
+```
+
+Stability matters when you sort by a tuple key like `(len(w), w)` above —
+you're relying on ties in the first key being broken deterministically by
+the second.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement a basic O(n²) sort by hand and use `sorted(..., key=...)` for real sorting work.
+</Checkpoint>

@@ -1,0 +1,11 @@
+{
+  "id": "functions-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def max_of_three(a, b, c):\n    ...\n",
+  "cases": [
+    { "call": "max_of_three(1, 2, 3)", "expect": "3" },
+    { "call": "max_of_three(5, 2, 3)", "expect": "5" },
+    { "call": "max_of_three(-1, -2, -3)", "expect": "-1" }
+  ]
+}

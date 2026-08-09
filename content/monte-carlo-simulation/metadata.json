@@ -1,0 +1,34 @@
+{
+  "slug": "monte-carlo-simulation",
+  "name": "Monte Carlo Simulation",
+  "category": "quant",
+  "difficulty": "intermediate",
+  "estimatedHours": 5,
+  "prerequisites": [
+    "probability",
+    "python"
+  ],
+  "usefulFor": [
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "random-sampling",
+      "title": "Random Sampling",
+      "status": "planned"
+    },
+    {
+      "slug": "simulating-stock-paths",
+      "title": "Simulating Stock Paths",
+      "status": "planned"
+    },
+    {
+      "slug": "variance-reduction",
+      "title": "Variance Reduction",
+      "status": "planned"
+    }
+  ]
+}

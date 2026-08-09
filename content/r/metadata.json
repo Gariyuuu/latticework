@@ -1,0 +1,34 @@
+{
+  "slug": "r",
+  "name": "R",
+  "category": "language",
+  "difficulty": "beginner",
+  "estimatedHours": 10,
+  "prerequisites": [],
+  "usefulFor": [
+    "data-scientist"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "vectors-data-frames",
+      "title": "Vectors & Data Frames",
+      "status": "planned"
+    },
+    {
+      "slug": "dplyr",
+      "title": "dplyr",
+      "status": "planned"
+    },
+    {
+      "slug": "ggplot2",
+      "title": "ggplot2",
+      "status": "planned"
+    },
+    {
+      "slug": "statistical-modeling",
+      "title": "Statistical Modeling",
+      "status": "planned"
+    }
+  ]
+}

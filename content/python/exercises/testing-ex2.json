@@ -1,0 +1,9 @@
+{
+  "id": "testing-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def divide(a, b):\n    return a / b\n\ndef test_divide():\n    ...\n",
+  "cases": [
+    { "call": "test_divide()", "expect": "True" }
+  ]
+}

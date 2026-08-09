@@ -1,0 +1,45 @@
+{
+  "slug": "java",
+  "name": "Java",
+  "category": "language",
+  "difficulty": "beginner",
+  "estimatedHours": 16,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer",
+    "backend-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "syntax-types",
+      "title": "Syntax & Types",
+      "status": "planned"
+    },
+    {
+      "slug": "oop-in-java",
+      "title": "OOP in Java",
+      "status": "planned"
+    },
+    {
+      "slug": "collections",
+      "title": "Collections",
+      "status": "planned"
+    },
+    {
+      "slug": "exceptions",
+      "title": "Exceptions",
+      "status": "planned"
+    },
+    {
+      "slug": "streams",
+      "title": "Streams",
+      "status": "planned"
+    },
+    {
+      "slug": "concurrency-basics",
+      "title": "Concurrency Basics",
+      "status": "planned"
+    }
+  ]
+}

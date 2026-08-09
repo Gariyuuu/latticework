@@ -1,0 +1,11 @@
+{
+  "id": "classes-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "class Rectangle:\n    def __init__(self, width, height):\n        self.width = width\n        self.height = height\n\n    def area(self):\n        return self.width * self.height\n\n    def is_square(self):\n        ...\n",
+  "cases": [
+    { "call": "Rectangle(4, 4).is_square()", "expect": "True" },
+    { "call": "Rectangle(2, 3).is_square()", "expect": "False" },
+    { "call": "Rectangle(7, 7).is_square()", "expect": "True" }
+  ]
+}

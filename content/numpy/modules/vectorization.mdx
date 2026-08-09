@@ -1,0 +1,88 @@
+---
+slug: vectorization
+title: Vectorization
+estimatedMinutes: 14
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: why-fast
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: vectorization-ex1
+    difficulty: beginner
+    concept: numpy-vectorization
+    prompt: "Write `square_all(nums)`, returning the element-wise square of `nums` as a NumPy array. Use `arr ** 2` — no Python-level loop."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: vectorization-ex2
+    difficulty: intermediate
+    concept: numpy-vectorization
+    prompt: "Write `elementwise_add(a, b)`, returning the element-wise sum of two equal-length lists as a NumPy array. Use `+`, not `zip` and a loop."
+  - id: quiz-1
+    type: quiz
+    concept: numpy-vectorization
+    question: "Why is `arr * 2` on a NumPy array much faster than `[x * 2 for x in list]` on a Python list, for large inputs?"
+    options: ["The loop runs in optimized C code operating on contiguous memory, instead of Python bytecode looping element by element", "NumPy uses a different, faster multiplication algorithm", "Python lists can't be multiplied at all", "arr * 2 doesn't actually compute every element"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Vectorization** means applying an operation to an entire array at once,
+instead of writing a Python `for` loop over its elements. It's both
+shorter to write and dramatically faster — NumPy pushes the actual looping
+down into compiled C code operating on contiguous memory, skipping
+Python's per-element interpreter overhead entirely.
+
+```python
+import numpy as np
+
+nums = np.array([1, 2, 3, 4, 5])
+doubled = nums * 2        # [2, 4, 6, 8, 10] — no loop written
+squared = nums ** 2        # [1, 4, 9, 16, 25]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["numpy"]} code={`import numpy as np\n\nprices = np.array([100, 105, 98, 110, 102])\nreturns = (prices[1:] - prices[:-1]) / prices[:-1]\nprint(np.round(returns, 4))  # day-over-day percent change, computed with zero loops`} caption="This one line replaces a loop that would compute (today - yesterday) / yesterday for every pair of consecutive days — a pattern you'll reuse constantly once you get to the Time Series and Quant courses." />
+
+<Explanation id="why-fast">
+
+The rule of thumb once you're working with NumPy: if you're writing a
+Python `for` loop over array elements to do arithmetic, there's almost
+always a vectorized equivalent that's both shorter and 10-100x faster on
+real-sized data.
+
+```python
+# Don't do this:
+result = []
+for x in nums:
+    result.append(x * 2)
+
+# Do this instead:
+result = nums * 2
+```
+
+Comparisons and boolean logic vectorize too — `nums > 3` returns an array
+of `True`/`False`, not a single value, which is the foundation of the
+boolean masking you'll use in the Indexing & Slicing module.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can replace an element-wise Python loop with a vectorized NumPy expression, and understand why that's faster, not just shorter.
+</Checkpoint>

@@ -1,0 +1,29 @@
+{
+  "slug": "matlab",
+  "name": "MATLAB Fundamentals",
+  "category": "language",
+  "difficulty": "beginner",
+  "estimatedHours": 6,
+  "prerequisites": [],
+  "usefulFor": [
+    "quant-researcher"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "matrices-vectors",
+      "title": "Matrices & Vectors",
+      "status": "planned"
+    },
+    {
+      "slug": "plotting",
+      "title": "Plotting",
+      "status": "planned"
+    },
+    {
+      "slug": "scripts-functions",
+      "title": "Scripts & Functions",
+      "status": "planned"
+    }
+  ]
+}

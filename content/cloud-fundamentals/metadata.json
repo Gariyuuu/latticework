@@ -1,0 +1,33 @@
+{
+  "slug": "cloud-fundamentals",
+  "name": "Cloud Fundamentals",
+  "category": "cloud",
+  "difficulty": "beginner",
+  "estimatedHours": 5,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer",
+    "data-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "compute-storage-network",
+      "title": "Compute/Storage/Network",
+      "status": "planned"
+    },
+    {
+      "slug": "managed-services",
+      "title": "Managed Services",
+      "status": "planned"
+    },
+    {
+      "slug": "cost-basics",
+      "title": "Cost Basics",
+      "status": "planned"
+    }
+  ]
+}

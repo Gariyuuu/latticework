@@ -1,0 +1,11 @@
+{
+  "id": "exceptions-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def safe_divide(a, b):\n    ...\n",
+  "cases": [
+    { "call": "safe_divide(10, 2)", "expect": "5.0" },
+    { "call": "safe_divide(5, 0)", "expect": "undefined" },
+    { "call": "safe_divide(-9, 3)", "expect": "-3.0" }
+  ]
+}

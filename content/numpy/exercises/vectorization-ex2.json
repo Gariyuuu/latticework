@@ -1,0 +1,12 @@
+{
+  "id": "vectorization-ex2",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["numpy"],
+  "starterCode": "import numpy as np\n\ndef elementwise_add(a, b):\n    ...\n",
+  "cases": [
+    { "call": "elementwise_add([1, 2, 3], [10, 20, 30]).tolist()", "expect": "[11, 22, 33]" },
+    { "call": "elementwise_add([0], [5]).tolist()", "expect": "[5]" },
+    { "call": "elementwise_add([1, 1, 1], [1, 1, 1]).tolist()", "expect": "[2, 2, 2]" }
+  ]
+}

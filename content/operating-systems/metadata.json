@@ -1,0 +1,30 @@
+{
+  "slug": "operating-systems",
+  "name": "Operating Systems Fundamentals",
+  "category": "cs",
+  "difficulty": "intermediate",
+  "estimatedHours": 8,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer",
+    "research-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "processes-threads",
+      "title": "Processes & Threads",
+      "status": "planned"
+    },
+    {
+      "slug": "scheduling",
+      "title": "Scheduling",
+      "status": "planned"
+    },
+    {
+      "slug": "virtual-memory",
+      "title": "Virtual Memory",
+      "status": "planned"
+    }
+  ]
+}

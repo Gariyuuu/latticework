@@ -1,0 +1,12 @@
+{
+  "id": "groupby-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["pandas"],
+  "starterCode": "import pandas as pd\n\ndef group_sum(data, group_col, value_col):\n    ...\n",
+  "cases": [
+    { "call": "group_sum({'dept': ['eng', 'eng', 'sales'], 'salary': [100, 200, 150]}, 'dept', 'salary')", "expect": "{'eng': 300, 'sales': 150}" },
+    { "call": "group_sum({'dept': ['a', 'b', 'a', 'b'], 'x': [1, 2, 3, 4]}, 'dept', 'x')", "expect": "{'a': 4, 'b': 6}" },
+    { "call": "group_sum({'dept': ['x'], 'v': [5]}, 'dept', 'v')", "expect": "{'x': 5}" }
+  ]
+}

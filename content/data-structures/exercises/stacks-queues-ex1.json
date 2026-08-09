@@ -1,0 +1,12 @@
+{
+  "id": "stacks-queues-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def is_balanced(s):\n    ...\n",
+  "cases": [
+    { "call": "is_balanced('()[]{}')", "expect": "True" },
+    { "call": "is_balanced('(]')", "expect": "False" },
+    { "call": "is_balanced('([)]')", "expect": "False" },
+    { "call": "is_balanced('{[]}')", "expect": "True" }
+  ]
+}

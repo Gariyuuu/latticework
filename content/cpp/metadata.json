@@ -1,0 +1,58 @@
+{
+  "slug": "cpp",
+  "name": "C++",
+  "category": "language",
+  "difficulty": "intermediate",
+  "estimatedHours": 18,
+  "prerequisites": [
+    "c"
+  ],
+  "usefulFor": [
+    "software-engineer",
+    "quant-developer",
+    "research-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "syntax-types",
+      "title": "Syntax & Types",
+      "status": "planned"
+    },
+    {
+      "slug": "memory-pointers",
+      "title": "Memory & Pointers",
+      "status": "planned"
+    },
+    {
+      "slug": "oop-in-c",
+      "title": "OOP in C++",
+      "status": "planned"
+    },
+    {
+      "slug": "stl-containers",
+      "title": "STL Containers",
+      "status": "planned"
+    },
+    {
+      "slug": "templates",
+      "title": "Templates",
+      "status": "planned"
+    },
+    {
+      "slug": "raii-smart-pointers",
+      "title": "RAII & Smart Pointers",
+      "status": "planned"
+    },
+    {
+      "slug": "concurrency",
+      "title": "Concurrency",
+      "status": "planned"
+    },
+    {
+      "slug": "performance",
+      "title": "Performance",
+      "status": "planned"
+    }
+  ]
+}

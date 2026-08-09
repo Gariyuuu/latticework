@@ -1,0 +1,89 @@
+---
+slug: dynamic-programming
+title: Dynamic Programming
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: bottom-up
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: dynamic-programming-ex1
+    difficulty: beginner
+    concept: dynamic-programming
+    prompt: "Write a function `climb_stairs(n)` that returns the number of distinct ways to climb `n` stairs, taking either 1 or 2 steps at a time. Use bottom-up DP (an iterative loop, not naive recursion)."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: dynamic-programming-ex2
+    difficulty: intermediate
+    concept: dynamic-programming
+    prompt: "Write a function `coin_change(coins, amount)` that returns the fewest number of coins from `coins` (unlimited supply of each) needed to make exactly `amount`, or -1 if it's impossible."
+  - id: quiz-1
+    type: quiz
+    concept: dynamic-programming
+    question: "What two properties must a problem have for dynamic programming to apply?"
+    options: ["Overlapping subproblems and optimal substructure", "Sorted input and unique elements", "A tree structure with no cycles", "Linear time complexity and constant space"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+You already met dynamic programming's core idea in the Recursion course:
+memoization, caching subproblem results so nothing gets recomputed. DP
+formalizes that into two flavors:
+
+- **Top-down**: plain recursion + a memo dict (what `fib_memo` did).
+- **Bottom-up**: an iterative loop that fills a table from the smallest
+  subproblem up to the answer — usually the more common style in practice,
+  and avoids recursion-depth limits entirely.
+
+A problem is a DP candidate when it has:
+
+1. **Overlapping subproblems** — the same smaller subproblem gets solved
+   multiple times in a naive approach (fib(5) needs fib(3) twice).
+2. **Optimal substructure** — the optimal answer can be built from optimal
+   answers to subproblems.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def climb_stairs(n):\n    if n <= 2:\n        return n\n    a, b = 1, 2   # ways to reach step 1, step 2\n    for _ in range(3, n + 1):\n        a, b = b, a + b\n    return b\n\nprint(climb_stairs(5))  # 8`} caption="Reaching step n only ever comes from step n-1 (one step) or step n-2 (two steps), so ways(n) = ways(n-1) + ways(n-2) — the Fibonacci recurrence in disguise." />
+
+<Explanation id="bottom-up">
+
+For problems with more than one input dimension, the table becomes an
+array indexed by the subproblem parameter. Coin change: `dp[a]` holds the
+fewest coins to make amount `a`, built up from `dp[0] = 0`:
+
+```python
+def coin_change(coins, amount):
+    dp = [0] + [float("inf")] * amount
+    for a in range(1, amount + 1):
+        for c in coins:
+            if c <= a:
+                dp[a] = min(dp[a], dp[a - c] + 1)
+    return dp[amount] if dp[amount] != float("inf") else -1
+```
+
+Every `dp[a]` only depends on smaller `dp[a - c]` values that were already
+computed earlier in the loop — that ordering is what makes bottom-up work
+without recursion.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can recognize overlapping subproblems + optimal substructure, and build a bottom-up DP table for both 1D and coin-change-style problems.
+</Checkpoint>

@@ -1,0 +1,11 @@
+{
+  "id": "regression-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import math\n\ndef r_squared(xs, ys):\n    ...\n",
+  "cases": [
+    { "call": "round(r_squared([1, 2, 3, 4], [3, 5, 7, 9]), 4)", "expect": "1.0" },
+    { "call": "round(r_squared([1, 2, 3], [1, 2, 4]), 4)", "expect": "0.9643" },
+    { "call": "round(r_squared([1, 2, 3], [3, 5, 5]), 4)", "expect": "0.75" }
+  ]
+}

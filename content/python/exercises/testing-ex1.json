@@ -1,0 +1,9 @@
+{
+  "id": "testing-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def is_palindrome(s):\n    return s == s[::-1]\n\ndef test_is_palindrome():\n    ...\n",
+  "cases": [
+    { "call": "test_is_palindrome()", "expect": "True" }
+  ]
+}

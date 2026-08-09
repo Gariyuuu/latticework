@@ -1,0 +1,30 @@
+{
+  "slug": "ml-experiment-design",
+  "name": "ML Experiment Design",
+  "category": "ai-ml",
+  "difficulty": "intermediate",
+  "estimatedHours": 4,
+  "prerequisites": [],
+  "usefulFor": [
+    "ml-engineer",
+    "research-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "hypotheses-baselines",
+      "title": "Hypotheses & Baselines",
+      "status": "planned"
+    },
+    {
+      "slug": "ablations",
+      "title": "Ablations",
+      "status": "planned"
+    },
+    {
+      "slug": "tracking",
+      "title": "Tracking",
+      "status": "planned"
+    }
+  ]
+}

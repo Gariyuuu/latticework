@@ -1,0 +1,12 @@
+{
+  "id": "selection-filtering-ex2",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["pandas"],
+  "starterCode": "import pandas as pd\n\ndef select_columns(data, cols):\n    ...\n",
+  "cases": [
+    { "call": "select_columns({'a': [1, 2], 'b': [3, 4], 'c': [5, 6]}, ['a', 'c'])", "expect": "{'a': [1, 2], 'c': [5, 6]}" },
+    { "call": "select_columns({'a': [1]}, ['a'])", "expect": "{'a': [1]}" },
+    { "call": "select_columns({'a': [1, 2, 3], 'b': [4, 5, 6]}, ['b'])", "expect": "{'b': [4, 5, 6]}" }
+  ]
+}

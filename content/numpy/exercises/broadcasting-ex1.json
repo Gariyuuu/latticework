@@ -1,0 +1,12 @@
+{
+  "id": "broadcasting-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["numpy"],
+  "starterCode": "import numpy as np\n\ndef add_scalar(arr, scalar):\n    ...\n",
+  "cases": [
+    { "call": "add_scalar([1, 2, 3], 10).tolist()", "expect": "[11, 12, 13]" },
+    { "call": "add_scalar([0, 0], 5).tolist()", "expect": "[5, 5]" },
+    { "call": "add_scalar([], 1).tolist()", "expect": "[]" }
+  ]
+}

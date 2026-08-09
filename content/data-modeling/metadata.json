@@ -1,0 +1,26 @@
+{
+  "slug": "data-modeling",
+  "name": "Data Modeling",
+  "category": "database",
+  "difficulty": "intermediate",
+  "estimatedHours": 5,
+  "prerequisites": [
+    "database-design"
+  ],
+  "usefulFor": [
+    "data-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "star-snowflake-schema",
+      "title": "Star/Snowflake Schema",
+      "status": "planned"
+    },
+    {
+      "slug": "slowly-changing-dimensions",
+      "title": "Slowly Changing Dimensions",
+      "status": "planned"
+    }
+  ]
+}

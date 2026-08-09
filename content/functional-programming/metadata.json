@@ -1,0 +1,32 @@
+{
+  "slug": "functional-programming",
+  "name": "Functional Programming Fundamentals",
+  "category": "cs",
+  "difficulty": "intermediate",
+  "estimatedHours": 5,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "pure-functions",
+      "title": "Pure Functions",
+      "status": "planned"
+    },
+    {
+      "slug": "immutability",
+      "title": "Immutability",
+      "status": "planned"
+    },
+    {
+      "slug": "map-filter-reduce",
+      "title": "Map/Filter/Reduce",
+      "status": "planned"
+    }
+  ]
+}

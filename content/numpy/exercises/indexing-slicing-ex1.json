@@ -1,0 +1,12 @@
+{
+  "id": "indexing-slicing-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["numpy"],
+  "starterCode": "import numpy as np\n\ndef every_other(arr):\n    ...\n",
+  "cases": [
+    { "call": "every_other([1, 2, 3, 4, 5, 6]).tolist()", "expect": "[1, 3, 5]" },
+    { "call": "every_other([1, 2, 3]).tolist()", "expect": "[1, 3]" },
+    { "call": "every_other([]).tolist()", "expect": "[]" }
+  ]
+}

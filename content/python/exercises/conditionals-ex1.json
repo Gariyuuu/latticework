@@ -1,0 +1,11 @@
+{
+  "id": "conditionals-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def grade(score):\n    ...\n",
+  "cases": [
+    { "call": "grade(95)", "expect": "A" },
+    { "call": "grade(82)", "expect": "B" },
+    { "call": "grade(50)", "expect": "F" }
+  ]
+}

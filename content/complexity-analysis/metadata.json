@@ -1,0 +1,42 @@
+{
+  "slug": "complexity-analysis",
+  "name": "Complexity Analysis",
+  "category": "cs",
+  "difficulty": "beginner",
+  "estimatedHours": 4,
+  "prerequisites": [
+    "data-structures"
+  ],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer",
+    "data-engineer",
+    "data-scientist",
+    "ml-engineer",
+    "ai-engineer",
+    "research-engineer",
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "big-o",
+      "title": "Big-O",
+      "status": "planned"
+    },
+    {
+      "slug": "time-vs-space",
+      "title": "Time vs Space",
+      "status": "planned"
+    },
+    {
+      "slug": "amortized-analysis",
+      "title": "Amortized Analysis",
+      "status": "planned"
+    }
+  ]
+}

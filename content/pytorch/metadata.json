@@ -1,0 +1,85 @@
+{
+  "slug": "pytorch",
+  "name": "PyTorch",
+  "category": "ai-ml",
+  "difficulty": "intermediate",
+  "estimatedHours": 16,
+  "prerequisites": [
+    "python",
+    "numpy",
+    "linear-algebra"
+  ],
+  "usefulFor": [
+    "ml-engineer",
+    "ai-engineer",
+    "research-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "tensors",
+      "title": "Tensors",
+      "status": "planned"
+    },
+    {
+      "slug": "broadcasting",
+      "title": "Broadcasting",
+      "status": "planned"
+    },
+    {
+      "slug": "autograd",
+      "title": "Autograd",
+      "status": "planned"
+    },
+    {
+      "slug": "nn-module",
+      "title": "nn.Module",
+      "status": "planned"
+    },
+    {
+      "slug": "losses-optimizers",
+      "title": "Losses & Optimizers",
+      "status": "planned"
+    },
+    {
+      "slug": "datasets-dataloaders",
+      "title": "Datasets & DataLoaders",
+      "status": "planned"
+    },
+    {
+      "slug": "training-loops",
+      "title": "Training Loops",
+      "status": "planned"
+    },
+    {
+      "slug": "evaluation",
+      "title": "Evaluation",
+      "status": "planned"
+    },
+    {
+      "slug": "gpu-concepts",
+      "title": "GPU Concepts",
+      "status": "planned"
+    },
+    {
+      "slug": "cnn-fundamentals",
+      "title": "CNN Fundamentals",
+      "status": "planned"
+    },
+    {
+      "slug": "transformer-fundamentals",
+      "title": "Transformer Fundamentals",
+      "status": "planned"
+    },
+    {
+      "slug": "debugging",
+      "title": "Debugging",
+      "status": "planned"
+    },
+    {
+      "slug": "saving-loading-models",
+      "title": "Saving/Loading Models",
+      "status": "planned"
+    }
+  ]
+}

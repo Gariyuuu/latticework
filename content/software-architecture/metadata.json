@@ -1,0 +1,34 @@
+{
+  "slug": "software-architecture",
+  "name": "Software Architecture",
+  "category": "cs",
+  "difficulty": "advanced",
+  "estimatedHours": 6,
+  "prerequisites": [
+    "design-patterns"
+  ],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "layering",
+      "title": "Layering",
+      "status": "planned"
+    },
+    {
+      "slug": "microservices-vs-monolith",
+      "title": "Microservices vs Monolith",
+      "status": "planned"
+    },
+    {
+      "slug": "trade-offs",
+      "title": "Trade-offs",
+      "status": "planned"
+    }
+  ]
+}

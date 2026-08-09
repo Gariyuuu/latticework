@@ -1,0 +1,11 @@
+{
+  "id": "classes-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "class Counter:\n    def __init__(self, start=0):\n        ...\n\n    def increment(self, by=1):\n        ...\n",
+  "cases": [
+    { "call": "Counter().increment().count", "expect": "1" },
+    { "call": "Counter(10).increment(5).count", "expect": "15" },
+    { "call": "Counter().increment().increment().increment().count", "expect": "3" }
+  ]
+}

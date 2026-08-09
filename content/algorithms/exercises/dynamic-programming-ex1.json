@@ -1,0 +1,11 @@
+{
+  "id": "dynamic-programming-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def climb_stairs(n):\n    ...\n",
+  "cases": [
+    { "call": "climb_stairs(2)", "expect": "2" },
+    { "call": "climb_stairs(3)", "expect": "3" },
+    { "call": "climb_stairs(5)", "expect": "8" }
+  ]
+}

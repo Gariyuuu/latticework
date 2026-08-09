@@ -1,0 +1,11 @@
+{
+  "id": "searching-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def binary_search(nums, target):\n    ...\n",
+  "cases": [
+    { "call": "binary_search([1, 3, 5, 7, 9, 11], 7)", "expect": "3" },
+    { "call": "binary_search([1, 3, 5, 7, 9, 11], 4)", "expect": "-1" },
+    { "call": "binary_search([2, 4, 6, 8], 2)", "expect": "0" }
+  ]
+}

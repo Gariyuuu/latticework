@@ -1,0 +1,79 @@
+---
+slug: classes
+title: Classes
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: self
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: classes-ex1
+    difficulty: beginner
+    concept: python-classes
+    prompt: "Complete the `Counter` class below: `__init__(self, start=0)` should set `self.count` to `start`, and `increment(self, by=1)` should add `by` to `self.count` and return `self` (so calls can be chained)."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: classes-ex2
+    difficulty: intermediate
+    concept: python-classes
+    prompt: "Given the `Rectangle` class below (with `__init__` and `area` already implemented), implement `is_square(self)`, returning True if width equals height."
+  - id: quiz-1
+    type: quiz
+    concept: python-classes
+    question: "What is `self` in a Python instance method?"
+    options: ["A reference to the specific instance the method was called on", "A global variable shared by every instance", "The class itself, not an instance", "An optional parameter you can always omit"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A `class` bundles data (attributes) and behavior (methods) together.
+`__init__` is the constructor — it runs automatically when you create a
+new instance, and sets up that instance's starting attributes.
+
+```python
+class Dog:
+    def __init__(self, name):
+        self.name = name
+
+    def bark(self):
+        return f"{self.name} says woof!"
+
+rex = Dog("Rex")
+print(rex.bark())   # Rex says woof!
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`class BankAccount:\n    def __init__(self, balance=0):\n        self.balance = balance\n\n    def deposit(self, amount):\n        self.balance += amount\n        return self.balance\n\naccount = BankAccount(100)\nprint(account.deposit(50))  # 150\nprint(account.balance)       # 150 — the object's state persists between calls`} caption="Every method call on the same object shares the same self — that's what makes an object's state persistent across method calls, unlike a plain function." />
+
+<Explanation id="self">
+
+`self` is just a name (by convention, not a keyword) for "the instance
+this method was called on." When you write `account.deposit(50)`, Python
+translates that to `BankAccount.deposit(account, 50)` — `self` is always
+the first parameter, filled in automatically. Every instance gets its own
+independent copy of the attributes set in `__init__` — `account.balance`
+and some other `BankAccount()` instance's `balance` are completely
+separate.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can define a class with __init__ and instance methods, and understand how self connects a method call back to its instance's state.
+</Checkpoint>

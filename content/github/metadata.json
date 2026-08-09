@@ -1,0 +1,42 @@
+{
+  "slug": "github",
+  "name": "GitHub",
+  "category": "devops",
+  "difficulty": "beginner",
+  "estimatedHours": 3,
+  "prerequisites": [
+    "git"
+  ],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer",
+    "data-engineer",
+    "data-scientist",
+    "ml-engineer",
+    "ai-engineer",
+    "research-engineer",
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "pull-requests",
+      "title": "Pull Requests",
+      "status": "planned"
+    },
+    {
+      "slug": "actions-basics",
+      "title": "Actions Basics",
+      "status": "planned"
+    },
+    {
+      "slug": "issues-projects",
+      "title": "Issues & Projects",
+      "status": "planned"
+    }
+  ]
+}

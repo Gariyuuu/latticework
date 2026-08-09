@@ -1,0 +1,12 @@
+{
+  "id": "indexing-slicing-ex2",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["numpy"],
+  "starterCode": "import numpy as np\n\ndef mask_positive(arr):\n    ...\n",
+  "cases": [
+    { "call": "mask_positive([-1, 2, -3, 4, 0]).tolist()", "expect": "[2, 4]" },
+    { "call": "mask_positive([-5, -2]).tolist()", "expect": "[]" },
+    { "call": "mask_positive([1, 2, 3]).tolist()", "expect": "[1, 2, 3]" }
+  ]
+}

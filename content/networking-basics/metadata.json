@@ -1,0 +1,32 @@
+{
+  "slug": "networking-basics",
+  "name": "Networking Basics",
+  "category": "cs",
+  "difficulty": "beginner",
+  "estimatedHours": 4,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "tcp-ip",
+      "title": "TCP/IP",
+      "status": "planned"
+    },
+    {
+      "slug": "dns",
+      "title": "DNS",
+      "status": "planned"
+    },
+    {
+      "slug": "load-balancing",
+      "title": "Load Balancing",
+      "status": "planned"
+    }
+  ]
+}

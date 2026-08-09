@@ -1,0 +1,75 @@
+{
+  "slug": "sql",
+  "name": "SQL",
+  "category": "language",
+  "difficulty": "beginner",
+  "estimatedHours": 10,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer",
+    "data-engineer",
+    "data-scientist",
+    "ml-engineer",
+    "ai-engineer",
+    "research-engineer",
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "select-where",
+      "title": "SELECT & WHERE",
+      "status": "planned"
+    },
+    {
+      "slug": "group-by-aggregates",
+      "title": "GROUP BY & Aggregates",
+      "status": "planned"
+    },
+    {
+      "slug": "joins",
+      "title": "JOINs",
+      "status": "planned"
+    },
+    {
+      "slug": "subqueries",
+      "title": "Subqueries",
+      "status": "planned"
+    },
+    {
+      "slug": "ctes",
+      "title": "CTEs",
+      "status": "planned"
+    },
+    {
+      "slug": "window-functions",
+      "title": "Window Functions",
+      "status": "planned"
+    },
+    {
+      "slug": "indexes-query-plans",
+      "title": "Indexes & Query Plans",
+      "status": "planned"
+    },
+    {
+      "slug": "schema-design",
+      "title": "Schema Design",
+      "status": "planned"
+    },
+    {
+      "slug": "transactions-isolation",
+      "title": "Transactions & Isolation",
+      "status": "planned"
+    },
+    {
+      "slug": "interview-patterns",
+      "title": "Interview Patterns",
+      "status": "planned"
+    }
+  ]
+}

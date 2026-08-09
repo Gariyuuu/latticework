@@ -1,0 +1,11 @@
+{
+  "id": "distributions-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import math\n\ndef binomial_pmf(n, k, p):\n    ...\n",
+  "cases": [
+    { "call": "round(binomial_pmf(4, 2, 0.5), 4)", "expect": "0.375" },
+    { "call": "round(binomial_pmf(2, 0, 0.5), 4)", "expect": "0.25" },
+    { "call": "round(binomial_pmf(3, 3, 1.0), 4)", "expect": "1.0" }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "slug": "mongodb",
+  "name": "MongoDB",
+  "category": "database",
+  "difficulty": "beginner",
+  "estimatedHours": 4,
+  "prerequisites": [],
+  "usefulFor": [
+    "backend-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "documents-collections",
+      "title": "Documents & Collections",
+      "status": "planned"
+    },
+    {
+      "slug": "aggregation-pipeline",
+      "title": "Aggregation Pipeline",
+      "status": "planned"
+    },
+    {
+      "slug": "indexing",
+      "title": "Indexing",
+      "status": "planned"
+    }
+  ]
+}

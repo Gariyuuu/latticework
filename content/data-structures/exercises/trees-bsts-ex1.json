@@ -1,0 +1,10 @@
+{
+  "id": "trees-bsts-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "class Node:\n    def __init__(self, val):\n        self.val = val\n        self.left = None\n        self.right = None\n\ndef inorder(root):\n    if root is None:\n        return []\n    return inorder(root.left) + [root.val] + inorder(root.right)\n\ndef bst_insert(root, val):\n    ...\n",
+  "cases": [
+    { "call": "inorder(bst_insert(bst_insert(bst_insert(None, 5), 3), 8))", "expect": "[3, 5, 8]" },
+    { "call": "inorder(bst_insert(bst_insert(bst_insert(bst_insert(None, 10), 4), 15), 1))", "expect": "[1, 4, 10, 15]" }
+  ]
+}

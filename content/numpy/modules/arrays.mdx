@@ -1,0 +1,82 @@
+---
+slug: arrays
+title: Arrays
+estimatedMinutes: 14
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: shape-dtype
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: arrays-ex1
+    difficulty: beginner
+    concept: numpy-arrays
+    prompt: "Write `make_range_array(n)`, returning a NumPy array containing 0, 1, ..., n-1 — use `np.arange`, not a Python loop."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: arrays-ex2
+    difficulty: intermediate
+    concept: numpy-arrays
+    prompt: "Write `zeros_like_shape(rows, cols)`, returning a 2D NumPy array of zeros with shape `(rows, cols)` — use `np.zeros`."
+  - id: quiz-1
+    type: quiz
+    concept: numpy-arrays
+    question: "What is the main practical difference between a NumPy array and a Python list?"
+    options: ["An array holds a single fixed dtype and supports fast, vectorized element-wise math; a list holds mixed types and needs a loop for math", "An array can only hold integers", "A list is always faster for numeric work", "There's no real difference"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+NumPy's `ndarray` is the foundation almost every data/ML/quant library in
+Python is built on (pandas, scikit-learn, PyTorch all use it under the
+hood). Unlike a Python `list`, an array stores elements of one fixed type
+contiguously in memory — that's what makes whole-array math fast.
+
+```python
+import numpy as np
+
+a = np.array([1, 2, 3, 4])
+b = np.arange(4)        # [0, 1, 2, 3] — like range(), but returns an array
+c = np.zeros(3)          # [0. 0. 0.]
+d = np.linspace(0, 1, 5) # 5 evenly-spaced points from 0 to 1
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["numpy"]} code={`import numpy as np\n\narr = np.array([1, 2, 3, 4, 5])\nprint(arr.shape)   # (5,) — a 1D array of 5 elements\nprint(arr.dtype)   # int32 (in the browser's WASM environment — 64-bit desktop Python usually shows int64; either way, every element shares this one type)\nprint(arr.sum(), arr.mean(), arr.max())  # 15 3.0 5`} caption="shape and dtype are the two properties you'll check constantly when debugging array code — a wrong shape is the single most common NumPy bug." />
+
+<Explanation id="shape-dtype">
+
+Two-dimensional arrays (matrices) work the same way, just with a shape
+tuple of two numbers:
+
+```python
+m = np.zeros((2, 3))   # 2 rows, 3 columns, all zeros
+print(m.shape)          # (2, 3)
+```
+
+Every element in an array shares one `dtype` — mixing an int and a float
+in `np.array([1, 2, 3.5])` silently upcasts the whole array to float64.
+That's different from a Python list, which happily holds mixed types with
+no conversion at all.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can create arrays with np.array/np.arange/np.zeros, and know that shape and dtype are the two properties to check first when something looks wrong.
+</Checkpoint>

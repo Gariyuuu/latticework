@@ -1,0 +1,11 @@
+{
+  "id": "variables-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def fahrenheit_to_celsius(f):\n    ...\n",
+  "cases": [
+    { "call": "fahrenheit_to_celsius(32)", "expect": "0.0" },
+    { "call": "fahrenheit_to_celsius(212)", "expect": "100.0" },
+    { "call": "fahrenheit_to_celsius(98.6)", "expect": "37.0" }
+  ]
+}

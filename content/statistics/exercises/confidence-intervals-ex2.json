@@ -1,0 +1,11 @@
+{
+  "id": "confidence-intervals-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import math\n\ndef confidence_interval(sample_mean, std, n, z=1.96):\n    ...\n",
+  "cases": [
+    { "call": "tuple(round(v, 4) for v in confidence_interval(100, 15, 36))", "expect": "(95.1, 104.9)" },
+    { "call": "tuple(round(v, 4) for v in confidence_interval(50, 10, 25))", "expect": "(46.08, 53.92)" },
+    { "call": "tuple(round(v, 4) for v in confidence_interval(20, 8, 16, 2.58))", "expect": "(14.84, 25.16)" }
+  ]
+}

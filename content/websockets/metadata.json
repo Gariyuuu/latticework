@@ -1,0 +1,32 @@
+{
+  "slug": "websockets",
+  "name": "WebSockets",
+  "category": "web",
+  "difficulty": "intermediate",
+  "estimatedHours": 3,
+  "prerequisites": [
+    "http"
+  ],
+  "usefulFor": [
+    "full-stack-engineer",
+    "backend-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "handshake",
+      "title": "Handshake",
+      "status": "planned"
+    },
+    {
+      "slug": "message-framing",
+      "title": "Message Framing",
+      "status": "planned"
+    },
+    {
+      "slug": "reconnection-patterns",
+      "title": "Reconnection Patterns",
+      "status": "planned"
+    }
+  ]
+}

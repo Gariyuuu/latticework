@@ -1,0 +1,37 @@
+{
+  "slug": "oop",
+  "name": "Object-Oriented Programming",
+  "category": "cs",
+  "difficulty": "beginner",
+  "estimatedHours": 6,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "classes-objects",
+      "title": "Classes & Objects",
+      "status": "planned"
+    },
+    {
+      "slug": "inheritance",
+      "title": "Inheritance",
+      "status": "planned"
+    },
+    {
+      "slug": "polymorphism",
+      "title": "Polymorphism",
+      "status": "planned"
+    },
+    {
+      "slug": "encapsulation",
+      "title": "Encapsulation",
+      "status": "planned"
+    }
+  ]
+}

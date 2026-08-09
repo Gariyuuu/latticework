@@ -1,0 +1,40 @@
+{
+  "slug": "postgresql",
+  "name": "PostgreSQL",
+  "category": "database",
+  "difficulty": "beginner",
+  "estimatedHours": 6,
+  "prerequisites": [
+    "sql"
+  ],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer",
+    "data-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "data-types",
+      "title": "Data Types",
+      "status": "planned"
+    },
+    {
+      "slug": "indexes",
+      "title": "Indexes",
+      "status": "planned"
+    },
+    {
+      "slug": "explain",
+      "title": "EXPLAIN",
+      "status": "planned"
+    },
+    {
+      "slug": "extensions",
+      "title": "Extensions",
+      "status": "planned"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "a-b-testing-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def conversion_rate(conversions, visitors):\n    ...\n",
+  "cases": [
+    { "call": "round(conversion_rate(50, 1000), 4)", "expect": "0.05" },
+    { "call": "round(conversion_rate(120, 800), 4)", "expect": "0.15" },
+    { "call": "round(conversion_rate(0, 500), 4)", "expect": "0.0" }
+  ]
+}

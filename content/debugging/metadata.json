@@ -1,0 +1,40 @@
+{
+  "slug": "debugging",
+  "name": "Debugging",
+  "category": "cs",
+  "difficulty": "beginner",
+  "estimatedHours": 3,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer",
+    "data-engineer",
+    "data-scientist",
+    "ml-engineer",
+    "ai-engineer",
+    "research-engineer",
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "reading-stack-traces",
+      "title": "Reading Stack Traces",
+      "status": "planned"
+    },
+    {
+      "slug": "bisection",
+      "title": "Bisection",
+      "status": "planned"
+    },
+    {
+      "slug": "tooling",
+      "title": "Tooling",
+      "status": "planned"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "graphs-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def has_path(graph, start, end):\n    ...\n",
+  "cases": [
+    { "call": "has_path({'A': ['B'], 'B': ['C'], 'C': []}, 'A', 'C')", "expect": "True" },
+    { "call": "has_path({'A': ['B'], 'B': [], 'C': []}, 'A', 'C')", "expect": "False" },
+    { "call": "has_path({'A': []}, 'A', 'A')", "expect": "True" }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "id": "series-dataframes-ex2",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["pandas"],
+  "starterCode": "import pandas as pd\n\ndef column_total(data, col):\n    ...\n",
+  "cases": [
+    { "call": "column_total({'a': [1, 2, 3], 'b': [10, 20, 30]}, 'a')", "expect": "6" },
+    { "call": "column_total({'x': [5, 5, 5]}, 'x')", "expect": "15" },
+    { "call": "column_total({'a': [1], 'b': [100]}, 'b')", "expect": "100" }
+  ]
+}

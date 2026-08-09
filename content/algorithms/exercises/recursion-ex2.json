@@ -1,0 +1,11 @@
+{
+  "id": "recursion-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def fib_memo(n, memo=None):\n    ...\n",
+  "cases": [
+    { "call": "fib_memo(10)", "expect": "55" },
+    { "call": "fib_memo(0)", "expect": "0" },
+    { "call": "fib_memo(20)", "expect": "6765" }
+  ]
+}

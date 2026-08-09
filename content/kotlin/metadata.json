@@ -1,0 +1,29 @@
+{
+  "slug": "kotlin",
+  "name": "Kotlin Fundamentals",
+  "category": "language",
+  "difficulty": "beginner",
+  "estimatedHours": 6,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "syntax-types",
+      "title": "Syntax & Types",
+      "status": "planned"
+    },
+    {
+      "slug": "null-safety",
+      "title": "Null Safety",
+      "status": "planned"
+    },
+    {
+      "slug": "coroutines-basics",
+      "title": "Coroutines Basics",
+      "status": "planned"
+    }
+  ]
+}

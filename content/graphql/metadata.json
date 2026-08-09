@@ -1,0 +1,32 @@
+{
+  "slug": "graphql",
+  "name": "GraphQL Fundamentals",
+  "category": "web",
+  "difficulty": "intermediate",
+  "estimatedHours": 4,
+  "prerequisites": [
+    "rest-apis"
+  ],
+  "usefulFor": [
+    "full-stack-engineer",
+    "backend-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "schemas-types",
+      "title": "Schemas & Types",
+      "status": "planned"
+    },
+    {
+      "slug": "queries-mutations",
+      "title": "Queries & Mutations",
+      "status": "planned"
+    },
+    {
+      "slug": "resolvers",
+      "title": "Resolvers",
+      "status": "planned"
+    }
+  ]
+}

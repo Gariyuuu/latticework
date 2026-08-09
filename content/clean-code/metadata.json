@@ -1,0 +1,32 @@
+{
+  "slug": "clean-code",
+  "name": "Clean Code",
+  "category": "cs",
+  "difficulty": "beginner",
+  "estimatedHours": 4,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "naming",
+      "title": "Naming",
+      "status": "planned"
+    },
+    {
+      "slug": "functions",
+      "title": "Functions",
+      "status": "planned"
+    },
+    {
+      "slug": "code-smells",
+      "title": "Code Smells",
+      "status": "planned"
+    }
+  ]
+}

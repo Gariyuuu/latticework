@@ -1,0 +1,11 @@
+{
+  "id": "arrays-lists-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def second_largest(nums):\n    ...\n",
+  "cases": [
+    { "call": "second_largest([5, 1, 4, 3, 2])", "expect": "4" },
+    { "call": "second_largest([10, 10, 9])", "expect": "9" },
+    { "call": "second_largest([1, 2])", "expect": "1" }
+  ]
+}

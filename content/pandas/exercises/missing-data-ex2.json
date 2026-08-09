@@ -1,0 +1,12 @@
+{
+  "id": "missing-data-ex2",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["pandas"],
+  "starterCode": "import pandas as pd\n\ndef drop_missing_rows(data):\n    ...\n",
+  "cases": [
+    { "call": "drop_missing_rows({'a': [1, None, 3], 'b': [4, 5, None]})", "expect": "1" },
+    { "call": "drop_missing_rows({'a': [1, 2, 3]})", "expect": "3" },
+    { "call": "drop_missing_rows({'a': [None, None]})", "expect": "0" }
+  ]
+}

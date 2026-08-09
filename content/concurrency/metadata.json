@@ -1,0 +1,30 @@
+{
+  "slug": "concurrency",
+  "name": "Concurrency",
+  "category": "cs",
+  "difficulty": "advanced",
+  "estimatedHours": 6,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer",
+    "quant-developer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "threads-locks",
+      "title": "Threads & Locks",
+      "status": "planned"
+    },
+    {
+      "slug": "race-conditions",
+      "title": "Race Conditions",
+      "status": "planned"
+    },
+    {
+      "slug": "async-models",
+      "title": "Async Models",
+      "status": "planned"
+    }
+  ]
+}

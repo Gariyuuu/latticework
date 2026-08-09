@@ -1,0 +1,32 @@
+{
+  "slug": "polars",
+  "name": "Polars",
+  "category": "data-science",
+  "difficulty": "intermediate",
+  "estimatedHours": 5,
+  "prerequisites": [
+    "pandas"
+  ],
+  "usefulFor": [
+    "data-engineer",
+    "data-scientist"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "dataframe-basics",
+      "title": "DataFrame Basics",
+      "status": "planned"
+    },
+    {
+      "slug": "lazy-evaluation",
+      "title": "Lazy Evaluation",
+      "status": "planned"
+    },
+    {
+      "slug": "performance-vs-pandas",
+      "title": "Performance vs Pandas",
+      "status": "planned"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "hash-tables-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def most_frequent(items):\n    ...\n",
+  "cases": [
+    { "call": "most_frequent([1, 2, 2, 3, 3, 3])", "expect": "3" },
+    { "call": "most_frequent(['a', 'b', 'a'])", "expect": "a" },
+    { "call": "most_frequent([5])", "expect": "5" }
+  ]
+}

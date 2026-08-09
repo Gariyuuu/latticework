@@ -1,0 +1,32 @@
+{
+  "slug": "distributed-systems",
+  "name": "Distributed Systems Fundamentals",
+  "category": "cs",
+  "difficulty": "advanced",
+  "estimatedHours": 8,
+  "prerequisites": [
+    "system-design"
+  ],
+  "usefulFor": [
+    "software-engineer",
+    "data-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "cap-theorem",
+      "title": "CAP Theorem",
+      "status": "planned"
+    },
+    {
+      "slug": "consensus-basics",
+      "title": "Consensus Basics",
+      "status": "planned"
+    },
+    {
+      "slug": "replication",
+      "title": "Replication",
+      "status": "planned"
+    }
+  ]
+}

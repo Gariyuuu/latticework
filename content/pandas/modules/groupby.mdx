@@ -1,0 +1,89 @@
+---
+slug: groupby
+title: GroupBy
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: multiple-agg
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: groupby-ex1
+    difficulty: beginner
+    concept: pandas-groupby
+    prompt: "Write `group_sum(data, group_col, value_col)`: build a DataFrame from `data`, group by `group_col`, and return the sum of `value_col` per group as a dict (`.to_dict()`)."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: groupby-ex2
+    difficulty: intermediate
+    concept: pandas-groupby
+    prompt: "Write `group_mean_sorted(data, group_col, value_col)`: group by `group_col`, compute the mean of `value_col` per group, and return a list of `(group, mean)` tuples sorted by mean descending."
+  - id: quiz-1
+    type: quiz
+    concept: pandas-groupby
+    question: "What three steps does df.groupby('dept')['salary'].sum() perform, conceptually?"
+    options: ["Split rows into groups by 'dept', apply sum() to 'salary' within each group, combine the per-group results back together", "It sorts the DataFrame by 'dept'", "It removes duplicate 'dept' rows", "It just renames the 'salary' column"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+`groupby` is pandas' answer to "for each department, what's the total
+salary?" — the **split-apply-combine** pattern: split rows into groups by
+some column, apply an aggregation (sum, mean, count...) within each
+group, then combine the results back into one object.
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({
+    "dept": ["eng", "eng", "sales", "sales"],
+    "salary": [100, 200, 150, 250],
+})
+print(df.groupby("dept")["salary"].sum())
+# eng      300
+# sales    400
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["pandas"]} code={`import pandas as pd\n\ndf = pd.DataFrame({\n    "dept": ["eng", "eng", "sales", "sales", "sales"],\n    "salary": [100, 200, 90, 110, 100],\n})\nsummary = df.groupby("dept")["salary"].agg(["mean", "count"])\nprint(summary)\n#         mean  count\n# dept\n# eng    150.0      2\n# sales  100.0      3`} caption=".agg([...]) computes several aggregations at once, returning a DataFrame with one column per aggregation — much more common in practice than a single .sum() or .mean() call." />
+
+<Explanation id="multiple-agg">
+
+Beyond `.sum()`/`.mean()`, `.agg()` accepts any list of aggregation
+functions, or even a dict mapping different columns to different
+aggregations:
+
+```python
+df.groupby("dept").agg({
+    "salary": "mean",
+    "name": "count",
+})
+```
+
+The result of a `groupby` is indexed by the group key — that's why
+`group_sum(...).to_dict()` (in the exercise below) naturally produces
+`{group: value}` pairs, and why sorting the result by value needs
+`.items()` first, since the group key lives in the index, not a regular
+column.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can group rows by a column and aggregate another column per group, including sorting groups by their aggregated value.
+</Checkpoint>

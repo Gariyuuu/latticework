@@ -1,0 +1,87 @@
+---
+slug: bayes-theorem
+title: Bayes' Theorem
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: total-probability
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: bayes-theorem-ex1
+    difficulty: beginner
+    concept: probability-bayes
+    prompt: "Write `bayes(p_a, p_b_given_a, p_b)`, returning P(A|B) using Bayes' theorem: P(A|B) = P(B|A) × P(A) / P(B)."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: bayes-theorem-ex2
+    difficulty: intermediate
+    concept: probability-bayes
+    prompt: "Write `bayes_full(p_a, p_b_given_a, p_b_given_not_a)`. First compute P(B) using the law of total probability — P(B) = P(B|A)×P(A) + P(B|¬A)×(1−P(A)) — then return P(A|B)."
+  - id: quiz-1
+    type: quiz
+    concept: probability-bayes
+    question: "What does Bayes' theorem let you compute?"
+    options: ["The probability of a cause given an observed effect, P(A|B), from P(B|A) and a prior P(A)", "The probability of two independent events both happening", "The variance of a random variable", "The expected value of a distribution"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Bayes' theorem flips a conditional probability around: it lets you compute
+P(A|B) — "given that B happened, what's the probability A is true?" —
+from P(B|A), the reverse and often much easier direction to measure
+directly.
+
+```
+P(A|B) = P(B|A) × P(A) / P(B)
+```
+
+Classic use case: you know how accurate a medical test is (P(positive
+test | actually sick)), but what you actually want to know when someone
+tests positive is P(actually sick | positive test) — a different
+question entirely, and Bayes' theorem is the bridge between them.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def bayes(p_a, p_b_given_a, p_b):\n    return p_b_given_a * p_a / p_b\n\n# 1% of people have a disease. A test is 90% accurate when someone HAS it.\n# Given the test came back positive (regardless of who took it, 9.9% of\n# all tests come back positive), what's the chance they actually have it?\nresult = bayes(p_a=0.01, p_b_given_a=0.9, p_b=0.099)\nprint(round(result, 4))  # 0.0909 -- far lower than the test's 90% accuracy suggests!`} caption="This is the single most common intuition-breaking result in probability: even an accurate test gives a surprisingly low P(disease | positive) when the disease itself is rare — because false positives from the huge healthy population outnumber true positives from the tiny sick population." />
+
+<Explanation id="total-probability">
+
+In the example above, P(B) — the overall probability of testing positive
+— was just given to you. In practice you usually have to compute it
+yourself from the **law of total probability**: sum P(B|A)×P(A) over
+every possible cause of B.
+
+For a yes/no cause A, that's just two terms — B happening because A is
+true, plus B happening even though A is false:
+
+```python
+def bayes_full(p_a, p_b_given_a, p_b_given_not_a):
+    p_b = p_b_given_a * p_a + p_b_given_not_a * (1 - p_a)
+    return p_b_given_a * p_a / p_b
+```
+
+This version only needs the test's true-positive rate and false-positive
+rate — you never have to separately go measure "what fraction of ALL
+tests come back positive," which is often the harder number to get.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can apply Bayes' theorem directly, and derive P(B) yourself via the law of total probability when it isn't given.
+</Checkpoint>

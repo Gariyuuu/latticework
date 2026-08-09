@@ -1,0 +1,30 @@
+{
+  "slug": "embeddings",
+  "name": "Embeddings",
+  "category": "ai-ml",
+  "difficulty": "intermediate",
+  "estimatedHours": 4,
+  "prerequisites": [],
+  "usefulFor": [
+    "ai-engineer",
+    "ml-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "vector-representations",
+      "title": "Vector Representations",
+      "status": "planned"
+    },
+    {
+      "slug": "similarity-metrics",
+      "title": "Similarity Metrics",
+      "status": "planned"
+    },
+    {
+      "slug": "use-cases",
+      "title": "Use Cases",
+      "status": "planned"
+    }
+  ]
+}

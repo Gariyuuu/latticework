@@ -1,0 +1,27 @@
+{
+  "slug": "pydantic",
+  "name": "Pydantic",
+  "category": "tooling",
+  "difficulty": "beginner",
+  "estimatedHours": 3,
+  "prerequisites": [
+    "python"
+  ],
+  "usefulFor": [
+    "backend-engineer",
+    "ai-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "models-validation",
+      "title": "Models & Validation",
+      "status": "planned"
+    },
+    {
+      "slug": "settings-management",
+      "title": "Settings Management",
+      "status": "planned"
+    }
+  ]
+}

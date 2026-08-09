@@ -1,0 +1,31 @@
+{
+  "slug": "snowflake",
+  "name": "Snowflake Fundamentals",
+  "category": "database",
+  "difficulty": "intermediate",
+  "estimatedHours": 4,
+  "prerequisites": [
+    "data-warehousing"
+  ],
+  "usefulFor": [
+    "data-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "architecture",
+      "title": "Architecture",
+      "status": "planned"
+    },
+    {
+      "slug": "virtual-warehouses",
+      "title": "Virtual Warehouses",
+      "status": "planned"
+    },
+    {
+      "slug": "cost-model",
+      "title": "Cost Model",
+      "status": "planned"
+    }
+  ]
+}

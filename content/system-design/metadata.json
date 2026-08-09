@@ -1,0 +1,40 @@
+{
+  "slug": "system-design",
+  "name": "System Design Fundamentals",
+  "category": "cs",
+  "difficulty": "advanced",
+  "estimatedHours": 8,
+  "prerequisites": [
+    "networking-basics",
+    "database-design"
+  ],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "scalability-basics",
+      "title": "Scalability Basics",
+      "status": "planned"
+    },
+    {
+      "slug": "caching",
+      "title": "Caching",
+      "status": "planned"
+    },
+    {
+      "slug": "load-balancing",
+      "title": "Load Balancing",
+      "status": "planned"
+    },
+    {
+      "slug": "trade-off-interviews",
+      "title": "Trade-off Interviews",
+      "status": "planned"
+    }
+  ]
+}

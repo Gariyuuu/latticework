@@ -1,0 +1,11 @@
+{
+  "id": "decorators-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def require_positive(func):\n    ...\n\n@require_positive\ndef add(a, b):\n    return a + b\n",
+  "cases": [
+    { "call": "add(2, 3)", "expect": "5" },
+    { "call": "add(-1, 3)", "expect": "invalid" },
+    { "call": "add(4, 4)", "expect": "8" }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "id": "selection-filtering-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["pandas"],
+  "starterCode": "import pandas as pd\n\ndef rows_where(data, col, threshold):\n    ...\n",
+  "cases": [
+    { "call": "rows_where({'name': ['a', 'b', 'c'], 'score': [50, 90, 70]}, 'score', 60)", "expect": "[{'name': 'b', 'score': 90}, {'name': 'c', 'score': 70}]" },
+    { "call": "rows_where({'x': [1, 2, 3]}, 'x', 10)", "expect": "[]" },
+    { "call": "rows_where({'x': [1, 2, 3]}, 'x', 0)", "expect": "[{'x': 1}, {'x': 2}, {'x': 3}]" }
+  ]
+}

@@ -1,0 +1,89 @@
+---
+slug: distributions
+title: Distributions
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: continuous
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: distributions-ex1
+    difficulty: beginner
+    concept: probability-distributions
+    prompt: "Write `binomial_pmf(n, k, p)`, returning P(X = k) for a Binomial(n, p) random variable. Formula: C(n, k) × p^k × (1-p)^(n-k) — use `math.comb`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: distributions-ex2
+    difficulty: intermediate
+    concept: probability-distributions
+    prompt: "Write `normal_pdf(x, mu, sigma)`, returning the normal distribution's probability density at `x`. Formula: (1 / (σ√(2π))) × e^(−(x−μ)² / (2σ²))."
+  - id: quiz-1
+    type: quiz
+    concept: probability-distributions
+    question: "For a standard normal distribution (mean 0, std 1), where is the PDF at its highest point?"
+    options: ["At x = 0", "At x = 1", "The PDF has no single peak", "The peak location depends on the sample size"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A **binomial distribution** models the number of successes in `n`
+independent yes/no trials, each with success probability `p` — like the
+number of heads in 10 coin flips. Its PMF:
+
+```python
+import math
+
+def binomial_pmf(n, k, p):
+    return math.comb(n, k) * p**k * (1 - p)**(n - k)
+
+print(round(binomial_pmf(10, 5, 0.5), 4))   # 0.2461 -- P(exactly 5 heads in 10 flips)
+```
+
+`math.comb(n, k)` counts the number of distinct ways to choose which `k`
+of the `n` trials were successes.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`import math\n\ndef binomial_pmf(n, k, p):\n    return math.comb(n, k) * p**k * (1 - p)**(n - k)\n\n# Probability of getting exactly 0, 1, 2, or 3 heads in 3 fair coin flips\nfor k in range(4):\n    print(k, round(binomial_pmf(3, k, 0.5), 4))`} caption="Summing binomial_pmf(3, k, 0.5) over every possible k from 0 to 3 always gives exactly 1.0 -- a useful sanity check for any PMF you compute." />
+
+<Explanation id="continuous">
+
+A **continuous** random variable (like height, or a stock return) can take
+any value in a range, not just discrete outcomes — so instead of "the
+probability of exactly this value" (which is technically 0 for any single
+point), you work with a **PDF** (probability density function), where
+area under the curve between two points gives the probability of landing
+in that range.
+
+The **normal distribution** (bell curve) is the most common:
+
+```python
+import math
+
+def normal_pdf(x, mu, sigma):
+    return (1 / (sigma * math.sqrt(2 * math.pi))) * math.exp(-((x - mu) ** 2) / (2 * sigma ** 2))
+
+print(round(normal_pdf(0, 0, 1), 4))   # 0.3989 -- peak of the standard normal
+```
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute binomial and normal probabilities from their formulas, and understand the discrete-PMF vs continuous-PDF distinction.
+</Checkpoint>

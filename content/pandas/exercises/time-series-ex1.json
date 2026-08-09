@@ -1,0 +1,12 @@
+{
+  "id": "time-series-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["pandas"],
+  "starterCode": "import pandas as pd\n\ndef date_range_list(start, periods):\n    ...\n",
+  "cases": [
+    { "call": "date_range_list('2024-01-01', 3)", "expect": "['2024-01-01', '2024-01-02', '2024-01-03']" },
+    { "call": "date_range_list('2024-02-28', 2)", "expect": "['2024-02-28', '2024-02-29']" },
+    { "call": "date_range_list('2023-12-30', 4)", "expect": "['2023-12-30', '2023-12-31', '2024-01-01', '2024-01-02']" }
+  ]
+}

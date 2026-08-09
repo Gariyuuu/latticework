@@ -1,0 +1,12 @@
+{
+  "id": "joins-merges-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["pandas"],
+  "starterCode": "import pandas as pd\n\ndef inner_join_count(left, right, on):\n    ...\n",
+  "cases": [
+    { "call": "inner_join_count({'id': [1, 2, 3], 'name': ['a', 'b', 'c']}, {'id': [2, 3, 4], 'score': [10, 20, 30]}, 'id')", "expect": "2" },
+    { "call": "inner_join_count({'id': [1]}, {'id': [2]}, 'id')", "expect": "0" },
+    { "call": "inner_join_count({'id': [1, 2]}, {'id': [1, 2]}, 'id')", "expect": "2" }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "slug": "time-series",
+  "name": "Time Series",
+  "category": "quant",
+  "difficulty": "intermediate",
+  "estimatedHours": 6,
+  "prerequisites": [
+    "statistics"
+  ],
+  "usefulFor": [
+    "data-scientist",
+    "quant-researcher"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "stationarity",
+      "title": "Stationarity",
+      "status": "planned"
+    },
+    {
+      "slug": "autocorrelation",
+      "title": "Autocorrelation",
+      "status": "planned"
+    },
+    {
+      "slug": "arima-intuition",
+      "title": "ARIMA Intuition",
+      "status": "planned"
+    },
+    {
+      "slug": "rolling-windows",
+      "title": "Rolling Windows",
+      "status": "planned"
+    }
+  ]
+}

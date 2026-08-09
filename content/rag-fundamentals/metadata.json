@@ -1,0 +1,32 @@
+{
+  "slug": "rag-fundamentals",
+  "name": "RAG Fundamentals",
+  "category": "ai-ml",
+  "difficulty": "intermediate",
+  "estimatedHours": 5,
+  "prerequisites": [
+    "embeddings",
+    "vector-databases"
+  ],
+  "usefulFor": [
+    "ai-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "retrieval-pipeline",
+      "title": "Retrieval Pipeline",
+      "status": "planned"
+    },
+    {
+      "slug": "chunking-strategies",
+      "title": "Chunking Strategies",
+      "status": "planned"
+    },
+    {
+      "slug": "evaluation",
+      "title": "Evaluation",
+      "status": "planned"
+    }
+  ]
+}

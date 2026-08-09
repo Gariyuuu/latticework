@@ -1,0 +1,45 @@
+{
+  "slug": "git",
+  "name": "Git",
+  "category": "devops",
+  "difficulty": "beginner",
+  "estimatedHours": 5,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer",
+    "data-engineer",
+    "data-scientist",
+    "ml-engineer",
+    "ai-engineer",
+    "research-engineer",
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "commits-branches",
+      "title": "Commits & Branches",
+      "status": "planned"
+    },
+    {
+      "slug": "merging-rebasing",
+      "title": "Merging & Rebasing",
+      "status": "planned"
+    },
+    {
+      "slug": "resolving-conflicts",
+      "title": "Resolving Conflicts",
+      "status": "planned"
+    },
+    {
+      "slug": "remotes",
+      "title": "Remotes",
+      "status": "planned"
+    }
+  ]
+}

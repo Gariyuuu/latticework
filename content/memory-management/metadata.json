@@ -1,0 +1,32 @@
+{
+  "slug": "memory-management",
+  "name": "Memory Management",
+  "category": "cs",
+  "difficulty": "intermediate",
+  "estimatedHours": 5,
+  "prerequisites": [
+    "c"
+  ],
+  "usefulFor": [
+    "software-engineer",
+    "quant-developer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "stack-vs-heap",
+      "title": "Stack vs Heap",
+      "status": "planned"
+    },
+    {
+      "slug": "garbage-collection",
+      "title": "Garbage Collection",
+      "status": "planned"
+    },
+    {
+      "slug": "manual-management-pitfalls",
+      "title": "Manual Management Pitfalls",
+      "status": "planned"
+    }
+  ]
+}

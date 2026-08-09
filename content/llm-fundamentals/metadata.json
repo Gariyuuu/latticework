@@ -1,0 +1,35 @@
+{
+  "slug": "llm-fundamentals",
+  "name": "LLM Fundamentals",
+  "category": "ai-ml",
+  "difficulty": "intermediate",
+  "estimatedHours": 6,
+  "prerequisites": [],
+  "usefulFor": [
+    "ai-engineer",
+    "ml-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "tokenization",
+      "title": "Tokenization",
+      "status": "planned"
+    },
+    {
+      "slug": "attention-intuition",
+      "title": "Attention Intuition",
+      "status": "planned"
+    },
+    {
+      "slug": "context-windows",
+      "title": "Context Windows",
+      "status": "planned"
+    },
+    {
+      "slug": "limitations",
+      "title": "Limitations",
+      "status": "planned"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "slug": "tensorflow",
+  "name": "TensorFlow",
+  "category": "ai-ml",
+  "difficulty": "intermediate",
+  "estimatedHours": 12,
+  "prerequisites": [
+    "python",
+    "numpy"
+  ],
+  "usefulFor": [
+    "ml-engineer",
+    "ai-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "tensors-ops",
+      "title": "Tensors & Ops",
+      "status": "planned"
+    },
+    {
+      "slug": "keras-sequential-functional",
+      "title": "Keras Sequential/Functional",
+      "status": "planned"
+    },
+    {
+      "slug": "training-loops",
+      "title": "Training Loops",
+      "status": "planned"
+    },
+    {
+      "slug": "saving-models",
+      "title": "Saving Models",
+      "status": "planned"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "confidence-intervals-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import math\n\ndef margin_of_error(std, n, z=1.96):\n    ...\n",
+  "cases": [
+    { "call": "round(margin_of_error(15, 36), 4)", "expect": "4.9" },
+    { "call": "round(margin_of_error(10, 25), 4)", "expect": "3.92" },
+    { "call": "round(margin_of_error(8, 16, 2.58), 4)", "expect": "5.16" }
+  ]
+}

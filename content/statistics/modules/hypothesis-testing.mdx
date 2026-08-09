@@ -1,0 +1,95 @@
+---
+slug: hypothesis-testing
+title: Hypothesis Testing
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: p-value
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: hypothesis-testing-ex1
+    difficulty: beginner
+    concept: statistics-hypothesis-testing
+    prompt: "Write `z_score(sample_mean, pop_mean, pop_std, n)`, returning the z-statistic: (sample_mean − pop_mean) / (pop_std / √n)."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: hypothesis-testing-ex2
+    difficulty: intermediate
+    concept: statistics-hypothesis-testing
+    prompt: "Write `two_sided_p_value(z)`, returning the two-sided p-value for a given z-statistic, using `statistics.NormalDist().cdf`. Formula: 2 × (1 − CDF(|z|))."
+  - id: quiz-1
+    type: quiz
+    concept: statistics-hypothesis-testing
+    question: "In null hypothesis significance testing, what does a small p-value suggest?"
+    options: ["The observed data would be unlikely if the null hypothesis were actually true", "The null hypothesis is definitely false", "The effect size is large", "The sample size was too small"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Hypothesis testing** is how you decide whether an observed difference
+is real or just noise. You start with a **null hypothesis** (H₀ — "there's
+no real effect, any difference is chance"), then ask: how surprising is
+the data we actually observed, if H₀ were true?
+
+A **z-test** compares a sample mean to a claimed population mean, scaled
+by how much sample means naturally vary:
+
+```python
+import math
+
+def z_score(sample_mean, pop_mean, pop_std, n):
+    standard_error = pop_std / math.sqrt(n)
+    return (sample_mean - pop_mean) / standard_error
+```
+
+A z-score of 2.0 means the sample mean is 2 standard errors away from
+what you'd expect under H₀ — the larger `|z|`, the more surprising the
+result.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`import math\n\ndef z_score(sample_mean, pop_mean, pop_std, n):\n    return (sample_mean - pop_mean) / (pop_std / math.sqrt(n))\n\n# Claim: average delivery time is 30 min. Sample of 49 orders averaged 33 min, std 7.\nz = z_score(sample_mean=33, pop_mean=30, pop_std=7, n=49)\nprint(round(z, 4))  # 3.0 -- the sample mean is 3 standard errors above the claim`} caption="A z-score of 3.0 is a strong signal — under the null hypothesis, a sample mean this far off would be quite rare, which is exactly what a p-value quantifies next." />
+
+<Explanation id="p-value">
+
+The **p-value** converts a z-score into a probability: "if H₀ were true,
+what's the chance of seeing a result at least this extreme?" A small
+p-value (conventionally below 0.05) is usually treated as evidence
+against H₀.
+
+```python
+import statistics
+
+def two_sided_p_value(z):
+    return 2 * (1 - statistics.NormalDist().cdf(abs(z)))
+```
+
+`NormalDist().cdf(z)` gives P(Z ≤ z) for the standard normal — the "two
+sided" part accounts for the effect being unusually large in *either*
+direction, not just the one you happened to observe.
+
+A p-value is NOT "the probability the null hypothesis is true" — that's
+one of the most common misinterpretations. It only ever describes how
+surprising the data is, assuming H₀ is true.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute a z-statistic and convert it to a two-sided p-value, and understand what a p-value actually does (and doesn't) claim.
+</Checkpoint>

@@ -1,0 +1,31 @@
+{
+  "slug": "keras",
+  "name": "Keras",
+  "category": "ai-ml",
+  "difficulty": "beginner",
+  "estimatedHours": 5,
+  "prerequisites": [
+    "tensorflow"
+  ],
+  "usefulFor": [
+    "ml-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "sequential-api",
+      "title": "Sequential API",
+      "status": "planned"
+    },
+    {
+      "slug": "functional-api",
+      "title": "Functional API",
+      "status": "planned"
+    },
+    {
+      "slug": "callbacks",
+      "title": "Callbacks",
+      "status": "planned"
+    }
+  ]
+}

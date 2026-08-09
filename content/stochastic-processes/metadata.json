@@ -1,0 +1,32 @@
+{
+  "slug": "stochastic-processes",
+  "name": "Stochastic Processes Fundamentals",
+  "category": "quant",
+  "difficulty": "advanced",
+  "estimatedHours": 6,
+  "prerequisites": [
+    "probability"
+  ],
+  "usefulFor": [
+    "quant-researcher",
+    "quant-developer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "random-walks",
+      "title": "Random Walks",
+      "status": "planned"
+    },
+    {
+      "slug": "brownian-motion-intuition",
+      "title": "Brownian Motion Intuition",
+      "status": "planned"
+    },
+    {
+      "slug": "markov-chains",
+      "title": "Markov Chains",
+      "status": "planned"
+    }
+  ]
+}

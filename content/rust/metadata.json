@@ -1,0 +1,40 @@
+{
+  "slug": "rust",
+  "name": "Rust",
+  "category": "language",
+  "difficulty": "advanced",
+  "estimatedHours": 14,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer",
+    "quant-developer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "ownership-borrowing",
+      "title": "Ownership & Borrowing",
+      "status": "planned"
+    },
+    {
+      "slug": "structs-enums",
+      "title": "Structs & Enums",
+      "status": "planned"
+    },
+    {
+      "slug": "traits",
+      "title": "Traits",
+      "status": "planned"
+    },
+    {
+      "slug": "error-handling",
+      "title": "Error Handling",
+      "status": "planned"
+    },
+    {
+      "slug": "concurrency",
+      "title": "Concurrency",
+      "status": "planned"
+    }
+  ]
+}

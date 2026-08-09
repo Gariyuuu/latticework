@@ -1,0 +1,11 @@
+{
+  "id": "decorators-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def double_result(func):\n    ...\n\n@double_result\ndef add(a, b):\n    return a + b\n",
+  "cases": [
+    { "call": "add(2, 3)", "expect": "10" },
+    { "call": "add(0, 0)", "expect": "0" },
+    { "call": "add(-1, 5)", "expect": "8" }
+  ]
+}

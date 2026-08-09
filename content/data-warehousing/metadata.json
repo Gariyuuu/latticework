@@ -1,0 +1,26 @@
+{
+  "slug": "data-warehousing",
+  "name": "Warehousing Concepts",
+  "category": "database",
+  "difficulty": "intermediate",
+  "estimatedHours": 5,
+  "prerequisites": [
+    "data-modeling"
+  ],
+  "usefulFor": [
+    "data-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "olap-vs-oltp",
+      "title": "OLAP vs OLTP",
+      "status": "planned"
+    },
+    {
+      "slug": "columnar-storage",
+      "title": "Columnar Storage",
+      "status": "planned"
+    }
+  ]
+}

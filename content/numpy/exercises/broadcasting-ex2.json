@@ -1,0 +1,12 @@
+{
+  "id": "broadcasting-ex2",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["numpy"],
+  "starterCode": "import numpy as np\n\ndef subtract_col_means(matrix):\n    ...\n",
+  "cases": [
+    { "call": "subtract_col_means([[1, 2], [3, 4], [5, 6]]).tolist()", "expect": "[[-2.0, -2.0], [0.0, 0.0], [2.0, 2.0]]" },
+    { "call": "subtract_col_means([[10, 20], [30, 40]]).tolist()", "expect": "[[-10.0, -10.0], [10.0, 10.0]]" },
+    { "call": "subtract_col_means([[5]]).tolist()", "expect": "[[0.0]]" }
+  ]
+}

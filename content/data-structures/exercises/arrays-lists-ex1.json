@@ -1,0 +1,11 @@
+{
+  "id": "arrays-lists-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def rotate_left(lst, k):\n    ...\n",
+  "cases": [
+    { "call": "rotate_left([1, 2, 3, 4, 5], 2)", "expect": "[3, 4, 5, 1, 2]" },
+    { "call": "rotate_left([1, 2, 3], 0)", "expect": "[1, 2, 3]" },
+    { "call": "rotate_left([1, 2, 3], 4)", "expect": "[2, 3, 1]" }
+  ]
+}

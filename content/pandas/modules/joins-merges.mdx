@@ -1,0 +1,85 @@
+---
+slug: joins-merges
+title: Joins & Merges
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: how-types
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: joins-merges-ex1
+    difficulty: beginner
+    concept: pandas-merge
+    prompt: "Write `inner_join_count(left, right, on)`: build two DataFrames from `left`/`right`, inner-merge them on column `on`, and return the number of resulting rows."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: joins-merges-ex2
+    difficulty: intermediate
+    concept: pandas-merge
+    prompt: "Write `left_join_fill(left, right, on, fill_col, fill_value)`: left-merge `left` and `right` on `on`, fill any missing values in `fill_col` with `fill_value`, and return the result as `.to_dict('records')`."
+  - id: quiz-1
+    type: quiz
+    concept: pandas-merge
+    question: "In a LEFT join, what happens to rows in the left table that have no match in the right table?"
+    options: ["They're kept, with NaN filled in for every column that came from the right table", "They're dropped entirely", "The join raises an error", "They're duplicated once per row in the right table"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+`pd.merge` is pandas' version of a SQL JOIN — combining two DataFrames by
+matching values in one or more shared columns.
+
+```python
+import pandas as pd
+
+users = pd.DataFrame({"id": [1, 2, 3], "name": ["Ada", "Grace", "Alan"]})
+orders = pd.DataFrame({"id": [1, 1, 3], "amount": [50, 30, 20]})
+
+merged = pd.merge(users, orders, on="id")
+print(merged)
+#    id  name  amount
+# 0   1   Ada      50
+# 1   1   Ada      30
+# 2   3  Alan      20
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["pandas"]} code={`import pandas as pd\n\nusers = pd.DataFrame({"id": [1, 2, 3], "name": ["Ada", "Grace", "Alan"]})\norders = pd.DataFrame({"id": [1, 3], "amount": [50, 20]})\n\nprint(pd.merge(users, orders, on="id", how="left"))\n#    id   name  amount\n# 0   1    Ada    50.0\n# 1   2  Grace     NaN  -- Grace has no matching order\n# 2   3   Alan    20.0`} caption="Grace has no order, so the LEFT join keeps her row anyway and fills 'amount' with NaN — that's the defining behavior of a left join versus an inner join, which would drop her entirely." />
+
+<Explanation id="how-types">
+
+The `how` parameter controls what happens to unmatched rows:
+
+- `how="inner"` (default) — keep only rows with a match in both tables.
+- `how="left"` — keep every row from the left table, filling unmatched
+  right-side columns with NaN.
+- `how="right"` — the mirror image of left.
+- `how="outer"` — keep every row from both tables, filling gaps with NaN
+  on whichever side is missing.
+
+Just like SQL, `on="id"` requires that column to exist (with the same
+name) in both DataFrames — use `left_on`/`right_on` instead if the join
+columns have different names in each table.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can merge two DataFrames on a shared key and understand how inner/left/right/outer change which rows survive the join.
+</Checkpoint>

@@ -1,0 +1,91 @@
+---
+slug: comprehensions
+title: Comprehensions
+estimatedMinutes: 14
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: dict-set
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: comprehensions-ex1
+    difficulty: beginner
+    concept: python-comprehensions
+    prompt: "Write a function `squares_of_evens(nums)` that returns a list of the squares of the even numbers in `nums`, using a single list comprehension."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: comprehensions-ex2
+    difficulty: intermediate
+    concept: python-comprehensions
+    prompt: "Write a function `word_lengths(words)` that returns a dict mapping each word in `words` to its length, using a dict comprehension."
+  - id: quiz-1
+    type: quiz
+    concept: python-comprehensions
+    question: "What does `[x for x in range(5) if x % 2 == 0]` evaluate to?"
+    options: ["[0, 2, 4]", "[1, 3]", "[0, 1, 2, 3, 4]", "A SyntaxError"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A **list comprehension** builds a new list from an iterable in a single
+expression — it's the Pythonic replacement for a `for` loop that just
+appends to a list.
+
+```python
+squares = [n * n for n in range(5)]
+print(squares)   # [0, 1, 4, 9, 16]
+```
+
+That's equivalent to:
+
+```python
+squares = []
+for n in range(5):
+    squares.append(n * n)
+```
+
+Add an `if` clause at the end to filter which elements get included:
+
+```python
+evens = [n for n in range(10) if n % 2 == 0]
+print(evens)   # [0, 2, 4, 6, 8]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`words = ["hi", "hello", "hey", "greetings"]\nshort_words = [w.upper() for w in words if len(w) <= 3]\nprint(short_words)  # ['HI', 'HEY']`} caption="The transform (w.upper()) and the filter (if len(w) <= 3) can combine freely — this reads as 'uppercase every word, but only the short ones.'" />
+
+<Explanation id="dict-set">
+
+The same syntax works for dicts and sets, just with different brackets:
+
+```python
+lengths = {w: len(w) for w in words}   # dict comprehension: {}
+unique_lengths = {len(w) for w in words}  # set comprehension: {}
+```
+
+Use a comprehension when the logic is a simple transform-and-maybe-filter
+that fits on one line — reach for a regular loop instead once the logic
+needs multiple steps or branches, since a comprehension crammed with
+nested conditions gets hard to read fast.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can write list and dict comprehensions with an optional filter, and know when a plain loop is more readable instead.
+</Checkpoint>

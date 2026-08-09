@@ -1,0 +1,79 @@
+---
+slug: heaps
+title: Heaps
+estimatedMinutes: 15
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: k-way
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: heaps-ex1
+    difficulty: beginner
+    concept: heaps
+    prompt: "Write a function `k_smallest(nums, k)` that returns the k smallest values in `nums`, sorted ascending. Use `heapq`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: heaps-ex2
+    difficulty: intermediate
+    concept: heaps
+    prompt: "Write a function `merge_sorted_lists(lists)` that merges a list of already-sorted lists into one sorted list, using a heap to always pick the smallest available head element (a k-way merge)."
+  - id: quiz-1
+    type: quiz
+    concept: heaps
+    question: "What is the time complexity of pushing or popping a single element from a `heapq`-based heap of size n?"
+    options: ["O(log n)", "O(1)", "O(n)", "O(n log n)"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A **heap** is a tree-shaped structure that keeps one guarantee: the
+smallest element (min-heap) is always at the root, retrievable in O(1) —
+push and pop are both O(log n). That makes it the standard structure for a
+**priority queue**: "give me the next most-urgent item," repeatedly,
+efficiently.
+
+Python's `heapq` module turns a plain list into a min-heap in place:
+
+```python
+import heapq
+
+nums = [5, 3, 8, 1, 9]
+heapq.heapify(nums)          # O(n) — reorders in place
+heapq.heappush(nums, 0)      # O(log n)
+heapq.heappop(nums)          # 0 — O(log n), always removes the smallest
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`import heapq\n\nnums = [5, 3, 8, 1, 9, 2]\nprint(heapq.nsmallest(3, nums))  # [1, 2, 3]\nprint(heapq.nlargest(2, nums))   # [9, 8]`} caption="heapq.nsmallest/nlargest are the shortcut you'll actually reach for in real code — they're O(n log k), better than a full O(n log n) sort when k is small." />
+
+<Explanation id="k-way">
+
+A classic heap use case: merging several sorted lists into one sorted
+list, without concatenating and re-sorting everything. Keep a heap of
+`(value, which_list, index)` — one entry per list's current head. Pop the
+smallest, append it to the result, then push that list's next element.
+Total cost is O(n log k) for n total elements across k lists, versus
+O(n log n) for sort-everything-together.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can use heapq for priority-queue-style problems and implement a k-way merge with a heap.
+</Checkpoint>

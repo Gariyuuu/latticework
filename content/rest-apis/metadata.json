@@ -1,0 +1,37 @@
+{
+  "slug": "rest-apis",
+  "name": "REST APIs",
+  "category": "web",
+  "difficulty": "beginner",
+  "estimatedHours": 5,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer",
+    "full-stack-engineer",
+    "backend-engineer",
+    "research-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "resources-verbs",
+      "title": "Resources & Verbs",
+      "status": "planned"
+    },
+    {
+      "slug": "status-codes",
+      "title": "Status Codes",
+      "status": "planned"
+    },
+    {
+      "slug": "pagination",
+      "title": "Pagination",
+      "status": "planned"
+    },
+    {
+      "slug": "versioning",
+      "title": "Versioning",
+      "status": "planned"
+    }
+  ]
+}

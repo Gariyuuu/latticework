@@ -1,0 +1,11 @@
+{
+  "id": "greedy-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def min_coins_greedy(coins, amount):\n    ...\n",
+  "cases": [
+    { "call": "min_coins_greedy([25, 10, 5, 1], 41)", "expect": "[25, 10, 5, 1]" },
+    { "call": "min_coins_greedy([25, 10, 5, 1], 6)", "expect": "[5, 1]" },
+    { "call": "min_coins_greedy([25, 10, 5, 1], 30)", "expect": "[25, 5]" }
+  ]
+}

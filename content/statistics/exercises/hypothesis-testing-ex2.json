@@ -1,0 +1,11 @@
+{
+  "id": "hypothesis-testing-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import statistics\n\ndef two_sided_p_value(z):\n    ...\n",
+  "cases": [
+    { "call": "round(two_sided_p_value(1.96), 4)", "expect": "0.05" },
+    { "call": "round(two_sided_p_value(0), 4)", "expect": "1.0" },
+    { "call": "round(two_sided_p_value(2.58), 4)", "expect": "0.0099" }
+  ]
+}

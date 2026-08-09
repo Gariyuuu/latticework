@@ -1,0 +1,37 @@
+{
+  "slug": "scikit-learn",
+  "name": "Scikit-learn",
+  "category": "ai-ml",
+  "difficulty": "beginner",
+  "estimatedHours": 8,
+  "prerequisites": [
+    "pandas"
+  ],
+  "usefulFor": [
+    "data-scientist",
+    "ml-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "estimators-api",
+      "title": "Estimators API",
+      "status": "planned"
+    },
+    {
+      "slug": "train-test-split",
+      "title": "Train/Test Split",
+      "status": "planned"
+    },
+    {
+      "slug": "pipelines",
+      "title": "Pipelines",
+      "status": "planned"
+    },
+    {
+      "slug": "model-evaluation",
+      "title": "Model Evaluation",
+      "status": "planned"
+    }
+  ]
+}

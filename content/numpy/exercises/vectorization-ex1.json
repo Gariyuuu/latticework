@@ -1,0 +1,12 @@
+{
+  "id": "vectorization-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["numpy"],
+  "starterCode": "import numpy as np\n\ndef square_all(nums):\n    ...\n",
+  "cases": [
+    { "call": "square_all([1, 2, 3, 4]).tolist()", "expect": "[1, 4, 9, 16]" },
+    { "call": "square_all([]).tolist()", "expect": "[]" },
+    { "call": "square_all([-2, 0, 2]).tolist()", "expect": "[4, 0, 4]" }
+  ]
+}

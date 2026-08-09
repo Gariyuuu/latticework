@@ -1,0 +1,11 @@
+{
+  "id": "performance-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def has_duplicates_fast(nums):\n    ...\n",
+  "cases": [
+    { "call": "has_duplicates_fast([1, 2, 3, 2])", "expect": "True" },
+    { "call": "has_duplicates_fast([1, 2, 3])", "expect": "False" },
+    { "call": "has_duplicates_fast([])", "expect": "False" }
+  ]
+}

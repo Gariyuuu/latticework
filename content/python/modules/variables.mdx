@@ -1,0 +1,78 @@
+---
+slug: variables
+title: Variables & Types
+estimatedMinutes: 12
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: types
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: variables-ex1
+    difficulty: beginner
+    concept: python-variables
+    prompt: "Write a function `fahrenheit_to_celsius(f)` that converts a Fahrenheit temperature to Celsius using the formula (f - 32) * 5 / 9, and returns the result."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: variables-ex2
+    difficulty: intermediate
+    concept: python-variables
+    prompt: "Write a function `swap(a, b)` that returns a tuple `(b, a)` — swap the two values using tuple unpacking, without a temporary variable."
+  - id: quiz-1
+    type: quiz
+    concept: python-variables
+    question: "What does `type(5.0)` return in Python?"
+    options: ["int", "float", "str", "bool"]
+    answer: 1
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Python variables don't need a declared type — you just assign a value, and
+Python figures out the type from the value itself. This is called **dynamic
+typing**.
+
+```python
+x = 5        # x is an int
+x = "hello"  # now x is a str — same variable, different type
+```
+
+There's no `int x = 5;` like in Java or C++. The name `x` is just a label
+pointing at whatever object you last assigned to it.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`x = 5\nprint(type(x))\n\nx = "hello"\nprint(type(x))\n\nx = 3.14\nprint(type(x))`} caption="Run this to see how the same variable name can point at different types over its lifetime." />
+
+<Explanation id="types">
+
+Python's built-in scalar types you'll use constantly:
+
+- `int` — whole numbers: `5`, `-12`, `1_000_000`
+- `float` — decimals: `3.14`, `-0.5`
+- `str` — text: `"hello"`, `'also fine'`
+- `bool` — `True` / `False`
+- `None` — Python's "nothing here" value (like `null`)
+
+Mixing `int` and `float` in an expression (e.g. `5 / 2`) automatically
+produces a `float`. Integer division uses `//` instead.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can now create variables and reason about Python's dynamic typing.
+</Checkpoint>

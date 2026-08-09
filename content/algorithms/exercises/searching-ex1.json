@@ -1,0 +1,11 @@
+{
+  "id": "searching-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def linear_search(nums, target):\n    ...\n",
+  "cases": [
+    { "call": "linear_search([4, 2, 7, 1], 7)", "expect": "2" },
+    { "call": "linear_search([4, 2, 7, 1], 9)", "expect": "-1" },
+    { "call": "linear_search([], 5)", "expect": "-1" }
+  ]
+}

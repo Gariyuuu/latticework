@@ -1,0 +1,12 @@
+{
+  "id": "linear-algebra-ops-ex2",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["numpy"],
+  "starterCode": "import numpy as np\n\ndef matrix_multiply(a, b):\n    ...\n",
+  "cases": [
+    { "call": "matrix_multiply([[1, 2], [3, 4]], [[5, 6], [7, 8]]).tolist()", "expect": "[[19, 22], [43, 50]]" },
+    { "call": "matrix_multiply([[1, 0], [0, 1]], [[9, 8], [7, 6]]).tolist()", "expect": "[[9, 8], [7, 6]]" },
+    { "call": "matrix_multiply([[2]], [[3]]).tolist()", "expect": "[[6]]" }
+  ]
+}

@@ -1,0 +1,88 @@
+---
+slug: decorators
+title: Decorators
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: args
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: decorators-ex1
+    difficulty: beginner
+    concept: python-decorators
+    prompt: "Write a decorator `double_result(func)` that wraps `func` so the wrapped function's return value is doubled."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: decorators-ex2
+    difficulty: intermediate
+    concept: python-decorators
+    prompt: "Write a decorator `require_positive(func)` that wraps `func` so that if any positional argument is negative, the wrapper returns the string 'invalid' instead of calling `func`."
+  - id: quiz-1
+    type: quiz
+    concept: python-decorators
+    question: "What does writing @my_decorator directly above a function definition do?"
+    options: ["It's shorthand for `func = my_decorator(func)`", "It runs the function immediately, at definition time", "It's only valid inside a class body", "It converts the function into a generator"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Functions in Python are values — you can pass one as an argument, return
+one from another function, or wrap one to add behavior. A **decorator** is
+a function that takes a function and returns a new (usually wrapped)
+function.
+
+```python
+def shout(func):
+    def wrapper(name):
+        return func(name).upper()
+    return wrapper
+
+def greet(name):
+    return f"hello, {name}"
+
+greet = shout(greet)   # manually "decorating"
+print(greet("ada"))     # HELLO, ADA
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def shout(func):\n    def wrapper(name):\n        return func(name).upper()\n    return wrapper\n\n@shout\ndef greet(name):\n    return f"hello, {name}"\n\nprint(greet("ada"))  # HELLO, ADA`} caption="@shout above 'def greet' is exactly equivalent to writing 'greet = shout(greet)' right after defining it — pure syntax sugar, nothing magic." />
+
+<Explanation id="args">
+
+Real decorators need to wrap functions with ANY signature, so the wrapper
+almost always uses `*args, **kwargs` to pass everything through unchanged:
+
+```python
+def log_call(func):
+    def wrapper(*args, **kwargs):
+        print(f"calling {func.__name__}")
+        return func(*args, **kwargs)
+    return wrapper
+```
+
+That's the shape you'll reuse for almost every decorator you write:
+accept anything, do something extra, then call the original function with
+exactly what was passed in.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can write a decorator that wraps a function's behavior, using *args/**kwargs to pass arguments through unchanged.
+</Checkpoint>

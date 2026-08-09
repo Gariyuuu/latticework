@@ -1,0 +1,11 @@
+{
+  "id": "comprehensions-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def word_lengths(words):\n    ...\n",
+  "cases": [
+    { "call": "word_lengths(['cat', 'elephant'])", "expect": "{'cat': 3, 'elephant': 8}" },
+    { "call": "word_lengths([])", "expect": "{}" },
+    { "call": "word_lengths(['a'])", "expect": "{'a': 1}" }
+  ]
+}

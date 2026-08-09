@@ -1,0 +1,11 @@
+{
+  "id": "recursion-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def factorial(n):\n    ...\n",
+  "cases": [
+    { "call": "factorial(0)", "expect": "1" },
+    { "call": "factorial(5)", "expect": "120" },
+    { "call": "factorial(1)", "expect": "1" }
+  ]
+}

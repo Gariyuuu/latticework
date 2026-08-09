@@ -1,0 +1,40 @@
+{
+  "slug": "c",
+  "name": "C",
+  "category": "language",
+  "difficulty": "intermediate",
+  "estimatedHours": 14,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer",
+    "research-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "syntax-pointers",
+      "title": "Syntax & Pointers",
+      "status": "planned"
+    },
+    {
+      "slug": "memory-management",
+      "title": "Memory Management",
+      "status": "planned"
+    },
+    {
+      "slug": "structs",
+      "title": "Structs",
+      "status": "planned"
+    },
+    {
+      "slug": "file-i-o",
+      "title": "File I/O",
+      "status": "planned"
+    },
+    {
+      "slug": "build-tools",
+      "title": "Build Tools",
+      "status": "planned"
+    }
+  ]
+}

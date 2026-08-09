@@ -1,0 +1,11 @@
+{
+  "id": "trees-bsts-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "class Node:\n    def __init__(self, val):\n        self.val = val\n        self.left = None\n        self.right = None\n\ndef insert(root, val):\n    if root is None:\n        return Node(val)\n    if val < root.val:\n        root.left = insert(root.left, val)\n    else:\n        root.right = insert(root.right, val)\n    return root\n\ndef build_bst(values):\n    root = None\n    for v in values:\n        root = insert(root, v)\n    return root\n\ndef bst_search(root, val):\n    ...\n",
+  "cases": [
+    { "call": "bst_search(build_bst([5, 3, 8, 1, 4]), 4)", "expect": "True" },
+    { "call": "bst_search(build_bst([5, 3, 8, 1, 4]), 9)", "expect": "False" },
+    { "call": "bst_search(build_bst([10]), 10)", "expect": "True" }
+  ]
+}

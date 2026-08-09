@@ -1,0 +1,31 @@
+{
+  "slug": "mysql",
+  "name": "MySQL Concepts",
+  "category": "database",
+  "difficulty": "beginner",
+  "estimatedHours": 4,
+  "prerequisites": [
+    "sql"
+  ],
+  "usefulFor": [
+    "backend-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "storage-engines",
+      "title": "Storage Engines",
+      "status": "planned"
+    },
+    {
+      "slug": "indexing",
+      "title": "Indexing",
+      "status": "planned"
+    },
+    {
+      "slug": "replication-basics",
+      "title": "Replication Basics",
+      "status": "planned"
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+---
+slug: series-dataframes
+title: Series & DataFrames
+estimatedMinutes: 15
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: dataframe
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: series-dataframes-ex1
+    difficulty: beginner
+    concept: pandas-series
+    prompt: "Write `make_series(values, labels)`, returning a `pd.Series` built from `values` with `labels` as its index."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: series-dataframes-ex2
+    difficulty: intermediate
+    concept: pandas-dataframes
+    prompt: "Write `column_total(data, col)`: build a `pd.DataFrame` from the dict `data` (column name → list of values) and return the sum of column `col` as a plain Python int."
+  - id: quiz-1
+    type: quiz
+    concept: pandas-series
+    question: "What's the key difference between a pandas Series and a DataFrame?"
+    options: ["A Series is a single labeled 1D column; a DataFrame is a 2D table made of multiple columns sharing an index", "A DataFrame can only hold numbers, a Series can hold anything", "A Series is always faster than a DataFrame", "There's no real difference — they're interchangeable"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+pandas builds on NumPy to add labels: a **Series** is a 1D array where
+every value has an associated index label, instead of just a position.
+
+```python
+import pandas as pd
+
+prices = pd.Series([100, 105, 98], index=["mon", "tue", "wed"])
+print(prices["tue"])   # 105 — look up by label, not just position
+print(prices.mean())    # 101.0
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["pandas"]} code={`import pandas as pd\n\ns = pd.Series([10, 20, 30], index=["a", "b", "c"])\nprint(s.sum())      # 60\nprint(s > 15)         # a: False, b: True, c: True -- a boolean Series`} caption="Series operations return another Series (or a scalar for aggregates like .sum()) — the labels travel with the data through almost every operation." />
+
+<Explanation id="dataframe">
+
+A **DataFrame** is a table: multiple columns (each really a Series),
+sharing one row index. It's the structure you'll spend the most time
+with in pandas — think of it as a spreadsheet you can query and
+transform with code.
+
+```python
+df = pd.DataFrame({
+    "name": ["Ada", "Grace", "Alan"],
+    "score": [92, 88, 95],
+})
+print(df.shape)     # (3, 2) -- 3 rows, 2 columns
+print(df["score"])   # the 'score' column, as a Series
+print(df["score"].sum())  # 275
+```
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can build a Series with a custom index and a DataFrame from a dict of columns, and pull a single column out as a Series.
+</Checkpoint>

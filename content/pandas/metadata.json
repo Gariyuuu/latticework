@@ -1,0 +1,54 @@
+{
+  "slug": "pandas",
+  "name": "Pandas",
+  "category": "data-science",
+  "difficulty": "beginner",
+  "estimatedHours": 8,
+  "prerequisites": [
+    "numpy"
+  ],
+  "usefulFor": [
+    "data-engineer",
+    "data-scientist",
+    "ml-engineer",
+    "ai-engineer",
+    "research-engineer",
+    "quant-developer",
+    "quant-researcher",
+    "quant-trader"
+  ],
+  "status": "built",
+  "description": "The tabular-data library data science and quant work runs on — filtering, grouping, joining, and cleaning real-world data without hand-written loops.",
+  "modules": [
+    {
+      "slug": "series-dataframes",
+      "title": "Series & DataFrames",
+      "status": "built"
+    },
+    {
+      "slug": "selection-filtering",
+      "title": "Selection & Filtering",
+      "status": "built"
+    },
+    {
+      "slug": "groupby",
+      "title": "GroupBy",
+      "status": "built"
+    },
+    {
+      "slug": "joins-merges",
+      "title": "Joins & Merges",
+      "status": "built"
+    },
+    {
+      "slug": "missing-data",
+      "title": "Missing Data",
+      "status": "built"
+    },
+    {
+      "slug": "time-series",
+      "title": "Time Series",
+      "status": "built"
+    }
+  ]
+}

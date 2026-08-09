@@ -1,0 +1,12 @@
+{
+  "id": "arrays-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["numpy"],
+  "starterCode": "import numpy as np\n\ndef make_range_array(n):\n    ...\n",
+  "cases": [
+    { "call": "make_range_array(5).tolist()", "expect": "[0, 1, 2, 3, 4]" },
+    { "call": "make_range_array(0).tolist()", "expect": "[]" },
+    { "call": "make_range_array(1).tolist()", "expect": "[0]" }
+  ]
+}

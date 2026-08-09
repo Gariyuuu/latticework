@@ -1,0 +1,11 @@
+{
+  "id": "regression-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def slope_intercept(xs, ys):\n    ...\n",
+  "cases": [
+    { "call": "tuple(round(v, 4) for v in slope_intercept([1, 2, 3, 4], [3, 5, 7, 9]))", "expect": "(2.0, 1.0)" },
+    { "call": "tuple(round(v, 4) for v in slope_intercept([0, 1, 2], [0, 2, 4]))", "expect": "(2.0, 0.0)" },
+    { "call": "tuple(round(v, 4) for v in slope_intercept([1, 2, 3], [5, 5, 5]))", "expect": "(0.0, 5.0)" }
+  ]
+}

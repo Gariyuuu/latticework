@@ -1,0 +1,11 @@
+{
+  "id": "collections-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def unique_preserve_order(items):\n    ...\n",
+  "cases": [
+    { "call": "unique_preserve_order([1, 2, 2, 3, 1, 4])", "expect": "[1, 2, 3, 4]" },
+    { "call": "unique_preserve_order(['a', 'b', 'a'])", "expect": "['a', 'b']" },
+    { "call": "unique_preserve_order([])", "expect": "[]" }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "slug": "lightgbm",
+  "name": "LightGBM",
+  "category": "ai-ml",
+  "difficulty": "intermediate",
+  "estimatedHours": 4,
+  "prerequisites": [
+    "xgboost"
+  ],
+  "usefulFor": [
+    "data-scientist",
+    "ml-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "leaf-wise-growth",
+      "title": "Leaf-wise Growth",
+      "status": "planned"
+    },
+    {
+      "slug": "tuning-vs-xgboost",
+      "title": "Tuning vs XGBoost",
+      "status": "planned"
+    }
+  ]
+}

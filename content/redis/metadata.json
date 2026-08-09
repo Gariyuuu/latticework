@@ -1,0 +1,30 @@
+{
+  "slug": "redis",
+  "name": "Redis",
+  "category": "database",
+  "difficulty": "beginner",
+  "estimatedHours": 4,
+  "prerequisites": [],
+  "usefulFor": [
+    "backend-engineer",
+    "data-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "data-structures",
+      "title": "Data Structures",
+      "status": "planned"
+    },
+    {
+      "slug": "caching-patterns",
+      "title": "Caching Patterns",
+      "status": "planned"
+    },
+    {
+      "slug": "pub-sub",
+      "title": "Pub/Sub",
+      "status": "planned"
+    }
+  ]
+}

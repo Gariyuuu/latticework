@@ -1,0 +1,31 @@
+{
+  "slug": "mlops-fundamentals",
+  "name": "MLOps Fundamentals",
+  "category": "ai-ml",
+  "difficulty": "intermediate",
+  "estimatedHours": 5,
+  "prerequisites": [
+    "model-deployment"
+  ],
+  "usefulFor": [
+    "ml-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "pipelines",
+      "title": "Pipelines",
+      "status": "planned"
+    },
+    {
+      "slug": "monitoring",
+      "title": "Monitoring",
+      "status": "planned"
+    },
+    {
+      "slug": "retraining-triggers",
+      "title": "Retraining Triggers",
+      "status": "planned"
+    }
+  ]
+}

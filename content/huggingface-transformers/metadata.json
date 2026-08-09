@@ -1,0 +1,37 @@
+{
+  "slug": "huggingface-transformers",
+  "name": "Hugging Face Transformers",
+  "category": "ai-ml",
+  "difficulty": "intermediate",
+  "estimatedHours": 8,
+  "prerequisites": [
+    "pytorch"
+  ],
+  "usefulFor": [
+    "ai-engineer",
+    "ml-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "pipelines",
+      "title": "Pipelines",
+      "status": "planned"
+    },
+    {
+      "slug": "tokenizers",
+      "title": "Tokenizers",
+      "status": "planned"
+    },
+    {
+      "slug": "fine-tuning",
+      "title": "Fine-tuning",
+      "status": "planned"
+    },
+    {
+      "slug": "model-hub",
+      "title": "Model Hub",
+      "status": "planned"
+    }
+  ]
+}

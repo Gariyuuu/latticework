@@ -1,0 +1,29 @@
+{
+  "slug": "compilers",
+  "name": "Compilers Fundamentals",
+  "category": "cs",
+  "difficulty": "advanced",
+  "estimatedHours": 6,
+  "prerequisites": [],
+  "usefulFor": [
+    "research-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "lexing-parsing",
+      "title": "Lexing & Parsing",
+      "status": "planned"
+    },
+    {
+      "slug": "asts",
+      "title": "ASTs",
+      "status": "planned"
+    },
+    {
+      "slug": "codegen-intuition",
+      "title": "Codegen Intuition",
+      "status": "planned"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "slug": "parallel-computing",
+  "name": "Parallel Computing",
+  "category": "cs",
+  "difficulty": "advanced",
+  "estimatedHours": 5,
+  "prerequisites": [
+    "concurrency"
+  ],
+  "usefulFor": [
+    "research-engineer",
+    "quant-developer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "simd-basics",
+      "title": "SIMD Basics",
+      "status": "planned"
+    },
+    {
+      "slug": "parallel-algorithms",
+      "title": "Parallel Algorithms",
+      "status": "planned"
+    },
+    {
+      "slug": "gpu-parallelism-intuition",
+      "title": "GPU Parallelism Intuition",
+      "status": "planned"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "iterators-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def squares_gen(n):\n    ...\n",
+  "cases": [
+    { "call": "list(squares_gen(4))", "expect": "[0, 1, 4, 9]" },
+    { "call": "list(squares_gen(0))", "expect": "[]" },
+    { "call": "list(squares_gen(1))", "expect": "[0]" }
+  ]
+}

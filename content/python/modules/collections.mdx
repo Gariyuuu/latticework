@@ -1,0 +1,77 @@
+---
+slug: collections
+title: Collections
+estimatedMinutes: 14
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: choosing
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: collections-ex1
+    difficulty: beginner
+    concept: python-collections
+    prompt: "Write a function `unique_preserve_order(items)` that returns a list of the unique elements in `items`, keeping the order of their first occurrence."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: collections-ex2
+    difficulty: intermediate
+    concept: python-collections
+    prompt: "Write a function `common_elements(a, b)` that returns a sorted list of the elements present in both `a` and `b`. Use set operations, not nested loops."
+  - id: quiz-1
+    type: quiz
+    concept: python-collections
+    question: "Which Python built-in collection type is both ordered and immutable?"
+    options: ["tuple", "list", "set", "dict"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Python has four built-in collection types, each with a different shape:
+
+| Type | Ordered | Mutable | Duplicates | Syntax |
+|---|---|---|---|---|
+| `list` | yes | yes | allowed | `[1, 2, 3]` |
+| `tuple` | yes | no | allowed | `(1, 2, 3)` |
+| `set` | no | yes | not allowed | `{1, 2, 3}` |
+| `dict` | yes (3.7+) | yes | keys unique | `{"a": 1}` |
+
+`tuple`'s immutability makes it usable as a dict key or set element —
+something a `list` can never do, since dict keys and set elements must be
+hashable, and mutable objects generally aren't.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`a = {1, 2, 3, 4}\nb = {3, 4, 5, 6}\nprint(a | b)   # union: {1, 2, 3, 4, 5, 6}\nprint(a & b)   # intersection: {3, 4}\nprint(a - b)   # difference: {1, 2}`} caption="Sets support the same operators as mathematical set theory — union, intersection, and difference are all O(min(len(a), len(b))) on average, much faster than nested loops over lists." />
+
+<Explanation id="choosing">
+
+Reach for each one based on what you actually need:
+
+- **list** — an ordered sequence you'll iterate, index, or append to.
+- **tuple** — a fixed, small group of values (like coordinates `(x, y)`),
+  or anything you need to use as a dict key / set element.
+- **set** — you only care about membership ("is x in here?") and
+  uniqueness, not order — `in` is O(1) average vs O(n) for a list.
+- **dict** — you're mapping keys to values, or counting/grouping things.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You know when to reach for list vs tuple vs set vs dict, and can use set operations for membership/intersection problems.
+</Checkpoint>

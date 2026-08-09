@@ -1,0 +1,83 @@
+---
+slug: a-b-testing
+title: A/B Testing
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: significance
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: a-b-testing-ex1
+    difficulty: beginner
+    concept: statistics-ab-testing
+    prompt: "Write `conversion_rate(conversions, visitors)`, returning `conversions / visitors`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: a-b-testing-ex2
+    difficulty: intermediate
+    concept: statistics-ab-testing
+    prompt: "Write `lift(control_rate, variant_rate)`, returning the relative lift of the variant over control: (variant_rate − control_rate) / control_rate."
+  - id: quiz-1
+    type: quiz
+    concept: statistics-ab-testing
+    question: "In an A/B test, what does statistical significance tell you that a raw difference in conversion rate alone doesn't?"
+    options: ["Whether the observed difference is unlikely to be explained by random chance alone", "That the variant is definitely better, forever, in every context", "The exact revenue impact of shipping the change", "That the sample size was definitely large enough"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+An **A/B test** randomly splits users into two groups — control (the
+current experience) and variant (the change being tested) — and compares
+an outcome metric between them, usually a **conversion rate**: the
+fraction of visitors who did the thing you care about (bought, signed up,
+clicked).
+
+```python
+def conversion_rate(conversions, visitors):
+    return conversions / visitors
+
+control = conversion_rate(50, 1000)     # 0.05 -- 5%
+variant = conversion_rate(65, 1000)      # 0.065 -- 6.5%
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def conversion_rate(conversions, visitors):\n    return conversions / visitors\n\ndef lift(control_rate, variant_rate):\n    return (variant_rate - control_rate) / control_rate\n\ncontrol = conversion_rate(50, 1000)\nvariant = conversion_rate(65, 1000)\nprint(round(lift(control, variant) * 100, 2), "%")  # 30.0 % -- a 30% relative improvement`} caption="Relative lift (30%) tells a very different story than the raw difference (1.5 percentage points) -- always report which one you mean, since headlines built on relative lift alone can make small absolute changes sound dramatic." />
+
+<Explanation id="significance">
+
+A variant converting better in your sample doesn't automatically mean
+it's actually better — with enough randomness, one group can beat the
+other by chance alone, especially with a small sample. That's exactly
+the hypothesis-testing machinery from earlier in this course: treat "no
+real difference" as the null hypothesis, compute a p-value for the
+observed gap, and only trust the result once it's small enough (and the
+sample was large enough) to rule out chance as the likely explanation.
+
+Two failure modes to watch for in practice: **peeking** (checking results
+early and stopping as soon as they look good, which inflates false
+positives) and **too many simultaneous variants** (testing 20 button
+colors means roughly 1 will look "significant" by pure chance even if
+none actually work).
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute conversion rate and relative lift, and understand why "the variant won in our sample" isn't the same as "the variant is actually better."
+</Checkpoint>

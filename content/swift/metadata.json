@@ -1,0 +1,29 @@
+{
+  "slug": "swift",
+  "name": "Swift Fundamentals",
+  "category": "language",
+  "difficulty": "beginner",
+  "estimatedHours": 6,
+  "prerequisites": [],
+  "usefulFor": [
+    "software-engineer"
+  ],
+  "status": "skeleton",
+  "modules": [
+    {
+      "slug": "syntax-types",
+      "title": "Syntax & Types",
+      "status": "planned"
+    },
+    {
+      "slug": "optionals",
+      "title": "Optionals",
+      "status": "planned"
+    },
+    {
+      "slug": "structs-protocols",
+      "title": "Structs & Protocols",
+      "status": "planned"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "joins-merges-ex2",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["pandas"],
+  "starterCode": "import pandas as pd\n\ndef left_join_fill(left, right, on, fill_col, fill_value):\n    ...\n",
+  "cases": [
+    { "call": "left_join_fill({'id': [1, 2, 3], 'name': ['a', 'b', 'c']}, {'id': [2, 3], 'score': [10, 20]}, 'id', 'score', 0)", "expect": "[{'id': 1, 'name': 'a', 'score': 0.0}, {'id': 2, 'name': 'b', 'score': 10.0}, {'id': 3, 'name': 'c', 'score': 20.0}]" },
+    { "call": "left_join_fill({'id': [1]}, {'id': [1], 'v': [5]}, 'id', 'v', -1)", "expect": "[{'id': 1, 'v': 5}]" }
+  ]
+}

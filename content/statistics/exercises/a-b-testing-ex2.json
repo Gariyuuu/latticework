@@ -1,0 +1,11 @@
+{
+  "id": "a-b-testing-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def lift(control_rate, variant_rate):\n    ...\n",
+  "cases": [
+    { "call": "round(lift(0.05, 0.06), 4)", "expect": "0.2" },
+    { "call": "round(lift(0.10, 0.10), 4)", "expect": "0.0" },
+    { "call": "round(lift(0.20, 0.15), 4)", "expect": "-0.25" }
+  ]
+}

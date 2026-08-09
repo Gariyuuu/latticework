@@ -1,0 +1,11 @@
+{
+  "id": "heaps-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import heapq\n\ndef k_smallest(nums, k):\n    ...\n",
+  "cases": [
+    { "call": "k_smallest([5, 3, 8, 1, 9, 2], 3)", "expect": "[1, 2, 3]" },
+    { "call": "k_smallest([4, 4, 4], 2)", "expect": "[4, 4]" },
+    { "call": "k_smallest([7], 1)", "expect": "[7]" }
+  ]
+}

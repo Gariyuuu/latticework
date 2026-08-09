@@ -1,0 +1,82 @@
+---
+slug: missing-data
+title: Missing Data
+estimatedMinutes: 14
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: dtype-gotcha
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: missing-data-ex1
+    difficulty: beginner
+    concept: pandas-missing-data
+    prompt: "Write `fill_missing(data, col, value)`: build a DataFrame from `data`, and return column `col` with every missing value replaced by `value`, as a list (`.fillna(value).tolist()`)."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: missing-data-ex2
+    difficulty: intermediate
+    concept: pandas-missing-data
+    prompt: "Write `drop_missing_rows(data)`: build a DataFrame from `data`, drop every row that has at least one missing value (`.dropna()`), and return the number of rows remaining."
+  - id: quiz-1
+    type: quiz
+    concept: pandas-missing-data
+    question: "What does pandas use to represent a missing numeric value?"
+    options: ["NaN (Not a Number) — from NumPy, not Python's None", "Python's None, unchanged", "The number 0", "An empty string"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Real data has gaps. pandas represents a missing value as **NaN**
+(Not a Number) — writing `None` into a numeric column gets silently
+converted to NaN. `.isna()` / `.notna()` check for it (NaN famously isn't
+even equal to itself, so `x == None` doesn't work reliably for detection).
+
+```python
+import pandas as pd
+import numpy as np
+
+s = pd.Series([1, None, 3])
+print(s.isna())          # False, True, False
+print(s.isna().sum())     # 1 -- count of missing values
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["pandas"]} code={`import pandas as pd\n\ndf = pd.DataFrame({"name": ["Ada", "Grace", "Alan"], "score": [92, None, 78]})\nprint(df["score"].fillna(df["score"].mean()))\n# 0    92.0\n# 1    85.0  -- filled with the mean of the non-missing values\n# 2    78.0`} caption="Filling with the column's own mean (rather than a fixed value like 0) is a common default when a missing value shouldn't drag down an average." />
+
+<Explanation id="dtype-gotcha">
+
+A genuinely useful gotcha: a numeric column containing ANY `None`/NaN
+gets upcast to `float64`, even for values that were originally whole
+numbers — because NaN only exists as a float, not an int.
+
+```python
+pd.Series([1, None, 3]).dtype    # float64 -- not int64, even though 1 and 3 are whole numbers
+pd.Series([1, 2, 3]).dtype        # int64 -- no NaN, stays int
+```
+
+That's why `.fillna(0)` on a column that had any missing values often
+gives you `0.0` back, not `0` — the whole column already became float the
+moment a NaN entered it, before `.fillna` ever ran.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can fill or drop missing values, and know why a column with any NaN in it becomes float64 even if every visible value looks like an integer.
+</Checkpoint>

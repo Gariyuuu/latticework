@@ -1,0 +1,93 @@
+---
+slug: trees-bsts
+title: Trees & BSTs
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: bst
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: trees-bsts-ex1
+    difficulty: beginner
+    concept: trees-bsts
+    prompt: "Given the `Node` class and `inorder` helper below, implement `bst_insert(root, val)`. It should insert `val` into the BST rooted at `root` (recursively) and return the (possibly new) root."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: trees-bsts-ex2
+    difficulty: intermediate
+    concept: trees-bsts
+    prompt: "Given the `Node`, `insert`, and `build_bst` helpers below, implement `bst_search(root, val)`. It should return True if `val` exists in the BST, False otherwise — use the BST property to avoid checking every node."
+  - id: quiz-1
+    type: quiz
+    concept: trees-bsts
+    question: "In a balanced binary search tree, what is the time complexity of search, insert, and delete?"
+    options: ["O(log n)", "O(n)", "O(1)", "O(n^2)"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A **tree** is a hierarchy: one root node, each node with zero or more
+children, no cycles. A **binary tree** caps that at two children per node,
+usually called `left` and `right`.
+
+```python
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+root = Node(5)
+root.left = Node(3)
+root.right = Node(8)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def inorder(root):\n    if root is None:\n        return []\n    return inorder(root.left) + [root.val] + inorder(root.right)\n\nroot = Node(5)\nroot.left = Node(3)\nroot.right = Node(8)\nprint(inorder(root))  # [3, 5, 8]`} caption="An in-order traversal (left, node, right) of a BST visits values in sorted order — that's the defining property of a BST, not a coincidence." />
+
+<Explanation id="bst">
+
+A **binary search tree** adds one rule: for every node, everything in its
+left subtree is smaller, everything in its right subtree is larger (or
+equal, by convention). That rule is what makes search fast — at each node
+you eliminate an entire half of the remaining tree, the same idea as binary
+search on a sorted array.
+
+```python
+def insert(root, val):
+    if root is None:
+        return Node(val)
+    if val < root.val:
+        root.left = insert(root.left, val)
+    else:
+        root.right = insert(root.right, val)
+    return root
+```
+
+If the tree stays roughly balanced, search/insert/delete are all O(log n).
+If you insert already-sorted data one at a time, it degenerates into a
+straight line — O(n). Self-balancing trees (AVL, red-black) fix that, at the
+cost of more bookkeeping on every insert.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement BST insert and search recursively, and understand why balance is what makes O(log n) hold.
+</Checkpoint>

@@ -1,0 +1,11 @@
+{
+  "id": "exceptions-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def parse_int_list(strings):\n    ...\n",
+  "cases": [
+    { "call": "parse_int_list(['1', '2', 'abc', '4'])", "expect": "[1, 2, 4]" },
+    { "call": "parse_int_list(['10', 'x', '20'])", "expect": "[10, 20]" },
+    { "call": "parse_int_list([])", "expect": "[]" }
+  ]
+}
