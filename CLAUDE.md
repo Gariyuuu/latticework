@@ -109,15 +109,17 @@ on a missing env var without surfacing that clearly in the UI — see
   window-functions, interview-patterns), Linear Algebra (2/3 —
   vectors-matrices, eigenvalues; taught from first principles in plain
   Python on purpose, distinct from `numpy/linear-algebra-ops`'s
-  "use the library" angle on the same operations), and Monte Carlo
+  "use the library" angle on the same operations), Monte Carlo
   Simulation (3/3 — random-sampling, simulating-stock-paths,
-  variance-reduction) have real lesson content; the rest of the
-  technology catalog is metadata-only (by design — see
-  `docs/COURSE_CONTENT_SPEC.md`). Monte Carlo content needs genuine
-  randomness — made gradeable via `random.seed()`, only after verifying
-  seeded `random.random()`/`.gauss()`/`.choices()` produce bit-identical
-  output between Pyodide's WASM build and local CPython (same Mersenne
-  Twister C implementation compiled either way). SQL's last 3 modules
+  variance-reduction), and Stochastic Processes Fundamentals (3/3 —
+  random-walks, brownian-motion-intuition, markov-chains) have real
+  lesson content; the rest of the technology catalog is metadata-only
+  (by design — see `docs/COURSE_CONTENT_SPEC.md`). Both Monte Carlo and
+  Stochastic Processes content need genuine randomness — made gradeable
+  via `random.seed()`, only after verifying seeded `random.random()`/
+  `.gauss()`/`.choices()` produce bit-identical output between Pyodide's
+  WASM build and local CPython (same Mersenne Twister C implementation
+  compiled either way). SQL's last 3 modules
   (indexes-query-plans, schema-design, transactions-isolation) don't fit
   the sql-query exercise type's "does your SELECT return these rows"
   grading model at all — each is fundamentally about something else

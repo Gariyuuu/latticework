@@ -15,7 +15,7 @@ same change as any feature work.
   Marketplace (`vercel integration add neon|clerk`) and connected to the
   project — all env vars live in Production/Preview/Development. DB
   schema pushed (`npm run db:push`) and content seeded
-  (`npm run content:sync` against the live DB — 99 skills, 10 built;
+  (`npm run content:sync` against the live DB — 99 skills, 11 built;
   re-run after any content change and redeploy, both steps are manual).
   Clerk is currently a **development-mode** instance (free marketplace
   default) — fine for now, but note this if real user signups/production
@@ -192,6 +192,13 @@ same change as any feature work.
   `simulating-stock-paths` implements real (simplified) GBM path
   simulation and Monte Carlo European call option pricing;
   `variance-reduction` implements antithetic variates.
+- Fully built: Stochastic Processes Fundamentals (3/3 modules —
+  random-walks, brownian-motion-intuition, markov-chains) — **Done**.
+  Extends the seeded-randomness technique to time-evolving processes.
+  The markov-chains stationary-distribution exercise's Monte Carlo
+  estimate (0.8334 at n=10,000) was cross-checked against the true
+  balance-equation value (5/6 ≈ 0.8333) as an extra correctness signal
+  beyond just "the code ran."
 - Git, Linux, PyTorch, C++ — **Planned** (metadata skeletons done as part
   of the wider ~70-90 skill catalog; module content not yet authored).
   Git/Linux need the CLI-simulation exercise type, which isn't
