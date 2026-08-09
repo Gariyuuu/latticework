@@ -11,22 +11,23 @@
     "quant-researcher",
     "quant-developer"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "Random walks, Brownian motion, and Markov chains — the building blocks GBM stock simulation and most quant models are constructed from, extending the seeded-Monte-Carlo technique to genuinely time-evolving random processes.",
   "modules": [
     {
       "slug": "random-walks",
       "title": "Random Walks",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "brownian-motion-intuition",
       "title": "Brownian Motion Intuition",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "markov-chains",
       "title": "Markov Chains",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

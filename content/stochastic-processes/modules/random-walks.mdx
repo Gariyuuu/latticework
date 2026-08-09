@@ -1,0 +1,85 @@
+---
+slug: random-walks
+title: Random Walks
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: how-far
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: random-walks-ex1
+    difficulty: beginner
+    concept: stochastic-random-walks
+    prompt: "Write `random_walk_position(n, seed=42)`: simulate a simple symmetric random walk of `n` steps (each step +1 or -1 with equal probability), seeded with `seed`, and return the final position."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: random-walks-ex2
+    difficulty: intermediate
+    concept: stochastic-random-walks
+    prompt: "Write `random_walk_max_position(n, seed=42)`: simulate the same kind of walk, but return the MAXIMUM position reached at any point during the walk (including the starting position, 0), not just the final position."
+  - id: quiz-1
+    type: quiz
+    concept: stochastic-random-walks
+    question: "For a simple symmetric random walk (+1/-1 steps, equal probability), what is the expected value of the position after n steps?"
+    options: ["0, for every n", "n / 2", "√n", "It grows linearly with n"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A **random walk** takes a random step at each tick — the simplest version
+moves +1 or -1 with equal probability. It's the discrete-time ancestor of
+almost every random process used in quant finance (a stock price is
+often modeled as a random walk with drift, in log-return space).
+
+```python
+import random
+
+random.seed(0)
+position = 0
+for _ in range(10):
+    position += 1 if random.random() < 0.5 else -1
+print(position)
+```
+
+Despite each step being unbiased (equally likely up or down), the walk
+does NOT stay near 0 — it tends to wander, and how far it wanders grows
+with time in a specific, predictable way.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`import random\n\nrandom.seed(1)\npositions = [0]\nfor _ in range(20):\n    positions.append(positions[-1] + (1 if random.random() < 0.5 else -1))\nprint(positions)`} caption="Tracking every position (not just the final one) lets you see the whole path — notice it doesn't oscillate tightly around 0, it wanders." />
+
+<Explanation id="how-far">
+
+The **expected** final position of a symmetric random walk is always
+exactly 0 — positive and negative steps are equally likely, so they
+cancel out on average. But "expected value 0" doesn't mean "stays near
+0": the walk's typical DISTANCE from 0 after `n` steps grows
+proportionally to `√n` (its variance grows linearly with `n`, so its
+standard deviation — the typical spread — grows with the square root).
+
+That `√n` scaling is the exact same law behind Monte Carlo error shrinking
+as `1/√n` from the previous course — both come from the variance of a sum
+of independent random steps growing linearly with the number of steps.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can simulate a simple random walk and understand why its expected position stays at 0 even though it typically wanders away from 0 by an amount that grows with √n.
+</Checkpoint>

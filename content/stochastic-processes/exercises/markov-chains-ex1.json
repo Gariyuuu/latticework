@@ -1,0 +1,11 @@
+{
+  "id": "markov-chains-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import random\n\ndef simulate_markov_chain(transition, start_state, n_steps, seed=42):\n    ...\n",
+  "cases": [
+    { "call": "simulate_markov_chain([[0.9, 0.1], [0.5, 0.5]], 0, 20)", "expect": "0" },
+    { "call": "simulate_markov_chain([[0.9, 0.1], [0.5, 0.5]], 0, 100)", "expect": "1" },
+    { "call": "simulate_markov_chain([[0.9, 0.1], [0.5, 0.5]], 1, 10, seed=1)", "expect": "0" }
+  ]
+}

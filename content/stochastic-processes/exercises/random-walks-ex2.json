@@ -1,0 +1,11 @@
+{
+  "id": "random-walks-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import random\n\ndef random_walk_max_position(n, seed=42):\n    ...\n",
+  "cases": [
+    { "call": "random_walk_max_position(100)", "expect": "4" },
+    { "call": "random_walk_max_position(1000)", "expect": "10" },
+    { "call": "random_walk_max_position(50, seed=1)", "expect": "14" }
+  ]
+}

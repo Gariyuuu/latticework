@@ -1,0 +1,10 @@
+{
+  "id": "markov-chains-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import random\n\ndef estimate_stationary_distribution(transition, start_state, n_steps, seed=42):\n    ...\n",
+  "cases": [
+    { "call": "estimate_stationary_distribution([[0.9, 0.1], [0.5, 0.5]], 0, 10000)", "expect": "0.8334" },
+    { "call": "estimate_stationary_distribution([[0.9, 0.1], [0.5, 0.5]], 0, 1000, seed=1)", "expect": "0.817" }
+  ]
+}

@@ -1,0 +1,96 @@
+---
+slug: brownian-motion-intuition
+title: Brownian Motion Intuition
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: variance-scaling
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: brownian-motion-intuition-ex1
+    difficulty: beginner
+    concept: stochastic-brownian-motion
+    prompt: "Write `simulate_brownian_path(n_steps, dt, seed=42)`: simulate a Brownian motion path — starting at 0, each step add `sqrt(dt) * z` where `z = random.gauss(0, 1)`. Return the final value rounded to 4 decimal places."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: brownian-motion-intuition-ex2
+    difficulty: intermediate
+    concept: stochastic-brownian-motion
+    prompt: "Write `estimate_brownian_variance(n_steps, dt, n_sims, seed=42)`: run `n_sims` independent Brownian paths (each with `n_steps` steps of size `dt`, drawing all randomness from one seeded sequence), collect their final values, and return the sample variance of those final values, rounded to 4 decimals."
+  - id: quiz-1
+    type: quiz
+    concept: stochastic-brownian-motion
+    question: "As you simulate a Brownian path over a fixed total time T using MORE, SMALLER time steps, what happens to the variance of its position at time T?"
+    options: ["It stays approximately the same (converges to T) — variance depends on total elapsed time, not step count", "It grows without bound as steps get smaller", "It shrinks toward zero as steps get smaller", "It becomes undefined once steps are small enough"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Brownian motion** is what a random walk becomes as you shrink the step
+size toward zero while speeding up how often you step — the continuous-
+time limit of the discrete random walk from the last module. It's the
+foundation of the GBM stock-price model from the Monte Carlo course:
+GBM is literally "Brownian motion, exponentiated, with a drift term
+added."
+
+```python
+import random, math
+
+random.seed(0)
+w = 0.0
+dt = 0.01
+for _ in range(100):
+    z = random.gauss(0, 1)
+    w += math.sqrt(dt) * z   # each increment ~ N(0, dt)
+print(round(w, 4))
+```
+
+Each increment is itself normally distributed with variance `dt` — that
+`sqrt(dt)` scaling (not just `dt`) is the defining feature of Brownian
+motion, and it's exactly the same scaling used inside the GBM formula.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`import random, math\n\nrandom.seed(3)\npath = [0.0]\ndt = 0.05\nfor _ in range(40):\n    z = random.gauss(0, 1)\n    path.append(path[-1] + math.sqrt(dt) * z)\nprint([round(w, 2) for w in path])`} caption="A Brownian path never has a well-defined slope at any point (it's continuous everywhere but differentiable nowhere) — you can see that jaggedness even in this small discrete simulation." />
+
+<Explanation id="variance-scaling">
+
+Here's the property that makes Brownian motion mathematically special:
+its variance at time `T` equals `T` itself, REGARDLESS of how many steps
+you used to simulate it. Take 10 big steps of size `dt = T/10`, or 10,000
+tiny steps of size `dt = T/10000` — the variance of the final position is
+the same either way, because each step's variance (`dt`) sums up to
+exactly `T` no matter how you slice it.
+
+```python
+# 10 steps of size 0.1, OR 1000 steps of size 0.001 -- both simulate T=1
+# and both have Var(W(1)) ≈ 1, not different values
+```
+
+This is why Brownian motion is the right continuous-time limit of a
+random walk — the discrete walk's variance already scaled linearly with
+step COUNT; Brownian motion makes that "linear in elapsed time" instead
+of "linear in step count," which is what lets you meaningfully talk about
+"the variance at time T" independent of simulation granularity.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can simulate a Brownian motion path and understand why its variance at time T depends only on T, not on how finely you discretized the simulation.
+</Checkpoint>

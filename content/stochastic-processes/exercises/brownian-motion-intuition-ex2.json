@@ -1,0 +1,10 @@
+{
+  "id": "brownian-motion-intuition-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import random, math\n\ndef estimate_brownian_variance(n_steps, dt, n_sims, seed=42):\n    ...\n",
+  "cases": [
+    { "call": "estimate_brownian_variance(100, 0.01, 1000)", "expect": "0.981" },
+    { "call": "estimate_brownian_variance(50, 0.02, 5000, seed=1)", "expect": "1.0358" }
+  ]
+}

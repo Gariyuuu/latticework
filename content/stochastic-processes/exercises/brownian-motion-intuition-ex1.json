@@ -1,0 +1,11 @@
+{
+  "id": "brownian-motion-intuition-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import random, math\n\ndef simulate_brownian_path(n_steps, dt, seed=42):\n    ...\n",
+  "cases": [
+    { "call": "simulate_brownian_path(252, 1/252)", "expect": "1.6185" },
+    { "call": "simulate_brownian_path(100, 0.01, seed=1)", "expect": "-0.5058" },
+    { "call": "simulate_brownian_path(50, 0.02)", "expect": "-0.41" }
+  ]
+}

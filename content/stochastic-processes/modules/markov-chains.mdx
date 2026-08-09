@@ -1,0 +1,83 @@
+---
+slug: markov-chains
+title: Markov Chains
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: stationary
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: markov-chains-ex1
+    difficulty: beginner
+    concept: stochastic-markov-chains
+    prompt: "Write `simulate_markov_chain(transition, start_state, n_steps, seed=42)`. `transition` is a list of lists where `transition[i][j]` is the probability of moving from state `i` to state `j`. Simulate `n_steps` transitions starting from `start_state` and return the final state (an int index)."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: markov-chains-ex2
+    difficulty: intermediate
+    concept: stochastic-markov-chains
+    prompt: "Write `estimate_stationary_distribution(transition, start_state, n_steps, seed=42)`: run the chain for `n_steps` transitions, count how many of those steps land in state 0, and return that count divided by `n_steps`, rounded to 4 decimals — an estimate of state 0's long-run (stationary) probability."
+  - id: quiz-1
+    type: quiz
+    concept: stochastic-markov-chains
+    question: "What is the 'Markov property' (the defining feature of a Markov chain)?"
+    options: ["The probability of the next state depends only on the current state, not on the sequence of states that led there", "Every state is equally likely at every step", "The chain is guaranteed to eventually return to its starting state", "Transition probabilities must be identical for every state"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A **Markov chain** moves between a fixed set of states, where the
+probability of the next state depends ONLY on the current state — not on
+how you got there. That's the **Markov property** ("memorylessness"),
+and it's what makes these systems tractable: you don't need the whole
+history, just the current state.
+
+A **transition matrix** encodes all the probabilities: row `i`, column
+`j` is the probability of moving from state `i` to state `j` (each row
+sums to 1). A simple 2-state weather model — 0 = sunny, 1 = rainy:
+
+```python
+transition = [
+    [0.9, 0.1],   # from sunny: 90% stay sunny, 10% become rainy
+    [0.5, 0.5],   # from rainy: 50% stay rainy, 50% become sunny
+]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`import random\n\ntransition = [[0.9, 0.1], [0.5, 0.5]]\n\nrandom.seed(0)\nstate = 0   # start sunny\nhistory = [state]\nfor _ in range(15):\n    r = random.random()\n    cumulative = 0.0\n    for next_state, p in enumerate(transition[state]):\n        cumulative += p\n        if r < cumulative:\n            state = next_state\n            break\n    history.append(state)\nprint(history)`} caption="Picking the next state: draw one random number, then walk through the current row's probabilities, accumulating until you pass the random draw -- the standard way to sample from a discrete distribution given only its probabilities." />
+
+<Explanation id="stationary">
+
+Run a Markov chain long enough and the fraction of time spent in each
+state settles down to a fixed long-run value — the **stationary
+distribution** — regardless of where you started. For the weather chain
+above, that turns out to be about 5/6 sunny, 1/6 rainy: sunny days are
+"sticky" (90% chance of staying sunny), so the chain spends most of its
+long-run time there even though rainy days can occur.
+
+You can estimate the stationary distribution exactly the way you'd
+estimate anything else in this course — Monte Carlo style: simulate many
+steps, and count how often the chain is in each state.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can simulate a Markov chain from a transition matrix and estimate its stationary distribution by counting state visits over a long run.
+</Checkpoint>
