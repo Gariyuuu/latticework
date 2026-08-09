@@ -1,0 +1,77 @@
+---
+slug: derivatives
+title: Derivatives
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: numerical
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: derivatives-ex1
+    difficulty: beginner
+    concept: calculus-derivatives
+    prompt: "Write `numerical_derivative(f, x, h=1e-5)`, estimating f's derivative at `x` using the central difference formula `(f(x+h) - f(x-h)) / (2*h)`. Round the result to 4 decimal places."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: derivatives-ex2
+    difficulty: intermediate
+    concept: calculus-derivatives
+    prompt: "Write `is_increasing(f, x, h=1e-5)`, returning True if f's derivative at `x` is positive (the function is increasing there), False otherwise."
+  - id: quiz-1
+    type: quiz
+    concept: calculus-derivatives
+    question: "What does a function's derivative at a point represent?"
+    options: ["The instantaneous rate of change (the slope of the tangent line) at that point", "The function's average value overall", "The area under the curve up to that point", "The maximum value the function can take"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+The **derivative** of a function at a point measures how fast it's
+changing right there — the slope of the line tangent to the curve at
+that exact point. Every gradient-based ML technique (gradient descent,
+backpropagation) is built entirely out of derivatives.
+
+For a function like `f(x) = x²`, calculus gives you an exact formula:
+`f'(x) = 2x`. But you don't always have (or need) the exact formula —
+you can estimate a derivative numerically, directly from the function
+itself.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def f(x):\n    return x ** 2\n\nh = 1e-5\nx = 3\nestimate = (f(x + h) - f(x - h)) / (2 * h)\nprint(round(estimate, 4))  # very close to 2*3 = 6`} caption="This is the 'central difference' formula: nudge x slightly in both directions, see how much f changes, divide by the total nudge. As h shrinks toward 0, this converges to the true derivative." />
+
+<Explanation id="numerical">
+
+The central difference formula `(f(x+h) - f(x-h)) / (2h)` works for ANY
+function you can call — you never need its symbolic derivative. That's
+exactly the technique behind **gradient checking**, a standard way to
+verify a hand-derived (or autograd-computed) gradient is correct: compute
+it both ways and confirm they match.
+
+Picking `h` matters: too large and the estimate is inaccurate (it's
+measuring the average slope over too wide an interval, not the
+instantaneous one); too small (smaller than about `1e-8` for standard
+floating-point numbers) and rounding error dominates. `1e-5` is a
+reasonable default for most functions.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can estimate a function's derivative numerically using the central difference formula, without needing its symbolic derivative.
+</Checkpoint>

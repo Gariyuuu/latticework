@@ -1,0 +1,11 @@
+{
+  "id": "gradients-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import math\n\ndef gradient(f, point, h=1e-5):\n    grad = []\n    for i in range(len(point)):\n        p_plus = list(point); p_plus[i] += h\n        p_minus = list(point); p_minus[i] -= h\n        grad.append(round((f(p_plus) - f(p_minus)) / (2 * h), 4))\n    return grad\n\ndef gradient_magnitude(f, point, h=1e-5):\n    ...\n",
+  "cases": [
+    { "call": "gradient_magnitude(lambda p: p[0]**2 + p[1]**2, [3, 4])", "expect": "10.0" },
+    { "call": "gradient_magnitude(lambda p: p[0]*p[1], [3, 4])", "expect": "5.0" },
+    { "call": "gradient_magnitude(lambda p: p[0]**2, [0, 0])", "expect": "0.0" }
+  ]
+}

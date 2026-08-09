@@ -1,0 +1,11 @@
+{
+  "id": "derivatives-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def is_increasing(f, x, h=1e-5):\n    ...\n",
+  "cases": [
+    { "call": "is_increasing(lambda x: x**2, 3)", "expect": "True" },
+    { "call": "is_increasing(lambda x: x**2, -3)", "expect": "False" },
+    { "call": "is_increasing(lambda x: -x, 0)", "expect": "False" }
+  ]
+}

@@ -4,7 +4,7 @@
   "category": "math",
   "difficulty": "beginner",
   "estimatedHours": 5,
-  "prerequisites": [],
+  "prerequisites": ["python"],
   "usefulFor": [
     "ml-engineer",
     "ai-engineer",
@@ -13,22 +13,23 @@
     "quant-researcher",
     "quant-trader"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "Derivatives, gradients, and the chain rule computed numerically and analytically in plain Python — the exact mechanism behind gradient descent and backpropagation, not just the notation.",
   "modules": [
     {
       "slug": "derivatives",
       "title": "Derivatives",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "gradients",
       "title": "Gradients",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "chain-rule-for-backprop",
       "title": "Chain Rule for Backprop",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

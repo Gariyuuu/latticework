@@ -1,0 +1,11 @@
+{
+  "id": "derivatives-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def numerical_derivative(f, x, h=1e-5):\n    ...\n",
+  "cases": [
+    { "call": "numerical_derivative(lambda x: x**2, 3)", "expect": "6.0" },
+    { "call": "numerical_derivative(lambda x: x**3, 2)", "expect": "12.0" },
+    { "call": "numerical_derivative(lambda x: 5*x + 1, 10)", "expect": "5.0" }
+  ]
+}

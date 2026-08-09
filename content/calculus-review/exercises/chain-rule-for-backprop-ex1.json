@@ -1,0 +1,11 @@
+{
+  "id": "chain-rule-for-backprop-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def chain_rule_derivative(x):\n    ...\n",
+  "cases": [
+    { "call": "chain_rule_derivative(0)", "expect": "6" },
+    { "call": "chain_rule_derivative(1)", "expect": "24" },
+    { "call": "chain_rule_derivative(2)", "expect": "42" }
+  ]
+}

@@ -1,0 +1,89 @@
+---
+slug: gradients
+title: Gradients
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: magnitude
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: gradients-ex1
+    difficulty: beginner
+    concept: calculus-gradients
+    prompt: "Write `gradient(f, point, h=1e-5)`: `f` takes a list of numbers and returns a number; `point` is a list. Return the gradient — a list where each entry is the central-difference partial derivative with respect to that coordinate, rounded to 4 decimals."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: gradients-ex2
+    difficulty: intermediate
+    concept: calculus-gradients
+    prompt: "Given the `gradient` helper below (already implemented), write `gradient_magnitude(f, point, h=1e-5)`, returning the gradient's Euclidean length (its L2 norm), rounded to 4 decimals."
+  - id: quiz-1
+    type: quiz
+    concept: calculus-gradients
+    question: "What does the gradient of a multivariable function represent?"
+    options: ["A vector pointing in the direction of steepest increase, whose components are the partial derivatives", "The average rate of change over the whole domain", "A single number summarizing the function's overall curvature", "The set of points where the function equals zero"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+For a function of several variables, each variable has its own **partial
+derivative** — how fast the function changes if you nudge JUST that one
+variable, holding the others fixed. The **gradient** collects all of them
+into a vector.
+
+```python
+def f(p):
+    return p[0]**2 + p[1]**2   # p = [x, y]
+
+# partial derivative w.r.t. x: nudge only p[0]
+# partial derivative w.r.t. y: nudge only p[1]
+```
+
+This is exactly the extension of last module's `numerical_derivative` to
+more than one input — nudge one coordinate at a time, holding the rest
+fixed, and collect the results.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def f(p):\n    return p[0]**2 + p[1]**2\n\nh = 1e-5\npoint = [3, 4]\ngrad = []\nfor i in range(len(point)):\n    p_plus = list(point); p_plus[i] += h\n    p_minus = list(point); p_minus[i] -= h\n    grad.append(round((f(p_plus) - f(p_minus)) / (2 * h), 2))\nprint(grad)  # [6.0, 8.0] -- matches the exact gradient [2x, 2y] at (3, 4)`} caption="Each entry of the gradient only nudges ONE coordinate at a time -- that's the whole difference from the single-variable derivative from the previous module." />
+
+<Explanation id="magnitude">
+
+The gradient's DIRECTION points toward steepest increase — which is
+exactly why gradient DESCENT (covered in the next course, Optimization)
+moves in the OPPOSITE direction to minimize a function. Its MAGNITUDE
+(the same Euclidean length/L2 norm from the Linear Algebra course) tells
+you how steep that increase is — a large gradient magnitude means the
+function is changing rapidly at that point; a magnitude near zero means
+you're near a flat spot (possibly a minimum, maximum, or saddle point).
+
+```python
+import math
+magnitude = math.sqrt(sum(g**2 for g in grad))
+```
+
+That's the exact same `magnitude` computation from
+`linear-algebra/vectors-matrices` — the gradient IS just a vector, so
+every vector operation you already know applies to it directly.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute a multivariable function's gradient numerically, and know that its direction points toward steepest increase while its magnitude measures how steep.
+</Checkpoint>

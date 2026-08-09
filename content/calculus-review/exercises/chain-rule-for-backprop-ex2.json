@@ -1,0 +1,11 @@
+{
+  "id": "chain-rule-for-backprop-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def dy_dw(w, x, b):\n    ...\n",
+  "cases": [
+    { "call": "dy_dw(2, 3, 1)", "expect": "42" },
+    { "call": "dy_dw(0, 5, 2)", "expect": "20" },
+    { "call": "dy_dw(1, 1, 1)", "expect": "4" }
+  ]
+}

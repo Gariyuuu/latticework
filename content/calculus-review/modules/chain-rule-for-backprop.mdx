@@ -1,0 +1,96 @@
+---
+slug: chain-rule-for-backprop
+title: Chain Rule for Backprop
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: backprop
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: chain-rule-for-backprop-ex1
+    difficulty: beginner
+    concept: calculus-chain-rule
+    prompt: "For the composed function `f(g(x))` where `g(x) = 3x + 1` and `f(u) = u**2`, write `chain_rule_derivative(x)` that returns `d/dx[f(g(x))]` using the chain rule directly — `f'(g(x)) * g'(x)` — not finite differences."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: chain-rule-for-backprop-ex2
+    difficulty: intermediate
+    concept: calculus-chain-rule
+    prompt: "For `y = (w*x + b)**2` (one linear layer plus a squared 'loss'), write `dy_dw(w, x, b)` that returns `dy/dw` using the chain rule, treating `x` and `b` as constants."
+  - id: quiz-1
+    type: quiz
+    concept: calculus-chain-rule
+    question: "The chain rule says the derivative of f(g(x)) with respect to x is..."
+    options: ["f'(g(x)) * g'(x) — the outer function's derivative (evaluated at the inner function's output) times the inner function's derivative", "f'(x) + g'(x)", "f(g'(x))", "f'(x) * g'(x), each evaluated independently at x"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+The **chain rule** tells you how to differentiate a function built by
+composing two others: `d/dx[f(g(x))] = f'(g(x)) · g'(x)` — the outer
+function's derivative, evaluated at the inner function's OUTPUT, times
+the inner function's derivative.
+
+```python
+# g(x) = 3x + 1,  g'(x) = 3
+# f(u) = u**2,     f'(u) = 2u
+# f(g(x)) = (3x + 1)**2
+
+def d_dx(x):
+    g = 3*x + 1
+    g_prime = 3
+    f_prime_at_g = 2 * g   # f'(u) = 2u, evaluated at u = g(x)
+    return f_prime_at_g * g_prime
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def g(x):\n    return 3*x + 1\n\ndef f(u):\n    return u ** 2\n\ndef composed_derivative(x):\n    return (2 * g(x)) * 3   # f'(g(x)) * g'(x)\n\n# sanity check against numerical differentiation:\nh = 1e-5\ndef fg(x):\n    return f(g(x))\nnumerical = (fg(2 + h) - fg(2 - h)) / (2*h)\nprint(composed_derivative(2), round(numerical, 2))  # both ~42`} caption="The chain-rule answer and the finite-difference estimate from the derivatives module agree -- that's the whole point of gradient checking: two completely different computation methods landing on the same answer is strong evidence both are correct." />
+
+<Explanation id="backprop">
+
+This is EXACTLY what backpropagation does, just at a much larger scale. A
+neural network is a long chain of compositions — layer 1 feeds into
+layer 2, which feeds into layer 3, and so on, ending in a loss function.
+Training the network means computing how the loss changes with respect
+to EVERY weight in EVERY layer — and the chain rule is the only tool that
+makes that tractable: you compute the derivative at the output, then
+multiply backward through each layer's local derivative, one composition
+at a time.
+
+```python
+# y = (w*x + b)**2 -- a tiny "one linear layer + squared loss" network
+# dy/dw: outer function is (...)**2, inner is w*x + b
+def dy_dw(w, x, b):
+    inner = w*x + b
+    d_inner_d_w = x            # d/dw[w*x + b] = x
+    d_outer_d_inner = 2*inner  # d/du[u**2] = 2u
+    return d_outer_d_inner * d_inner_d_w
+```
+
+"Backpropagation" is really just this same pattern applied layer after
+layer, computed efficiently by reusing intermediate results instead of
+recomputing them — the calculus doesn't change at any scale, only the
+bookkeeping does.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can apply the chain rule to differentiate a composed function analytically, and see how it's exactly the mechanism backpropagation scales up to train neural networks.
+</Checkpoint>
