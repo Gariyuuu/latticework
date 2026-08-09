@@ -15,7 +15,7 @@ same change as any feature work.
   Marketplace (`vercel integration add neon|clerk`) and connected to the
   project — all env vars live in Production/Preview/Development. DB
   schema pushed (`npm run db:push`) and content seeded
-  (`npm run content:sync` against the live DB — 99 skills, 19 built;
+  (`npm run content:sync` against the live DB — 99 skills, 21 built;
   re-run after any content change and redeploy, both steps are manual).
   Clerk is currently a **development-mode** instance (free marketplace
   default) — fine for now, but note this if real user signups/production
@@ -225,12 +225,25 @@ same change as any feature work.
   the real pandas package via Pyodide-in-Node, same discipline as every
   other pandas-dependent track. Optimization builds directly on Calculus
   Review's derivative/gradient functions.
+- Fully built: Financial Markets (3/3 — asset-classes, order-types,
+  market-structure) — **Done**. Fully built: Quant Finance Fundamentals
+  (5/9 — options-basics, black-scholes-intuition, greeks-intuition,
+  portfolio-theory, backtesting) — **In Progress**. Black-Scholes
+  verified against the well-known textbook reference (S=K=100, T=1,
+  r=5%, sigma=20% → ~10.45). Greeks reuse Calculus Review's exact
+  central-difference technique, applied to Black-Scholes — using an
+  UNROUNDED price helper internally (a rounding-amplification bug would
+  otherwise corrupt the finite-difference estimate if the already-
+  rounded `black_scholes_call` were reused directly for the nudge-and-
+  compare). Remaining 4 modules (derivatives-basics, risk,
+  factor-models, market-microstructure-basics) left planned — same
+  don't-force-fit principle as SQL's unbuilt modules.
 - Git, Linux, PyTorch, C++ — **Planned** (metadata skeletons done as part
   of the wider ~70-90 skill catalog; module content not yet authored).
   Git/Linux need the CLI-simulation exercise type, which isn't
   implemented yet (see "Learning engine" above); PyTorch/C++ need their
   own execution infra decisions.
-- Remaining ~47-67 technologies from the brief — **Done** as metadata-only
+- Remaining ~45-65 technologies from the brief — **Done** as metadata-only
   skeletons (appear correctly in graph/Explore/roadmap, no lesson content)
 
 `python/modules/files.mdx` (file I/O) was originally deferred because it
