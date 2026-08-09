@@ -1,0 +1,11 @@
+{
+  "id": "asset-classes-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def portfolio_weighted_return(returns, weights):\n    ...\n",
+  "cases": [
+    { "call": "portfolio_weighted_return([0.08, 0.03, 0.01], [0.6, 0.3, 0.1])", "expect": "0.058" },
+    { "call": "portfolio_weighted_return([0.1, 0.1], [0.5, 0.5])", "expect": "0.1" },
+    { "call": "portfolio_weighted_return([0.05], [1.0])", "expect": "0.05" }
+  ]
+}

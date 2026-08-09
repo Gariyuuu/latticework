@@ -1,0 +1,11 @@
+{
+  "id": "portfolio-theory-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def portfolio_variance_2asset(w1, w2, var1, var2, cov12):\n    ...\n",
+  "cases": [
+    { "call": "portfolio_variance_2asset(0.5, 0.5, 0.04, 0.09, 0.02)", "expect": "0.0425" },
+    { "call": "portfolio_variance_2asset(0.7, 0.3, 0.02, 0.05, 0.01)", "expect": "0.0185" },
+    { "call": "portfolio_variance_2asset(1.0, 0.0, 0.03, 0.1, 0.0)", "expect": "0.03" }
+  ]
+}

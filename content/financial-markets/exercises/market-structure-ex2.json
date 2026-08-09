@@ -1,0 +1,11 @@
+{
+  "id": "market-structure-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def vwap(prices, volumes):\n    ...\n",
+  "cases": [
+    { "call": "vwap([100, 101, 99], [10, 20, 10])", "expect": "100.25" },
+    { "call": "vwap([50, 50], [1, 1])", "expect": "50.0" },
+    { "call": "vwap([10, 20, 30], [1, 1, 1])", "expect": "20.0" }
+  ]
+}

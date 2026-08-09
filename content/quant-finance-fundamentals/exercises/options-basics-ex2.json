@@ -1,0 +1,11 @@
+{
+  "id": "options-basics-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def is_in_the_money(spot, strike, option_type):\n    ...\n",
+  "cases": [
+    { "call": "is_in_the_money(110, 100, 'call')", "expect": "True" },
+    { "call": "is_in_the_money(90, 100, 'call')", "expect": "False" },
+    { "call": "is_in_the_money(90, 100, 'put')", "expect": "True" }
+  ]
+}

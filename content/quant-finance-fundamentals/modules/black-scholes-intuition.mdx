@@ -1,0 +1,93 @@
+---
+slug: black-scholes-intuition
+title: Black-Scholes Intuition
+estimatedMinutes: 22
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: put-call-parity
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: black-scholes-intuition-ex1
+    difficulty: intermediate
+    concept: quant-black-scholes
+    prompt: "Write `black_scholes_call(S, K, T, r, sigma)`: `d1 = (ln(S/K) + (r + sigma²/2)·T) / (sigma·√T)`, `d2 = d1 - sigma·√T`, price `= S·N(d1) - K·e^(-rT)·N(d2)`, where `N` is the standard normal CDF (`statistics.NormalDist().cdf`). Round to 4 decimals."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: black-scholes-intuition-ex2
+    difficulty: advanced
+    concept: quant-black-scholes
+    prompt: "Using `bs_call_price` (the unrounded version, given below) and put-call parity — `put = call - S + K·e^(-rT)` — write `black_scholes_put(S, K, T, r, sigma)`, rounded to 4 decimals."
+  - id: quiz-1
+    type: quiz
+    concept: quant-black-scholes
+    question: "What does the Black-Scholes model assume about how the underlying stock price moves over time?"
+    options: ["It follows geometric Brownian motion with constant volatility (the exact model from the Monte Carlo course)", "It moves in discrete, unpredictable jumps only", "It never changes until expiration", "It's perfectly correlated with the risk-free interest rate"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Black-Scholes** is the classic closed-form formula for pricing a
+European call or put option — no simulation needed (unlike the Monte
+Carlo course's option-pricing approach), just a direct formula, given
+five inputs: current stock price `S`, strike `K`, time to expiration `T`
+(in years), risk-free rate `r`, and volatility `sigma`.
+
+```python
+import math
+from statistics import NormalDist
+
+def bs_call_price(S, K, T, r, sigma):
+    d1 = (math.log(S / K) + (r + sigma**2 / 2) * T) / (sigma * math.sqrt(T))
+    d2 = d1 - sigma * math.sqrt(T)
+    N = NormalDist().cdf
+    return S * N(d1) - K * math.exp(-r * T) * N(d2)
+
+print(round(bs_call_price(100, 100, 1, 0.05, 0.2), 2))   # 10.45
+```
+
+`N` (the standard normal CDF) is exactly the same
+`statistics.NormalDist().cdf` used for z-tests in the Statistics
+course — Black-Scholes and hypothesis testing share the same underlying
+math tool, applied to a completely different problem.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`import math\nfrom statistics import NormalDist\n\ndef bs_call_price(S, K, T, r, sigma):\n    d1 = (math.log(S / K) + (r + sigma**2 / 2) * T) / (sigma * math.sqrt(T))\n    d2 = d1 - sigma * math.sqrt(T)\n    N = NormalDist().cdf\n    return S * N(d1) - K * math.exp(-r * T) * N(d2)\n\nfor sigma in [0.1, 0.2, 0.3, 0.4]:\n    print(sigma, round(bs_call_price(100, 100, 1, 0.05, sigma), 2))`} caption="Call price rises monotonically with volatility -- more uncertainty means more chance of a big upside move, and the buyer's downside is already capped at the premium, so higher volatility is pure upside for the option buyer." />
+
+<Explanation id="put-call-parity">
+
+**Put-call parity** is a no-arbitrage relationship that lets you get the
+put price directly from the call price, without redoing the whole
+formula: `put = call - S + K·e^(-rT)`. It holds because a very specific
+combination of positions (long call + short put, vs. long stock financed
+by borrowing `K·e^(-rT)`) must have identical payoffs at expiration — if
+they didn't, there'd be a risk-free arbitrage profit available, which
+competitive markets don't allow to persist.
+
+```python
+def black_scholes_put(S, K, T, r, sigma):
+    call = bs_call_price(S, K, T, r, sigma)
+    return call - S + K * math.exp(-r * T)
+```
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute a European option's price directly via the Black-Scholes formula, and derive the put price from the call price via put-call parity.
+</Checkpoint>

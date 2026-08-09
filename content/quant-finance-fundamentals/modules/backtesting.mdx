@@ -1,0 +1,95 @@
+---
+slug: backtesting
+title: Backtesting
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: crossover
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: backtesting-ex1
+    difficulty: beginner
+    concept: quant-backtesting
+    prompt: "Write `moving_average(prices, window)`: return a list of simple moving averages — one for every position where a full `window` of prices is available — each rounded to 4 decimals."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: backtesting-ex2
+    difficulty: intermediate
+    concept: quant-backtesting
+    prompt: "Write `sma_crossover_signal(prices, short_window, long_window)`: compute the short-window and long-window moving averages over the MOST RECENT prices, and return 1 if short > long, -1 if short < long, 0 if equal."
+  - id: quiz-1
+    type: quiz
+    concept: quant-backtesting
+    question: "What is the main danger of 'overfitting' a backtested trading strategy?"
+    options: ["The strategy is tuned so precisely to historical data's noise that it performs great on the past but fails on new, unseen data going forward", "Backtests always underestimate real performance", "Overfitting only affects machine learning models, never simple strategies like moving averages", "A strategy can never be tested on historical data at all"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Backtesting** simulates how a trading strategy would have performed on
+historical data — before risking real money on it. The **moving average
+crossover** is one of the oldest, simplest strategies: compute a
+short-window and long-window average of price, and treat the SHORT
+average crossing above the LONG average as a "buy" signal (recent prices
+are outpacing the longer trend — momentum is picking up).
+
+```python
+def moving_average(prices, window):
+    result = []
+    for i in range(window - 1, len(prices)):
+        avg = sum(prices[i - window + 1 : i + 1]) / window
+        result.append(avg)
+    return result
+
+print(moving_average([10, 11, 12, 13, 14], 3))   # [11.0, 12.0, 13.0]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def moving_average(prices, window):\n    result = []\n    for i in range(window - 1, len(prices)):\n        avg = sum(prices[i - window + 1 : i + 1]) / window\n        result.append(round(avg, 2))\n    return result\n\nprices = [100, 102, 101, 105, 108, 107, 110, 112, 115, 113]\nshort_ma = moving_average(prices, 3)\nlong_ma = moving_average(prices, 5)\nprint("short:", short_ma)\nprint("long: ", long_ma)`} caption="The short MA reacts to recent price moves faster than the long MA does -- that lag difference is exactly what a crossover strategy is trying to detect and trade on." />
+
+<Explanation id="crossover">
+
+A crossover strategy generates a trading signal by comparing the two:
+
+```python
+def sma_crossover_signal(prices, short_window, long_window):
+    short_ma = sum(prices[-short_window:]) / short_window
+    long_ma = sum(prices[-long_window:]) / long_window
+    if short_ma > long_ma:
+        return 1    # "golden cross" -- bullish signal
+    elif short_ma < long_ma:
+        return -1   # "death cross" -- bearish signal
+    return 0
+```
+
+Backtesting this kind of strategy across years of historical data tells
+you how it WOULD have performed — but a strategy that looks great on
+history isn't automatically great going forward. The real risk is
+**overfitting**: tuning window sizes and rules so precisely to historical
+noise that the strategy has essentially memorized the past rather than
+capturing a real, persistent pattern — the same overfitting risk you'll
+see again in the Model Evaluation course, applied to trading instead of
+machine learning.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute moving averages and implement a basic crossover trading signal, and understand backtesting's central risk: overfitting a strategy to historical noise.
+</Checkpoint>

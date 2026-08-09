@@ -1,0 +1,11 @@
+{
+  "id": "backtesting-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def moving_average(prices, window):\n    ...\n",
+  "cases": [
+    { "call": "moving_average([1, 2, 3, 4, 5], 3)", "expect": "[2.0, 3.0, 4.0]" },
+    { "call": "moving_average([10, 20, 30, 40], 2)", "expect": "[15.0, 25.0, 35.0]" },
+    { "call": "moving_average([5, 5, 5], 3)", "expect": "[5.0]" }
+  ]
+}

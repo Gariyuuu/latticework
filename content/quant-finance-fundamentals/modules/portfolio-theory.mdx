@@ -1,0 +1,88 @@
+---
+slug: portfolio-theory
+title: Portfolio Theory
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: sharpe
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: portfolio-theory-ex1
+    difficulty: intermediate
+    concept: quant-portfolio-theory
+    prompt: "Write `portfolio_variance_2asset(w1, w2, var1, var2, cov12)`: for a 2-asset portfolio, variance `= w1²·var1 + w2²·var2 + 2·w1·w2·cov12`. Round to 6 decimals."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: portfolio-theory-ex2
+    difficulty: beginner
+    concept: quant-portfolio-theory
+    prompt: "Write `sharpe_ratio(portfolio_return, risk_free_rate, portfolio_std)`: `(portfolio_return - risk_free_rate) / portfolio_std`, rounded to 4 decimals."
+  - id: quiz-1
+    type: quiz
+    concept: quant-portfolio-theory
+    question: "What does the Sharpe ratio measure?"
+    options: ["Risk-adjusted return — how much excess return (above the risk-free rate) you're getting per unit of volatility taken on", "The total return of a portfolio, ignoring risk entirely", "The correlation between two specific assets", "The maximum possible loss a portfolio could experience"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Modern Portfolio Theory's core insight: a portfolio's risk (variance)
+depends not just on each asset's own variance, but on how they move
+TOGETHER — their **covariance**. For two assets with weights `w1`, `w2`:
+
+```python
+def portfolio_variance_2asset(w1, w2, var1, var2, cov12):
+    return w1**2 * var1 + w2**2 * var2 + 2 * w1 * w2 * cov12
+```
+
+If `cov12` is negative (the assets move in OPPOSITE directions), the
+last term REDUCES total variance — that's diversification working
+exactly as intended: combining imperfectly-correlated assets lowers risk
+below what either asset has alone, without necessarily lowering expected
+return.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def portfolio_variance_2asset(w1, w2, var1, var2, cov12):\n    return w1**2 * var1 + w2**2 * var2 + 2 * w1 * w2 * cov12\n\n# same two assets, three different correlations\nfor cov in [-0.02, 0, 0.02]:\n    print(cov, round(portfolio_variance_2asset(0.5, 0.5, 0.04, 0.04, cov), 4))`} caption="Same individual variances, same weights -- only the covariance changes, and the portfolio variance drops noticeably as it goes from positive to negative. That's the entire mathematical case for diversification, in one line." />
+
+<Explanation id="sharpe">
+
+The **Sharpe ratio** answers "how much return am I getting per unit of
+risk taken?" — it lets you compare investments with completely different
+risk levels on a level footing:
+
+```python
+def sharpe_ratio(portfolio_return, risk_free_rate, portfolio_std):
+    return (portfolio_return - risk_free_rate) / portfolio_std
+
+# two portfolios with different risk/return, same Sharpe
+print(sharpe_ratio(0.12, 0.03, 0.15))   # 0.6
+print(sharpe_ratio(0.08, 0.02, 0.1))     # 0.6 -- same risk-adjusted quality, despite lower raw numbers
+```
+
+A HIGHER raw return isn't automatically "better" if it came with
+proportionally more risk — the Sharpe ratio is the standard way quant
+researchers and portfolio managers compare strategies fairly, rather
+than just chasing whichever number looks biggest.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute a 2-asset portfolio's variance (seeing diversification's effect directly) and the Sharpe ratio for comparing risk-adjusted returns.
+</Checkpoint>

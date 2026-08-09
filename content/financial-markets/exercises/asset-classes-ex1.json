@@ -1,0 +1,11 @@
+{
+  "id": "asset-classes-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def simple_return(price_start, price_end):\n    ...\n",
+  "cases": [
+    { "call": "simple_return(100, 110)", "expect": "0.1" },
+    { "call": "simple_return(50, 45)", "expect": "-0.1" },
+    { "call": "simple_return(200, 200)", "expect": "0.0" }
+  ]
+}

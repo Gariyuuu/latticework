@@ -1,0 +1,11 @@
+{
+  "id": "order-types-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def match_orders(buy_price, sell_price):\n    ...\n",
+  "cases": [
+    { "call": "match_orders(101, 100)", "expect": "100.5" },
+    { "call": "match_orders(100, 100)", "expect": "100.0" },
+    { "call": "match_orders(99, 100)", "expect": "None" }
+  ]
+}

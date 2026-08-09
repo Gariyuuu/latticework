@@ -10,22 +10,23 @@
     "quant-researcher",
     "quant-trader"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "Asset classes, order types, and market structure — return calculations, order matching, and VWAP/spread implemented as real code, not just definitions.",
   "modules": [
     {
       "slug": "asset-classes",
       "title": "Asset Classes",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "order-types",
       "title": "Order Types",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "market-structure",
       "title": "Market Structure",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

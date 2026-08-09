@@ -1,0 +1,94 @@
+---
+slug: greeks-intuition
+title: Greeks Intuition
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: vega
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: greeks-intuition-ex1
+    difficulty: intermediate
+    concept: quant-greeks
+    prompt: "Using `bs_call_price` below, write `delta_numerical(S, K, T, r, sigma, h=0.01)`: estimate Delta (sensitivity to the stock price) via central difference — `(price(S+h) - price(S-h)) / (2h)`. Round to 4 decimals."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: greeks-intuition-ex2
+    difficulty: advanced
+    concept: quant-greeks
+    prompt: "Write `vega_numerical(S, K, T, r, sigma, h=0.0001)`: estimate Vega (sensitivity to volatility) the same way, but nudging `sigma` instead of `S`. Round to 4 decimals."
+  - id: quiz-1
+    type: quiz
+    concept: quant-greeks
+    question: "What does an option's Delta represent?"
+    options: ["How much the option's price changes for a $1 move in the underlying stock price — a sensitivity, computed as a derivative", "The option's total profit at expiration", "The number of days until expiration", "The strike price minus the current stock price"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+The **Greeks** measure how sensitive an option's price is to each of its
+inputs — literally the PARTIAL DERIVATIVES of the Black-Scholes formula,
+from the Calculus Review course, applied to option pricing. **Delta**
+(sensitivity to the stock price) is the most important one:
+
+```python
+import math
+from statistics import NormalDist
+
+def bs_call_price(S, K, T, r, sigma):
+    d1 = (math.log(S / K) + (r + sigma**2 / 2) * T) / (sigma * math.sqrt(T))
+    d2 = d1 - sigma * math.sqrt(T)
+    N = NormalDist().cdf
+    return S * N(d1) - K * math.exp(-r * T) * N(d2)
+
+def delta_numerical(S, K, T, r, sigma, h=0.01):
+    return (bs_call_price(S + h, K, T, r, sigma) - bs_call_price(S - h, K, T, r, sigma)) / (2 * h)
+```
+
+This is the EXACT central-difference technique from the Calculus Review
+course's `numerical_derivative` — Delta really is just "the derivative of
+option price with respect to stock price," nothing more exotic than
+that.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`import math\nfrom statistics import NormalDist\n\ndef bs_call_price(S, K, T, r, sigma):\n    d1 = (math.log(S / K) + (r + sigma**2 / 2) * T) / (sigma * math.sqrt(T))\n    d2 = d1 - sigma * math.sqrt(T)\n    N = NormalDist().cdf\n    return S * N(d1) - K * math.exp(-r * T) * N(d2)\n\ndef delta_numerical(S, K, T, r, sigma, h=0.01):\n    return round((bs_call_price(S + h, K, T, r, sigma) - bs_call_price(S - h, K, T, r, sigma)) / (2 * h), 3)\n\nfor S in [80, 90, 100, 110, 120]:\n    print(S, delta_numerical(S, 100, 1, 0.05, 0.2))`} caption="Delta rises from near 0 (deep out-of-the-money -- the option is basically worthless and insensitive to small stock moves) toward near 1 (deep in-the-money -- it moves almost dollar-for-dollar with the stock, like owning the stock itself)." />
+
+<Explanation id="vega">
+
+**Vega** measures sensitivity to volatility — nudge `sigma` instead of
+`S`, same central-difference technique:
+
+```python
+def vega_numerical(S, K, T, r, sigma, h=0.0001):
+    return (bs_call_price(S, K, T, r, sigma + h) - bs_call_price(S, K, T, r, sigma - h)) / (2 * h)
+```
+
+Notice `h` is much smaller here (`0.0001` vs. `0.01`) — `sigma` itself is
+usually a small number (0.1-0.5 is a typical range), so a proportionally
+smaller nudge keeps the finite-difference approximation accurate. Every
+other Greek (Gamma — sensitivity of Delta itself; Theta — sensitivity to
+time; Rho — sensitivity to interest rate) follows the exact same pattern:
+pick the input, nudge it by a small `h`, take the central difference.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute an option's Greeks (Delta, Vega) numerically via the same central-difference technique from Calculus Review, applied to the Black-Scholes formula.
+</Checkpoint>

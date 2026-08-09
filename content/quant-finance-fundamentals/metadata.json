@@ -13,12 +13,13 @@
     "quant-researcher",
     "quant-trader"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "Options, Black-Scholes, Greeks, portfolio theory, and backtesting — the classic quant-finance toolkit, each formula implemented as real runnable Python and verified against known reference values.",
   "modules": [
     {
       "slug": "options-basics",
       "title": "Options Basics",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "derivatives-basics",
@@ -28,17 +29,17 @@
     {
       "slug": "black-scholes-intuition",
       "title": "Black-Scholes Intuition",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "greeks-intuition",
       "title": "Greeks Intuition",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "portfolio-theory",
       "title": "Portfolio Theory",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "risk",
@@ -53,7 +54,7 @@
     {
       "slug": "backtesting",
       "title": "Backtesting",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "market-microstructure-basics",

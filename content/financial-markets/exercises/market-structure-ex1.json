@@ -1,0 +1,11 @@
+{
+  "id": "market-structure-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def bid_ask_spread(bid, ask):\n    ...\n",
+  "cases": [
+    { "call": "bid_ask_spread(99.95, 100.05)", "expect": "0.1" },
+    { "call": "bid_ask_spread(50.00, 50.02)", "expect": "0.02" },
+    { "call": "bid_ask_spread(10, 10)", "expect": "0" }
+  ]
+}

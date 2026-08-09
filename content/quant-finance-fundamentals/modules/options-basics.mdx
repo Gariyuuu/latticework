@@ -1,0 +1,91 @@
+---
+slug: options-basics
+title: Options Basics
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: profit
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: options-basics-ex1
+    difficulty: beginner
+    concept: quant-options-basics
+    prompt: "Write `net_option_profit(spot, strike, premium, option_type)`: compute the option's payoff at expiration (`max(spot - strike, 0)` for a call, `max(strike - spot, 0)` for a put), then subtract `premium` to get net profit."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: options-basics-ex2
+    difficulty: intermediate
+    concept: quant-options-basics
+    prompt: "Reusing the same payoff logic, write `is_in_the_money(spot, strike, option_type)`: return True if the option's PAYOFF (before subtracting premium) is greater than zero."
+  - id: quiz-1
+    type: quiz
+    concept: quant-options-basics
+    question: "What is the maximum possible LOSS for the BUYER of a call option?"
+    options: ["The premium paid — losses are capped at whatever the option itself cost", "Unlimited, the same as owning the stock directly", "Zero — options can never lose money for the buyer", "The strike price"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+An **option** gives its buyer the RIGHT (not obligation) to buy (a
+**call**) or sell (a **put**) a stock at a fixed **strike price**, by
+some expiration date — in exchange for paying an upfront **premium** to
+the seller.
+
+```python
+def call_payoff(spot, strike):
+    return max(spot - strike, 0)
+
+print(call_payoff(110, 100))   # 10 -- stock is 10 above strike, exercise for a 10 profit
+print(call_payoff(90, 100))     # 0 -- stock is below strike, the option expires worthless
+```
+
+A call is only exercised if the stock ends up ABOVE the strike (why pay
+100 for something worth 90 on the open market?) — below the strike, the
+buyer just lets it expire, losing only the premium already paid.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def call_payoff(spot, strike):\n    return max(spot - strike, 0)\n\ndef put_payoff(spot, strike):\n    return max(strike - spot, 0)\n\nfor spot in [80, 90, 100, 110, 120]:\n    print(spot, call_payoff(spot, 100), put_payoff(spot, 100))`} caption="A put is the mirror image of a call: it pays off when the stock falls BELOW the strike, worthless above it. Exactly one of call_payoff/put_payoff can be nonzero at once, for the same strike." />
+
+<Explanation id="profit">
+
+Payoff alone isn't profit — the buyer paid a premium upfront, which must
+be subtracted:
+
+```python
+def net_option_profit(spot, strike, premium, option_type):
+    if option_type == "call":
+        payoff = max(spot - strike, 0)
+    else:
+        payoff = max(strike - spot, 0)
+    return payoff - premium
+```
+
+This is why options are asymmetric bets: the buyer's downside is capped
+(lose at most the premium — the payoff can never go negative), but their
+upside is uncapped for a call (a stock can rise indefinitely). The
+SELLER of the option has the exact opposite risk profile: capped upside
+(collect at most the premium), uncapped downside — which is why option
+selling is generally considered the riskier side of the trade.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute an option's payoff and net profit, and understand the asymmetric risk profile that makes options fundamentally different from owning the stock directly.
+</Checkpoint>

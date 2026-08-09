@@ -1,0 +1,11 @@
+{
+  "id": "order-types-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def would_limit_buy_execute(limit_price, market_price):\n    ...\n",
+  "cases": [
+    { "call": "would_limit_buy_execute(100, 95)", "expect": "True" },
+    { "call": "would_limit_buy_execute(100, 105)", "expect": "False" },
+    { "call": "would_limit_buy_execute(50, 50)", "expect": "True" }
+  ]
+}

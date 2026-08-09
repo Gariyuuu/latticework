@@ -1,0 +1,11 @@
+{
+  "id": "greeks-intuition-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import math\nfrom statistics import NormalDist\n\ndef bs_call_price(S, K, T, r, sigma):\n    d1 = (math.log(S / K) + (r + sigma**2 / 2) * T) / (sigma * math.sqrt(T))\n    d2 = d1 - sigma * math.sqrt(T)\n    N = NormalDist().cdf\n    return S * N(d1) - K * math.exp(-r * T) * N(d2)\n\ndef delta_numerical(S, K, T, r, sigma, h=0.01):\n    ...\n",
+  "cases": [
+    { "call": "delta_numerical(100, 100, 1, 0.05, 0.2)", "expect": "0.6368" },
+    { "call": "delta_numerical(100, 110, 1, 0.05, 0.3)", "expect": "0.4996" },
+    { "call": "delta_numerical(50, 45, 0.5, 0.03, 0.25)", "expect": "0.7791" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "black-scholes-intuition-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import math\nfrom statistics import NormalDist\n\ndef black_scholes_call(S, K, T, r, sigma):\n    ...\n",
+  "cases": [
+    { "call": "black_scholes_call(100, 100, 1, 0.05, 0.2)", "expect": "10.4506" },
+    { "call": "black_scholes_call(50, 45, 0.5, 0.03, 0.25)", "expect": "6.8954" },
+    { "call": "black_scholes_call(100, 110, 1, 0.05, 0.3)", "expect": "10.0201" }
+  ]
+}

@@ -1,0 +1,88 @@
+---
+slug: asset-classes
+title: Asset Classes
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: mixing
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: asset-classes-ex1
+    difficulty: beginner
+    concept: financial-markets-asset-classes
+    prompt: "Write `simple_return(price_start, price_end)`, returning `(price_end - price_start) / price_start` rounded to 4 decimals — the basic return calculation that applies to every asset class."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: asset-classes-ex2
+    difficulty: intermediate
+    concept: financial-markets-asset-classes
+    prompt: "Write `portfolio_weighted_return(returns, weights)`, returning the weighted-average return across a mix of asset classes — a dot product of `returns` and `weights`, rounded to 4 decimals."
+  - id: quiz-1
+    type: quiz
+    concept: financial-markets-asset-classes
+    question: "What's the defining difference between 'equity' (stocks) and 'fixed income' (bonds) as asset classes?"
+    options: ["Equity represents ownership with variable, uncapped returns; fixed income represents a loan with a predetermined interest payment schedule", "Equity is always riskier than fixed income in every possible scenario", "Fixed income can only ever be issued by governments", "Equity always pays dividends; fixed income never does"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+An **asset class** is a category of investments with similar
+characteristics and risk/return behavior: **equities** (stocks —
+ownership, variable return), **fixed income** (bonds — a loan, a
+predetermined interest schedule), **cash/cash-equivalents** (near-zero
+risk, near-zero return), **real estate**, and **commodities** are the
+most common. Every asset class shares one universal calculation — the
+**return** over a period:
+
+```python
+def simple_return(price_start, price_end):
+    return (price_end - price_start) / price_start
+
+print(simple_return(100, 110))   # 0.1 -- a 10% return
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def simple_return(price_start, price_end):\n    return round((price_end - price_start) / price_start, 4)\n\nstock_return = simple_return(150, 165)\nbond_return = simple_return(100, 103)\nprint(f"Stock: {stock_return:.1%}, Bond: {bond_return:.1%}")`} caption="The formula never changes across asset classes -- what changes is the TYPICAL magnitude and volatility of the return, which is exactly what defines each asset class's risk profile." />
+
+<Explanation id="mixing">
+
+A **portfolio** mixes multiple asset classes — the whole point of
+diversification is that different asset classes don't move together, so
+a mix is less volatile than any single asset class alone. The
+portfolio's overall return is a **weighted average**, weighted by how
+much of the portfolio each asset class makes up:
+
+```python
+returns = [0.08, 0.03, 0.01]     # stocks, bonds, cash
+weights = [0.6, 0.3, 0.1]         # 60% stocks, 30% bonds, 10% cash
+portfolio_return = sum(r * w for r, w in zip(returns, weights))
+print(round(portfolio_return, 4))   # 0.058 -- 5.8%
+```
+
+This is exactly a dot product — the same computation from the Linear
+Algebra course, applied to portfolio construction instead of abstract
+vectors. That connection (portfolio math IS linear algebra) only gets
+more central as you go further into quant finance.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You know the major asset classes and can compute both a single asset's return and a portfolio's blended return across a mix of asset classes.
+</Checkpoint>

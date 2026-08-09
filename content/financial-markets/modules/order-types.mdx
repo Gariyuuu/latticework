@@ -1,0 +1,89 @@
+---
+slug: order-types
+title: Order Types
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: matching
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: order-types-ex1
+    difficulty: beginner
+    concept: financial-markets-order-types
+    prompt: "Write `would_limit_buy_execute(limit_price, market_price)`: a limit BUY order executes only if the market price is at or below the limit. Return True/False."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: order-types-ex2
+    difficulty: intermediate
+    concept: financial-markets-order-types
+    prompt: "Write `match_orders(buy_price, sell_price)`: if the buy limit is at or above the sell limit (they 'cross'), the orders match — return the execution price as their midpoint, rounded to 2 decimals. Otherwise return None."
+  - id: quiz-1
+    type: quiz
+    concept: financial-markets-order-types
+    question: "What's the key difference between a market order and a limit order?"
+    options: ["A market order executes immediately at the best available price; a limit order only executes at a specified price or better, and might not execute at all", "A limit order always executes faster than a market order", "Market orders can only buy; limit orders can only sell", "They're functionally identical, just different names"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A **market order** says "execute immediately, at whatever the current
+best price is" — guaranteed to execute (assuming any liquidity exists),
+but the exact price isn't guaranteed. A **limit order** says "only
+execute at this price or better" — a limit BUY only fills at the limit
+price or lower; a limit SELL only fills at the limit price or higher.
+Guaranteed price, but NOT guaranteed to execute at all.
+
+```python
+def would_limit_buy_execute(limit_price, market_price):
+    return market_price <= limit_price
+
+print(would_limit_buy_execute(100, 95))    # True -- market is cheaper than your limit
+print(would_limit_buy_execute(100, 105))   # False -- market is more expensive, order waits
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def would_limit_buy_execute(limit_price, market_price):\n    return market_price <= limit_price\n\ndef would_limit_sell_execute(limit_price, market_price):\n    return market_price >= limit_price\n\nprint(would_limit_buy_execute(50, 48))    # True -- buying at 48 satisfies "at most 50"\nprint(would_limit_sell_execute(50, 52))    # True -- selling at 52 satisfies "at least 50"`} caption="Buy and sell limits point in opposite directions -- a buy limit is a ceiling ('don't pay more than this'), a sell limit is a floor ('don't accept less than this')." />
+
+<Explanation id="matching">
+
+When a buy order and a sell order "cross" (the buyer's limit is at or
+above the seller's limit — they'd both be happy at some price in
+between), an exchange matches them and executes a trade:
+
+```python
+def match_orders(buy_price, sell_price):
+    if buy_price >= sell_price:
+        return (buy_price + sell_price) / 2   # simplified matching price
+    return None   # no overlap -- no trade happens
+
+print(match_orders(101, 100))   # 100.5 -- buyer will pay up to 101, seller will take 100 or more
+print(match_orders(99, 100))     # None -- buyer won't pay enough, no trade
+```
+
+Real exchanges use more nuanced matching rules (usually executing at the
+RESTING order's price, not a midpoint, and with strict time-priority
+among orders at the same price) — the midpoint here is a simplification
+to keep the core "do these orders overlap at all" logic clear.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You understand the market-vs-limit order tradeoff (guaranteed execution vs. guaranteed price), and can determine when a buy and sell order would match.
+</Checkpoint>

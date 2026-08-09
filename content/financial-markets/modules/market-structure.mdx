@@ -1,0 +1,90 @@
+---
+slug: market-structure
+title: Market Structure
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: vwap
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: market-structure-ex1
+    difficulty: beginner
+    concept: financial-markets-structure
+    prompt: "Write `bid_ask_spread(bid, ask)`, returning `ask - bid` rounded to 4 decimals."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: market-structure-ex2
+    difficulty: intermediate
+    concept: financial-markets-structure
+    prompt: "Write `vwap(prices, volumes)` — the Volume-Weighted Average Price: `sum(price * volume) / sum(volumes)`, rounded to 4 decimals."
+  - id: quiz-1
+    type: quiz
+    concept: financial-markets-structure
+    question: "Why is a narrow bid-ask spread generally seen as a sign of a liquid, well-functioning market?"
+    options: ["It means buyers and sellers agree closely on price and can trade cheaply and immediately; a wide spread signals less trading activity and higher cost to transact right away", "A wider spread always means higher trading volume", "Spread has no real relationship to liquidity", "Spread only matters for bonds, never for stocks"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+At any moment, a market has a **bid** (the highest price a buyer is
+currently willing to pay) and an **ask** (the lowest price a seller is
+currently willing to accept). The gap between them — the **bid-ask
+spread** — is effectively the cost of trading immediately (via a market
+order) rather than waiting for a better price:
+
+```python
+def bid_ask_spread(bid, ask):
+    return ask - bid
+
+print(bid_ask_spread(99.98, 100.02))   # 0.04 -- a tight, liquid spread
+```
+
+A narrow spread means the market is **liquid** — lots of buyers and
+sellers actively trading, closely agreeing on price. A wide spread
+signals thin trading and higher cost to transact right now.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def bid_ask_spread(bid, ask):\n    return round(ask - bid, 4)\n\n# a liquid, large-cap stock\nprint(bid_ask_spread(150.20, 150.22))   # 0.02 -- tight\n\n# a thinly-traded small-cap stock\nprint(bid_ask_spread(12.50, 13.10))      # 0.60 -- wide, costly to trade immediately`} caption="The same absolute spread (a few cents) means very different things on a $12 stock vs. a $150 stock -- in practice spread is often compared as a PERCENTAGE of price, not an absolute dollar amount." />
+
+<Explanation id="vwap">
+
+**VWAP** (Volume-Weighted Average Price) is the average price a security
+traded at over some period, weighted by how much volume traded at each
+price — a large trade at one price counts more than a tiny trade at
+another:
+
+```python
+def vwap(prices, volumes):
+    return sum(p * v for p, v in zip(prices, volumes)) / sum(volumes)
+
+# three trades during the day: at 100 (10 shares), 101 (20 shares), 99 (10 shares)
+print(round(vwap([100, 101, 99], [10, 20, 10]), 2))   # 100.25
+```
+
+VWAP is both a benchmark (fund managers are often evaluated against
+"did you trade better or worse than VWAP?") and a trading strategy in
+its own right (large orders get algorithmically split up to trade AT
+roughly the VWAP, to avoid moving the price against yourself).
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute bid-ask spread as a liquidity signal, and VWAP as a volume-weighted price benchmark.
+</Checkpoint>

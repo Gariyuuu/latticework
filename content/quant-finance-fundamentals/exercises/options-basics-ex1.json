@@ -1,0 +1,11 @@
+{
+  "id": "options-basics-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def net_option_profit(spot, strike, premium, option_type):\n    ...\n",
+  "cases": [
+    { "call": "net_option_profit(110, 100, 5, 'call')", "expect": "5" },
+    { "call": "net_option_profit(90, 100, 5, 'call')", "expect": "-5" },
+    { "call": "net_option_profit(90, 100, 3, 'put')", "expect": "7" }
+  ]
+}
