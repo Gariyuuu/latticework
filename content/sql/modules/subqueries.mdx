@@ -1,0 +1,88 @@
+---
+slug: subqueries
+title: Subqueries
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: sql
+  - id: correlated
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: sql-query
+    testCasesId: subqueries-ex1
+    difficulty: beginner
+    concept: sql-subqueries
+    prompt: "The `employees` table has columns `id, name, department, salary`. Write a query that returns the `name` and `salary` of employees earning more than the company-wide average salary, ordered by salary descending. Use a subquery to compute the average — don't hardcode it."
+  - id: exercise-2
+    type: exercise
+    exerciseType: sql-query
+    testCasesId: subqueries-ex2
+    difficulty: intermediate
+    concept: sql-subqueries
+    prompt: "Write a query that returns the `name` of every employee who is the highest earner in their OWN department, ordered by name. Use a correlated subquery."
+  - id: quiz-1
+    type: quiz
+    concept: sql-subqueries
+    question: "What makes a subquery 'correlated'?"
+    options: ["It references a column from the outer query, so conceptually it re-evaluates for each outer row", "It must always return exactly one row", "It appears inside a WHERE clause", "It joins two or more tables together"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A subquery is a `SELECT` nested inside another query — useful whenever a
+filter depends on an aggregate computed over the WHOLE table, something
+`WHERE` can't do directly (recall from the last module: `WHERE` can't see
+aggregates, only `HAVING` can, and `HAVING` only works after `GROUP BY`).
+
+```sql
+SELECT name, salary
+FROM employees
+WHERE salary > (SELECT AVG(salary) FROM employees);
+```
+
+The subquery `(SELECT AVG(salary) FROM employees)` runs once, produces a
+single number, and the outer query compares every row's salary against
+it — this is called a **scalar subquery** since it returns exactly one
+value.
+
+</Explanation>
+
+<CodeExample id="try-it" language="sql" code={`CREATE TABLE employees (id INTEGER, name TEXT, department TEXT, salary INTEGER);\nINSERT INTO employees VALUES\n  (1, 'Ada', 'Engineering', 145000),\n  (2, 'Grace', 'Engineering', 152000),\n  (3, 'Ken', 'Sales', 98000);\n\nSELECT name FROM employees\nWHERE department IN (SELECT department FROM employees WHERE salary > 140000);`} caption="A subquery can also return multiple rows — combine it with IN instead of = to check membership against the whole result set." />
+
+<Explanation id="correlated">
+
+A **correlated subquery** references a column from the OUTER query, so it
+conceptually runs once per outer row instead of once total:
+
+```sql
+SELECT name
+FROM employees e1
+WHERE salary = (
+  SELECT MAX(salary) FROM employees e2
+  WHERE e2.department = e1.department   -- references the outer row's department
+);
+```
+
+Here, `e1` (the outer query's alias) and `e2` (the subquery's own alias)
+both refer to the same `employees` table — aliasing lets you distinguish
+"the row I'm currently checking" from "every row in this department" even
+though it's the same table on both sides.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can write a scalar subquery to filter against an aggregate, and a correlated subquery to compare each row against a value computed relative to that row.
+</Checkpoint>

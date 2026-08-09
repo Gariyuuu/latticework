@@ -40,17 +40,17 @@
     {
       "slug": "subqueries",
       "title": "Subqueries",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "ctes",
       "title": "CTEs",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "window-functions",
       "title": "Window Functions",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "indexes-query-plans",
@@ -70,7 +70,7 @@
     {
       "slug": "interview-patterns",
       "title": "Interview Patterns",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

@@ -1,0 +1,96 @@
+---
+slug: interview-patterns
+title: Interview Patterns
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: sql
+  - id: patterns
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: sql-query
+    testCasesId: interview-patterns-ex1
+    difficulty: intermediate
+    concept: sql-interview-patterns
+    prompt: "Classic interview question: write a query that returns the `name` and `salary` of the employee with the SECOND-highest salary company-wide. Return just that one row."
+  - id: exercise-2
+    type: exercise
+    exerciseType: sql-query
+    testCasesId: interview-patterns-ex2
+    difficulty: intermediate
+    concept: sql-interview-patterns
+    prompt: "Write a query that returns the single `department` with the highest total payroll (sum of salaries), along with that total as `total_payroll`. Return just that one row."
+  - id: quiz-1
+    type: quiz
+    concept: sql-interview-patterns
+    question: "Why is `SELECT ... ORDER BY salary DESC LIMIT 1 OFFSET 1` a more robust way to find the 'second-highest salary' than `MAX(salary) WHERE salary != (SELECT MAX(salary) ...)`?"
+    options: ["The MAX/!= approach silently gives the wrong answer if the actual highest salary is tied between two or more employees", "LIMIT/OFFSET is always faster on every database", "The MAX approach doesn't work in SQLite specifically", "There's no real difference between the two"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+SQL interview questions rarely test obscure syntax — they test whether
+you reach for the right *pattern* under time pressure. A few show up
+constantly enough to be worth recognizing on sight, combining tools you
+already have from this course.
+
+**"Nth highest value"** — sort, then skip:
+
+```sql
+SELECT name, salary FROM employees
+ORDER BY salary DESC
+LIMIT 1 OFFSET 1;   -- skip the top 1, take the next 1 = 2nd highest
+```
+
+`LIMIT n OFFSET m` means "skip the first `m` rows of the (ordered)
+result, then take the next `n`." For the 3rd-highest, you'd use `OFFSET
+2`, and so on.
+
+</Explanation>
+
+<CodeExample id="try-it" language="sql" code={`CREATE TABLE employees (id INTEGER, name TEXT, department TEXT, salary INTEGER);\nINSERT INTO employees VALUES\n  (1, 'Ada', 'Engineering', 145000),\n  (2, 'Grace', 'Engineering', 152000),\n  (3, 'Ken', 'Sales', 98000);\n\n-- \"Which department has the most employees?\"\nSELECT department, COUNT(*) AS n\nFROM employees\nGROUP BY department\nORDER BY n DESC\nLIMIT 1;`} caption="'Group, aggregate, sort, take the top one' is the single most common interview pattern — it answers almost any 'which X has the most/highest/fewest Y' question." />
+
+<Explanation id="patterns">
+
+A couple more patterns worth having ready:
+
+**"Find duplicates"** — group by the value, keep groups with count > 1:
+
+```sql
+SELECT department FROM employees
+GROUP BY department
+HAVING COUNT(*) > 1;
+```
+
+**"Rows in A but not in B"** — a `LEFT JOIN` where the right side didn't
+match:
+
+```sql
+SELECT employees.name
+FROM employees
+LEFT JOIN departments ON employees.department_id = departments.id
+WHERE departments.id IS NULL;   -- no matching department row
+```
+
+Under real interview time pressure, these patterns are worth recognizing
+by shape ("this is a top-N question," "this is a duplicates question")
+rather than re-deriving the SQL from scratch each time.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You recognize the top-N (ORDER BY + LIMIT/OFFSET) and group-and-aggregate-then-sort patterns that cover a large fraction of real SQL interview questions.
+</Checkpoint>

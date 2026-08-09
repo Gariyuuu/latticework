@@ -152,13 +152,24 @@ same change as any feature work.
   OLS regression implemented from the slope/intercept formulas directly,
   no scipy needed)
 - Fully built: SQL (3/10 modules — select-where, group-by-aggregates,
-  joins) — **In Progress**. Runs against a real in-browser SQLite (sql.js)
-  seeded per-exercise via `setupSql`; every reference query verified
-  against the real `sql.js` npm package before being committed (see
-  note below). Remaining 7 modules (subqueries, ctes, window-functions,
-  indexes-query-plans, schema-design, transactions-isolation,
-  interview-patterns) are metadata-planned, not yet authored — no
-  further infra blocker, same sql-query exercise type covers all of them.
+  joins, subqueries, ctes, window-functions, interview-patterns) —
+  **In Progress**. Runs against a real in-browser SQLite (sql.js) seeded
+  per-exercise via `setupSql`; every reference query verified against
+  the real `sql.js` npm package before being committed (see note below;
+  window-functions specifically needed one extra check — confirming
+  sql.js's bundled SQLite build actually includes window-function
+  support at all, since some minimal WASM SQLite builds compile without
+  it. It does.). Remaining 3 modules (indexes-query-plans,
+  schema-design, transactions-isolation) are metadata-planned but
+  **don't fit the current sql-query exercise shape** — that exercise
+  type grades "does your SELECT return these exact rows," and none of
+  these three topics are fundamentally about a SELECT's row output:
+  indexes/query-plans is about `EXPLAIN QUERY PLAN` text, schema-design
+  is about DDL/normalization choices, transactions-isolation needs real
+  concurrent access that a single embedded per-attempt sql.js instance
+  can't simulate. Each would need its own exercise type (or at minimum
+  a different grading mode) — not written as a stopgap sql-query
+  exercise that wouldn't actually test the concept.
 - Git, Linux, PyTorch, C++ — **Planned** (metadata skeletons done as part
   of the wider ~70-90 skill catalog; module content not yet authored).
   Git/Linux need the CLI-simulation exercise type, which isn't

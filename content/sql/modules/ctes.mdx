@@ -1,0 +1,89 @@
+---
+slug: ctes
+title: CTEs
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: sql
+  - id: reuse
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: sql-query
+    testCasesId: ctes-ex1
+    difficulty: beginner
+    concept: sql-ctes
+    prompt: "The `employees` table has columns `id, name, department, salary`. Using a CTE named `dept_avg`, write a query that returns each `department` and its average salary as `avg_salary`, ordered by avg_salary descending."
+  - id: exercise-2
+    type: exercise
+    exerciseType: sql-query
+    testCasesId: ctes-ex2
+    difficulty: intermediate
+    concept: sql-ctes
+    prompt: "Using a CTE, write a query that returns the `name` of every employee who earns MORE than their own department's average salary, ordered by name."
+  - id: quiz-1
+    type: quiz
+    concept: sql-ctes
+    question: "What's the main readability benefit of a CTE (WITH clause) over an equivalent nested subquery?"
+    options: ["It names the intermediate result and can be referenced multiple times, so the query reads top-to-bottom instead of inside-out", "It's the only way to filter on an aggregate", "CTEs are guaranteed to execute faster than subqueries", "CTEs remove the need for JOIN entirely"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A **CTE** (Common Table Expression) — the `WITH` clause — names a
+subquery's result so you can reference it like a table for the rest of
+the query. It's the same computation a subquery does, written so it reads
+top-to-bottom instead of inside-out.
+
+```sql
+WITH dept_avg AS (
+  SELECT department, AVG(salary) AS avg_salary
+  FROM employees
+  GROUP BY department
+)
+SELECT * FROM dept_avg ORDER BY avg_salary DESC;
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="sql" code={`CREATE TABLE employees (id INTEGER, name TEXT, department TEXT, salary INTEGER);\nINSERT INTO employees VALUES\n  (1, 'Ada', 'Engineering', 145000),\n  (2, 'Grace', 'Engineering', 152000),\n  (3, 'Ken', 'Sales', 98000);\n\nWITH high_earners AS (\n  SELECT * FROM employees WHERE salary > 100000\n)\nSELECT department, COUNT(*) FROM high_earners GROUP BY department;`} caption="Once defined, a CTE behaves like any other table for the rest of the statement — you can filter it, group it, or join it to other tables." />
+
+<Explanation id="reuse">
+
+The real advantage over a subquery shows up once you need the SAME
+intermediate result more than once, or want to `JOIN` back against the
+original table:
+
+```sql
+WITH dept_avg AS (
+  SELECT department, AVG(salary) AS avg_salary
+  FROM employees
+  GROUP BY department
+)
+SELECT e.name
+FROM employees e
+JOIN dept_avg d ON e.department = d.department
+WHERE e.salary > d.avg_salary;
+```
+
+Written as a nested subquery instead, this same logic would need the
+`AVG(salary)` computation repeated or awkwardly duplicated — the CTE lets
+you compute it once, name it, and join against it directly.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can define a CTE with WITH and reference it like a table, including joining it back against the original data.
+</Checkpoint>

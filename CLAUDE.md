@@ -105,12 +105,18 @@ on a missing env var without surfacing that clearly in the UI — see
 
 - Python (14/14 modules — done), Data Structures (7/7), Algorithms (6/6),
   NumPy (5/5), Pandas (6/6), Probability (4/4), Statistics (4/4), and SQL
-  (3/10 — select-where, group-by-aggregates, joins) have real lesson
-  content; the rest of the technology catalog is metadata-only (by
-  design — see `docs/COURSE_CONTENT_SPEC.md`). SQL's remaining 7 modules
-  have no infra blocker left (same sql-query exercise type covers all of
-  them) — Git/Linux need the CLI-simulation exercise type, PyTorch/C++
-  need their own sandbox/package infra.
+  (7/10 — select-where, group-by-aggregates, joins, subqueries, ctes,
+  window-functions, interview-patterns) have real lesson content; the
+  rest of the technology catalog is metadata-only (by design — see
+  `docs/COURSE_CONTENT_SPEC.md`). SQL's last 3 modules
+  (indexes-query-plans, schema-design, transactions-isolation) don't fit
+  the sql-query exercise type's "does your SELECT return these rows"
+  grading model at all — each is fundamentally about something else
+  (EXPLAIN QUERY PLAN text, DDL/normalization, real concurrency) and
+  needs its own exercise type, not a forced-fit sql-query exercise — see
+  ROADMAP.md "Content coverage" for the full reasoning. Git/Linux need
+  the CLI-simulation exercise type, PyTorch/C++ need their own
+  sandbox/package infra.
 - SQL exercises (`sql-query` type): `setupSql` seeds a fresh sql.js
   database per exercise, grading deep-compares the student's query's last
   result set against `expectedColumns`/`expectedRows` — exact row order,

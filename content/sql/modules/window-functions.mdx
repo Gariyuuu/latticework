@@ -1,0 +1,85 @@
+---
+slug: window-functions
+title: Window Functions
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: sql
+  - id: running-total
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: sql-query
+    testCasesId: window-functions-ex1
+    difficulty: beginner
+    concept: sql-window-functions
+    prompt: "The `employees` table has columns `id, name, department, salary`. Write a query using `RANK()` to rank employees by salary WITHIN their department (highest salary = rank 1). Return `name`, `department`, `salary`, and the rank as `dept_rank`, ordered by department then dept_rank."
+  - id: exercise-2
+    type: exercise
+    exerciseType: sql-query
+    testCasesId: window-functions-ex2
+    difficulty: intermediate
+    concept: sql-window-functions
+    prompt: "Write a query that returns `name`, `department`, `salary`, and a running total of salaries WITHIN each department (ordered by employee id) as `running_total`. Order the final result by department, then id."
+  - id: quiz-1
+    type: quiz
+    concept: sql-window-functions
+    question: "What does PARTITION BY do inside a window function's OVER(...)?"
+    options: ["Divides rows into groups the window function is computed independently within, WITHOUT collapsing rows the way GROUP BY does", "It's just a synonym for GROUP BY", "It sorts the entire result set", "It removes NULL values from consideration"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A `GROUP BY` query collapses many rows into one row per group — you lose
+the individual rows. A **window function** computes something across a
+group of related rows too, but keeps every original row intact,
+attaching the computed value as an extra column.
+
+```sql
+SELECT name, department, salary,
+       RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS dept_rank
+FROM employees;
+```
+
+`PARTITION BY department` says "compute this independently within each
+department" (like `GROUP BY`, but without collapsing rows). `ORDER BY
+salary DESC` says "rank within that partition, highest salary first."
+
+</Explanation>
+
+<CodeExample id="try-it" language="sql" code={`CREATE TABLE employees (id INTEGER, name TEXT, department TEXT, salary INTEGER);\nINSERT INTO employees VALUES\n  (1, 'Ada', 'Engineering', 145000),\n  (2, 'Grace', 'Engineering', 152000),\n  (3, 'Ken', 'Sales', 98000);\n\nSELECT name, salary, ROW_NUMBER() OVER (ORDER BY salary DESC) AS overall_rank\nFROM employees;`} caption="ROW_NUMBER() OVER (ORDER BY ...) with no PARTITION BY ranks across the whole table — that's the 'who's #1 overall' pattern. RANK() differs from ROW_NUMBER() only when there are ties: RANK() gives tied rows the same rank and skips the next number; ROW_NUMBER() never ties." />
+
+<Explanation id="running-total">
+
+Aggregate functions (`SUM`, `AVG`, `COUNT`...) work as window functions
+too — combined with `ORDER BY` inside `OVER(...)`, `SUM` becomes a
+**running total** instead of one final number, since each row only sees
+the rows up to and including itself in that ordering:
+
+```sql
+SELECT name, salary,
+       SUM(salary) OVER (ORDER BY id) AS running_total
+FROM employees;
+```
+
+Add `PARTITION BY` and the running total resets per group — "running
+total of salary within each department, in employee-id order" is exactly
+what the next exercise asks for.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can rank rows within groups using RANK()/ROW_NUMBER() and compute running totals with SUM() OVER(...), both without collapsing the original rows.
+</Checkpoint>

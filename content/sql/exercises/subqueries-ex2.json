@@ -1,0 +1,13 @@
+{
+  "id": "subqueries-ex2",
+  "type": "sql-query",
+  "language": "sql",
+  "starterCode": "-- employees(id, name, department, salary)\nSELECT\n",
+  "setupSql": "CREATE TABLE employees (id INTEGER, name TEXT, department TEXT, salary INTEGER);\nINSERT INTO employees (id, name, department, salary) VALUES\n  (1, 'Ada', 'Engineering', 145000),\n  (2, 'Grace', 'Engineering', 152000),\n  (3, 'Ken', 'Sales', 98000),\n  (4, 'Lin', 'Sales', 104000),\n  (5, 'Omar', 'Marketing', 87000),\n  (6, 'Priya', 'Sales', 111000);",
+  "expectedColumns": ["name"],
+  "expectedRows": [
+    ["Grace"],
+    ["Omar"],
+    ["Priya"]
+  ]
+}
