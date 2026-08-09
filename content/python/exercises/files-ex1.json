@@ -1,0 +1,11 @@
+{
+  "id": "files-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def write_and_read(path, text):\n    ...\n",
+  "cases": [
+    { "call": "write_and_read('a.txt', 'hello')", "expect": "hello" },
+    { "call": "write_and_read('b.txt', '')", "expect": "" },
+    { "call": "write_and_read('c.txt', 'line1\\nline2')", "expect": "line1\nline2" }
+  ]
+}

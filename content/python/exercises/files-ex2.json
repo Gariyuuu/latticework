@@ -1,0 +1,11 @@
+{
+  "id": "files-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def append_lines(path, lines):\n    ...\n",
+  "cases": [
+    { "call": "append_lines('x.txt', ['a', 'b', 'c'])", "expect": "a\nb\nc\n" },
+    { "call": "append_lines('y.txt', [])", "expect": "" },
+    { "call": "append_lines('z.txt', ['only'])", "expect": "only\n" }
+  ]
+}

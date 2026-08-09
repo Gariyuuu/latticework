@@ -81,7 +81,7 @@ export const lessonFrontmatterSchema = z.object({
 export type LessonFrontmatter = z.infer<typeof lessonFrontmatterSchema>;
 export type BlockFrontmatter = z.infer<typeof blockFrontmatterSchema>;
 
-export const testCaseFileSchema = z.object({
+export const writeCodeTestCaseFileSchema = z.object({
   id: z.string(),
   type: z.literal("write-code"),
   language: z.string(),
@@ -98,6 +98,30 @@ export const testCaseFileSchema = z.object({
   ),
 });
 
+/** A SQL exercise runs `setupSql` once (schema + seed data) against a fresh
+ * sql.js database, then runs the student's query and compares the LAST
+ * result set's columns/rows against expectedColumns/expectedRows — exact
+ * order, so every reference query must end in ORDER BY for determinism
+ * (see docs/COURSE_CONTENT_SPEC.md). Rows are arrays, not objects, to avoid
+ * a JS key-ordering footgun and to mirror what sql.js's db.exec() itself
+ * returns. */
+export const sqlQueryTestCaseFileSchema = z.object({
+  id: z.string(),
+  type: z.literal("sql-query"),
+  language: z.literal("sql"),
+  starterCode: z.string(),
+  setupSql: z.string(),
+  expectedColumns: z.array(z.string()),
+  expectedRows: z.array(z.array(z.union([z.string(), z.number(), z.null()]))),
+});
+
+export const testCaseFileSchema = z.discriminatedUnion("type", [
+  writeCodeTestCaseFileSchema,
+  sqlQueryTestCaseFileSchema,
+]);
+
+export type WriteCodeTestCaseFile = z.infer<typeof writeCodeTestCaseFileSchema>;
+export type SqlQueryTestCaseFile = z.infer<typeof sqlQueryTestCaseFileSchema>;
 export type TestCaseFile = z.infer<typeof testCaseFileSchema>;
 
 /** Stable, deterministic exercise slug — computed identically at content-sync

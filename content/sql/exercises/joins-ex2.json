@@ -1,0 +1,17 @@
+{
+  "id": "joins-ex2",
+  "type": "sql-query",
+  "language": "sql",
+  "starterCode": "-- departments(id, name)\n-- employees(id, name, department_id)\nSELECT\n",
+  "setupSql": "CREATE TABLE departments (id INTEGER, name TEXT);\nINSERT INTO departments (id, name) VALUES (1,'Engineering'),(2,'Sales'),(3,'Marketing');\nCREATE TABLE employees (id INTEGER, name TEXT, department_id INTEGER);\nINSERT INTO employees (id, name, department_id) VALUES\n  (1,'Ada',1),(2,'Grace',1),(3,'Ken',2),(4,'Lin',2),(5,'Omar',3),(6,'Priya',2),(7,'Sam',NULL);",
+  "expectedColumns": ["name", "department_name"],
+  "expectedRows": [
+    ["Ada", "Engineering"],
+    ["Grace", "Engineering"],
+    ["Ken", "Sales"],
+    ["Lin", "Sales"],
+    ["Omar", "Marketing"],
+    ["Priya", "Sales"],
+    ["Sam", null]
+  ]
+}

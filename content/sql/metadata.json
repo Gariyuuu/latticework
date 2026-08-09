@@ -19,22 +19,23 @@
     "quant-researcher",
     "quant-trader"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "The query language behind almost every backend, data, and analytics role — run directly against a real in-browser SQLite database via sql.js.",
   "modules": [
     {
       "slug": "select-where",
       "title": "SELECT & WHERE",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "group-by-aggregates",
       "title": "GROUP BY & Aggregates",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "joins",
       "title": "JOINs",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "subqueries",

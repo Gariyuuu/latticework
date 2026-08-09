@@ -15,7 +15,8 @@ same change as any feature work.
   Marketplace (`vercel integration add neon|clerk`) and connected to the
   project — all env vars live in Production/Preview/Development. DB
   schema pushed (`npm run db:push`) and content seeded
-  (`npm run content:sync` against the live DB — 99 skills, 7 built).
+  (`npm run content:sync` against the live DB — 99 skills, 8 built;
+  re-run after any content change and redeploy, both steps are manual).
   Clerk is currently a **development-mode** instance (free marketplace
   default) — fine for now, but note this if real user signups/production
   auth guarantees are ever needed; upgrading is a Clerk dashboard step,
@@ -44,13 +45,19 @@ same change as any feature work.
 
 ## Learning engine
 - Lesson rendering (Explanation/CodeExample/Exercise/Quiz/Checkpoint) — **Done**
-- Exercise validation (write-code via sandbox test cases, multiple-choice) — **Done**
-- XP ledger + level derivation — **Done**
-- Mastery/skill-rating engine (weighted formula from LEARNING_ENGINE.md) — **Done**
+- Exercise validation (write-code via sandbox test cases, multiple-choice,
+  **sql-query**) — **Done**. sql-query exercises define `setupSql` +
+  `expectedColumns`/`expectedRows` (row order matters — every reference
+  query ends in `ORDER BY` for determinism) in a discriminated-union test
+  case schema (`writeCodeTestCaseFileSchema` |
+  `sqlQueryTestCaseFileSchema` in `src/lib/content/schema.ts`); grading
+  runs the student's query against a fresh sql.js database seeded from
+  `setupSql` and deep-compares the last result set. See
+  `src/components/lesson/exercise.tsx`.
 - Fill-blank, fix-bug, predict-output, code-ordering, refactor, performance,
   CLI-simulation, git-simulation exercise *types* — **Planned** (schema
-  supports arbitrary `exerciseType`; only write-code + multiple-choice have
-  UI + validators implemented)
+  supports arbitrary `exerciseType`; only write-code + multiple-choice +
+  sql-query have UI + validators implemented)
 
 ## Code engine
 - Monaco editor (lazy-loaded) — **Done**
@@ -64,7 +71,14 @@ same change as any feature work.
   running the real `pyodide` npm package — same version as the CDN build,
   0.26.4 — in Node against every NumPy exercise and CodeExample before
   writing content, not just assumed from docs.)
-- sql.js (SQL) provider — **Planned**
+- sql.js (SQL) provider — **Done** (`src/lib/sandbox/providers/sql-provider.ts`,
+  sql-wasm.js 1.10.3 from CDN, same lazy-load-on-first-use pattern as
+  Pyodide. `RunOptions.setupSql` runs once against a fresh in-memory
+  database before the student's query. Verified end-to-end against the
+  real `sql.js` npm package in Node — including the zero-row-result edge
+  case, where `db.exec()` returns `[]` entirely rather than one
+  empty-values result set — before writing any SQL content or grading
+  logic around it.)
 - JS/TS sandboxed Worker provider — **Planned**
 - Server-side sandbox for compiled languages (C++/Java/Go/Rust/…) — **Blocked**
   (requires a container/E2B/Judge0-style provider decision + credentials;
@@ -118,9 +132,7 @@ same change as any feature work.
 - Admin content system (§69) — **Planned**
 
 ## Content coverage
-- Fully built (real lessons + exercises): Python (13/14 modules — every
-  module except `files`) — **Done** except `files`, which is deliberately
-  deferred (see note below), not forgotten
+- Fully built (real lessons + exercises): Python (14/14 modules) — **Done**
 - Fully built: Data Structures (7/7 modules — arrays-lists, stacks-queues,
   hash-tables, trees-bsts, heaps, graphs, tries) — **Done**
 - Fully built: Algorithms (6/6 modules — sorting, searching, recursion,
@@ -139,23 +151,47 @@ same change as any feature work.
   t-distribution, since Python's stdlib has no t-distribution CDF/PPF;
   OLS regression implemented from the slope/intercept formulas directly,
   no scipy needed)
-- SQL, Git, Linux, PyTorch, C++ — **Planned** (metadata skeletons done as
-  part of the wider ~70-90 skill catalog; module content not yet
-  authored). SQL specifically also needs the sql.js sandbox provider
-  (see "Code engine" above) before its exercises can execute — Git/Linux
-  need the CLI-simulation exercise type, which isn't implemented yet
-  either (see "Learning engine" above).
-- Remaining ~51-71 technologies from the brief — **Done** as metadata-only
+- Fully built: SQL (3/10 modules — select-where, group-by-aggregates,
+  joins) — **In Progress**. Runs against a real in-browser SQLite (sql.js)
+  seeded per-exercise via `setupSql`; every reference query verified
+  against the real `sql.js` npm package before being committed (see
+  note below). Remaining 7 modules (subqueries, ctes, window-functions,
+  indexes-query-plans, schema-design, transactions-isolation,
+  interview-patterns) are metadata-planned, not yet authored — no
+  further infra blocker, same sql-query exercise type covers all of them.
+- Git, Linux, PyTorch, C++ — **Planned** (metadata skeletons done as part
+  of the wider ~70-90 skill catalog; module content not yet authored).
+  Git/Linux need the CLI-simulation exercise type, which isn't
+  implemented yet (see "Learning engine" above); PyTorch/C++ need their
+  own execution infra decisions.
+- Remaining ~48-68 technologies from the brief — **Done** as metadata-only
   skeletons (appear correctly in graph/Explore/roadmap, no lesson content)
 
-`python/modules/files.mdx` is the one remaining Python module not built.
-It was originally deferred because file I/O exercises depend on Pyodide's
-virtual filesystem behaving as documented, which seemed unverifiable
-without a real browser. That blocker no longer fully applies: the
-`pyodide` npm package (same version as the CDN build) can run headless in
-Node and was used to verify every NumPy exercise below — the same
-technique could verify `files.mdx` too. It's just not built yet, not
-still blocked.
+`python/modules/files.mdx` (file I/O) was originally deferred because it
+depends on Pyodide's virtual filesystem behaving as documented, which
+seemed unverifiable without a real browser — that blocker turned out not
+to hold: the `pyodide` npm package (same version as the CDN build) runs
+headless in Node and verified `write_and_read`/`append_lines` exactly as
+designed (`with open(path, "w")` etc. behave identically to desktop
+CPython for basic read/write/append against Pyodide's in-memory FS). Now
+built, closing Python to 14/14.
+
+**sql.js provider, built this session:** added `SqlProvider`
+(`src/lib/sandbox/providers/sql-provider.ts`, sql-wasm.js from CDN,
+same lazy-load pattern as Pyodide), a `sql-query` branch in the `Exercise`
+component (grades by running the student's query against a fresh
+database seeded from `setupSql`, then deep-comparing the last result
+set's columns/rows against `expectedColumns`/`expectedRows`), and a
+discriminated-union test-case schema (`write-code` | `sql-query`) in
+`src/lib/content/schema.ts`. Every reference query for all 6 exercises
+was run against the real `sql.js` 1.10.3 npm package in Node first — this
+caught the zero-row-result edge case (`db.exec()` returns `[]` entirely,
+not one result set with empty `values`, when a query matches zero rows)
+before it could become a grading bug. Row order matters for exact-match
+grading, so every reference query ends in `ORDER BY`; ties are avoided by
+choosing seed data with no duplicate sort keys (see the sales-department
+employee count in `group-by-aggregates-ex2` — deliberately 3 vs 2, not
+2 vs 2, to avoid needing a secondary sort key).
 
 NumPy was built by first adding `packages` support to
 `RunOptions`/`PyodideProvider`/the exercise schema (`content:sync` alone

@@ -27,7 +27,7 @@
     { "slug": "conditionals", "title": "Conditionals", "status": "built" },
     { "slug": "collections", "title": "Collections", "status": "built" },
     { "slug": "classes", "title": "Classes", "status": "built" },
-    { "slug": "files", "title": "Files", "status": "planned" },
+    { "slug": "files", "title": "Files", "status": "built" },
     { "slug": "exceptions", "title": "Exceptions", "status": "built" },
     { "slug": "comprehensions", "title": "Comprehensions", "status": "built" },
     { "slug": "iterators", "title": "Iterators & Generators", "status": "built" },

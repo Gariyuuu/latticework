@@ -183,13 +183,25 @@ async function main() {
             .returning({ id: exercises.id });
 
           await db.delete(testCases).where(eq(testCases.exerciseId, exerciseRow.id));
-          for (let c = 0; c < testCaseFile.cases.length; c++) {
+          if (testCaseFile.type === "sql-query") {
+            // DB mirror only — actual grading reads the JSON file client-side
+            // (see content/COURSE_CONTENT_SPEC.md). setupSql/expected rows
+            // don't fit the write-code call/expect shape, so pack them in.
             await db.insert(testCases).values({
               exerciseId: exerciseRow.id,
-              call: testCaseFile.cases[c].call,
-              expect: testCaseFile.cases[c].expect,
-              order: c,
+              call: testCaseFile.setupSql,
+              expect: JSON.stringify({ columns: testCaseFile.expectedColumns, rows: testCaseFile.expectedRows }),
+              order: 0,
             });
+          } else {
+            for (let c = 0; c < testCaseFile.cases.length; c++) {
+              await db.insert(testCases).values({
+                exerciseId: exerciseRow.id,
+                call: testCaseFile.cases[c].call,
+                expect: testCaseFile.cases[c].expect,
+                order: c,
+              });
+            }
           }
         }
 

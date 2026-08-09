@@ -103,15 +103,25 @@ on a missing env var without surfacing that clearly in the UI — see
 
 ## Known limitations (see ROADMAP.md for the full, current list)
 
-- Python (13/14 modules — done except `files`, deliberately deferred),
-  Data Structures (7/7), Algorithms (6/6), NumPy (5/5), Pandas (6/6),
-  Probability (4/4), and Statistics (4/4) have real lesson content; the
-  rest of the technology catalog is metadata-only (by design — see
-  `docs/COURSE_CONTENT_SPEC.md`). SQL/Git/Linux/PyTorch/C++ are next in
-  line — SQL needs the sql.js provider, Git/Linux need the
-  CLI-simulation exercise type, PyTorch/C++ need their own sandbox or
-  package work. `files` is unblocked (verifiable via the pyodide-in-Node
-  technique below), just not built yet.
+- Python (14/14 modules — done), Data Structures (7/7), Algorithms (6/6),
+  NumPy (5/5), Pandas (6/6), Probability (4/4), Statistics (4/4), and SQL
+  (3/10 — select-where, group-by-aggregates, joins) have real lesson
+  content; the rest of the technology catalog is metadata-only (by
+  design — see `docs/COURSE_CONTENT_SPEC.md`). SQL's remaining 7 modules
+  have no infra blocker left (same sql-query exercise type covers all of
+  them) — Git/Linux need the CLI-simulation exercise type, PyTorch/C++
+  need their own sandbox/package infra.
+- SQL exercises (`sql-query` type): `setupSql` seeds a fresh sql.js
+  database per exercise, grading deep-compares the student's query's last
+  result set against `expectedColumns`/`expectedRows` — exact row order,
+  so every reference query needs `ORDER BY` with no tied sort keys (pick
+  seed data that avoids ties, don't rely on a secondary sort you didn't
+  write). See `src/lib/sandbox/providers/sql-provider.ts` and the
+  `sql-query` branch in `src/components/lesson/exercise.tsx`. Verify any
+  new SQL exercise by running the real `sql.js` npm package in Node
+  first — `db.exec()` returns `[]` (not one empty-values result set) when
+  a query matches zero rows, a real edge case that bit the grading logic
+  design before content was written.
 - Pyodide package-loading: `RunOptions.packages` /
   `PyodideProvider.run()` / `testCaseFileSchema.packages` /
   `<CodeExample packages={[...]}>` — declare Pyodide package names an

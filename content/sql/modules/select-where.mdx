@@ -1,0 +1,84 @@
+---
+slug: select-where
+title: SELECT & WHERE
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: sql
+  - id: operators
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: sql-query
+    testCasesId: select-where-ex1
+    difficulty: beginner
+    concept: sql-select-where
+    prompt: "The `employees` table has columns `id, name, department, salary`. Write a query that returns the `name` and `salary` of every employee in the 'Engineering' department, ordered by salary descending."
+  - id: exercise-2
+    type: exercise
+    exerciseType: sql-query
+    testCasesId: select-where-ex2
+    difficulty: intermediate
+    concept: sql-select-where
+    prompt: "Write a query that returns the `name` and `department` of every employee earning more than 100000, ordered by name (alphabetically)."
+  - id: quiz-1
+    type: quiz
+    concept: sql-select-where
+    question: "Which SQL clause filters individual rows BEFORE any grouping happens?"
+    options: ["WHERE", "HAVING", "GROUP BY", "ORDER BY"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Every SQL query starts from the same shape: `SELECT` picks which columns
+you want, `FROM` picks the table, and `WHERE` filters which rows survive.
+
+```sql
+SELECT name, salary
+FROM employees
+WHERE department = 'Engineering';
+```
+
+Column order in `SELECT` is up to you — it doesn't have to match the
+table's actual column order. `SELECT *` means "every column," useful for
+exploring a table but usually avoided in real queries (it breaks if the
+table's columns ever change).
+
+</Explanation>
+
+<CodeExample id="try-it" language="sql" code={`CREATE TABLE employees (id INTEGER, name TEXT, department TEXT, salary INTEGER);\nINSERT INTO employees VALUES\n  (1, 'Ada', 'Engineering', 145000),\n  (2, 'Grace', 'Engineering', 152000),\n  (3, 'Ken', 'Sales', 98000);\n\nSELECT name, department FROM employees WHERE salary > 100000 ORDER BY name;`} caption="Every exercise in this course seeds its own small table first, then asks you to write the query — run this one to see the pattern." />
+
+<Explanation id="operators">
+
+`WHERE` supports the comparison operators you'd expect (`=`, `!=`, `>`,
+`<`, `>=`, `<=`), plus a few SQL-specific ones:
+
+```sql
+WHERE department IN ('Sales', 'Marketing')     -- matches either
+WHERE name LIKE 'A%'                            -- starts with "A"
+WHERE department = 'Sales' AND salary > 100000  -- combine with AND/OR
+WHERE department IS NOT NULL                    -- never use = NULL, it never matches
+```
+
+`ORDER BY column DESC` (or no `DESC` for ascending, the default) controls
+row order — SQL doesn't guarantee any particular order without it, so a
+query without `ORDER BY` can legitimately return rows in a different
+sequence each time.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can write a SELECT with a WHERE filter and an ORDER BY, and know why queries you care about the order of always need an explicit ORDER BY.
+</Checkpoint>

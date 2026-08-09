@@ -1,0 +1,88 @@
+---
+slug: files
+title: Files
+estimatedMinutes: 14
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: modes
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: files-ex1
+    difficulty: beginner
+    concept: python-files
+    prompt: "Write a function `write_and_read(path, text)` that writes `text` to the file at `path` (mode 'w'), then reads it back and returns the contents. Use `with open(...)` for both."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: files-ex2
+    difficulty: intermediate
+    concept: python-files
+    prompt: "Write a function `append_lines(path, lines)` that writes each string in `lines` to the file at `path`, one per line (each followed by a newline), then reads the whole file back and returns it as one string."
+  - id: quiz-1
+    type: quiz
+    concept: python-files
+    question: "Why is `with open(path) as f: ...` preferred over calling `open()` and `f.close()` manually?"
+    options: ["The file is automatically closed when the block exits, even if an exception is raised inside it", "It's the only way to read a file in Python", "It opens the file faster", "It automatically converts the contents to a string"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+`open(path, mode)` gives you a file object; the most common modes are
+`"r"` (read, the default), `"w"` (write — creates or overwrites), and
+`"a"` (append). Always use it with `with`, which guarantees the file gets
+closed automatically when the block ends:
+
+```python
+with open("notes.txt", "w") as f:
+    f.write("hello\n")
+
+with open("notes.txt") as f:
+    contents = f.read()
+print(contents)   # hello
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`with open("log.txt", "w") as f:\n    for i in range(3):\n        f.write(f"line {i}\\n")\n\nwith open("log.txt") as f:\n    for line in f:\n        print(line.strip())`} caption="Iterating a file object directly (for line in f) reads it one line at a time — the standard way to process a file without loading it all into memory at once." />
+
+<Explanation id="modes">
+
+Without `with`, a crash between `open()` and `close()` leaves the file
+handle open — usually harmless for a script that exits immediately after,
+but a real bug in a long-running program (you eventually run out of file
+handles) or if you needed the write to be flushed to disk before some
+other code reads it. `with` guarantees the close happens, exception or
+not — the same "guaranteed cleanup" pattern you get from a `finally`
+block, but scoped automatically to the object.
+
+```python
+# risky — if something raises between open and close, the file stays open
+f = open("data.txt", "w")
+f.write("...")
+f.close()
+
+# safe — closes automatically, even on an exception
+with open("data.txt", "w") as f:
+    f.write("...")
+```
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can read and write files using `with open(...)`, and know why the context-manager form is preferred over manual open/close.
+</Checkpoint>

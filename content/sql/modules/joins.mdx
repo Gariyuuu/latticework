@@ -1,0 +1,84 @@
+---
+slug: joins
+title: JOINs
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: sql
+  - id: left-join
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: sql-query
+    testCasesId: joins-ex1
+    difficulty: beginner
+    concept: sql-joins
+    prompt: "Two tables: `departments(id, name)` and `employees(id, name, department_id)`. Write a query using an INNER JOIN that returns each employee's `name` alongside their department's name as `department_name`, ordered by employee name."
+  - id: exercise-2
+    type: exercise
+    exerciseType: sql-query
+    testCasesId: joins-ex2
+    difficulty: intermediate
+    concept: sql-joins
+    prompt: "Same two tables — but one employee has no department (`department_id` is NULL). Write a query using a LEFT JOIN that returns EVERY employee's `name` alongside their department's name as `department_name` (NULL if they have none), ordered by employee name."
+  - id: quiz-1
+    type: quiz
+    concept: sql-joins
+    question: "What's the key difference between INNER JOIN and LEFT JOIN?"
+    options: ["LEFT JOIN keeps every row from the left table even without a match on the right (filling unmatched columns with NULL); INNER JOIN only keeps rows that match on both sides", "They always produce identical results", "INNER JOIN is just a faster version of LEFT JOIN with no behavior difference", "LEFT JOIN only works when joining exactly two tables"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Real schemas split data across multiple tables — a `JOIN` combines rows
+from two tables based on a matching column, usually a foreign key.
+
+```sql
+SELECT employees.name, departments.name AS department_name
+FROM employees
+JOIN departments ON employees.department_id = departments.id;
+```
+
+`JOIN` (equivalent to `INNER JOIN`) only keeps rows where the `ON`
+condition matches on BOTH sides — an employee with no matching department
+row simply doesn't appear in the result at all.
+
+</Explanation>
+
+<CodeExample id="try-it" language="sql" code={`CREATE TABLE departments (id INTEGER, name TEXT);\nINSERT INTO departments VALUES (1,'Engineering'),(2,'Sales');\n\nCREATE TABLE employees (id INTEGER, name TEXT, department_id INTEGER);\nINSERT INTO employees VALUES (1,'Ada',1),(2,'Ken',2);\n\nSELECT employees.name, departments.name AS department_name\nFROM employees\nJOIN departments ON employees.department_id = departments.id;`} caption="Prefixing columns with the table name (employees.name vs departments.name) avoids ambiguity whenever both tables have a column with the same name." />
+
+<Explanation id="left-join">
+
+`LEFT JOIN` keeps every row from the table on the left, even when nothing
+matches on the right — unmatched columns from the right table come back
+as `NULL` instead of the row disappearing.
+
+```sql
+SELECT employees.name, departments.name AS department_name
+FROM employees
+LEFT JOIN departments ON employees.department_id = departments.id;
+-- an employee with department_id = NULL still appears, with
+-- department_name = NULL, instead of being dropped
+```
+
+Reach for `LEFT JOIN` any time "employees with no department" (or orders
+with no shipment, users with no posts, etc.) is itself part of what you
+want to see — `INNER JOIN` would silently hide exactly those rows.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can join two tables on a foreign key, and choose between INNER JOIN (matches only) and LEFT JOIN (keep everything from the left side) based on whether unmatched rows should still appear.
+</Checkpoint>

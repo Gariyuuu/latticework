@@ -19,6 +19,9 @@ export interface RunOptions {
    * Loading is cached by the provider, so repeated runs of the same
    * exercise/example don't re-download anything after the first call. */
   packages?: string[];
+  /** SQL only: schema + seed data to run against a fresh in-memory database
+   * before the submitted query runs. Ignored by other providers. */
+  setupSql?: string;
 }
 
 /**

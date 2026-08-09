@@ -23,16 +23,23 @@ interface CaseResult {
   pass: boolean;
 }
 
+interface SqlResult {
+  columns: string[];
+  rows: unknown[][];
+  pass: boolean;
+}
+
 const MAX_HINT_LEVEL = 4; // 5th action is "reveal solution"
 
 export function Exercise({ id }: { id: string }) {
   const { frontmatter, testCases } = useLessonBlock(id);
   const { skillSlug, lessonSlug, completed, markComplete } = useLessonProgress();
-  const language = (testCases?.language ?? "python") as "python";
+  const language = (testCases?.language ?? "python") as "python" | "sql";
   const { run, status } = useSandbox(language);
 
   const [code, setCode] = React.useState(testCases?.starterCode ?? "");
   const [results, setResults] = React.useState<CaseResult[] | null>(null);
+  const [sqlResult, setSqlResult] = React.useState<SqlResult | null>(null);
   const [runError, setRunError] = React.useState<string | null>(null);
   const [hintLevel, setHintLevel] = React.useState(0);
   const [hintText, setHintText] = React.useState<string | null>(null);
@@ -43,9 +50,56 @@ export function Exercise({ id }: { id: string }) {
   const exerciseSlug = exerciseSlugFor(skillSlug, lessonSlug, id);
   const isComplete = completed.has(id);
 
+  function reportPass() {
+    if (submitted) return;
+    setSubmitted(true);
+    markComplete(id, { hintsUsed: hintLevel, code });
+    const timeSpentSeconds = Math.round((Date.now() - startedAt) / 1000);
+    fetch("/api/submissions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        exerciseSlug,
+        passed: true,
+        timeSpentSeconds,
+        code,
+      }),
+    })
+      .then(async (r) => {
+        if (!r.ok) return;
+        const data = await r.json();
+        if (data.xpAwarded) toast.success(`Exercise passed — +${data.xpAwarded} XP`);
+      })
+      .catch(() => {});
+  }
+
   async function handleRun() {
     if (!testCases) return;
     setRunError(null);
+
+    if (testCases.type === "sql-query") {
+      const res = await run(code, { setupSql: testCases.setupSql });
+      if (res.error) {
+        setRunError(res.error);
+        setSqlResult(null);
+        return;
+      }
+      let parsed: { columns: string[]; rows: unknown[][] };
+      try {
+        parsed = JSON.parse(res.value ?? "{}");
+      } catch {
+        setRunError("Could not parse query result.");
+        setSqlResult(null);
+        return;
+      }
+      const pass =
+        JSON.stringify(parsed.columns) === JSON.stringify(testCases.expectedColumns) &&
+        JSON.stringify(parsed.rows) === JSON.stringify(testCases.expectedRows);
+      setSqlResult({ columns: parsed.columns, rows: parsed.rows, pass });
+      if (pass) reportPass();
+      return;
+    }
+
     const res = await run(code, {
       evalExpressions: testCases.cases.map((c) => c.call),
       packages: testCases.packages,
@@ -66,28 +120,7 @@ export function Exercise({ id }: { id: string }) {
     }));
     setResults(caseResults);
 
-    const allPass = caseResults.every((c) => c.pass);
-    if (allPass && !submitted) {
-      setSubmitted(true);
-      markComplete(id, { hintsUsed: hintLevel, code });
-      const timeSpentSeconds = Math.round((Date.now() - startedAt) / 1000);
-      fetch("/api/submissions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          exerciseSlug,
-          passed: true,
-          timeSpentSeconds,
-          code,
-        }),
-      })
-        .then(async (r) => {
-          if (!r.ok) return;
-          const data = await r.json();
-          if (data.xpAwarded) toast.success(`Exercise passed — +${data.xpAwarded} XP`);
-        })
-        .catch(() => {});
-    }
+    if (caseResults.every((c) => c.pass)) reportPass();
   }
 
   async function handleHint() {
@@ -203,6 +236,51 @@ export function Exercise({ id }: { id: string }) {
           {results.every((r) => r.pass) && (
             <p className="pt-1 text-sm font-medium text-forge-success">BUILD PASSED</p>
           )}
+        </div>
+      )}
+
+      {sqlResult && (
+        <div className="mt-3 space-y-1.5">
+          <div
+            className={cn(
+              "flex items-center gap-2 rounded-md border px-3 py-1.5 text-xs",
+              sqlResult.pass ? "border-forge-success/30 bg-forge-success/5" : "border-destructive/30 bg-destructive/5"
+            )}
+          >
+            {sqlResult.pass ? (
+              <CheckCircle2 className="size-3.5 shrink-0 text-forge-success" />
+            ) : (
+              <XCircle className="size-3.5 shrink-0 text-destructive" />
+            )}
+            <span>{sqlResult.rows.length} row{sqlResult.rows.length === 1 ? "" : "s"} returned</span>
+          </div>
+          {sqlResult.rows.length > 0 && (
+            <div className="overflow-x-auto rounded-md border border-border">
+              <table className="w-full text-left font-mono text-xs">
+                <thead>
+                  <tr className="border-b border-border bg-muted/50">
+                    {sqlResult.columns.map((c, i) => (
+                      <th key={i} className="px-2 py-1 font-medium">
+                        {c}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {sqlResult.rows.map((row, ri) => (
+                    <tr key={ri} className="border-b border-border last:border-0">
+                      {row.map((cell, ci) => (
+                        <td key={ci} className="px-2 py-1">
+                          {cell === null ? <span className="text-muted-foreground">NULL</span> : String(cell)}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          {sqlResult.pass && <p className="pt-1 text-sm font-medium text-forge-success">BUILD PASSED</p>}
         </div>
       )}
     </BlockShell>

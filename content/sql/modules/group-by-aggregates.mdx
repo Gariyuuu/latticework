@@ -1,0 +1,83 @@
+---
+slug: group-by-aggregates
+title: GROUP BY & Aggregates
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: sql
+  - id: having
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: sql-query
+    testCasesId: group-by-aggregates-ex1
+    difficulty: beginner
+    concept: sql-group-by
+    prompt: "The `employees` table has columns `id, name, department, salary`. Write a query that returns each `department` and the average salary in that department as `avg_salary`, ordered by department name."
+  - id: exercise-2
+    type: exercise
+    exerciseType: sql-query
+    testCasesId: group-by-aggregates-ex2
+    difficulty: intermediate
+    concept: sql-group-by
+    prompt: "Write a query that returns each `department` and its employee count as `employee_count`, but only for departments with MORE THAN ONE employee — ordered by employee_count descending."
+  - id: quiz-1
+    type: quiz
+    concept: sql-group-by
+    question: "Why does `WHERE COUNT(*) > 1` fail, while `HAVING COUNT(*) > 1` works?"
+    options: ["WHERE filters rows before grouping happens, so aggregate functions like COUNT() aren't computed yet at that point — HAVING filters after grouping", "HAVING is just a synonym for WHERE with no real difference", "COUNT() can only be used in SELECT, never in a filter", "WHERE only works on TEXT columns"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+`GROUP BY` collapses rows sharing the same value in a column into a single
+row per group — combined with an **aggregate function** (`COUNT`, `SUM`,
+`AVG`, `MIN`, `MAX`) to summarize each group.
+
+```sql
+SELECT department, COUNT(*) AS employee_count
+FROM employees
+GROUP BY department;
+```
+
+Every column in `SELECT` that ISN'T inside an aggregate function must
+appear in `GROUP BY` — SQL has no way to pick a single representative
+value for the other rows in the group otherwise.
+
+</Explanation>
+
+<CodeExample id="try-it" language="sql" code={`CREATE TABLE employees (id INTEGER, name TEXT, department TEXT, salary INTEGER);\nINSERT INTO employees VALUES\n  (1, 'Ada', 'Engineering', 145000),\n  (2, 'Grace', 'Engineering', 152000),\n  (3, 'Ken', 'Sales', 98000);\n\nSELECT department, AVG(salary) AS avg_salary, COUNT(*) AS n\nFROM employees\nGROUP BY department\nORDER BY department;`} caption="You can compute multiple aggregates in the same GROUP BY query — one row per department, each with its own average and count." />
+
+<Explanation id="having">
+
+`WHERE` and `HAVING` both filter rows, but at different stages: `WHERE`
+runs first, filtering individual rows before grouping — so it can't
+reference an aggregate like `COUNT(*)`, which doesn't exist yet at that
+point. `HAVING` runs after grouping, filtering entire groups — that's the
+only place you can filter on an aggregate result.
+
+```sql
+SELECT department, COUNT(*) AS employee_count
+FROM employees
+WHERE salary > 90000        -- filters individual employees first
+GROUP BY department
+HAVING COUNT(*) > 1;         -- then filters the resulting groups
+```
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can group rows and compute per-group aggregates, and know the difference between filtering rows (WHERE) and filtering groups (HAVING).
+</Checkpoint>
