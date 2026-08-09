@@ -1,0 +1,11 @@
+{
+  "id": "vectors-matrices-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import math\n\ndef magnitude(v):\n    ...\n",
+  "cases": [
+    { "call": "magnitude([3, 4])", "expect": "5.0" },
+    { "call": "magnitude([0, 0])", "expect": "0.0" },
+    { "call": "magnitude([1, 1])", "expect": "1.4142135623730951" }
+  ]
+}

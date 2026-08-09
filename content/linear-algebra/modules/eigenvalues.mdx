@@ -1,0 +1,87 @@
+---
+slug: eigenvalues
+title: Eigenvalues
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: formula
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: eigenvalues-ex1
+    difficulty: beginner
+    concept: linear-algebra-eigenvalues
+    prompt: "Write `determinant_2x2(m)`, returning the determinant of a 2×2 matrix `m` (given as `[[a, b], [c, d]]`): `a*d - b*c`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: eigenvalues-ex2
+    difficulty: intermediate
+    concept: linear-algebra-eigenvalues
+    prompt: "Write `eigenvalues_2x2(m)`, returning the two eigenvalues of a 2×2 matrix `m` as a sorted list `[smaller, larger]`, using the trace/determinant formula. Assume the eigenvalues are always real (the discriminant is never negative)."
+  - id: quiz-1
+    type: quiz
+    concept: linear-algebra-eigenvalues
+    question: "For a 2×2 matrix, which two properties determine its eigenvalues via the characteristic equation?"
+    options: ["Its trace and determinant", "Its transpose and inverse", "Its row count and column count", "Its largest and smallest entries"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+For a square matrix `A`, an **eigenvector** is a (nonzero) vector `v`
+that `A` only stretches or shrinks — never rotates:
+
+```
+A @ v = λ * v
+```
+
+`λ` (lambda) is the corresponding **eigenvalue** — how much `v` gets
+scaled. Most vectors DO get rotated when you multiply them by a matrix;
+eigenvectors are the special directions that don't. They show up
+everywhere: PCA (dimensionality reduction) finds the eigenvectors of a
+covariance matrix, Google's original PageRank is an eigenvector
+computation, and a matrix's eigenvalues tell you a huge amount about its
+behavior (stability, whether it's invertible, how a system evolves over
+time) without needing to solve anything iteratively.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def determinant_2x2(m):\n    return m[0][0] * m[1][1] - m[0][1] * m[1][0]\n\nprint(determinant_2x2([[1, 2], [3, 4]]))  # 1*4 - 2*3 = -2`} caption="The determinant of a 2x2 matrix — a single number that shows up directly in the eigenvalue formula below, and separately tells you whether the matrix is invertible (invertible exactly when determinant != 0)." />
+
+<Explanation id="formula">
+
+For a 2×2 matrix, there's a direct formula — no need to solve anything
+iteratively. Let `trace = a + d` (the sum of the diagonal) and
+`det = a*d - b*c` (the determinant). Then:
+
+```
+λ = (trace ± √(trace² - 4·det)) / 2
+```
+
+This comes from solving the matrix's **characteristic equation**,
+`det(A - λI) = 0` — for a 2×2 matrix, that expands into a quadratic in
+`λ`, and the formula above is just the quadratic formula applied to it.
+Larger matrices don't have a clean closed-form formula like this one
+(that's why NumPy's `np.linalg.eig` uses iterative numerical methods
+instead) — the 2×2 case is the one place you can compute eigenvalues
+entirely by hand.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You know what an eigenvalue/eigenvector represents geometrically, and can compute both eigenvalues of a 2x2 matrix directly from its trace and determinant.
+</Checkpoint>

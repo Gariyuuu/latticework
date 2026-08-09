@@ -1,0 +1,95 @@
+---
+slug: vectors-matrices
+title: Vectors & Matrices
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: matrices
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: vectors-matrices-ex1
+    difficulty: beginner
+    concept: linear-algebra-vectors
+    prompt: "Write `dot_product(a, b)`, computing the dot product of two equal-length vectors (Python lists) from scratch — no NumPy. Multiply corresponding elements and sum the results."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: vectors-matrices-ex2
+    difficulty: intermediate
+    concept: linear-algebra-vectors
+    prompt: "Write `magnitude(v)`, returning a vector's Euclidean length (its L2 norm): the square root of the sum of its squared components."
+  - id: quiz-1
+    type: quiz
+    concept: linear-algebra-vectors
+    question: "Geometrically, what does it mean for the dot product of two (nonzero) vectors to equal zero?"
+    options: ["The vectors are perpendicular (orthogonal) to each other", "The vectors are parallel", "The vectors have equal magnitude", "The vectors point in opposite directions"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A **vector** is just an ordered list of numbers — `[3, 4]` can represent a
+point, a direction, a set of feature weights, anything with multiple
+components. Two operations you'll use constantly:
+
+**Vector addition** (component-wise): `[1, 2] + [3, 4] = [4, 6]`
+
+**Scalar multiplication**: `2 * [1, 2] = [2, 4]`
+
+The **dot product** multiplies corresponding components and sums them —
+it's a single number (a "scalar") that captures how much two vectors
+point in the same direction:
+
+```python
+def dot_product(a, b):
+    return sum(x * y for x, y in zip(a, b))
+
+dot_product([1, 2, 3], [4, 5, 6])   # 1*4 + 2*5 + 3*6 = 32
+```
+
+You already met this exact computation in the NumPy course
+(`np.dot`) — this course is about understanding what it means and why it
+works; NumPy is about computing it efficiently at scale. Both matter.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def dot_product(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\nweights = [0.3, 0.5, 0.2]\nreturns = [0.10, -0.02, 0.08]\nportfolio_return = dot_product(weights, returns)\nprint(round(portfolio_return, 4))  # 0.036`} caption="Same portfolio-return calculation as the NumPy course's linear algebra lesson — a dot product IS a weighted sum. Recognizing that pattern is the actual skill; the library call is just syntax." />
+
+<Explanation id="matrices">
+
+A **matrix** is a grid of numbers — a list of rows, each row a list of
+numbers of the same length. `[[1, 2], [3, 4]]` is a 2×2 matrix. The
+**transpose** of a matrix flips it over its diagonal, turning rows into
+columns:
+
+```python
+def transpose(m):
+    return [[row[i] for row in m] for i in range(len(m[0]))]
+
+transpose([[1, 2, 3], [4, 5, 6]])
+# [[1, 4], [2, 5], [3, 6]]
+```
+
+The **identity matrix** (1s on the diagonal, 0s elsewhere) is the matrix
+equivalent of the number 1 — multiplying any matrix by it leaves the
+matrix unchanged, the same way multiplying any number by 1 does.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute a dot product and a vector's magnitude from first principles, and know what a matrix transpose and identity matrix are.
+</Checkpoint>

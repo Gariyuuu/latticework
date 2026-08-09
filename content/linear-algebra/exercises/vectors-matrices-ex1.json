@@ -1,0 +1,11 @@
+{
+  "id": "vectors-matrices-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def dot_product(a, b):\n    ...\n",
+  "cases": [
+    { "call": "dot_product([1, 2, 3], [4, 5, 6])", "expect": "32" },
+    { "call": "dot_product([1, 0], [0, 1])", "expect": "0" },
+    { "call": "dot_product([-1, 2], [3, 4])", "expect": "5" }
+  ]
+}

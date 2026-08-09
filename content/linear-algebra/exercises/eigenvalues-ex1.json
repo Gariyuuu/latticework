@@ -1,0 +1,11 @@
+{
+  "id": "eigenvalues-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def determinant_2x2(m):\n    ...\n",
+  "cases": [
+    { "call": "determinant_2x2([[1, 2], [3, 4]])", "expect": "-2" },
+    { "call": "determinant_2x2([[2, 0], [0, 2]])", "expect": "4" },
+    { "call": "determinant_2x2([[1, 1], [1, 1]])", "expect": "0" }
+  ]
+}

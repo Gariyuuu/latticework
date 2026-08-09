@@ -4,7 +4,7 @@
   "category": "math",
   "difficulty": "beginner",
   "estimatedHours": 8,
-  "prerequisites": [],
+  "prerequisites": ["python"],
   "usefulFor": [
     "ml-engineer",
     "ai-engineer",
@@ -13,17 +13,18 @@
     "quant-researcher",
     "quant-trader"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "The math underneath ML and quant work — vectors, matrices, and eigenvalues implemented from first principles in plain Python, distinct from the NumPy course's focus on doing the same computations efficiently at scale.",
   "modules": [
     {
       "slug": "vectors-matrices",
       "title": "Vectors & Matrices",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "eigenvalues",
       "title": "Eigenvalues",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "matrix-decompositions",

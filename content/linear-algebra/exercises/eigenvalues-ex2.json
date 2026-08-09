@@ -1,0 +1,11 @@
+{
+  "id": "eigenvalues-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import math\n\ndef determinant_2x2(m):\n    return m[0][0] * m[1][1] - m[0][1] * m[1][0]\n\ndef eigenvalues_2x2(m):\n    ...\n",
+  "cases": [
+    { "call": "eigenvalues_2x2([[2, 0], [0, 3]])", "expect": "[2.0, 3.0]" },
+    { "call": "eigenvalues_2x2([[4, 1], [2, 3]])", "expect": "[2.0, 5.0]" },
+    { "call": "eigenvalues_2x2([[1, 0], [0, 1]])", "expect": "[1.0, 1.0]" }
+  ]
+}
