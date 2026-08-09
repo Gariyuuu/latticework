@@ -4,34 +4,35 @@
   "category": "cs",
   "difficulty": "beginner",
   "estimatedHours": 6,
-  "prerequisites": [],
+  "prerequisites": ["python"],
   "usefulFor": [
     "software-engineer",
     "full-stack-engineer",
     "backend-engineer",
     "research-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "The four pillars of OOP — classes/objects, inheritance, polymorphism, encapsulation — built around a running Inventory/Shape/BankAccount example, one level past Python's own Classes module.",
   "modules": [
     {
       "slug": "classes-objects",
       "title": "Classes & Objects",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "inheritance",
       "title": "Inheritance",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "polymorphism",
       "title": "Polymorphism",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "encapsulation",
       "title": "Encapsulation",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

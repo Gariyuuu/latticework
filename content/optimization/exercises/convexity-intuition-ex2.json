@@ -1,0 +1,11 @@
+{
+  "id": "convexity-intuition-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def second_derivative_positive(f, x, h=1e-4):\n    ...\n",
+  "cases": [
+    { "call": "second_derivative_positive(lambda x: x**2, 0)", "expect": "True" },
+    { "call": "second_derivative_positive(lambda x: -x**2, 0)", "expect": "False" },
+    { "call": "second_derivative_positive(lambda x: x**3, 1)", "expect": "True" }
+  ]
+}

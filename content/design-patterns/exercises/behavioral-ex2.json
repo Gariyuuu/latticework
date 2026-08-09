@@ -1,0 +1,11 @@
+{
+  "id": "behavioral-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "class EventEmitter:\n    def __init__(self):\n        self.subscribers = []\n\n    def subscribe(self, callback):\n        self.subscribers.append(callback)\n        return self\n\n    def emit(self, value):\n        ...\n",
+  "cases": [
+    { "call": "EventEmitter().subscribe(lambda x: x * 2).subscribe(lambda x: x + 1).emit(5)", "expect": "[10, 6]" },
+    { "call": "EventEmitter().emit(5)", "expect": "[]" },
+    { "call": "EventEmitter().subscribe(lambda x: x).emit(99)", "expect": "[99]" }
+  ]
+}

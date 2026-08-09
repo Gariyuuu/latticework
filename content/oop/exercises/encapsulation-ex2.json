@@ -1,0 +1,11 @@
+{
+  "id": "encapsulation-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "class BankAccount:\n    def __init__(self, balance=0):\n        self._balance = balance\n\n    def withdraw(self, amount):\n        ...\n",
+  "cases": [
+    { "call": "BankAccount(100).withdraw(30)", "expect": "True" },
+    { "call": "BankAccount(50).withdraw(100)", "expect": "False" },
+    { "call": "BankAccount(0).withdraw(0)", "expect": "True" }
+  ]
+}

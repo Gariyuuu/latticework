@@ -1,0 +1,93 @@
+---
+slug: root-finding
+title: Root Finding
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: newton
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: root-finding-ex1
+    difficulty: beginner
+    concept: numerical-root-finding
+    prompt: "Write `bisection(f, a, b, tol=1e-6)`: find a root of `f` in `[a, b]` (assume `f(a)` and `f(b)` have opposite signs) using the bisection method — repeatedly halve the interval, keeping the half where the sign change still occurs, until the interval width is below `tol`. Return the midpoint, rounded to 4 decimals."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: root-finding-ex2
+    difficulty: intermediate
+    concept: numerical-root-finding
+    prompt: "Write `newtons_method(f, f_prime, x0, iterations=20)`: starting at `x0`, repeat `iterations` times: `x = x - f(x)/f_prime(x)`. Return the final `x`, rounded to 4 decimals."
+  - id: quiz-1
+    type: quiz
+    concept: numerical-root-finding
+    question: "Compared to bisection, why does Newton's method usually converge much faster?"
+    options: ["It uses the function's derivative to take a smarter, curvature-aware step toward the root, instead of just halving an interval each time", "It doesn't require any starting guess", "It's guaranteed to find every root of the function at once", "Bisection is actually always faster in practice"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Finding where `f(x) = 0` exactly (algebraically) is only possible for
+special functions — most real equations need a numerical approach.
+**Bisection** is the simplest: if `f(a)` and `f(b)` have opposite signs,
+a root must lie somewhere between them (the Intermediate Value Theorem).
+Check the midpoint, keep whichever half still brackets the sign change,
+and repeat.
+
+```python
+def bisection(f, a, b, tol=1e-6):
+    while (b - a) / 2 > tol:
+        mid = (a + b) / 2
+        if f(a) * f(mid) < 0:
+            b = mid   # root is in the left half
+        else:
+            a = mid   # root is in the right half
+    return (a + b) / 2
+
+print(bisection(lambda x: x**2 - 4, 0, 5))   # ~2.0
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def bisection(f, a, b, tol=1e-6):\n    while (b - a) / 2 > tol:\n        mid = (a + b) / 2\n        if f(a) * f(mid) < 0:\n            b = mid\n        else:\n            a = mid\n    return round((a + b) / 2, 4)\n\nprint(bisection(lambda x: x**3 - x - 2, 1, 2))  # root of x^3 - x - 2, no algebraic shortcut needed`} caption="Bisection is guaranteed to converge (as long as the sign-change assumption holds) -- slow but bulletproof, which is why it's often the fallback when a faster method might diverge." />
+
+<Explanation id="newton">
+
+**Newton's method** converges much faster by using the function's slope:
+approximate `f` near the current guess with its tangent line, and jump
+straight to where THAT line crosses zero:
+
+```python
+def newtons_method(f, f_prime, x0, iterations=20):
+    x = x0
+    for _ in range(iterations):
+        x = x - f(x) / f_prime(x)
+    return x
+
+print(newtons_method(lambda x: x**2 - 2, lambda x: 2*x, 1))   # converges to sqrt(2)
+```
+
+The tradeoff: Newton's method needs the derivative (bisection doesn't),
+and it isn't guaranteed to converge at all from a bad starting guess —
+where bisection is slow-but-safe, Newton's method is fast-but-can-fail.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can find a function's root using bisection (safe, needs no derivative) or Newton's method (fast, needs the derivative), and understand the tradeoff between them.
+</Checkpoint>

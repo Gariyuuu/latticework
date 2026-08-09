@@ -13,22 +13,23 @@
     "backend-engineer",
     "research-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "Factory/Singleton, Adapter/Decorator, and Strategy/Observer — six classic patterns implemented as real, runnable Python, built directly on the four OOP pillars.",
   "modules": [
     {
       "slug": "creational",
       "title": "Creational",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "structural",
       "title": "Structural",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "behavioral",
       "title": "Behavioral",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

@@ -1,0 +1,96 @@
+---
+slug: gradient-descent
+title: Gradient Descent
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: multivariable
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: gradient-descent-ex1
+    difficulty: beginner
+    concept: optimization-gradient-descent
+    prompt: "Write `gradient_descent_1d(f_prime, x0, lr, steps)`: starting from `x0`, repeat `steps` times: `x -= lr * f_prime(x)`. Return the final `x`, rounded to 4 decimals."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: gradient-descent-ex2
+    difficulty: intermediate
+    concept: optimization-gradient-descent
+    prompt: "Write `gradient_descent_2d(grad_f, point, lr, steps)`: same idea, but `point` is a list and `grad_f(point)` returns the gradient as a list. Update every coordinate each step. Return the final point as a list, each entry rounded to 4 decimals."
+  - id: quiz-1
+    type: quiz
+    concept: optimization-gradient-descent
+    question: "Why does gradient descent move in the NEGATIVE gradient direction?"
+    options: ["The gradient points toward steepest increase, so its negative points toward steepest decrease — the direction that reduces the function fastest", "The negative gradient is always exactly zero at a minimum", "It's an arbitrary convention with no real mathematical reason", "The positive gradient direction is mathematically undefined"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Gradient descent** finds a function's minimum by repeatedly taking a
+small step in the direction that decreases it fastest — the negative
+gradient, from the Calculus Review course. For a single variable, "the
+gradient" is just the derivative:
+
+```python
+def f_prime(x):
+    return 2 * x   # derivative of f(x) = x^2
+
+x = 10.0
+learning_rate = 0.1
+for _ in range(50):
+    x -= learning_rate * f_prime(x)
+print(x)   # converges toward 0 -- the true minimum of x^2
+```
+
+Every step shrinks `x` toward the minimum, because `f_prime(x)` shrinks
+toward 0 as `x` approaches it — the steps naturally get smaller as you
+get closer.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def f_prime(x):\n    return 4 * (x - 3)   # derivative of f(x) = 2*(x-3)^2, minimized at x=3\n\nx = 0.0\nfor step in range(20):\n    x -= 0.1 * f_prime(x)\n    if step % 5 == 0:\n        print(round(x, 3))`} caption="Printing every 5th step shows convergence directly -- x moves toward 3 (the true minimum) fast at first, then more slowly as f_prime(x) shrinks near the minimum." />
+
+<Explanation id="multivariable">
+
+For a multivariable function, replace "the derivative" with "the
+gradient" (from Calculus Review) — same algorithm, applied to every
+coordinate simultaneously:
+
+```python
+def grad_f(p):
+    return [2*p[0], 2*p[1]]   # gradient of f(x,y) = x^2 + y^2
+
+point = [5.0, 5.0]
+lr = 0.1
+for _ in range(50):
+    g = grad_f(point)
+    point = [point[i] - lr * g[i] for i in range(len(point))]
+print(point)   # converges toward [0, 0]
+```
+
+The **learning rate** (`lr`) controls step size — too small and
+convergence takes forever; too large and it can overshoot the minimum
+and diverge instead of converging. Picking it well is most of the
+practical skill in using gradient descent.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement gradient descent in one and multiple dimensions, using exactly the derivative/gradient computations from the Calculus Review course.
+</Checkpoint>

@@ -1,0 +1,89 @@
+---
+slug: convexity-intuition
+title: Convexity Intuition
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: second-derivative
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: convexity-intuition-ex1
+    difficulty: beginner
+    concept: optimization-convexity
+    prompt: "Write `is_convex_numerically(f, a, b, c)` for three points `a < b < c`: return True if `f(b)` is at or below the straight line connecting `(a, f(a))` and `(c, f(c))`, evaluated at `b`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: convexity-intuition-ex2
+    difficulty: intermediate
+    concept: optimization-convexity
+    prompt: "Write `second_derivative_positive(f, x, h=1e-4)`: estimate f's second derivative at `x` using `(f(x+h) - 2*f(x) + f(x-h)) / h**2`, and return True if it's positive."
+  - id: quiz-1
+    type: quiz
+    concept: optimization-convexity
+    question: "For a convex function, what can you say about any local minimum you find?"
+    options: ["It is also the global minimum — convex functions can't have a 'fake' local minimum elsewhere", "It is always located at x = 0", "There can be many distinct local minima with different values", "Convex functions never actually have a minimum"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A function is **convex** if a straight line between any two points on
+its curve never dips below the curve itself — visually, it "curves
+upward" everywhere, like `x²`. Convexity is the property that makes
+gradient descent trustworthy: on a convex function, ANY local minimum
+you find via gradient descent is guaranteed to be THE global minimum —
+no risk of getting stuck in a worse local dip.
+
+```python
+def is_convex_numerically(f, a, b, c):
+    line_at_b = f(a) + (f(c) - f(a)) * (b - a) / (c - a)
+    return f(b) <= line_at_b
+```
+
+This checks the definition directly for one triple of points: if `f(b)`
+sits below (or on) the straight line from `(a, f(a))` to `(c, f(c))`,
+that's consistent with convexity at that point.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def is_convex_numerically(f, a, b, c):\n    line_at_b = f(a) + (f(c) - f(a)) * (b - a) / (c - a)\n    return f(b) <= line_at_b\n\nprint(is_convex_numerically(lambda x: x**2, -2, 0, 2))    # True -- x^2 curves upward\nprint(is_convex_numerically(lambda x: -x**2, -2, 0, 2))   # False -- -x^2 curves downward (concave)`} caption="Real optimization software checks convexity analytically (via the mathematical structure of the function), not by sampling points like this -- but sampling makes the definition concrete and testable." />
+
+<Explanation id="second-derivative">
+
+For a single-variable function, there's a cleaner test: convex exactly
+where the **second derivative** is non-negative (curving upward, not
+downward). The second derivative is just the derivative of the
+derivative — numerically, extend the central-difference idea one step
+further:
+
+```python
+def second_derivative(f, x, h=1e-4):
+    return (f(x + h) - 2*f(x) + f(x - h)) / h**2
+```
+
+For `f(x) = x²`, the second derivative is the constant `2` everywhere —
+that's why `x²` is convex EVERYWHERE, not just at some points. Functions
+can also be convex only in certain regions (like `x³` for `x > 0`) —
+that's exactly why gradient descent's global-minimum guarantee only
+holds when the WHOLE function is convex, not just near where you started.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can numerically test convexity via the line-below-curve definition or the second-derivative sign, and understand why convexity is what makes gradient descent's local minimum trustworthy as a global one.
+</Checkpoint>

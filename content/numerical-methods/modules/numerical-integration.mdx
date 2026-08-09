@@ -1,0 +1,97 @@
+---
+slug: numerical-integration
+title: Numerical Integration
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: simpson
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: numerical-integration-ex1
+    difficulty: beginner
+    concept: numerical-integration
+    prompt: "Write `trapezoidal_rule(f, a, b, n)`: approximate the integral of `f` from `a` to `b` using `n` trapezoids of width `h = (b-a)/n`. Return the result rounded to 4 decimals."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: numerical-integration-ex2
+    difficulty: intermediate
+    concept: numerical-integration
+    prompt: "Write `simpsons_rule(f, a, b, n)` (`n` even): Simpson's rule weights the endpoints by 1, odd-indexed interior points by 4, and even-indexed interior points by 2, then multiplies the weighted sum by `h/3`. Return the result rounded to 4 decimals."
+  - id: quiz-1
+    type: quiz
+    concept: numerical-integration
+    question: "Why is Simpson's rule generally more accurate than the trapezoidal rule for the same number of intervals?"
+    options: ["It approximates the function with parabolas instead of straight line segments, fitting curved functions more closely", "It always uses twice as many function evaluations", "It only works when the function is a polynomial", "It ignores the interval's endpoints"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+An integral is an area under a curve — exact formulas exist for some
+functions, but many real functions (or functions you only have as code,
+not a formula) need a numerical approximation. The **trapezoidal rule**
+approximates the area under the curve as a series of trapezoids instead
+of the true curved shape:
+
+```python
+def trapezoidal_rule(f, a, b, n):
+    h = (b - a) / n
+    total = (f(a) + f(b)) / 2
+    for i in range(1, n):
+        total += f(a + i * h)
+    return total * h
+
+print(trapezoidal_rule(lambda x: x**2, 0, 1, 1000))   # very close to 1/3
+```
+
+Each trapezoid's area is `h * (left height + right height) / 2` — summed
+across all `n` of them, with each interior point's height counted once
+(it's the right edge of one trapezoid and the left edge of the next).
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def trapezoidal_rule(f, a, b, n):\n    h = (b - a) / n\n    total = (f(a) + f(b)) / 2\n    for i in range(1, n):\n        total += f(a + i * h)\n    return round(total * h, 4)\n\nprint(trapezoidal_rule(lambda x: x, 0, 10, 1))    # 50.0 -- EXACT for straight lines, even with n=1\nprint(trapezoidal_rule(lambda x: x**2, 0, 1, 4))  # close to but not exactly 0.3333 -- curves aren't exact with few trapezoids`} caption="The trapezoidal rule is exact for any straight-line function regardless of n, since a trapezoid IS exactly the right shape for a line -- the error only shows up on curved functions, and shrinks as n grows." />
+
+<Explanation id="simpson">
+
+**Simpson's rule** fits a parabola through each group of three points
+instead of a straight line — parabolas hug curves far more closely than
+straight edges do, so Simpson's rule reaches the same accuracy with far
+fewer intervals:
+
+```python
+def simpsons_rule(f, a, b, n):   # n must be even
+    h = (b - a) / n
+    total = f(a) + f(b)
+    for i in range(1, n):
+        weight = 4 if i % 2 != 0 else 2
+        total += weight * f(a + i * h)
+    return total * h / 3
+```
+
+The alternating 4/2/4/2 weighting comes directly from the algebra of
+fitting parabolas through consecutive triples of points — it looks
+arbitrary but isn't. Simpson's rule is exact (zero error) for any
+polynomial up to degree 3, which is why it converges so much faster than
+trapezoidal on smooth, curved functions.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can numerically approximate a definite integral using the trapezoidal rule and the more accurate Simpson's rule, and understand why the latter converges faster.
+</Checkpoint>

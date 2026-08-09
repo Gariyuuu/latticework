@@ -4,29 +4,30 @@
   "category": "cs",
   "difficulty": "intermediate",
   "estimatedHours": 5,
-  "prerequisites": [],
+  "prerequisites": ["python"],
   "usefulFor": [
     "software-engineer",
     "full-stack-engineer",
     "backend-engineer",
     "research-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "Pure functions, immutability, and map/filter/reduce — the discipline behind code that's easy to test, reason about, and run safely in parallel.",
   "modules": [
     {
       "slug": "pure-functions",
       "title": "Pure Functions",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "immutability",
       "title": "Immutability",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "map-filter-reduce",
       "title": "Map/Filter/Reduce",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

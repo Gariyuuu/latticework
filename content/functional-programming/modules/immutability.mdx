@@ -1,0 +1,87 @@
+---
+slug: immutability
+title: Immutability
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: pattern
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: immutability-ex1
+    difficulty: beginner
+    concept: functional-immutability
+    prompt: "Write `freeze_config(d)`: convert a dict `d` into an immutable, hashable representation — a tuple of its `(key, value)` pairs, sorted by key."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: immutability-ex2
+    difficulty: intermediate
+    concept: functional-immutability
+    prompt: "Write `update_immutable(t, index, value)`: given a tuple `t`, return a NEW tuple with the element at `index` replaced by `value` — tuples can't be mutated in place, so build the replacement via slicing."
+  - id: quiz-1
+    type: quiz
+    concept: functional-immutability
+    question: "Why can't you do `my_tuple[0] = 5` in Python?"
+    options: ["Tuples are immutable — once created, their contents can never change; you have to build a new tuple instead", "Tuples can only ever hold strings", "It's valid syntax, but silently does nothing", "Tuples require an unlock() call before their first modification"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+An **immutable** value can't be changed after creation — Python's `str`,
+`int`, `float`, `tuple`, and `frozenset` are all immutable; `list`,
+`dict`, and `set` are mutable. Immutability is a big part of what makes
+pure functions possible: if a value literally CAN'T be changed, no
+function can accidentally mutate it out from under you.
+
+```python
+t = (1, 2, 3)
+t[0] = 99   # TypeError: 'tuple' object does not support item assignment
+
+# instead, build a new tuple:
+t = (99,) + t[1:]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`config = {"debug": True, "retries": 3}\nfrozen = tuple(sorted(config.items()))\nprint(frozen)             # (('debug', True), ('retries', 3))\nprint(hash(frozen))        # tuples are hashable -- dicts are NOT, this is the whole reason to freeze one\nprint({frozen: "cached result"})  # a frozen config can be used as a dict key`} caption="Dicts can't be dict keys (they're mutable, so not hashable) -- freezing one into a sorted tuple of pairs is the standard way to make a dict-like value usable as a cache key." />
+
+<Explanation id="pattern">
+
+The general pattern for "modifying" an immutable value is always the
+same: build a NEW value that looks like the old one with your one change
+applied, rather than mutating in place:
+
+```python
+def update_immutable(t, index, value):
+    return t[:index] + (value,) + t[index + 1:]
+
+print(update_immutable((1, 2, 3), 1, 99))   # (1, 99, 3) -- a new tuple
+```
+
+This costs more memory than mutating in place would (you're allocating a
+new object every time) — that's the real tradeoff immutability makes:
+safety and predictability, in exchange for some extra allocation. For
+small, frequently-shared values (config, cache keys, function arguments
+you don't want callers accidentally mutating), that tradeoff is usually
+well worth it.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can convert a mutable dict into an immutable, hashable tuple representation, and "modify" an immutable tuple by constructing a new one.
+</Checkpoint>

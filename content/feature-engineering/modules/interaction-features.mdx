@@ -1,0 +1,91 @@
+---
+slug: interaction-features
+title: Interaction Features
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+    packages: ["pandas"]
+  - id: ratios
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: interaction-features-ex1
+    difficulty: beginner
+    concept: feature-engineering-interactions
+    prompt: "Write `add_interaction(df, col1, col2)`: add a new column named `f'{col1}_x_{col2}'` equal to the product of the two columns, and return that new column as a list."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: interaction-features-ex2
+    difficulty: intermediate
+    concept: feature-engineering-interactions
+    prompt: "Write `add_ratio_feature(df, numerator_col, denominator_col)`: add a new column named `f'{numerator_col}_per_{denominator_col}'` equal to `numerator_col / denominator_col`, and return that new column as a list, each value rounded to 4 decimals."
+  - id: quiz-1
+    type: quiz
+    concept: feature-engineering-interactions
+    question: "Why might a model benefit from an explicit interaction feature (like price × quantity) instead of just being given price and quantity as separate columns?"
+    options: ["A model without built-in nonlinearity (like linear regression) can only combine features additively — it can't discover a multiplicative relationship on its own unless you hand it that combined feature directly", "Interaction features always improve every model, with no exceptions", "It reduces the total number of features needed", "Individual columns can never be used together in any way without this"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Sometimes the most predictive signal isn't any single column, but a
+COMBINATION of two — total revenue isn't `price` or `quantity` alone,
+it's `price * quantity`. An **interaction feature** makes that
+combination explicit as its own column, instead of hoping the model
+discovers the relationship on its own:
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({"price": [10, 20], "qty": [2, 3]})
+df["price_x_qty"] = df["price"] * df["qty"]
+print(df)
+#    price  qty  price_x_qty
+# 0     10    2           20
+# 1     20    3           60
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["pandas"]} code={`import pandas as pd\n\ndf = pd.DataFrame({"height_cm": [170, 180, 160], "weight_kg": [65, 85, 55]})\ndf["bmi"] = df["weight_kg"] / (df["height_cm"] / 100) ** 2\nprint(df[["height_cm", "weight_kg", "bmi"]].round(1))`} caption="BMI is itself a classic engineered interaction feature -- weight and height alone are each less predictive of health outcomes than their specific ratio is." />
+
+<Explanation id="ratios">
+
+Ratio features are especially common: `revenue_per_customer`,
+`clicks_per_impression`, `debt_to_income`. Linear models in particular
+benefit enormously from these — a plain linear model can only combine
+features by ADDING them together with weights (`w1*price + w2*qty`), it
+has no way to represent "price times qty" on its own. Handing it the
+product or ratio directly as its own column lets even a simple linear
+model capture a multiplicative relationship it otherwise couldn't
+express.
+
+```python
+df["revenue_per_unit"] = df["revenue"] / df["units"]
+```
+
+Watch for division by zero when building ratio features on real data —
+production code typically needs to handle a zero (or near-zero)
+denominator explicitly, rather than letting it silently produce `inf` or
+`NaN`.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can engineer interaction (product) and ratio features from existing columns, and understand why they help models — especially linear ones — that can't discover multiplicative relationships on their own.
+</Checkpoint>

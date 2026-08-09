@@ -1,0 +1,11 @@
+{
+  "id": "constrained-optimization-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def constrained_min_sum_fixed(total):\n    ...\n",
+  "cases": [
+    { "call": "constrained_min_sum_fixed(10)", "expect": "50.0" },
+    { "call": "constrained_min_sum_fixed(0)", "expect": "0.0" },
+    { "call": "constrained_min_sum_fixed(7)", "expect": "24.5" }
+  ]
+}

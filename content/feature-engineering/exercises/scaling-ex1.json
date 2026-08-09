@@ -1,0 +1,11 @@
+{
+  "id": "scaling-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["pandas"],
+  "starterCode": "import pandas as pd\n\ndef min_max_scale(series):\n    ...\n",
+  "cases": [
+    { "call": "min_max_scale(pd.Series([10, 20, 30]))", "expect": "[0.0, 0.5, 1.0]" },
+    { "call": "min_max_scale(pd.Series([0, 50, 100]))", "expect": "[0.0, 0.5, 1.0]" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "time-vs-space-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def has_duplicate_no_extra_space(nums):\n    ...\n",
+  "cases": [
+    { "call": "has_duplicate_no_extra_space([1, 2, 3, 2])", "expect": "True" },
+    { "call": "has_duplicate_no_extra_space([1, 2, 3])", "expect": "False" },
+    { "call": "has_duplicate_no_extra_space([])", "expect": "False" }
+  ]
+}

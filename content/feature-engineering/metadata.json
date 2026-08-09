@@ -11,22 +11,23 @@
     "data-scientist",
     "ml-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "One-hot encoding, min-max/z-score scaling, and interaction/ratio features, built on the real pandas infrastructure — turning raw columns into what a model can actually use.",
   "modules": [
     {
       "slug": "encoding",
       "title": "Encoding",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "scaling",
       "title": "Scaling",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "interaction-features",
       "title": "Interaction Features",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

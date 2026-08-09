@@ -1,0 +1,11 @@
+{
+  "id": "numerical-integration-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def simpsons_rule(f, a, b, n):\n    ...\n",
+  "cases": [
+    { "call": "simpsons_rule(lambda x: x**2, 0, 1, 100)", "expect": "0.3333" },
+    { "call": "simpsons_rule(lambda x: x**3, 0, 2, 10)", "expect": "4.0" },
+    { "call": "simpsons_rule(lambda x: x**4, 0, 1, 10)", "expect": "0.2" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "encapsulation-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "class BankAccount:\n    def __init__(self, balance=0):\n        self._balance = balance\n\n    @property\n    def balance(self):\n        ...\n",
+  "cases": [
+    { "call": "BankAccount(100).balance", "expect": "100" },
+    { "call": "BankAccount().balance", "expect": "0" },
+    { "call": "BankAccount(250).balance", "expect": "250" }
+  ]
+}

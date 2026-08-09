@@ -1,0 +1,11 @@
+{
+  "id": "creational-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import math\n\nclass Shape:\n    def area(self):\n        raise NotImplementedError\n\nclass Rectangle(Shape):\n    def __init__(self, w, h):\n        self.w = w\n        self.h = h\n    def area(self):\n        return self.w * self.h\n\nclass Circle(Shape):\n    def __init__(self, r):\n        self.r = r\n    def area(self):\n        return math.pi * self.r ** 2\n\ndef create_shape(kind, *args):\n    ...\n",
+  "cases": [
+    { "call": "create_shape('rectangle', 3, 4).area()", "expect": "12" },
+    { "call": "round(create_shape('circle', 2).area(), 2)", "expect": "12.57" },
+    { "call": "create_shape('rectangle', 5, 5).area()", "expect": "25" }
+  ]
+}

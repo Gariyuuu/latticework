@@ -1,0 +1,11 @@
+{
+  "id": "convexity-intuition-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def is_convex_numerically(f, a, b, c):\n    ...\n",
+  "cases": [
+    { "call": "is_convex_numerically(lambda x: x**2, -2, 0, 2)", "expect": "True" },
+    { "call": "is_convex_numerically(lambda x: -x**2, -2, 0, 2)", "expect": "False" },
+    { "call": "is_convex_numerically(lambda x: x**3, -2, 0, 3)", "expect": "True" }
+  ]
+}

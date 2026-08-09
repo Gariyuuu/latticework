@@ -1,0 +1,99 @@
+---
+slug: polymorphism
+title: Polymorphism
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: introspection
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: polymorphism-ex1
+    difficulty: beginner
+    concept: oop-polymorphism
+    prompt: "Given `Shape`, `Rectangle`, and `Circle` below (all with a working `area()`), write `total_area(shapes)`: sum every shape's `area()` — calling `.area()` should work identically regardless of each shape's actual type. Round the result to 4 decimals."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: polymorphism-ex2
+    difficulty: intermediate
+    concept: oop-polymorphism
+    prompt: "Write `describe_shapes(shapes)`, returning a list of strings like `\"Rectangle: area=12\"` for each shape — use `type(s).__name__` to get each shape's actual class name, and round each area to 2 decimals."
+  - id: quiz-1
+    type: quiz
+    concept: oop-polymorphism
+    question: "What is 'polymorphism' in OOP?"
+    options: ["Calling the same method name on objects of different types and having each execute its own type-specific implementation automatically", "Having multiple constructors for one class", "Inheriting from more than one parent class at once", "Converting a value from one data type to another"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Polymorphism** means calling the SAME method name on different types
+and having each one do its own type-appropriate thing — you already saw
+the mechanism in the last module (`Square` inheriting `Rectangle.area`),
+but the real power shows up when you have a MIX of types and treat them
+uniformly:
+
+```python
+class Shape:
+    def area(self):
+        raise NotImplementedError
+
+class Rectangle(Shape):
+    def __init__(self, w, h):
+        self.w, self.h = w, h
+    def area(self):
+        return self.w * self.h
+
+class Circle(Shape):
+    def __init__(self, r):
+        self.r = r
+    def area(self):
+        import math
+        return math.pi * self.r ** 2
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`shapes = [Rectangle(2, 3), Circle(1), Rectangle(4, 4)]\ntotal = sum(s.area() for s in shapes)\nprint(round(total, 2))`} caption="This loop never checks 'if it's a Rectangle, do X; if it's a Circle, do Y' -- calling .area() just works for every shape, because each class knows how to compute its OWN area. That's polymorphism doing the dispatching for you." />
+
+<Explanation id="introspection">
+
+Sometimes you need to know an object's ACTUAL type at runtime — not to
+change behavior (that's what polymorphism already handles automatically
+via `.area()`), but for things like logging or display. `type(obj).__name__`
+gives you the class name as a string:
+
+```python
+for s in shapes:
+    print(f"{type(s).__name__}: {s.area():.2f}")
+# Rectangle: 6.00
+# Circle: 3.14
+# Rectangle: 16.00
+```
+
+A common beginner mistake is reaching for `if isinstance(s, Rectangle):
+... elif isinstance(s, Circle): ...` to handle each type differently —
+that defeats the entire point of polymorphism. If you find yourself
+writing that kind of type-checking chain, it's usually a sign the logic
+belongs inside each class's own method instead.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can write code that treats a mix of related object types uniformly through their shared method interface, letting each object's own implementation handle the type-specific behavior.
+</Checkpoint>

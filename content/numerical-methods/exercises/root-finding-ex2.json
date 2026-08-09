@@ -1,0 +1,11 @@
+{
+  "id": "root-finding-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def newtons_method(f, f_prime, x0, iterations=20):\n    ...\n",
+  "cases": [
+    { "call": "newtons_method(lambda x: x**2 - 4, lambda x: 2*x, 1)", "expect": "2.0" },
+    { "call": "newtons_method(lambda x: x**3 - x - 2, lambda x: 3*x**2 - 1, 1.5)", "expect": "1.5214" },
+    { "call": "newtons_method(lambda x: x**2 - 2, lambda x: 2*x, 1)", "expect": "1.4142" }
+  ]
+}

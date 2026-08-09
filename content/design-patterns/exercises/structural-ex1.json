@@ -1,0 +1,11 @@
+{
+  "id": "structural-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "class OldRectangle:\n    def __init__(self, w, h):\n        self.w = w\n        self.h = h\n    def compute_area(self):\n        return self.w * self.h\n\nclass RectangleAdapter:\n    def __init__(self, old_rect):\n        self.old_rect = old_rect\n    def area(self):\n        ...\n",
+  "cases": [
+    { "call": "RectangleAdapter(OldRectangle(3, 4)).area()", "expect": "12" },
+    { "call": "RectangleAdapter(OldRectangle(5, 5)).area()", "expect": "25" },
+    { "call": "RectangleAdapter(OldRectangle(2, 10)).area()", "expect": "20" }
+  ]
+}

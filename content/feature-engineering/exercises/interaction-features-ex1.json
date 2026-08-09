@@ -1,0 +1,10 @@
+{
+  "id": "interaction-features-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["pandas"],
+  "starterCode": "import pandas as pd\n\ndef add_interaction(df, col1, col2):\n    ...\n",
+  "cases": [
+    { "call": "add_interaction(pd.DataFrame({'price': [10, 20], 'qty': [2, 3]}), 'price', 'qty')", "expect": "[20, 60]" }
+  ]
+}

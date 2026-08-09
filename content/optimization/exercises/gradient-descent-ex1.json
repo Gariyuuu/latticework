@@ -1,0 +1,11 @@
+{
+  "id": "gradient-descent-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def gradient_descent_1d(f_prime, x0, lr, steps):\n    ...\n",
+  "cases": [
+    { "call": "gradient_descent_1d(lambda x: 2*x, 10, 0.1, 50)", "expect": "0.0001" },
+    { "call": "gradient_descent_1d(lambda x: 2*x, -5, 0.15, 25)", "expect": "-0.0007" },
+    { "call": "gradient_descent_1d(lambda x: 4*(x-3), 0, 0.1, 100)", "expect": "3.0" }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "scaling-ex2",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["pandas"],
+  "starterCode": "import pandas as pd\n\ndef standardize(series):\n    ...\n",
+  "cases": [
+    { "call": "standardize(pd.Series([2, 4, 4, 4, 5, 5, 7, 9]))", "expect": "[-1.4031, -0.4677, -0.4677, -0.4677, 0.0, 0.0, 0.9354, 1.8708]" }
+  ]
+}

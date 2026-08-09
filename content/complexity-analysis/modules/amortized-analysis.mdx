@@ -1,0 +1,104 @@
+---
+slug: amortized-analysis
+title: Amortized Analysis
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: why-o1
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: amortized-analysis-ex1
+    difficulty: beginner
+    concept: complexity-amortized-analysis
+    prompt: "Write `total_resizes(n)`: simulate a dynamic array starting at capacity 1 that DOUBLES its capacity whenever a new element wouldn't fit, as you append `n` elements one at a time. Return the total number of RESIZE operations (not appends)."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: amortized-analysis-ex2
+    difficulty: intermediate
+    concept: complexity-amortized-analysis
+    prompt: "Write `total_copy_operations(n)`: same simulation, but return the TOTAL number of element copies performed across every resize (each resize copies every existing element — `capacity` of them — into the new array)."
+  - id: quiz-1
+    type: quiz
+    concept: complexity-amortized-analysis
+    question: "Why is the amortized cost of appending to a dynamic array O(1), even though an individual resize is O(n)?"
+    options: ["Doubling means resizes happen exponentially less often as the array grows (only O(log n) resizes for n appends total), so the total copying cost, spread evenly across all n appends, averages out to a constant per append", "Resizes never actually happen in a correctly-written implementation", "Every single append is always O(1) with zero exceptions, including the ones that trigger a resize", "The array secretly stops growing after enough appends"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Python's `list.append()` is described as O(1) — but that can't be
+literally true for EVERY call, since occasionally the underlying array
+runs out of room and has to be resized, which means copying every
+existing element into a bigger array (an O(n) operation). **Amortized
+analysis** resolves this apparent contradiction: individual operations
+can occasionally be expensive, but the AVERAGE cost per operation, over
+a long sequence, is still O(1).
+
+```python
+def total_resizes(n):
+    capacity = 1
+    size = 0
+    resizes = 0
+    for _ in range(n):
+        if size == capacity:
+            capacity *= 2
+            resizes += 1
+        size += 1
+    return resizes
+
+print(total_resizes(1000))   # far fewer than 1000 -- doubling grows capacity exponentially
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def total_resizes(n):\n    capacity = 1\n    size = 0\n    resizes = 0\n    for _ in range(n):\n        if size == capacity:\n            capacity *= 2\n            resizes += 1\n        size += 1\n    return resizes\n\nfor n in [10, 100, 1000, 1_000_000]:\n    print(n, total_resizes(n))`} caption="Resizes grow logarithmically (roughly doubling n only adds ONE more resize) -- 1,000,000 appends trigger only about 20 resizes total, not 1,000,000." />
+
+<Explanation id="why-o1">
+
+Here's the key insight: because capacity DOUBLES each time (not just
+increases by a fixed amount), each resize copies roughly as many
+elements as ALL the previous resizes combined copied in total. Summing
+`1 + 2 + 4 + 8 + ... + n/2` (the sizes at each resize) totals just under
+`2n` — proportional to `n`, not to the NUMBER of resizes.
+
+```python
+def total_copy_operations(n):
+    capacity = 1
+    size = 0
+    total_copies = 0
+    for _ in range(n):
+        if size == capacity:
+            total_copies += capacity   # this resize's copying cost
+            capacity *= 2
+        size += 1
+    return total_copies
+```
+
+Since the total copying work across `n` appends is O(n), the AVERAGE
+(amortized) cost per individual append is O(n)/n = O(1) — even though
+any single append might trigger an O(n) resize. This is why doubling
+(not adding a fixed amount) is the standard growth strategy for dynamic
+arrays — growing by a fixed amount instead would make resizes happen
+proportionally to `n`, making the amortized cost O(n), not O(1).
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You understand why doubling a dynamic array's capacity keeps appends amortized O(1), even though individual resizes are O(n).
+</Checkpoint>

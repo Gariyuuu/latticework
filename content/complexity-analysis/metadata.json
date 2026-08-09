@@ -21,22 +21,23 @@
     "quant-researcher",
     "quant-trader"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "Big-O, time/space tradeoffs, and amortized analysis — measured by counting real operations across growing inputs, not hand-wavy notation.",
   "modules": [
     {
       "slug": "big-o",
       "title": "Big-O",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "time-vs-space",
       "title": "Time vs Space",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "amortized-analysis",
       "title": "Amortized Analysis",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

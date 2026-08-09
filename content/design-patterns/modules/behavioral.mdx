@@ -1,0 +1,108 @@
+---
+slug: behavioral
+title: Behavioral Patterns
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: observer
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: behavioral-ex1
+    difficulty: beginner
+    concept: design-patterns-behavioral
+    prompt: "Write `Discounter.apply(self, price)` (the Strategy pattern): `self.strategy` is a function; call it with `price` and return the result."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: behavioral-ex2
+    difficulty: intermediate
+    concept: design-patterns-behavioral
+    prompt: "Write `EventEmitter.emit(self, value)` (the Observer pattern): call every subscribed callback in `self.subscribers` with `value`, and return a list of their return values, in subscription order."
+  - id: quiz-1
+    type: quiz
+    concept: design-patterns-behavioral
+    question: "What problem does the Strategy pattern solve?"
+    options: ["It lets you swap an algorithm's behavior at runtime by passing in different interchangeable implementations, instead of hardcoding one approach", "It guarantees only one instance of a class ever exists", "It converts one interface into another", "It hides a class's methods from callers outside the class"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Behavioral patterns** are about how objects communicate and share
+responsibility. The **Strategy** pattern makes an algorithm swappable:
+instead of hardcoding ONE way to do something, a class holds a reference
+to a function (or object) that defines the behavior, and calls it
+generically:
+
+```python
+class Discounter:
+    def __init__(self, strategy):
+        self.strategy = strategy   # a function, chosen by the caller
+
+    def apply(self, price):
+        return self.strategy(price)
+
+ten_percent_off = Discounter(lambda p: p * 0.9)
+flat_ten_off = Discounter(lambda p: p - 10)
+
+print(ten_percent_off.apply(100))   # 90.0
+print(flat_ten_off.apply(100))       # 90
+```
+
+Same `Discounter` class, completely different discount logic — swapped
+in from outside, with zero changes to `Discounter` itself. That's
+exactly the same idea as the Strategy pattern in the Optimization
+course's gradient descent functions accepting `f_prime`/`grad_f` as
+arguments.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`class Discounter:\n    def __init__(self, strategy):\n        self.strategy = strategy\n    def apply(self, price):\n        return self.strategy(price)\n\nstrategies = {\n    "none": lambda p: p,\n    "ten_percent": lambda p: p * 0.9,\n    "flat_five": lambda p: max(0, p - 5),\n}\nfor name, strat in strategies.items():\n    print(name, Discounter(strat).apply(50))`} caption="Adding a new discount strategy never requires touching the Discounter class -- you just define a new function and pass it in. That's the flexibility Strategy buys you." />
+
+<Explanation id="observer">
+
+The **Observer** pattern lets one object (the "subject") notify a list of
+other objects ("observers") whenever something happens, without needing
+to know anything about them beyond "they're callable":
+
+```python
+class EventEmitter:
+    def __init__(self):
+        self.subscribers = []
+
+    def subscribe(self, callback):
+        self.subscribers.append(callback)
+        return self
+
+    def emit(self, value):
+        return [cb(value) for cb in self.subscribers]
+
+emitter = EventEmitter()
+emitter.subscribe(lambda x: print(f"logger: {x}"))
+emitter.subscribe(lambda x: x * 2)
+emitter.emit(21)
+```
+
+This is the exact pattern behind UI event listeners, pub/sub messaging
+systems, and reactive frameworks — the emitter doesn't know or care what
+its subscribers DO, it just calls them all when something happens.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement the Strategy pattern to make behavior swappable at runtime, and the Observer pattern to notify multiple subscribers of an event.
+</Checkpoint>

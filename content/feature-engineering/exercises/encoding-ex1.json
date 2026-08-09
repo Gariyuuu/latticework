@@ -1,0 +1,12 @@
+{
+  "id": "encoding-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["pandas"],
+  "starterCode": "import pandas as pd\n\ndef one_hot_encode(df, column):\n    ...\n",
+  "cases": [
+    { "call": "one_hot_encode(pd.DataFrame({'id': [1, 2, 3], 'color': ['red', 'blue', 'red']}), 'color')", "expect": "['color_blue', 'color_red', 'id']" },
+    { "call": "one_hot_encode(pd.DataFrame({'x': [1, 2], 'size': ['S', 'M']}), 'size')", "expect": "['size_M', 'size_S', 'x']" },
+    { "call": "one_hot_encode(pd.DataFrame({'a': [1], 'cat': ['only']}), 'cat')", "expect": "['a', 'cat_only']" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "numerical-integration-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def trapezoidal_rule(f, a, b, n):\n    ...\n",
+  "cases": [
+    { "call": "trapezoidal_rule(lambda x: x**2, 0, 1, 100)", "expect": "0.3334" },
+    { "call": "trapezoidal_rule(lambda x: x, 0, 10, 50)", "expect": "50.0" },
+    { "call": "trapezoidal_rule(lambda x: 2*x + 1, 0, 5, 10)", "expect": "30.0" }
+  ]
+}

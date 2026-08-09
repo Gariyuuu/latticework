@@ -1,0 +1,92 @@
+---
+slug: constrained-optimization
+title: Constrained Optimization
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: penalty
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: constrained-optimization-ex1
+    difficulty: beginner
+    concept: optimization-constrained
+    prompt: "Write `constrained_min_sum_fixed(total)`: given the constraint `x + y = total`, return the MINIMUM possible value of `x**2 + y**2` (achieved when `x = y = total/2`, by symmetry), rounded to 4 decimals."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: constrained-optimization-ex2
+    difficulty: intermediate
+    concept: optimization-constrained
+    prompt: "Write `penalty_method_1d(x0, lr, steps, penalty_weight=100)`, minimizing `x**2` subject to `x >= 5` via the penalty method: minimize `x**2 + penalty_weight * max(0, 5 - x)**2` instead, using numerical-derivative gradient descent (central difference, `h=1e-5`). Return the final `x` rounded to 2 decimals."
+  - id: quiz-1
+    type: quiz
+    concept: optimization-constrained
+    question: "What does the penalty method do to turn a constrained problem into an unconstrained one?"
+    options: ["It adds a term to the objective that grows large whenever the constraint is violated, so the optimizer is pushed away from infeasible points", "It removes the constraint entirely and hopes for the best", "It only searches over integer values", "It solves the constraint exactly before optimizing anything"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+So far, every optimization problem has been unconstrained — minimize
+`f(x)` over ALL possible `x`. Real problems usually have constraints:
+minimize risk subject to a minimum expected return, minimize cost
+subject to a budget, and so on.
+
+The simplest constrained problems can be solved by substitution: if
+`x + y = 10` is required, substitute `y = 10 - x` and you're back to an
+ordinary unconstrained problem in one variable:
+
+```python
+# minimize x^2 + y^2 subject to x + y = 10
+# substitute y = 10 - x:
+# minimize x^2 + (10 - x)^2   -- now just an unconstrained 1D problem
+```
+
+By symmetry, the minimum of `x² + (10-x)²` occurs at `x = y = 5` — split
+evenly, since squaring penalizes extremes more than the constraint
+rewards concentrating in one variable.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def constrained_min_sum_fixed(total):\n    x = total / 2\n    y = total - x\n    return round(x**2 + y**2, 2)\n\nprint(constrained_min_sum_fixed(10))  # 50.0 -- achieved at x=y=5\nprint(constrained_min_sum_fixed(4))   # 8.0  -- achieved at x=y=2`} caption="Substitution only works cleanly for simple equality constraints -- inequality constraints (like x >= 5) need a different technique, covered next." />
+
+<Explanation id="penalty">
+
+Substitution doesn't work for INEQUALITY constraints like `x >= 5` — you
+can't "solve for" an inequality the way you can an equation. The
+**penalty method** handles this instead: add a term to the objective
+that's zero when the constraint is satisfied, and grows large (quadratically,
+usually) when it's violated:
+
+```python
+def objective(x, penalty_weight=100):
+    violation = max(0, 5 - x)          # 0 if x >= 5, positive otherwise
+    return x**2 + penalty_weight * violation**2
+```
+
+Minimizing this modified objective with ordinary gradient descent
+naturally avoids the infeasible region — any attempt to go below `x = 5`
+gets punished so heavily that gradient descent steers back toward
+`x = 5`, converging to the constrained optimum without ever solving the
+constraint algebraically.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can solve simple equality-constrained problems by substitution, and inequality-constrained problems via the penalty method, turning them into ordinary unconstrained gradient descent.
+</Checkpoint>

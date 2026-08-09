@@ -1,0 +1,11 @@
+{
+  "id": "big-o-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def binary_search_count(nums, target):\n    ...\n",
+  "cases": [
+    { "call": "binary_search_count(list(range(1, 1025)), 1024)", "expect": "11" },
+    { "call": "binary_search_count(list(range(1, 1025)), 1)", "expect": "10" },
+    { "call": "binary_search_count(list(range(1, 17)), 16)", "expect": "5" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "classes-objects-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "class Inventory:\n    def __init__(self):\n        self.items = {}\n\n    def add_item(self, name, qty):\n        self.items[name] = self.items.get(name, 0) + qty\n        return self\n\n    def remove_item(self, name, qty):\n        ...\n",
+  "cases": [
+    { "call": "Inventory().add_item('a', 10).remove_item('a', 3)", "expect": "True" },
+    { "call": "Inventory().add_item('a', 10).remove_item('a', 20)", "expect": "False" },
+    { "call": "Inventory().remove_item('a', 1)", "expect": "False" }
+  ]
+}

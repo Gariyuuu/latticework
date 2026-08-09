@@ -1,0 +1,11 @@
+{
+  "id": "polymorphism-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import math\n\nclass Shape:\n    def area(self):\n        raise NotImplementedError\n\nclass Rectangle(Shape):\n    def __init__(self, w, h):\n        self.w = w\n        self.h = h\n    def area(self):\n        return self.w * self.h\n\nclass Circle(Shape):\n    def __init__(self, r):\n        self.r = r\n    def area(self):\n        return math.pi * self.r ** 2\n\ndef total_area(shapes):\n    ...\n",
+  "cases": [
+    { "call": "total_area([Rectangle(2, 3), Rectangle(4, 4)])", "expect": "22" },
+    { "call": "total_area([Circle(1)])", "expect": "3.1416" },
+    { "call": "total_area([Rectangle(1, 1), Circle(2)])", "expect": "13.5664" }
+  ]
+}

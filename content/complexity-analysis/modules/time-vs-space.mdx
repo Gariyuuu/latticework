@@ -1,0 +1,86 @@
+---
+slug: time-vs-space
+title: Time vs Space
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: which-to-choose
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: time-vs-space-ex1
+    difficulty: beginner
+    concept: complexity-time-vs-space
+    prompt: "Write `has_duplicate_extra_space(nums)`: detect a duplicate value in O(n) TIME, using a set (O(n) extra SPACE) to track values seen so far."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: time-vs-space-ex2
+    difficulty: intermediate
+    concept: complexity-time-vs-space
+    prompt: "Write `has_duplicate_no_extra_space(nums)`: detect a duplicate value using O(n log n) TIME instead (sort a copy of the list, then scan for adjacent equal values), trading away the O(n) hash-set memory for extra time instead."
+  - id: quiz-1
+    type: quiz
+    concept: complexity-time-vs-space
+    question: "What's the fundamental tradeoff between the hash-set approach (O(n) time) and the sort-then-scan approach (O(n log n) time) to duplicate detection?"
+    options: ["The hash set trades O(n) extra memory for faster time; sorting trades slower time for using less extra memory", "There's no real tradeoff — the hash set is strictly better in every way", "Sorting always uses less time AND less memory than a hash set", "A hash set only works on data that's already sorted"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Algorithms often have more than one valid solution with different
+tradeoffs — the same problem, solved faster by using more memory, or
+solved with less memory by taking more time. Detecting a duplicate in a
+list is a clean example you've already partially seen (in the Data
+Structures course's Hash Tables module and Python's Performance module):
+
+```python
+def has_duplicate_extra_space(nums):
+    seen = set()          # extra O(n) memory in the worst case
+    for n in nums:
+        if n in seen:
+            return True     # O(1) average lookup -> O(n) total time
+        seen.add(n)
+    return False
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def has_duplicate_extra_space(nums):\n    seen = set()\n    for n in nums:\n        if n in seen:\n            return True\n        seen.add(n)\n    return False\n\ndef has_duplicate_no_extra_space(nums):\n    sorted_nums = sorted(nums)\n    for i in range(1, len(sorted_nums)):\n        if sorted_nums[i] == sorted_nums[i - 1]:\n            return True\n    return False\n\nnums = [4, 2, 7, 2, 9]\nprint(has_duplicate_extra_space(nums), has_duplicate_no_extra_space(nums))  # True True -- same answer, different cost profile`} caption="Both functions give the same answer for the same input -- the difference is entirely in HOW they get there, not WHAT they return." />
+
+<Explanation id="which-to-choose">
+
+Neither approach is universally "better" — it depends on what's scarce:
+
+- **Hash set**: O(n) time, O(n) extra space. Best when memory is
+  plentiful and speed matters most.
+- **Sort-then-scan**: O(n log n) time, no significant extra space beyond
+  the sort itself (and `sorted()` avoids mutating the original list, at
+  the cost of a copy — sorting the list IN PLACE with `.sort()` instead
+  would use less memory still).
+
+This tradeoff — trading memory for speed, or speed for memory — shows up
+constantly: caching (memory for speed), streaming algorithms (speed/
+correctness for memory), compression (time for space). Recognizing
+"this is a time/space tradeoff" is often the first step to picking the
+right one for your actual constraints.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement the same algorithm two different ways with different time/space tradeoffs, and can articulate what's being traded for what.
+</Checkpoint>

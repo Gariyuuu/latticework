@@ -1,0 +1,105 @@
+---
+slug: solving-linear-systems
+title: Solving Linear Systems
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: gaussian
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: solving-linear-systems-ex1
+    difficulty: beginner
+    concept: numerical-linear-systems
+    prompt: "Write `solve_2x2(a, b, c, d, e, f)`, solving the system `ax + by = e`, `cx + dy = f` using Cramer's rule: `det = ad - bc`, `x = (ed - bf) / det`, `y = (af - ec) / det`. Return `[x, y]`, each rounded to 4 decimals."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: solving-linear-systems-ex2
+    difficulty: intermediate
+    concept: numerical-linear-systems
+    prompt: "Write `gaussian_elimination_3x3(A, b)`, solving `Ax = b` for a 3×3 system using Gaussian elimination (no pivoting needed — assume no zero pivots occur): eliminate downward to get an upper-triangular system, then back-substitute. Return `[x, y, z]`, each rounded to 4 decimals."
+  - id: quiz-1
+    type: quiz
+    concept: numerical-linear-systems
+    question: "What is the goal of the elimination step in Gaussian elimination?"
+    options: ["Transform the system into upper-triangular form, so the last equation has only one unknown and can be solved directly, then substituted backward", "Compute the matrix's eigenvalues", "Guess-and-check every possible solution", "Multiply every equation by the same constant"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A system of linear equations — several equations, several unknowns, all
+linear — comes up constantly: balancing a portfolio across assets,
+fitting a regression line, solving for equilibrium prices. For a 2×2
+system, **Cramer's rule** gives a direct formula using determinants (from
+the Linear Algebra course):
+
+```python
+def solve_2x2(a, b, c, d, e, f):
+    # ax + by = e
+    # cx + dy = f
+    det = a*d - b*c
+    x = (e*d - b*f) / det
+    y = (a*f - e*c) / det
+    return [x, y]
+
+print(solve_2x2(2, 1, 1, 3, 5, 10))   # [1.0, 3.0]
+```
+
+Cramer's rule doesn't scale well past 2×2 or 3×3 (the determinant
+calculations get expensive fast) — for larger systems, you need a
+different technique.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def solve_2x2(a, b, c, d, e, f):\n    det = a*d - b*c\n    x = (e*d - b*f) / det\n    y = (a*f - e*c) / det\n    return [round(x, 2), round(y, 2)]\n\nprint(solve_2x2(1, 1, 1, -1, 10, 2))  # x+y=10, x-y=2 -> [6.0, 4.0]`} caption="Cramer's rule fails outright when det == 0 -- that means the two lines are parallel (no unique solution, either no solution or infinitely many)." />
+
+<Explanation id="gaussian">
+
+**Gaussian elimination** scales to any size: systematically eliminate
+each variable from every equation below it, producing an
+upper-triangular system where the LAST equation has only one unknown —
+solve that, then substitute backward through the rest.
+
+```python
+def gaussian_elimination_3x3(A, b):
+    A = [row[:] for row in A]
+    b = b[:]
+    n = 3
+    for i in range(n):
+        for j in range(i + 1, n):
+            factor = A[j][i] / A[i][i]
+            for k in range(i, n):
+                A[j][k] -= factor * A[i][k]
+            b[j] -= factor * b[i]
+    # A is now upper-triangular -- solve backward
+    x = [0] * n
+    for i in range(n - 1, -1, -1):
+        x[i] = (b[i] - sum(A[i][k] * x[k] for k in range(i + 1, n))) / A[i][i]
+    return x
+```
+
+This is exactly the algorithm behind `numpy.linalg.solve` and every
+production linear-algebra library — real implementations add pivoting
+(swapping rows to avoid dividing by a near-zero number) for numerical
+stability, but the core idea is precisely this.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can solve small linear systems directly via Cramer's rule, and larger ones via Gaussian elimination — the same general technique every linear-algebra library uses under the hood.
+</Checkpoint>

@@ -1,0 +1,11 @@
+{
+  "id": "immutability-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def freeze_config(d):\n    ...\n",
+  "cases": [
+    { "call": "freeze_config({'b': 2, 'a': 1})", "expect": "(('a', 1), ('b', 2))" },
+    { "call": "freeze_config({})", "expect": "()" },
+    { "call": "freeze_config({'x': 10})", "expect": "(('x', 10),)" }
+  ]
+}

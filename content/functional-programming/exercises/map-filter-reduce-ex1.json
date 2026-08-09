@@ -1,0 +1,11 @@
+{
+  "id": "map-filter-reduce-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def squares_over_10(nums):\n    ...\n",
+  "cases": [
+    { "call": "squares_over_10([1, 2, 3, 4])", "expect": "[16]" },
+    { "call": "squares_over_10([5, 1, 2])", "expect": "[25]" },
+    { "call": "squares_over_10([])", "expect": "[]" }
+  ]
+}

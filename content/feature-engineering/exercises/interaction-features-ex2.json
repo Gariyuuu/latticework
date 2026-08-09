@@ -1,0 +1,10 @@
+{
+  "id": "interaction-features-ex2",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["pandas"],
+  "starterCode": "import pandas as pd\n\ndef add_ratio_feature(df, numerator_col, denominator_col):\n    ...\n",
+  "cases": [
+    { "call": "add_ratio_feature(pd.DataFrame({'revenue': [100, 200], 'units': [4, 5]}), 'revenue', 'units')", "expect": "[25.0, 40.0]" }
+  ]
+}

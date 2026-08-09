@@ -1,0 +1,11 @@
+{
+  "id": "root-finding-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def bisection(f, a, b, tol=1e-6):\n    ...\n",
+  "cases": [
+    { "call": "bisection(lambda x: x**2 - 4, 0, 5)", "expect": "2.0" },
+    { "call": "bisection(lambda x: x**3 - x - 2, 1, 2)", "expect": "1.5214" },
+    { "call": "bisection(lambda x: x - 3, 0, 10)", "expect": "3.0" }
+  ]
+}

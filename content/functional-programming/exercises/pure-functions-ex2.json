@@ -1,0 +1,11 @@
+{
+  "id": "pure-functions-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def total_pure(prices, tax_rate):\n    ...\n",
+  "cases": [
+    { "call": "total_pure([10, 20, 30], 0.08)", "expect": "64.8" },
+    { "call": "total_pure([], 0.1)", "expect": "0.0" },
+    { "call": "total_pure([100], 0)", "expect": "100" }
+  ]
+}

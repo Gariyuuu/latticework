@@ -1,0 +1,11 @@
+{
+  "id": "structural-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "class Rectangle:\n    def __init__(self, w, h):\n        self.w = w\n        self.h = h\n    def area(self):\n        return self.w * self.h\n\nclass LoggingShape:\n    def __init__(self, shape):\n        self.shape = shape\n        self.call_count = 0\n    def area(self):\n        ...\n",
+  "cases": [
+    { "call": "LoggingShape(Rectangle(3, 4)).area()", "expect": "12" },
+    { "call": "LoggingShape(Rectangle(5, 5)).area()", "expect": "25" },
+    { "call": "LoggingShape(Rectangle(2, 10)).area()", "expect": "20" }
+  ]
+}

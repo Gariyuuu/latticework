@@ -1,0 +1,11 @@
+{
+  "id": "amortized-analysis-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def total_resizes(n):\n    ...\n",
+  "cases": [
+    { "call": "total_resizes(1)", "expect": "0" },
+    { "call": "total_resizes(10)", "expect": "4" },
+    { "call": "total_resizes(17)", "expect": "5" }
+  ]
+}

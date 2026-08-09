@@ -1,0 +1,104 @@
+---
+slug: creational
+title: Creational Patterns
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: singleton
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: creational-ex1
+    difficulty: beginner
+    concept: design-patterns-creational
+    prompt: "Given `Shape`/`Rectangle`/`Circle` below, write `create_shape(kind, *args)` (the Factory pattern): return `Rectangle(*args)` if `kind == 'rectangle'`, `Circle(*args)` if `kind == 'circle'`, otherwise raise `ValueError`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: creational-ex2
+    difficulty: intermediate
+    concept: design-patterns-creational
+    prompt: "Implement `Config.__new__` (the Singleton pattern): the first call creates a real instance with an empty `settings` dict; every later call to `Config()` must return that SAME instance, not a new one."
+  - id: quiz-1
+    type: quiz
+    concept: design-patterns-creational
+    question: "What problem does the Factory pattern solve?"
+    options: ["It centralizes object-creation logic in one place, so callers don't need to know which concrete class to instantiate directly", "It makes every created object immutable", "It removes the need for classes entirely", "It's just another name for inheritance"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Creational patterns** control HOW objects get created — useful once
+"just call the constructor directly" isn't flexible enough. The
+**Factory** pattern centralizes creation logic behind a function, so
+callers ask for what they want by name/kind instead of knowing which
+exact class to instantiate:
+
+```python
+def create_shape(kind, *args):
+    if kind == "rectangle":
+        return Rectangle(*args)
+    elif kind == "circle":
+        return Circle(*args)
+    else:
+        raise ValueError(f"Unknown shape kind: {kind}")
+
+shape = create_shape("rectangle", 3, 4)
+```
+
+The caller never writes `Rectangle(3, 4)` directly — if you ever need to
+change how rectangles get constructed (add a caching layer, a default
+argument, validation), there's exactly one place to change it.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def create_shape(kind, *args):\n    if kind == "rectangle":\n        return Rectangle(*args)\n    elif kind == "circle":\n        return Circle(*args)\n    raise ValueError(f"Unknown shape kind: {kind}")\n\nshapes_to_build = [("rectangle", 2, 3), ("circle", 1)]\nshapes = [create_shape(kind, *args) for kind, *args in shapes_to_build]\nprint([round(s.area(), 2) for s in shapes])`} caption="The calling code only deals with (kind, *args) tuples -- it never imports or references Rectangle/Circle directly, which is exactly the decoupling the Factory pattern is for." />
+
+<Explanation id="singleton">
+
+The **Singleton** pattern guarantees a class has AT MOST one instance,
+and every "creation" after the first just returns the existing one —
+useful for things like a shared config object or connection pool, where
+having two independent instances would be a bug, not a feature:
+
+```python
+class Config:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance.settings = {}
+        return cls._instance
+
+a = Config()
+b = Config()
+print(a is b)   # True -- literally the same object, not just equal
+```
+
+`__new__` (not `__init__`) is where object CREATION happens in Python —
+overriding it is what lets the class intercept "someone's asking for a
+new instance" and hand back the existing one instead. Singletons are
+somewhat controversial in practice (they're effectively global mutable
+state, which makes testing harder) — worth knowing, but reach for
+dependency injection instead where you can.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement the Factory pattern to centralize object creation, and the Singleton pattern to guarantee a class has at most one shared instance.
+</Checkpoint>

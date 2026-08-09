@@ -1,0 +1,98 @@
+---
+slug: structural
+title: Structural Patterns
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: decorator-pattern
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: structural-ex1
+    difficulty: beginner
+    concept: design-patterns-structural
+    prompt: "Given `OldRectangle` (with `compute_area()`, not `area()`) below, write `RectangleAdapter.area(self)` (the Adapter pattern): make the adapter expose the expected `.area()` interface by calling the wrapped object's `.compute_area()`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: structural-ex2
+    difficulty: intermediate
+    concept: design-patterns-structural
+    prompt: "Write `LoggingShape.area(self)` (the Decorator pattern): wrap another shape, incrementing `self.call_count` every time `area()` is called, then return the wrapped shape's actual area."
+  - id: quiz-1
+    type: quiz
+    concept: design-patterns-structural
+    question: "What's the key difference between the Adapter and Decorator patterns?"
+    options: ["Adapter changes an object's INTERFACE to match what callers expect; Decorator keeps the same interface but ADDS behavior around it", "They are the exact same pattern with two different names", "Adapter only works on functions, Decorator only works on classes", "Decorator removes methods; Adapter adds them"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Structural patterns** are about composing objects together — wrapping
+one object inside another to change or extend how it's used, without
+touching its original code. The **Adapter** pattern wraps an object
+whose interface doesn't match what you need, translating calls to match:
+
+```python
+class OldRectangle:              # a class you can't (or don't want to) modify
+    def __init__(self, w, h):
+        self.w, self.h = w, h
+    def compute_area(self):       # wrong method name for your codebase
+        return self.w * self.h
+
+class RectangleAdapter:
+    def __init__(self, old_rect):
+        self.old_rect = old_rect
+    def area(self):               # the interface your code actually expects
+        return self.old_rect.compute_area()
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`class OldRectangle:\n    def __init__(self, w, h):\n        self.w, self.h = w, h\n    def compute_area(self):\n        return self.w * self.h\n\nclass RectangleAdapter:\n    def __init__(self, old_rect):\n        self.old_rect = old_rect\n    def area(self):\n        return self.old_rect.compute_area()\n\nshapes = [RectangleAdapter(OldRectangle(2, 3))]  # now usable anywhere .area() is expected\nprint(sum(s.area() for s in shapes))`} caption="This is exactly how you'd integrate a third-party library (whose method names you can't change) into code written against your own project's interface conventions." />
+
+<Explanation id="decorator-pattern">
+
+The **Decorator** pattern (a different thing from the `@decorator`
+syntax from the Python course, though conceptually related) wraps an
+object to ADD behavior, while keeping the SAME interface — callers can't
+tell the difference between the original object and the decorated one:
+
+```python
+class LoggingShape:
+    def __init__(self, shape):
+        self.shape = shape
+        self.call_count = 0
+
+    def area(self):
+        self.call_count += 1        # added behavior
+        return self.shape.area()     # delegates to the wrapped object
+
+logged = LoggingShape(Rectangle(3, 4))
+print(logged.area())          # 12 -- works exactly like a normal shape
+print(logged.call_count)       # 1 -- but now you can track usage
+```
+
+Unlike Adapter (which changes the interface), Decorator preserves it
+exactly — `LoggingShape` still has `.area()`, just like `Rectangle` does,
+so it can be used anywhere a `Shape` is expected.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can use the Adapter pattern to translate a mismatched interface, and the Decorator pattern to add behavior around an object while keeping its interface identical.
+</Checkpoint>

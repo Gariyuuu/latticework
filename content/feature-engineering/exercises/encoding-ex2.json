@@ -1,0 +1,12 @@
+{
+  "id": "encoding-ex2",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["pandas"],
+  "starterCode": "import pandas as pd\n\ndef encode_and_count_true(df, column, category):\n    ...\n",
+  "cases": [
+    { "call": "encode_and_count_true(pd.DataFrame({'id': [1, 2, 3], 'color': ['red', 'blue', 'red']}), 'color', 'red')", "expect": "2" },
+    { "call": "encode_and_count_true(pd.DataFrame({'id': [1, 2, 3, 4], 'dept': ['Eng', 'Sales', 'Eng', 'Eng']}), 'dept', 'Eng')", "expect": "3" },
+    { "call": "encode_and_count_true(pd.DataFrame({'id': [1, 2], 'flag': ['yes', 'no']}), 'flag', 'no')", "expect": "1" }
+  ]
+}

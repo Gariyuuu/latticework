@@ -1,0 +1,84 @@
+---
+slug: classes-objects
+title: Classes & Objects
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: methods
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: classes-objects-ex1
+    difficulty: beginner
+    concept: oop-classes-objects
+    prompt: "Given the `Inventory` class below, implement `total_items(self)`, returning the sum of all item quantities currently stored."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: classes-objects-ex2
+    difficulty: intermediate
+    concept: oop-classes-objects
+    prompt: "Implement `remove_item(self, name, qty)`: if there's enough of `name` in stock, subtract `qty` and return True; otherwise leave the inventory unchanged and return False."
+  - id: quiz-1
+    type: quiz
+    concept: oop-classes-objects
+    question: "What's the core idea of object-oriented programming's 'object'?"
+    options: ["Bundling related data (state) and the functions that operate on it (behavior) together into a single unit", "A function that returns another function", "Any variable declared at the top of a file", "A type that can only hold numbers"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+An **object** bundles state (data) and behavior (methods that act on
+that data) together — you met the mechanics of this in the Python
+course's Classes module. This course goes a level further: designing a
+class around a real responsibility, with multiple methods that
+collaborate through shared state.
+
+```python
+class Inventory:
+    def __init__(self):
+        self.items = {}   # shared state every method reads/writes
+
+    def add_item(self, name, qty):
+        self.items[name] = self.items.get(name, 0) + qty
+        return self   # returning self enables method chaining
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`class Inventory:\n    def __init__(self):\n        self.items = {}\n\n    def add_item(self, name, qty):\n        self.items[name] = self.items.get(name, 0) + qty\n        return self\n\ninv = Inventory()\ninv.add_item("widgets", 10).add_item("gears", 5).add_item("widgets", 3)\nprint(inv.items)  # {'widgets': 13, 'gears': 5}`} caption="Returning self from add_item lets you chain calls (.add_item(...).add_item(...)) -- the same pattern the exercises in this course use throughout." />
+
+<Explanation id="methods">
+
+Every method that touches `self.items` is really just a different VIEW
+or OPERATION on the same underlying state — that's the point of grouping
+them into one class instead of writing free-floating functions that each
+take an `items` dict as an argument. The object owns its data, and every
+interaction with that data goes through a method, giving you one place
+to look when you need to understand (or change) how inventory tracking
+actually works.
+
+```python
+def total_items(self):
+    return sum(self.items.values())
+```
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can design a class where multiple methods collaborate through shared instance state, each representing one operation on that state.
+</Checkpoint>

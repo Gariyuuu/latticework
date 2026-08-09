@@ -1,0 +1,11 @@
+{
+  "id": "behavioral-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "class Discounter:\n    def __init__(self, strategy):\n        self.strategy = strategy\n\n    def apply(self, price):\n        ...\n",
+  "cases": [
+    { "call": "Discounter(lambda p: p * 0.9).apply(100)", "expect": "90.0" },
+    { "call": "Discounter(lambda p: p - 10).apply(50)", "expect": "40" },
+    { "call": "Discounter(lambda p: p).apply(20)", "expect": "20" }
+  ]
+}

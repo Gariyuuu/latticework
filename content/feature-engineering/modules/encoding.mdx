@@ -1,0 +1,85 @@
+---
+slug: encoding
+title: Encoding
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+    packages: ["pandas"]
+  - id: why
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: encoding-ex1
+    difficulty: beginner
+    concept: feature-engineering-encoding
+    prompt: "Write `one_hot_encode(df, column)`: use `pd.get_dummies` to one-hot encode `column`, and return the resulting dataframe's column names as a sorted list."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: encoding-ex2
+    difficulty: intermediate
+    concept: feature-engineering-encoding
+    prompt: "Write `encode_and_count_true(df, column, category)`: one-hot encode `column`, then return how many rows have the resulting `{column}_{category}` column set (as an int)."
+  - id: quiz-1
+    type: quiz
+    concept: feature-engineering-encoding
+    question: "Why can't most ML models use a raw text category (like 'red', 'blue', 'green') directly as a feature?"
+    options: ["Models expect numeric input, and a raw category has no meaningful numeric order or magnitude to interpret", "Text categories always cause the model to overfit", "One-hot encoding is only needed for numeric columns, not text ones", "Models can use text directly, encoding is purely cosmetic"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Most ML models expect numeric input — a categorical column like
+`department: "Engineering" | "Sales" | "Marketing"` needs to become
+numbers before a model can use it. **One-hot encoding** creates one new
+binary column per category, each marking "is this row THIS category?":
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({"id": [1, 2, 3], "color": ["red", "blue", "red"]})
+encoded = pd.get_dummies(df, columns=["color"])
+print(encoded)
+#    id  color_blue  color_red
+# 0   1       False       True
+# 1   2        True      False
+# 2   3       False       True
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["pandas"]} code={`import pandas as pd\n\ndf = pd.DataFrame({"id": [1, 2, 3, 4], "department": ["Eng", "Sales", "Eng", "Marketing"]})\nencoded = pd.get_dummies(df, columns=["department"])\nprint(encoded.columns.tolist())`} caption="pd.get_dummies replaces the original 'department' column entirely with one new column per unique value found in the data." />
+
+<Explanation id="why">
+
+Why not just assign each category a number directly (`Eng=0, Sales=1,
+Marketing=2`)? Because that implies an ORDER and DISTANCE that don't
+exist — it would tell the model "Marketing is twice as far from
+Engineering as Sales is," which is meaningless for an unordered category.
+One-hot encoding avoids implying any order: every category gets its own
+independent 0/1 column, with no numeric relationship between them.
+
+(For a category that DOES have a real order — like a rating "Low" <
+"Medium" < "High" — a simple ordinal mapping to 0/1/2 IS appropriate,
+since the order is meaningful there. One-hot is specifically for
+UNORDERED categories.)
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can one-hot encode a categorical column with pandas, and understand why unordered categories need this instead of a direct numeric mapping.
+</Checkpoint>

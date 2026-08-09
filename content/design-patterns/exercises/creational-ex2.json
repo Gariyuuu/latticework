@@ -1,0 +1,11 @@
+{
+  "id": "creational-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "class Config:\n    _instance = None\n\n    def __new__(cls):\n        ...\n",
+  "cases": [
+    { "call": "Config().settings.setdefault('a', 1)", "expect": "1" },
+    { "call": "Config().settings", "expect": "{'a': 1}" },
+    { "call": "Config() is Config()", "expect": "True" }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "constrained-optimization-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def penalty_method_1d(x0, lr, steps, penalty_weight=100):\n    ...\n",
+  "cases": [
+    { "call": "penalty_method_1d(0, 0.001, 1000)", "expect": "4.95" },
+    { "call": "penalty_method_1d(10, 0.001, 1000)", "expect": "4.95" }
+  ]
+}

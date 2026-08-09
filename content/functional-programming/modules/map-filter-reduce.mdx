@@ -1,0 +1,91 @@
+---
+slug: map-filter-reduce
+title: Map, Filter, Reduce
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: reduce
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: map-filter-reduce-ex1
+    difficulty: beginner
+    concept: functional-map-filter-reduce
+    prompt: "Write `squares_over_10(nums)` using `map` and `filter` (not a comprehension): square every number, then keep only the squares greater than 10. Return the result as a list."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: map-filter-reduce-ex2
+    difficulty: intermediate
+    concept: functional-map-filter-reduce
+    prompt: "Write `product_of_evens(nums)` using `functools.reduce`: multiply together every even number in `nums` (return 1 if there are none)."
+  - id: quiz-1
+    type: quiz
+    concept: functional-map-filter-reduce
+    question: "What does functools.reduce(f, items, initial) do?"
+    options: ["Repeatedly applies f to an accumulator and each item in sequence, collapsing the whole list into one final value", "Filters items where f returns True", "Applies f to each item independently and returns a list of results", "Removes duplicate items from the list"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+`map`, `filter`, and `reduce` are the three core building blocks of
+functional-style data processing — transform every element, keep only
+some elements, and collapse everything into one value. You've already
+been writing their logic as comprehensions; this module names the
+underlying functions explicitly.
+
+```python
+nums = [1, 2, 3, 4, 5]
+
+squared = list(map(lambda x: x**2, nums))          # [1, 4, 9, 16, 25]
+evens = list(filter(lambda x: x % 2 == 0, nums))    # [2, 4]
+```
+
+`map(f, iterable)` applies `f` to every element. `filter(pred, iterable)`
+keeps only elements where `pred` returns truthy. Both return a lazy
+iterator, not a list — wrap in `list(...)` to see the actual values, or
+just iterate directly.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`nums = [1, 2, 3, 4, 5, 6]\n\n# map+filter chained\nresult = list(filter(lambda x: x > 10, map(lambda x: x**2, nums)))\nprint(result)  # [16, 25, 36] -- squares that end up over 10\n\n# the equivalent comprehension, for comparison\nresult2 = [x**2 for x in nums if x**2 > 10]\nprint(result == result2)  # True -- same logic, different style`} caption="map/filter and comprehensions express the exact same computation -- most Python style guides prefer comprehensions for readability, but map/filter/reduce are the vocabulary shared across functional languages generally, worth recognizing." />
+
+<Explanation id="reduce">
+
+`reduce` has no comprehension equivalent — it collapses an entire
+sequence into a single value by repeatedly combining an accumulator with
+the next element:
+
+```python
+from functools import reduce
+
+nums = [1, 2, 3, 4]
+total = reduce(lambda acc, x: acc + x, nums, 0)   # ((((0+1)+2)+3)+4) = 10
+product = reduce(lambda acc, x: acc * x, nums, 1)  # ((((1*1)*2)*3)*4) = 24
+```
+
+The third argument (`0`, `1` above) is the starting value for the
+accumulator — get this wrong (e.g. starting a product accumulator at `0`
+instead of `1`) and every result collapses to `0`, a common bug when
+first learning `reduce`. `sum()` and `max()` are really just `reduce`
+with the combining function built in.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can use map and filter explicitly (not just as comprehensions), and use reduce to collapse a sequence into a single accumulated value.
+</Checkpoint>

@@ -1,0 +1,11 @@
+{
+  "id": "pure-functions-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def add_pure(lst, item):\n    ...\n",
+  "cases": [
+    { "call": "add_pure([1, 2], 3)", "expect": "[1, 2, 3]" },
+    { "call": "add_pure([], 1)", "expect": "[1]" },
+    { "call": "add_pure([1, 2, 3], 4)", "expect": "[1, 2, 3, 4]" }
+  ]
+}

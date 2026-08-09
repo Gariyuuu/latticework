@@ -1,0 +1,93 @@
+---
+slug: inheritance
+title: Inheritance
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: super
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: inheritance-ex1
+    difficulty: beginner
+    concept: oop-inheritance
+    prompt: "Given `Shape` (base class) and `Rectangle(Shape)` below, implement `Rectangle.area(self)`, returning `width * height`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: inheritance-ex2
+    difficulty: intermediate
+    concept: oop-inheritance
+    prompt: "Given `Square(Rectangle)` below, implement `Square.__init__(self, side)` by calling `super().__init__(side, side)` — reuse Rectangle's setup instead of duplicating it."
+  - id: quiz-1
+    type: quiz
+    concept: oop-inheritance
+    question: "What does calling super().__init__(...) inside a subclass's __init__ do?"
+    options: ["Runs the parent class's __init__, letting the subclass reuse its setup logic instead of duplicating it", "Creates a brand new, unrelated object", "Deletes the parent class entirely", "Is only valid syntax in Python 2"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Inheritance** lets a class (the subclass) reuse and extend another
+class's (the parent's) behavior, instead of rewriting it from scratch.
+`class Rectangle(Shape)` means "a Rectangle IS-A Shape, plus whatever
+extra Rectangle defines."
+
+```python
+class Shape:
+    def area(self):
+        raise NotImplementedError   # every subclass MUST override this
+
+class Rectangle(Shape):
+    def __init__(self, w, h):
+        self.w = w
+        self.h = h
+
+    def area(self):
+        return self.w * self.h
+```
+
+`Shape.area` deliberately raises an error — it's a placeholder saying
+"every real shape must define its own area," a pattern called an
+**abstract method**.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`class Shape:\n    def area(self):\n        raise NotImplementedError\n\nclass Rectangle(Shape):\n    def __init__(self, w, h):\n        self.w = w\n        self.h = h\n    def area(self):\n        return self.w * self.h\n\nr = Rectangle(4, 5)\nprint(isinstance(r, Shape))    # True -- a Rectangle IS a Shape\nprint(isinstance(r, Rectangle))  # True\nprint(r.area())                 # 20`} caption="isinstance() checks the whole inheritance chain, not just the exact class -- a Rectangle passes as both Rectangle AND Shape, since inheritance is an IS-A relationship." />
+
+<Explanation id="super">
+
+When a subclass needs the parent's setup logic PLUS a bit more, calling
+`super().__init__(...)` runs the parent's `__init__` without duplicating
+its code:
+
+```python
+class Square(Rectangle):
+    def __init__(self, side):
+        super().__init__(side, side)   # a square is a rectangle with w == h
+```
+
+`Square` gets `area()` for free — it never defines its own, so Python
+looks up the inheritance chain and finds `Rectangle.area`, which works
+perfectly since `Square` has `self.w` and `self.h` set (by the `super()`
+call) exactly like any other Rectangle would.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can define a subclass that overrides a parent method, and use super() to reuse a parent's __init__ instead of duplicating its logic.
+</Checkpoint>

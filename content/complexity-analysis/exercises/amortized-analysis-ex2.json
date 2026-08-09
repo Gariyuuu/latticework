@@ -1,0 +1,11 @@
+{
+  "id": "amortized-analysis-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def total_copy_operations(n):\n    ...\n",
+  "cases": [
+    { "call": "total_copy_operations(1)", "expect": "0" },
+    { "call": "total_copy_operations(10)", "expect": "15" },
+    { "call": "total_copy_operations(17)", "expect": "31" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "big-o-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def linear_search_count(nums, target):\n    ...\n",
+  "cases": [
+    { "call": "linear_search_count([1, 2, 3, 4, 5], 5)", "expect": "5" },
+    { "call": "linear_search_count([1, 2, 3, 4, 5], 1)", "expect": "1" },
+    { "call": "linear_search_count([1, 2, 3, 4, 5], 99)", "expect": "5" }
+  ]
+}

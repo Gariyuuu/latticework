@@ -1,0 +1,82 @@
+---
+slug: pure-functions
+title: Pure Functions
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: why
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: pure-functions-ex1
+    difficulty: beginner
+    concept: functional-pure-functions
+    prompt: "Write `add_pure(lst, item)`: return a NEW list with `item` appended, WITHOUT mutating `lst` (unlike `lst.append(item)`, which mutates in place and returns None)."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: pure-functions-ex2
+    difficulty: intermediate
+    concept: functional-pure-functions
+    prompt: "Write `total_pure(prices, tax_rate)`: return the total of `prices` with tax applied (`sum(prices) * (1 + tax_rate)`), rounded to 2 decimals. No mutation, no printing, no reading external state — just input in, output out."
+  - id: quiz-1
+    type: quiz
+    concept: functional-pure-functions
+    question: "What makes a function 'pure'?"
+    options: ["Given the same inputs, it always returns the same output and has no observable side effects (no mutating arguments, no I/O, no touching global state)", "It never takes more than one argument", "It must always return None", "It's automatically faster than an equivalent impure function"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A **pure function** always produces the same output for the same input,
+and doesn't change anything outside itself — no mutating an argument, no
+printing, no reading a global variable, no network/file access. Compare:
+
+```python
+# impure -- mutates the argument, returns None
+def add_impure(lst, item):
+    lst.append(item)
+
+# pure -- returns a new list, leaves the original untouched
+def add_pure(lst, item):
+    return lst + [item]
+```
+
+Both "add an item" — but `add_pure` is far easier to reason about: call
+it as many times as you want, in any order, from anywhere, and it will
+never surprise you by having changed something you didn't expect.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def add_pure(lst, item):\n    return lst + [item]\n\noriginal = [1, 2, 3]\nnew_list = add_pure(original, 4)\nprint(original)   # [1, 2, 3] -- completely unchanged\nprint(new_list)    # [1, 2, 3, 4] -- a brand new list`} caption="original is provably untouched -- that's the whole guarantee purity gives you. An impure version using .append() would have silently changed 'original' too, which is often not what you want." />
+
+<Explanation id="why">
+
+Purity matters most once code gets complex: a pure function is trivially
+testable (same input always gives the same output, no setup needed), and
+safe to run in parallel (no shared mutable state means no race
+conditions) or cache (same inputs always give the same answer, so the
+result can be reused). Most real programs mix pure and impure code — the
+functional-programming discipline is pushing as much logic as possible
+into pure functions, and keeping the unavoidable impure parts (reading a
+file, printing output, mutating a database) as a thin layer around them.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can write pure functions that avoid mutating their inputs, and understand why purity makes code easier to test, reason about, and run safely.
+</Checkpoint>

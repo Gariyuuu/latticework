@@ -1,0 +1,11 @@
+{
+  "id": "classes-objects-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "class Inventory:\n    def __init__(self):\n        self.items = {}\n\n    def add_item(self, name, qty):\n        self.items[name] = self.items.get(name, 0) + qty\n        return self\n\n    def total_items(self):\n        ...\n",
+  "cases": [
+    { "call": "Inventory().add_item('a', 3).add_item('b', 5).total_items()", "expect": "8" },
+    { "call": "Inventory().total_items()", "expect": "0" },
+    { "call": "Inventory().add_item('x', 10).add_item('x', 5).total_items()", "expect": "15" }
+  ]
+}
