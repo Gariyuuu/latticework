@@ -1,0 +1,11 @@
+{
+  "id": "pub-sub-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "class PubSub:\n    def __init__(self):\n        self.subscribers = {}\n\n    def subscribe(self, channel, callback):\n        self.subscribers.setdefault(channel, []).append(callback)\n        return self\n\n    def publish(self, channel, message):\n        ...\n",
+  "cases": [
+    { "call": "PubSub().subscribe('news', lambda m: f'got: {m}').publish('news', 'hello')", "expect": "['got: hello']" },
+    { "call": "PubSub().publish('empty', 'x')", "expect": "[]" },
+    { "call": "PubSub().subscribe('a', lambda m: m * 2).subscribe('a', lambda m: m + 1).publish('a', 5)", "expect": "[10, 6]" }
+  ]
+}

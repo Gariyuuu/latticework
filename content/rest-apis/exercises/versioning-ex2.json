@@ -1,0 +1,11 @@
+{
+  "id": "versioning-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def is_version_compatible(client_version, min_supported, max_supported):\n    ...\n",
+  "cases": [
+    { "call": "is_version_compatible(2, 1, 3)", "expect": "True" },
+    { "call": "is_version_compatible(0, 1, 3)", "expect": "False" },
+    { "call": "is_version_compatible(3, 1, 3)", "expect": "True" }
+  ]
+}

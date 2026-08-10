@@ -11,22 +11,22 @@
     "backend-engineer",
     "research-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "tcp-ip",
       "title": "TCP/IP",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "dns",
       "title": "DNS",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "load-balancing",
       "title": "Load Balancing",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

@@ -1,0 +1,11 @@
+{
+  "id": "resources-verbs-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def resource_path(resource, id=None):\n    ...\n",
+  "cases": [
+    { "call": "resource_path('users')", "expect": "/users" },
+    { "call": "resource_path('users', 42)", "expect": "/users/42" },
+    { "call": "resource_path('orders', 7)", "expect": "/orders/7" }
+  ]
+}

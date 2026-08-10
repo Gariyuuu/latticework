@@ -1,0 +1,80 @@
+---
+slug: dns
+title: DNS
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: caching
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: dns-ex1
+    difficulty: beginner
+    concept: dns-resolution
+    prompt: "Write `resolve_chain(records, hostname)`: `records` maps each hostname to either `(\"A\", ip)` or `(\"CNAME\", target)`. Follow CNAME redirects until you hit an A record, and return that IP."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: dns-ex2
+    difficulty: intermediate
+    concept: dns-caching
+    prompt: "Write `resolve_with_ttl(cache, hostname, ip, now, ttl=60)`: if `hostname` is already in `cache` with an unexpired entry (`now < expires_at`), return the CACHED ip unchanged (a hit — don't touch the cache). Otherwise store `(ip, now + ttl)` in `cache` and return the fresh `ip` (a miss)."
+  - id: quiz-1
+    type: quiz
+    concept: dns-caching
+    question: "Why does a DNS resolver cache respect a record's TTL instead of always querying the authoritative server?"
+    options: ["It trades a small window of potential staleness for dramatically lower latency and less load on authoritative servers, on the assumption records rarely change within the TTL window", "TTL is a security feature that prevents DNS spoofing", "Authoritative servers only accept one query per client ever", "Caching is required by the DNS protocol specification and cannot be disabled"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+DNS resolves a human-readable hostname to an IP address — but the
+answer isn't always a single hop. A `CNAME` record says "this name is
+really just an alias for another name," so a resolver may have to
+follow a whole chain of aliases before finally landing on an `A` record
+(the actual IP).
+
+```python
+def resolve_chain(records, hostname):
+    current = hostname
+    while True:
+        record_type, value = records[current]
+        if record_type == "A":
+            return value
+        current = value   # follow the CNAME to the next name
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def resolve_chain(records, hostname):\n    current = hostname\n    while True:\n        record_type, value = records[current]\n        if record_type == "A":\n            return value\n        current = value\n\nrecords = {\n    "www.example.com": ("CNAME", "cdn.example.com"),\n    "cdn.example.com": ("CNAME", "edge.provider.net"),\n    "edge.provider.net": ("A", "203.0.113.5"),\n}\nprint(resolve_chain(records, "www.example.com"))   # 203.0.113.5 -- two redirects, then the real IP`} caption="This is the exact same parent-pointer-graph-walk shape as Git's commit_history from the previous module -- just following a different kind of chain to its terminal node." />
+
+<Explanation id="caching">
+
+Every DNS record carries a **TTL** (time-to-live, in seconds) telling
+resolvers how long they're allowed to reuse a cached answer before
+re-querying the authoritative server. A resolver checks its cache
+first: an unexpired entry is a **hit** (instant, no network round
+trip), and the resolver doesn't even contact the authoritative server —
+which is exactly why a hit returns the OLD cached value even if the
+"real" answer has since changed upstream, until the TTL finally runs
+out and forces a fresh **miss**.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can follow a CNAME chain to its terminal A record, and implement TTL-based cache hit/miss logic that trades staleness for latency.
+</Checkpoint>

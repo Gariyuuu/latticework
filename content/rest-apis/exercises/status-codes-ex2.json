@@ -1,0 +1,11 @@
+{
+  "id": "status-codes-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def choose_status_for_operation(operation, success):\n    ...\n",
+  "cases": [
+    { "call": "choose_status_for_operation('create', True)", "expect": "201" },
+    { "call": "choose_status_for_operation('delete', True)", "expect": "204" },
+    { "call": "choose_status_for_operation('read', False)", "expect": "404" }
+  ]
+}

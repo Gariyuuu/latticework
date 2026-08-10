@@ -1,0 +1,11 @@
+{
+  "id": "documents-collections-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def matches_query(document, query):\n    return all(document.get(k) == v for k, v in query.items())\n\ndef find_documents(collection, query):\n    ...\n",
+  "cases": [
+    { "call": "find_documents([{'name': 'Alice', 'age': 30}, {'name': 'Bob', 'age': 25}], {'age': 30})", "expect": "[{'name': 'Alice', 'age': 30}]" },
+    { "call": "find_documents([{'x': 1}, {'x': 2}], {'x': 3})", "expect": "[]" },
+    { "call": "find_documents([{'a': 1}, {'a': 1}], {'a': 1})", "expect": "[{'a': 1}, {'a': 1}]" }
+  ]
+}

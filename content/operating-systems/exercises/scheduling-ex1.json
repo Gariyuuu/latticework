@@ -1,0 +1,11 @@
+{
+  "id": "scheduling-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def fcfs_completion_times(burst_times):\n    ...\n",
+  "cases": [
+    { "call": "fcfs_completion_times([5, 3, 8])", "expect": "[5, 8, 16]" },
+    { "call": "fcfs_completion_times([2, 2, 2])", "expect": "[2, 4, 6]" },
+    { "call": "fcfs_completion_times([10])", "expect": "[10]" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "data-structures-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "class LRUCache:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.cache = {}\n        self.order = []\n\n    def get(self, key):\n        if key not in self.cache:\n            return -1\n        self.order.remove(key)\n        self.order.append(key)\n        return self.cache[key]\n\n    def put(self, key, value):\n        ...\n\ncache = LRUCache(2)\n",
+  "cases": [
+    { "call": "cache.put('a', 1) or cache.get('a')", "expect": "1" },
+    { "call": "cache.put('b', 2) or cache.get('b')", "expect": "2" },
+    { "call": "cache.put('c', 3) or cache.get('a')", "expect": "-1" }
+  ]
+}

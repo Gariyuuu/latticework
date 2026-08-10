@@ -1,0 +1,86 @@
+---
+slug: documents-collections
+title: Documents & Collections
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: querying
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: documents-collections-ex1
+    difficulty: beginner
+    concept: mongodb-documents
+    prompt: "Write `matches_query(document, query)`: return True if every key in `query` matches the same key's value in `document` (an empty query matches everything)."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: documents-collections-ex2
+    difficulty: intermediate
+    concept: mongodb-documents
+    prompt: "Using `matches_query` below, write `find_documents(collection, query)`, returning every document in `collection` that matches `query`."
+  - id: quiz-1
+    type: quiz
+    concept: mongodb-documents
+    question: "In MongoDB's document model, how does a 'document' compare to a row in a relational table?"
+    options: ["A document is a flexible, often-nested JSON-like structure that can vary in shape between documents in the same collection, unlike a rigid, uniform table row", "A document must have exactly the same fields as every other document in its collection", "A document can never contain nested objects or arrays", "Documents and rows are functionally identical concepts"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+MongoDB stores **documents** (JSON-like nested objects) in
+**collections** (a loose grouping — analogous to a table, but without a
+required fixed schema). Two documents in the same collection can have
+completely different fields — useful for data that genuinely varies in
+shape, at the cost of the strong guarantees a relational schema gives
+you (from the Database Design course's constraints).
+
+```python
+users = [
+    {"name": "Alice", "age": 30, "tags": ["admin"]},
+    {"name": "Bob", "age": 25},   # no 'tags' field at all -- and that's fine
+]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def matches_query(document, query):\n    return all(document.get(k) == v for k, v in query.items())\n\nusers = [\n    {"name": "Alice", "age": 30, "dept": "eng"},\n    {"name": "Bob", "age": 25, "dept": "sales"},\n    {"name": "Carol", "age": 30, "dept": "eng"},\n]\nfor u in users:\n    if matches_query(u, {"dept": "eng"}):\n        print(u["name"])`} caption="matches_query with multiple keys requires ALL of them to match -- this is MongoDB's implicit AND behavior when you pass a query object with several fields, like {'dept': 'eng', 'age': 30}." />
+
+<Explanation id="querying">
+
+Querying a MongoDB collection is conceptually identical to filtering a
+Python list of dicts — `find_documents` here is a simplified version of
+what `collection.find({...})` does for real:
+
+```python
+def find_documents(collection, query):
+    return [doc for doc in collection if matches_query(doc, query)]
+
+engineers = find_documents(users, {"dept": "eng"})
+print(engineers)   # both Alice and Carol
+```
+
+Real MongoDB queries support far more than plain equality — operators
+like `$gt` (greater than), `$in` (value in a list), and `$regex`
+(pattern matching) — but the underlying idea (a query object describing
+which documents to keep) is exactly this.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can match a document against a query object and filter a collection, understanding MongoDB's flexible, schema-optional document model.
+</Checkpoint>

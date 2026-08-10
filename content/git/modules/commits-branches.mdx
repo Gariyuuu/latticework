@@ -1,0 +1,102 @@
+---
+slug: commits-branches
+title: Commits & Branches
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: ancestry
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: commits-branches-ex1
+    difficulty: beginner
+    concept: git-commits-branches
+    prompt: "Model commits as a dict `{commit_id: parent_id}` (the root commit has parent `None`). Write `commit_history(commits, start)`: return the list of commit IDs from `start` back to the root, following parent pointers."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: commits-branches-ex2
+    difficulty: intermediate
+    concept: git-commits-branches
+    prompt: "Write `is_ancestor(commits, ancestor, descendant)`: return True if `ancestor` appears anywhere in `descendant`'s history (including itself)."
+  - id: quiz-1
+    type: quiz
+    concept: git-commits-branches
+    question: "In Git, what does a branch actually point to?"
+    options: ["A single commit — the tip of that branch's history; the pointer just moves forward automatically as new commits are made", "A full copy of the repository's entire file history", "A fixed, unchangeable range of commits", "A remote server's URL"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Every Git commit points to exactly one **parent** commit (except the
+very first commit, and merge commits, which have two) — the whole
+repository history is a graph built entirely from these parent pointers.
+A **branch** isn't a copy of anything; it's just a movable label
+pointing at one commit.
+
+```python
+commits = {
+    "c3": "c2",
+    "c2": "c1",
+    "c1": None,   # the root commit has no parent
+}
+
+def commit_history(commits, start):
+    history = []
+    current = start
+    while current is not None:
+        history.append(current)
+        current = commits.get(current)
+    return history
+
+print(commit_history(commits, "c3"))   # ['c3', 'c2', 'c1']
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`commits = {"c3": "c2", "c2": "c1", "c1": None}\n\ndef commit_history(commits, start):\n    history = []\n    current = start\n    while current is not None:\n        history.append(current)\n        current = commits.get(current)\n    return history\n\nmain_branch = "c3"   # 'main' is JUST this string -- a pointer to a commit ID\nprint(f"main points to {main_branch}")\nprint(f"main's full history: {commit_history(commits, main_branch)}")\ncommits["c4"] = "c3"   # a new commit -- Git just moves the branch pointer to c4\nmain_branch = "c4"`} caption="Creating a commit is just 'add a new dict entry pointing at the old tip, then update the branch label to the new tip' -- there's no copying of history involved, which is exactly why branches in Git are so cheap to create." />
+
+<Explanation id="ancestry">
+
+Checking whether one commit is an **ancestor** of another (was it in
+that commit's history?) is exactly the same kind of graph-walk as the
+Debugging course's bisection module — follow parent pointers until you
+either find the target or run out of history:
+
+```python
+def is_ancestor(commits, ancestor, descendant):
+    current = descendant
+    while current is not None:
+        if current == ancestor:
+            return True
+        current = commits.get(current)
+    return False
+
+print(is_ancestor(commits, "c1", "c3"))   # True -- c1 is an ancestor of c3
+print(is_ancestor(commits, "c3", "c1"))   # False -- c3 came AFTER c1, not before
+```
+
+This is exactly what `git merge --ff-only` checks before allowing a
+"fast-forward" merge — if the target branch is already an ancestor of
+what you're merging in, Git can just move the pointer forward with no
+actual merge commit needed at all.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can model a commit history as a parent-pointer graph, walk it to reconstruct history, and check ancestry relationships between commits.
+</Checkpoint>

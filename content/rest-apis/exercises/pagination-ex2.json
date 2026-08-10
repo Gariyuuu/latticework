@@ -1,0 +1,11 @@
+{
+  "id": "pagination-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def total_pages(total_items, page_size):\n    ...\n",
+  "cases": [
+    { "call": "total_pages(10, 3)", "expect": "4" },
+    { "call": "total_pages(9, 3)", "expect": "3" },
+    { "call": "total_pages(0, 5)", "expect": "0" }
+  ]
+}

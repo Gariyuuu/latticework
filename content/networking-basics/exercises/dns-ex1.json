@@ -1,0 +1,11 @@
+{
+  "id": "dns-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def resolve_chain(records, hostname):\n    ...\n",
+  "cases": [
+    { "call": "resolve_chain({'www.example.com': ('CNAME', 'cdn.example.com'), 'cdn.example.com': ('CNAME', 'edge.provider.net'), 'edge.provider.net': ('A', '203.0.113.5')}, 'www.example.com')", "expect": "203.0.113.5" },
+    { "call": "resolve_chain({'a.com': ('A', '1.1.1.1')}, 'a.com')", "expect": "1.1.1.1" },
+    { "call": "resolve_chain({'x': ('CNAME', 'y'), 'y': ('A', '2.2.2.2')}, 'x')", "expect": "2.2.2.2" }
+  ]
+}

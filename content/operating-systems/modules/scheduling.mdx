@@ -1,0 +1,94 @@
+---
+slug: scheduling
+title: Process Scheduling
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: sjf
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: scheduling-ex1
+    difficulty: beginner
+    concept: os-scheduling
+    prompt: "Write `fcfs_completion_times(burst_times)`: simulate First-Come-First-Served scheduling — return each process's completion time (its cumulative burst time up to and including itself)."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: scheduling-ex2
+    difficulty: intermediate
+    concept: os-scheduling
+    prompt: "Write `sjf_order(burst_times)`: return the ORIGINAL INDICES of the processes, ordered by Shortest-Job-First (ascending burst time; keep original order for ties)."
+  - id: quiz-1
+    type: quiz
+    concept: os-scheduling
+    question: "What's the main drawback of Shortest-Job-First (SJF) scheduling, despite it minimizing average waiting time?"
+    options: ["It can cause 'starvation' — a long job might wait indefinitely if shorter jobs keep arriving and jumping ahead of it", "It's always slower than First-Come-First-Served overall", "It can only schedule exactly two processes", "It requires burst times to be completely unknown in advance"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+When multiple processes compete for CPU time, the OS's **scheduler**
+decides which runs when. **First-Come-First-Served (FCFS)** is the
+simplest possible policy: run processes in arrival order, no
+interruptions.
+
+```python
+def fcfs_completion_times(burst_times):
+    completion = []
+    total = 0
+    for bt in burst_times:
+        total += bt
+        completion.append(total)
+    return completion
+
+print(fcfs_completion_times([5, 3, 8]))   # [5, 8, 16]
+```
+
+Simple, but has a real problem: a long process arriving first makes
+every SHORT process behind it wait unnecessarily — the "convoy effect."
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def fcfs_completion_times(burst_times):\n    completion = []\n    total = 0\n    for bt in burst_times:\n        total += bt\n        completion.append(total)\n    return completion\n\nburst_times = [10, 1, 1, 1]   # one long process, then three short ones\ncompletions = fcfs_completion_times(burst_times)\nwaiting_times = [c - b for c, b in zip(completions, burst_times)]\nprint("completions:", completions)\nprint("waiting:", waiting_times)  # the 3 short processes each wait a LONG time behind the first`} caption="The long process (burst=10) barely waits at all -- it's first. Every short process behind it waits nearly as long as the WHOLE long process took, purely due to arrival order, regardless of how short they actually are." />
+
+<Explanation id="sjf">
+
+**Shortest-Job-First (SJF)** fixes the convoy effect by always running
+the SHORTEST remaining job next — provably minimizes average waiting
+time across all processes:
+
+```python
+def sjf_order(burst_times):
+    return sorted(range(len(burst_times)), key=lambda i: burst_times[i])
+
+print(sjf_order([10, 1, 1, 1]))   # [1, 2, 3, 0] -- short jobs first, long job last
+```
+
+The catch: SJF requires KNOWING each job's burst time in advance
+(rarely true in practice — you don't know how long a process will run
+until it finishes), and it can **starve** long jobs — if short jobs keep
+arriving, a long job might wait indefinitely, always getting bumped by
+whatever's shortest right now. Real OS schedulers use more sophisticated
+policies (like Round Robin with time slices, or priority-aging) that
+balance fairness against SJF's efficiency.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can simulate FCFS and SJF scheduling, and understand the fairness-vs-efficiency tradeoff each makes.
+</Checkpoint>

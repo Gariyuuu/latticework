@@ -1,0 +1,11 @@
+{
+  "id": "merging-rebasing-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def commit_history(commits, start):\n    history = []\n    current = start\n    while current is not None:\n        history.append(current)\n        current = commits.get(current)\n    return history\n\ndef find_merge_base(commits, a, b):\n    ...\n",
+  "cases": [
+    { "call": "find_merge_base({'c5': 'c3', 'c4': 'c3', 'c3': 'c2', 'c2': 'c1', 'c1': None}, 'c4', 'c5')", "expect": "c3" },
+    { "call": "find_merge_base({'c5': 'c3', 'c4': 'c3', 'c3': 'c2', 'c2': 'c1', 'c1': None}, 'c1', 'c4')", "expect": "c1" },
+    { "call": "find_merge_base({'c5': 'c3', 'c4': 'c3', 'c3': 'c2', 'c2': 'c1', 'c1': None}, 'c4', 'c4')", "expect": "c4" }
+  ]
+}

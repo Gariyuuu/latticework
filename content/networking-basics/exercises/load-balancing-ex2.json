@@ -1,0 +1,11 @@
+{
+  "id": "load-balancing-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def weighted_assignments(servers_weights, num_requests):\n    ...\n",
+  "cases": [
+    { "call": "weighted_assignments([('a', 2), ('b', 1)], 6)", "expect": "['a', 'a', 'b', 'a', 'a', 'b']" },
+    { "call": "weighted_assignments([('a', 1), ('b', 1), ('c', 1)], 5)", "expect": "['a', 'b', 'c', 'a', 'b']" },
+    { "call": "weighted_assignments([('big', 3)], 3)", "expect": "['big', 'big', 'big']" }
+  ]
+}

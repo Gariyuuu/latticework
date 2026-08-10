@@ -1,0 +1,11 @@
+{
+  "id": "dns-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def resolve_with_ttl(cache, hostname, ip, now, ttl=60):\n    ...\n\ndef simulate(now1, now2, now3):\n    cache = {}\n    r1 = resolve_with_ttl(cache, 'foo.com', '1.2.3.4', now1)\n    r2 = resolve_with_ttl(cache, 'foo.com', '9.9.9.9', now2)\n    r3 = resolve_with_ttl(cache, 'foo.com', '9.9.9.9', now3)\n    return (r1, r2, r3)\n",
+  "cases": [
+    { "call": "simulate(0, 30, 61)", "expect": "('1.2.3.4', '1.2.3.4', '9.9.9.9')" },
+    { "call": "simulate(0, 59, 60)", "expect": "('1.2.3.4', '1.2.3.4', '9.9.9.9')" },
+    { "call": "simulate(10, 70, 71)", "expect": "('1.2.3.4', '9.9.9.9', '9.9.9.9')" }
+  ]
+}

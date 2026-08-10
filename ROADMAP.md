@@ -264,12 +264,58 @@ same change as any feature work.
   (functional dependencies as tuples, dimension rows as dicts) rather
   than skipping them for being "conceptual." Reaches **30/99 skills
   built**, the number requested for this session's content push.
-- Git, Linux, PyTorch, C++ — **Planned** (metadata skeletons done as part
+- Fully built: REST APIs (4/4 — resources-verbs, status-codes,
+  pagination, versioning) — **Done**. Reaches 31/99. Builds directly on
+  HTTP's requests-responses/headers modules (same request/response
+  vocabulary, now applied to API design specifically) — pagination and
+  versioning exercises model request/response shapes as plain dicts and
+  grade the resulting page slices / version-routing decisions.
+- Fully built: Operating Systems (2/3 — virtual-memory, scheduling;
+  processes-threads left planned — real concurrency/IPC isn't
+  code-testably gradeable the way paging and scheduling algorithms are)
+  — **Done**. Reaches 32/99. `virtual-memory`'s LRU-page-eviction
+  exercise is deliberately framed as a systems-level angle (fixed-size
+  physical frame count, page faults counted) distinct from Redis's LRU
+  cache module — same eviction idea, different layer of the stack, same
+  differentiation pattern used for Linear Algebra/NumPy and Time
+  Series/pandas. `scheduling` implements round-robin and
+  shortest-job-first CPU scheduling over a list of process burst times.
+- Fully built: Redis (3/3 — data-structures, caching-patterns, pub-sub)
+  — **Done**. Reaches 33/99. `data-structures`'s LRU cache exercise was
+  redesigned mid-session after self-review caught a trivial always-True
+  check (see "Errors and fixes" pattern below) — replaced with a
+  `build_scenario()` helper producing a real eviction, verified via
+  Python before committing.
+- Fully built: MongoDB (2/3 — documents-collections,
+  aggregation-pipeline; indexing left planned — index selection/
+  query-plan tradeoffs aren't the right shape for a write-code exercise,
+  same reasoning as SQL's indexes-query-plans) — **Done**. Reaches
+  34/99. Documents modeled as plain Python dicts/lists (no real MongoDB
+  driver dependency), aggregation pipeline stages implemented as
+  composable functions over those structures.
+- Fully built: Git (2/4 — commits-branches, merging-rebasing; 
+  resolving-conflicts/remotes left planned — need the CLI-simulation
+  exercise type, not implemented yet) — **Done**. Reaches 35/99. Models
+  a commit history as a `{commit_id: parent_id}` dict and walks it —
+  `commit_history`/`is_ancestor` reuse the exact parent-pointer-graph
+  pattern from Debugging's bisection module; `find_merge_base` (the
+  merge-base/lowest-common-ancestor algorithm real `git merge` and `git
+  rebase` both depend on) builds one branch's full history into a set,
+  then walks the other branch until it hits a member of that set.
+- Fully built: Networking Basics (3/3 — tcp-ip, dns, load-balancing) —
+  **Done**. Reaches **36/99 skills built**. `tcp-ip` implements CIDR
+  subnet-membership checking via bitmasking; `dns` implements CNAME-chain
+  resolution (same graph-walk shape as Git's commit_history) plus
+  TTL-based resolver cache hit/miss logic, deliberately a different angle
+  from HTTP's caching module (name resolution, not HTTP response
+  caching); `load-balancing` implements round-robin and weighted
+  round-robin request distribution.
+- Linux, PyTorch, C++ — **Planned** (metadata skeletons done as part
   of the wider ~70-90 skill catalog; module content not yet authored).
-  Git/Linux need the CLI-simulation exercise type, which isn't
-  implemented yet (see "Learning engine" above); PyTorch/C++ need their
-  own execution infra decisions.
-- Remaining ~36-56 technologies from the brief — **Done** as metadata-only
+  Linux needs the CLI-simulation exercise type, which isn't implemented
+  yet (see "Learning engine" above); PyTorch/C++ need their own
+  execution infra decisions.
+- Remaining technologies from the brief — **Done** as metadata-only
   skeletons (appear correctly in graph/Explore/roadmap, no lesson content)
 
 `python/modules/files.mdx` (file I/O) was originally deferred because it

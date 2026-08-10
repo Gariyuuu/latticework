@@ -1,0 +1,11 @@
+{
+  "id": "commits-branches-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def is_ancestor(commits, ancestor, descendant):\n    ...\n",
+  "cases": [
+    { "call": "is_ancestor({'c3': 'c2', 'c2': 'c1', 'c1': None}, 'c1', 'c3')", "expect": "True" },
+    { "call": "is_ancestor({'c3': 'c2', 'c2': 'c1', 'c1': None}, 'c3', 'c1')", "expect": "False" },
+    { "call": "is_ancestor({'a': None}, 'a', 'a')", "expect": "True" }
+  ]
+}

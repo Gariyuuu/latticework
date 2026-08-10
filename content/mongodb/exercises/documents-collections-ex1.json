@@ -1,0 +1,11 @@
+{
+  "id": "documents-collections-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def matches_query(document, query):\n    ...\n",
+  "cases": [
+    { "call": "matches_query({'name': 'Alice', 'age': 30}, {'age': 30})", "expect": "True" },
+    { "call": "matches_query({'name': 'Alice', 'age': 30}, {'age': 25})", "expect": "False" },
+    { "call": "matches_query({'name': 'Alice'}, {})", "expect": "True" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "caching-patterns-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def cache_hit_rate(requests, cache_keys):\n    ...\n",
+  "cases": [
+    { "call": "cache_hit_rate(['a', 'b', 'a', 'c'], {'a', 'b'})", "expect": "0.75" },
+    { "call": "cache_hit_rate(['x', 'y'], {'a'})", "expect": "0.0" },
+    { "call": "cache_hit_rate(['a', 'a', 'a'], {'a'})", "expect": "1.0" }
+  ]
+}

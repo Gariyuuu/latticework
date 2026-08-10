@@ -1,0 +1,11 @@
+{
+  "id": "resources-verbs-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def verb_is_idempotent(verb):\n    ...\n",
+  "cases": [
+    { "call": "verb_is_idempotent('GET')", "expect": "True" },
+    { "call": "verb_is_idempotent('POST')", "expect": "False" },
+    { "call": "verb_is_idempotent('DELETE')", "expect": "True" }
+  ]
+}

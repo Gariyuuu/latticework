@@ -1,0 +1,11 @@
+{
+  "id": "load-balancing-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def round_robin_assignments(servers, num_requests):\n    ...\n",
+  "cases": [
+    { "call": "round_robin_assignments(['a', 'b', 'c'], 7)", "expect": "['a', 'b', 'c', 'a', 'b', 'c', 'a']" },
+    { "call": "round_robin_assignments(['x', 'y'], 4)", "expect": "['x', 'y', 'x', 'y']" },
+    { "call": "round_robin_assignments(['only'], 3)", "expect": "['only', 'only', 'only']" }
+  ]
+}

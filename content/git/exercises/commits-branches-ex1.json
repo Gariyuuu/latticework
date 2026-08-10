@@ -1,0 +1,11 @@
+{
+  "id": "commits-branches-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def commit_history(commits, start):\n    ...\n",
+  "cases": [
+    { "call": "commit_history({'c3': 'c2', 'c2': 'c1', 'c1': None}, 'c3')", "expect": "['c3', 'c2', 'c1']" },
+    { "call": "commit_history({'a': None}, 'a')", "expect": "['a']" },
+    { "call": "commit_history({'c2': 'c1', 'c1': None}, 'c1')", "expect": "['c1']" }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "id": "aggregation-pipeline-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def pipeline_match(documents, query):\n    ...\n",
+  "cases": [
+    { "call": "pipeline_match([{'dept': 'eng', 'salary': 100}, {'dept': 'sales', 'salary': 80}], {'dept': 'eng'})", "expect": "[{'dept': 'eng', 'salary': 100}]" }
+  ]
+}

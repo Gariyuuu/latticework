@@ -1,0 +1,13 @@
+{
+  "id": "tcp-ip-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def ip_to_int(ip):\n    parts = [int(p) for p in ip.split('.')]\n    result = 0\n    for p in parts:\n        result = (result << 8) | p\n    return result\n\ndef in_subnet(ip, cidr):\n    ...\n",
+  "cases": [
+    { "call": "in_subnet('192.168.1.42', '192.168.1.0/24')", "expect": "True" },
+    { "call": "in_subnet('192.168.2.42', '192.168.1.0/24')", "expect": "False" },
+    { "call": "in_subnet('10.0.5.9', '10.0.0.0/16')", "expect": "True" },
+    { "call": "in_subnet('10.1.5.9', '10.0.0.0/16')", "expect": "False" },
+    { "call": "in_subnet('192.168.1.255', '192.168.1.0/24')", "expect": "True" }
+  ]
+}

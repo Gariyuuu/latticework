@@ -1,0 +1,11 @@
+{
+  "id": "aggregation-pipeline-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def pipeline_group_sum(documents, group_field, sum_field):\n    ...\n",
+  "cases": [
+    { "call": "pipeline_group_sum([{'dept': 'eng', 'salary': 100}, {'dept': 'eng', 'salary': 120}, {'dept': 'sales', 'salary': 80}], 'dept', 'salary')", "expect": "{'eng': 220, 'sales': 80}" },
+    { "call": "pipeline_group_sum([{'cat': 'a', 'n': 1}], 'cat', 'n')", "expect": "{'a': 1}" },
+    { "call": "pipeline_group_sum([], 'x', 'y')", "expect": "{}" }
+  ]
+}

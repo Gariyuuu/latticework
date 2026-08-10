@@ -1,0 +1,85 @@
+---
+slug: merging-rebasing
+title: Merging & Rebasing
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: rebasing
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: merging-rebasing-ex1
+    difficulty: advanced
+    concept: git-merging-rebasing
+    prompt: "Using `commit_history` below, write `find_merge_base(commits, a, b)`: return the most recent commit shared by both `a`'s and `b`'s histories (the merge base / lowest common ancestor)."
+  - id: quiz-1
+    type: quiz
+    concept: git-merging-rebasing
+    question: "What is a 'merge base' (lowest common ancestor) between two branches?"
+    options: ["The most recent commit that both branches share in their history — the point where they diverged", "The very first commit ever made in the repository", "The commit with the most children", "A commit that exists on neither branch"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+When Git merges two branches, it needs to know where they actually
+DIVERGED — the **merge base** (or lowest common ancestor): the most
+recent commit both branches share. Everything after that point is what
+each branch actually added independently.
+
+```python
+def commit_history(commits, start):
+    history = []
+    current = start
+    while current is not None:
+        history.append(current)
+        current = commits.get(current)
+    return history
+
+def find_merge_base(commits, a, b):
+    a_history = set(commit_history(commits, a))
+    current = b
+    while current is not None:
+        if current in a_history:
+            return current
+        current = commits.get(current)
+    return None
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def commit_history(commits, start):\n    history = []\n    current = start\n    while current is not None:\n        history.append(current)\n        current = commits.get(current)\n    return history\n\ndef find_merge_base(commits, a, b):\n    a_history = set(commit_history(commits, a))\n    current = b\n    while current is not None:\n        if current in a_history:\n            return current\n        current = commits.get(current)\n    return None\n\n# c1 -> c2 -> c3 -> (branches split here) -> c4 (branch A) / c5 (branch B)\ncommits = {"c5": "c3", "c4": "c3", "c3": "c2", "c2": "c1", "c1": None}\nprint(find_merge_base(commits, "c4", "c5"))   # c3 -- exactly where they diverged`} caption="find_merge_base walks A's FULL history into a set (fast O(1) lookup), then walks B's history one step at a time until it hits something already in that set -- the same 'build a set, then scan' pattern from the Data Structures course's hash table module." />
+
+<Explanation id="rebasing">
+
+**Merging** creates a new commit with TWO parents, combining both
+branches' work while preserving exactly what happened (the diverged
+history stays visible). **Rebasing** instead REWRITES one branch's
+commits to sit on top of the other, producing a clean, linear history —
+as if that work had been done starting from the more recent commit all
+along.
+
+The tradeoff: merging preserves true history (including exactly when and
+where branches diverged) at the cost of a messier, more tangled commit
+graph. Rebasing produces a cleaner, more readable linear history, but
+LITERALLY rewrites commits (new commit hashes) — which is why the
+cardinal rule is: never rebase commits that have already been pushed and
+shared with others, since rewriting shared history breaks everyone
+else's copy of it.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can find the merge base between two diverged branches, and understand the merge-vs-rebase tradeoff (preserved true history vs. clean linear history).
+</Checkpoint>

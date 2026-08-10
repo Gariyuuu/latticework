@@ -19,17 +19,17 @@
     "quant-researcher",
     "quant-trader"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "commits-branches",
       "title": "Commits & Branches",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "merging-rebasing",
       "title": "Merging & Rebasing",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "resolving-conflicts",

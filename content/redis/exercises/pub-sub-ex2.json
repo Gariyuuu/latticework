@@ -1,0 +1,11 @@
+{
+  "id": "pub-sub-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def channel_subscriber_counts(subscriptions):\n    ...\n",
+  "cases": [
+    { "call": "channel_subscriber_counts([('news', 'u1'), ('news', 'u2'), ('sports', 'u1'), ('news', 'u1')])", "expect": "{'news': 2, 'sports': 1}" },
+    { "call": "channel_subscriber_counts([])", "expect": "{}" },
+    { "call": "channel_subscriber_counts([('a', 'x')])", "expect": "{'a': 1}" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "virtual-memory-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def fifo_page_faults(pages, capacity):\n    ...\n",
+  "cases": [
+    { "call": "fifo_page_faults([1, 2, 3, 1, 2, 4, 5], 3)", "expect": "5" },
+    { "call": "fifo_page_faults([1, 2, 3, 4], 2)", "expect": "4" },
+    { "call": "fifo_page_faults([1, 1, 1], 1)", "expect": "1" }
+  ]
+}

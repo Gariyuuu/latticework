@@ -4,34 +4,35 @@
   "category": "web",
   "difficulty": "beginner",
   "estimatedHours": 5,
-  "prerequisites": [],
+  "prerequisites": ["http"],
   "usefulFor": [
     "software-engineer",
     "full-stack-engineer",
     "backend-engineer",
     "research-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "Resources/verbs, status codes, pagination, and versioning — REST API design as checkable logic, built on top of the HTTP course.",
   "modules": [
     {
       "slug": "resources-verbs",
       "title": "Resources & Verbs",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "status-codes",
       "title": "Status Codes",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "pagination",
       "title": "Pagination",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "versioning",
       "title": "Versioning",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

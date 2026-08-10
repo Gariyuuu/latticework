@@ -1,0 +1,91 @@
+---
+slug: pub-sub
+title: Pub/Sub
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: fan-out
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: pub-sub-ex1
+    difficulty: beginner
+    concept: redis-pub-sub
+    prompt: "Given `PubSub` below (with `subscribe` implemented), write `publish(self, channel, message)`: call every subscriber's callback (for that channel) with `message`, and return a list of their return values."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: pub-sub-ex2
+    difficulty: intermediate
+    concept: redis-pub-sub
+    prompt: "Write `channel_subscriber_counts(subscriptions)`: given a list of `(channel, subscriber_id)` pairs, return a dict mapping each channel to its count of DISTINCT subscribers."
+  - id: quiz-1
+    type: quiz
+    concept: redis-pub-sub
+    question: "What's the key characteristic of the pub-sub (publish-subscribe) pattern?"
+    options: ["Publishers send messages to a channel without knowing who (if anyone) is subscribed; subscribers receive messages without knowing who published them", "Publishers and subscribers must always run in the same process", "Only one subscriber is ever allowed per channel", "Messages are always guaranteed to be stored permanently"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Pub/Sub** decouples senders from receivers entirely: a publisher sends
+a message to a named CHANNEL, and every current subscriber to that
+channel receives it — the publisher never needs to know who (or how
+many) is listening.
+
+```python
+class PubSub:
+    def __init__(self):
+        self.subscribers = {}
+
+    def subscribe(self, channel, callback):
+        self.subscribers.setdefault(channel, []).append(callback)
+        return self
+```
+
+This is exactly the Observer pattern from the Design Patterns course,
+generalized across multiple named channels instead of one fixed list of
+observers.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`class PubSub:\n    def __init__(self):\n        self.subscribers = {}\n    def subscribe(self, channel, callback):\n        self.subscribers.setdefault(channel, []).append(callback)\n        return self\n    def publish(self, channel, message):\n        return [cb(message) for cb in self.subscribers.get(channel, [])]\n\nbus = PubSub()\nbus.subscribe("orders", lambda msg: print(f"email service: order {msg} confirmed"))\nbus.subscribe("orders", lambda msg: print(f"analytics: logging order {msg}"))\nbus.publish("orders", 42)`} caption="Two completely independent services react to the same event -- neither knows the other exists. Adding a THIRD subscriber later (fraud detection, say) needs zero changes to the code that publishes 'orders' events." />
+
+<Explanation id="fan-out">
+
+Unlike a message QUEUE (where one message goes to exactly ONE consumer,
+who then removes it), pub/sub is **fan-out**: every subscriber gets
+every message, and a subscriber that wasn't listening when a message was
+published simply never sees it — Redis pub/sub doesn't persist messages
+for later delivery. This makes it ideal for real-time notifications
+(chat, live updates, cache invalidation broadcasts) and a poor fit for
+anything that needs guaranteed delivery or replay (a proper message
+queue, or Kafka from later in the catalog, fits that need better).
+
+```python
+def channel_subscriber_counts(subscriptions):
+    result = {}
+    for channel, sub_id in subscriptions:
+        result.setdefault(channel, set()).add(sub_id)
+    return {ch: len(subs) for ch, subs in result.items()}
+```
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement pub/sub fan-out to multiple subscribers per channel, and understand how it differs from a message queue (broadcast vs. single-consumer, no persistence for late subscribers).
+</Checkpoint>

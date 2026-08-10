@@ -4,27 +4,28 @@
   "category": "database",
   "difficulty": "beginner",
   "estimatedHours": 4,
-  "prerequisites": [],
+  "prerequisites": ["python"],
   "usefulFor": [
     "backend-engineer",
     "data-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "LRU caching, the cache-aside pattern, and pub/sub fan-out — implemented from scratch, tying directly back to Virtual Memory's LRU and Design Patterns' Observer.",
   "modules": [
     {
       "slug": "data-structures",
       "title": "Data Structures",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "caching-patterns",
       "title": "Caching Patterns",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "pub-sub",
       "title": "Pub/Sub",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

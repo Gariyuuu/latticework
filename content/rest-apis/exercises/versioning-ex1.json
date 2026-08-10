@@ -1,0 +1,11 @@
+{
+  "id": "versioning-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def extract_api_version(path):\n    ...\n",
+  "cases": [
+    { "call": "extract_api_version('/v2/users')", "expect": "2" },
+    { "call": "extract_api_version('/v1/orders/5')", "expect": "1" },
+    { "call": "extract_api_version('/users')", "expect": "None" }
+  ]
+}

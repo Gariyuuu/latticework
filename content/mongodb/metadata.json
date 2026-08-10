@@ -4,21 +4,22 @@
   "category": "database",
   "difficulty": "beginner",
   "estimatedHours": 4,
-  "prerequisites": [],
+  "prerequisites": ["python"],
   "usefulFor": [
     "backend-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
+  "description": "Document querying and the aggregation pipeline ($match/$group), modeled as plain Python dict/list operations — the same filter-then-group shape as SQL's WHERE/GROUP BY.",
   "modules": [
     {
       "slug": "documents-collections",
       "title": "Documents & Collections",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "aggregation-pipeline",
       "title": "Aggregation Pipeline",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "indexing",

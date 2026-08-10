@@ -1,0 +1,11 @@
+{
+  "id": "status-codes-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def status_category(code):\n    ...\n",
+  "cases": [
+    { "call": "status_category(201)", "expect": "success" },
+    { "call": "status_category(404)", "expect": "client_error" },
+    { "call": "status_category(503)", "expect": "server_error" }
+  ]
+}

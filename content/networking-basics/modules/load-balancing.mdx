@@ -1,0 +1,74 @@
+---
+slug: load-balancing
+title: Load Balancing
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: weighted
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: load-balancing-ex1
+    difficulty: beginner
+    concept: load-balancing-round-robin
+    prompt: "Write `round_robin_assignments(servers, num_requests)`: return a list of length `num_requests` cycling through `servers` in order (request 0 goes to servers[0], request 1 to servers[1], wrapping back to servers[0] after the last server)."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: load-balancing-ex2
+    difficulty: intermediate
+    concept: load-balancing-weighted
+    prompt: "Write `weighted_assignments(servers_weights, num_requests)`: `servers_weights` is a list of `(server, weight)` pairs. A server with weight 2 should receive twice as many requests as a server with weight 1, still assigned round-robin overall."
+  - id: quiz-1
+    type: quiz
+    concept: load-balancing-tradeoffs
+    question: "Why would a load balancer use WEIGHTED round-robin instead of plain round-robin?"
+    options: ["When backend servers have different capacities (e.g. one has more CPU/RAM), plain round-robin would overload the weaker ones by sending them an equal share of traffic", "Weighted round-robin is required to support HTTPS", "Plain round-robin cannot handle more than 2 servers", "Weighted round-robin removes the need for health checks"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A load balancer sits in front of a pool of servers and decides which
+one handles each incoming request. The simplest strategy is **round
+robin**: cycle through the pool in order, spreading requests evenly.
+
+```python
+def round_robin_assignments(servers, num_requests):
+    assignments = []
+    for i in range(num_requests):
+        assignments.append(servers[i % len(servers)])
+    return assignments
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def round_robin_assignments(servers, num_requests):\n    assignments = []\n    for i in range(num_requests):\n        assignments.append(servers[i % len(servers)])\n    return assignments\n\nprint(round_robin_assignments(["a", "b", "c"], 7))\n# ['a', 'b', 'c', 'a', 'b', 'c', 'a'] -- wraps back to 'a' after 'c'`} caption="The modulo (%) is doing all the work here: it wraps the ever-increasing request index back into range every time it passes the end of the server list -- the same wraparound trick used for circular buffers and hash table probing." />
+
+<Explanation id="weighted">
+
+Plain round robin assumes every server can handle the same load. In
+practice, servers often differ in capacity — one instance might have
+double the CPU of another. **Weighted round robin** fixes this by
+giving each server a share of requests proportional to its weight: a
+simple way to implement it is to expand the server list by each
+server's weight, then round-robin over the EXPANDED list.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement round-robin and weighted round-robin request distribution, and explain why capacity differences between servers motivate weighting.
+</Checkpoint>

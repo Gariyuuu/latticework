@@ -1,0 +1,90 @@
+---
+slug: status-codes
+title: Status Codes
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: choosing
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: status-codes-ex1
+    difficulty: beginner
+    concept: rest-status-codes
+    prompt: "Write `status_category(code)`: return `'informational'`, `'success'`, `'redirection'`, `'client_error'`, `'server_error'`, or `'unknown'` based on which hundred-range `code` falls in."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: status-codes-ex2
+    difficulty: intermediate
+    concept: rest-status-codes
+    prompt: "Write `choose_status_for_operation(operation, success)`: return the conventional status code for `('create', True)`→201, `('create', False)`→400, `('delete', True)`→204, `('delete', False)`→404, `('read', True)`→200, `('read', False)`→404. Return 500 for anything else."
+  - id: quiz-1
+    type: quiz
+    concept: rest-status-codes
+    question: "What status code should a successful POST that creates a new resource typically return?"
+    options: ["201 Created", "200 OK", "204 No Content", "302 Found"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Beyond the broad category from the HTTP course (2xx/3xx/4xx/5xx), REST
+APIs use SPECIFIC codes within each category to communicate precisely
+what happened — picking the right one is part of designing a good API,
+not just an afterthought.
+
+```python
+def status_category(code):
+    if 100 <= code < 200: return "informational"
+    if 200 <= code < 300: return "success"
+    if 300 <= code < 400: return "redirection"
+    if 400 <= code < 500: return "client_error"
+    if 500 <= code < 600: return "server_error"
+    return "unknown"
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`common_codes = {\n    200: "OK -- generic success",\n    201: "Created -- a POST successfully created something",\n    204: "No Content -- success, nothing to return (common for DELETE)",\n    400: "Bad Request -- the client sent malformed data",\n    401: "Unauthorized -- missing or invalid credentials",\n    403: "Forbidden -- authenticated, but not allowed to do this",\n    404: "Not Found",\n    409: "Conflict -- e.g. trying to create a duplicate unique resource",\n}\nfor code, meaning in common_codes.items():\n    print(code, meaning)`} caption="401 vs 403 is a common point of confusion: 401 means 'we don't know who you are' (log in), 403 means 'we know who you are, and you're not allowed' (permission denied) -- genuinely different situations that call for different client behavior." />
+
+<Explanation id="choosing">
+
+Choosing the right code for each operation makes an API predictable and
+self-documenting — a client can react correctly to a status code alone,
+without parsing the response body:
+
+```python
+def choose_status_for_operation(operation, success):
+    mapping = {
+        ("create", True): 201, ("create", False): 400,
+        ("delete", True): 204, ("delete", False): 404,
+        ("read", True): 200, ("read", False): 404,
+    }
+    return mapping.get((operation, success), 500)
+```
+
+A common mistake: returning `200 OK` for EVERYTHING, with the real
+success/failure info buried in the response body. That forces every
+client to parse the body just to know if something worked — status
+codes exist precisely so that layer of information doesn't require
+parsing anything.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can categorize status codes and pick the conventionally correct one for common CRUD operations.
+</Checkpoint>

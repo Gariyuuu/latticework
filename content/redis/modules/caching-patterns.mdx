@@ -1,0 +1,95 @@
+---
+slug: caching-patterns
+title: Caching Patterns
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: hit-rate
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: caching-patterns-ex1
+    difficulty: beginner
+    concept: redis-caching-patterns
+    prompt: "Write `cache_aside_get(key, cache, db)`: return `cache[key]` if present. Otherwise, if `key` is in `db`, copy it into `cache` and return it. If it's in neither, return None."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: caching-patterns-ex2
+    difficulty: intermediate
+    concept: redis-caching-patterns
+    prompt: "Write `cache_hit_rate(requests, cache_keys)`: return the fraction of `requests` that are present in the `cache_keys` set, rounded to 4 decimals."
+  - id: quiz-1
+    type: quiz
+    concept: redis-caching-patterns
+    question: "In the 'cache-aside' pattern, who is responsible for populating the cache on a miss?"
+    options: ["The application code — it checks the cache first, and on a miss, fetches from the database and writes the result into the cache itself", "The cache automatically pulls from the database on every miss, with no application code involved", "The database proactively pushes every update into the cache", "Cache-aside doesn't allow cache misses at all"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Cache-aside** (also called "lazy loading") is the most common caching
+pattern: the application checks the cache first; on a miss, it fetches
+from the real data source and writes the result INTO the cache for next
+time.
+
+```python
+def cache_aside_get(key, cache, db):
+    if key in cache:
+        return cache[key]
+    if key in db:
+        cache[key] = db[key]
+        return db[key]
+    return None
+```
+
+The cache and database can drift out of sync (the cache might hold a
+STALE value after the database changes) — cache-aside deals with this
+via a **TTL** (time-to-live, from the HTTP course's Caching module) or
+by explicitly invalidating the cache entry whenever the underlying data
+changes.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def cache_aside_get(key, cache, db):\n    if key in cache:\n        print(f"cache HIT: {key}")\n        return cache[key]\n    if key in db:\n        print(f"cache MISS: {key} (fetched from db)")\n        cache[key] = db[key]\n        return db[key]\n    return None\n\ncache = {}\ndb = {"user:1": "Alice", "user:2": "Bob"}\ncache_aside_get("user:1", cache, db)   # MISS -- first time\ncache_aside_get("user:1", cache, db)   # HIT -- now cached\ncache_aside_get("user:2", cache, db)   # MISS -- different key, not cached yet`} caption="Notice user:1's SECOND request is a hit -- the first call's miss populated the cache, so every subsequent request for the same key skips the (usually much slower) database entirely." />
+
+<Explanation id="hit-rate">
+
+**Cache hit rate** — the fraction of requests served from the cache
+instead of the underlying data source — is the standard metric for
+whether a cache is actually earning its keep:
+
+```python
+def cache_hit_rate(requests, cache_keys):
+    hits = sum(1 for r in requests if r in cache_keys)
+    return hits / len(requests)
+
+requests = ["a", "b", "a", "c", "a"]
+print(cache_hit_rate(requests, {"a", "b"}))   # 0.8 -- 4 of 5 requests were cached
+```
+
+A low hit rate usually means either the cache is too small (useful data
+keeps getting evicted before it's reused) or the access pattern is
+genuinely random (nothing gets requested twice, so caching can't help
+at all) — worth diagnosing which before assuming "just make the cache
+bigger" is the fix.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement the cache-aside pattern and compute cache hit rate to evaluate whether a cache is actually effective.
+</Checkpoint>

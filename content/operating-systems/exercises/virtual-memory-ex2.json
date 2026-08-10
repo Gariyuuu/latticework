@@ -1,0 +1,10 @@
+{
+  "id": "virtual-memory-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def lru_page_faults(pages, capacity):\n    ...\n",
+  "cases": [
+    { "call": "lru_page_faults([1, 2, 3, 1, 2, 4, 5], 3)", "expect": "5" },
+    { "call": "lru_page_faults([1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5], 3)", "expect": "10" }
+  ]
+}

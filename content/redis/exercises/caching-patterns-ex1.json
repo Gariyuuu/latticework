@@ -1,0 +1,11 @@
+{
+  "id": "caching-patterns-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def cache_aside_get(key, cache, db):\n    ...\n",
+  "cases": [
+    { "call": "cache_aside_get('a', {}, {'a': 1, 'b': 2})", "expect": "1" },
+    { "call": "cache_aside_get('z', {}, {'a': 1})", "expect": "None" },
+    { "call": "cache_aside_get('b', {'b': 99}, {'b': 2})", "expect": "99" }
+  ]
+}

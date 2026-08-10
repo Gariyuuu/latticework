@@ -1,0 +1,78 @@
+---
+slug: tcp-ip
+title: TCP/IP
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: handshake
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: tcp-ip-ex1
+    difficulty: intermediate
+    concept: tcp-ip-subnetting
+    prompt: "Write `in_subnet(ip, cidr)`: given an IPv4 address string and a CIDR block string like `\"192.168.1.0/24\"`, return True if the address falls inside that subnet."
+  - id: quiz-1
+    type: quiz
+    concept: tcp-ip-subnetting
+    question: "What does the /24 in a CIDR block like 192.168.1.0/24 mean?"
+    options: ["The first 24 bits of the 32-bit address are fixed (the network portion); the remaining 8 bits identify hosts within it", "There are exactly 24 usable addresses in the subnet", "The subnet uses port 24", "24 is the maximum number of hops allowed"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+An IPv4 address is just a 32-bit number, written as four dot-separated
+bytes (`192.168.1.42`). A **CIDR block** like `192.168.1.0/24` splits
+those 32 bits into a fixed **network prefix** (the first 24 bits here)
+and a variable **host portion** (the remaining 8 bits) — every address
+sharing that same network prefix is "in the subnet."
+
+```python
+def ip_to_int(ip):
+    parts = [int(p) for p in ip.split(".")]
+    result = 0
+    for p in parts:
+        result = (result << 8) | p
+    return result
+
+def in_subnet(ip, cidr):
+    base, prefix_len = cidr.split("/")
+    prefix_len = int(prefix_len)
+    mask = (0xFFFFFFFF << (32 - prefix_len)) & 0xFFFFFFFF
+    return (ip_to_int(ip) & mask) == (ip_to_int(base) & mask)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def ip_to_int(ip):\n    parts = [int(p) for p in ip.split(".")]\n    result = 0\n    for p in parts:\n        result = (result << 8) | p\n    return result\n\ndef in_subnet(ip, cidr):\n    base, prefix_len = cidr.split("/")\n    prefix_len = int(prefix_len)\n    mask = (0xFFFFFFFF << (32 - prefix_len)) & 0xFFFFFFFF\n    return (ip_to_int(ip) & mask) == (ip_to_int(base) & mask)\n\nprint(in_subnet("192.168.1.42", "192.168.1.0/24"))   # True -- same first 24 bits\nprint(in_subnet("192.168.2.42", "192.168.1.0/24"))   # False -- third byte differs`} caption="Masking with a left-shifted 0xFFFFFFFF zeroes out the host bits on both sides before comparing -- the exact same bitmask trick used for permission flags and feature-flag bitsets elsewhere in software engineering." />
+
+<Explanation id="handshake">
+
+Once a packet is routed to the right subnet, TCP still needs to
+establish a reliable, ordered connection on top of IP's best-effort
+delivery. It does this with the **three-way handshake**: the client
+sends `SYN` (synchronize, "let's talk, my starting sequence number is
+X"), the server replies `SYN-ACK` (acknowledging X, plus its own
+starting sequence number Y), and the client replies `ACK` (acknowledging
+Y). Only after all three legs complete can either side send actual
+application data — which is exactly why a slow or dropped handshake
+(e.g. a firewall silently dropping the SYN) shows up as a hung
+connection rather than an instant error.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can determine whether an IP address belongs to a given CIDR subnet using bitmasking, and you understand why TCP's three-way handshake must complete before data can flow.
+</Checkpoint>

@@ -1,0 +1,89 @@
+---
+slug: versioning
+title: Versioning
+estimatedMinutes: 14
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: compatibility
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: versioning-ex1
+    difficulty: beginner
+    concept: rest-versioning
+    prompt: "Write `extract_api_version(path)`: parse a path like `'/v2/users'` and return the version as an int (`2`). Return None if the path has no `vN` prefix."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: versioning-ex2
+    difficulty: beginner
+    concept: rest-versioning
+    prompt: "Write `is_version_compatible(client_version, min_supported, max_supported)`, returning True if `client_version` falls within the inclusive supported range."
+  - id: quiz-1
+    type: quiz
+    concept: rest-versioning
+    question: "What's a common reason to version an API (like /v1/, /v2/)?"
+    options: ["It lets you make breaking changes for new clients while existing clients keep working against the old version", "Versioning is a required part of the HTTP protocol itself", "It automatically makes the API respond faster", "It replaces the need for authentication entirely"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+APIs change over time — a field gets renamed, a response shape changes,
+a parameter becomes required. **Versioning** lets you make those
+BREAKING changes without instantly breaking every existing client:
+old clients keep hitting `/v1/...` (unchanged), new clients opt into
+`/v2/...` (the new behavior).
+
+```python
+def extract_api_version(path):
+    parts = path.strip("/").split("/")
+    if parts and parts[0].startswith("v") and parts[0][1:].isdigit():
+        return int(parts[0][1:])
+    return None
+
+print(extract_api_version("/v2/users"))   # 2
+print(extract_api_version("/users"))       # None -- no version prefix
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def extract_api_version(path):\n    parts = path.strip("/").split("/")\n    if parts and parts[0].startswith("v") and parts[0][1:].isdigit():\n        return int(parts[0][1:])\n    return None\n\npaths = ["/v1/users", "/v2/users/42", "/health", "/v3/orders"]\nfor p in paths:\n    print(p, "->", extract_api_version(p))`} caption="Path-based versioning (/v2/...) is the most visible approach -- some APIs instead version via a request header (Accept: application/vnd.myapi.v2+json), trading visibility for a cleaner URL." />
+
+<Explanation id="compatibility">
+
+A server usually supports a RANGE of versions at once — not just the
+latest — so it needs to check whether a given client's requested
+version is still within that supported range:
+
+```python
+def is_version_compatible(client_version, min_supported, max_supported):
+    return min_supported <= client_version <= max_supported
+
+print(is_version_compatible(2, 1, 3))   # True -- v2 is supported
+print(is_version_compatible(0, 1, 3))    # False -- too old, no longer supported
+```
+
+Eventually, unsupported old versions get **deprecated** and then
+**sunset** (shut off entirely) — good API design communicates that
+timeline well in advance, giving clients time to migrate rather than
+breaking without warning.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can extract an API version from a request path and check whether a client's requested version falls within the range a server currently supports.
+</Checkpoint>

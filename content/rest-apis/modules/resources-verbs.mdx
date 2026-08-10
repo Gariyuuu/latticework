@@ -1,0 +1,92 @@
+---
+slug: resources-verbs
+title: Resources & Verbs
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: idempotency
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: resources-verbs-ex1
+    difficulty: beginner
+    concept: rest-resources-verbs
+    prompt: "Write `verb_is_idempotent(verb)`: return True if the HTTP method is conventionally idempotent (`GET`, `PUT`, `DELETE`, `HEAD`, `OPTIONS`)."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: resources-verbs-ex2
+    difficulty: beginner
+    concept: rest-resources-verbs
+    prompt: "Write `resource_path(resource, id=None)`: return `/{resource}` if `id` is None, otherwise `/{resource}/{id}`."
+  - id: quiz-1
+    type: quiz
+    concept: rest-resources-verbs
+    question: "What does it mean for an HTTP method to be 'idempotent'?"
+    options: ["Making the same request multiple times has the same effect as making it once", "The request always returns an identical response body every time", "The request can only ever be made once", "The request doesn't require authentication"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**REST** models everything as a **resource** (a noun — `/users`,
+`/orders/42`) acted on by a small, fixed set of HTTP **verbs** — instead
+of inventing a new endpoint for every action (`/getUser`, `/createUser`,
+`/deleteUser`), you use the SAME path with different methods:
+
+```python
+def resource_path(resource, id=None):
+    if id is None:
+        return f"/{resource}"
+    return f"/{resource}/{id}"
+
+print(resource_path("users"))        # /users      -- the collection
+print(resource_path("users", 42))     # /users/42   -- one specific user
+```
+
+`GET /users` lists users, `POST /users` creates one, `GET /users/42`
+reads user 42, `PUT /users/42` replaces it, `DELETE /users/42` removes
+it — the verb carries the intent, the path just names the resource.
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def resource_path(resource, id=None):\n    if id is None:\n        return f"/{resource}"\n    return f"/{resource}/{id}"\n\nactions = [("GET", resource_path("orders")), ("POST", resource_path("orders")), ("GET", resource_path("orders", 7)), ("DELETE", resource_path("orders", 7))]\nfor verb, path in actions:\n    print(verb, path)`} caption="Four completely different operations, only two distinct paths -- the verb is doing the work that a REST-naive API might instead cram into the path itself (/getOrders, /createOrder, etc.)." />
+
+<Explanation id="idempotency">
+
+**Idempotent** means calling it once has the same effect as calling it
+many times. `DELETE /users/42` is idempotent — delete a user that's
+already gone, and the end state (user 42 doesn't exist) is identical.
+`POST /users` is NOT idempotent — call it twice, and you've created two
+users, not one.
+
+```python
+def verb_is_idempotent(verb):
+    return verb in {"GET", "PUT", "DELETE", "HEAD", "OPTIONS"}
+```
+
+This matters enormously for retry logic: if a `PUT` request times out
+and you're not sure whether it went through, it's safe to just retry it
+(idempotent — worst case, you set the same value twice). Retrying an
+uncertain `POST` risks creating a duplicate resource — which is exactly
+why idempotency is one of the first things worth checking before adding
+automatic retries to any API client.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can build RESTful resource paths and identify which HTTP verbs are safe to retry automatically because they're idempotent.
+</Checkpoint>

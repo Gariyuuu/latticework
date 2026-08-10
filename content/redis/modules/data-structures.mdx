@@ -1,0 +1,85 @@
+---
+slug: data-structures
+title: Data Structures
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: get
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: data-structures-ex1
+    difficulty: intermediate
+    concept: redis-data-structures
+    prompt: "Given the `LRUCache` class and a module-level `cache = LRUCache(2)` instance below, implement `put(self, key, value)`: if `key` already exists, refresh its recency; otherwise, if the cache is at capacity, evict the least-recently-used key first, then insert."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: data-structures-ex2
+    difficulty: beginner
+    concept: redis-data-structures
+    prompt: "`build_scenario()` (given) creates a capacity-2 cache, puts 'a' then 'b', accesses 'a' again, then puts 'c' (forcing an eviction). Write `check_evicted(cache, key)`, returning True if `key` was evicted (`cache.get(key) == -1`)."
+  - id: quiz-1
+    type: quiz
+    concept: redis-data-structures
+    question: "Redis is often described as a 'data structure server.' What does that mean, compared to a typical key-value store?"
+    options: ["Values aren't just strings/blobs — Redis natively supports structured types (lists, sets, hashes, sorted sets) with their own efficient operations", "Redis can only store numbers, never text", "Redis requires a fixed schema for every key, like a relational database", "Data structures in Redis are read-only after being written"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Redis is an in-memory **data structure server** — beyond simple
+key-value storage, it natively supports lists, sets, hashes, and sorted
+sets, each with efficient built-in operations. One of Redis's most
+common uses is exactly the LRU cache pattern from the Operating
+Systems course's Virtual Memory module — same eviction idea, applied to
+an application-level cache instead of OS memory pages:
+
+```python
+class LRUCache:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = {}
+        self.order = []   # tracks recency, oldest first
+
+    def get(self, key):
+        if key not in self.cache:
+            return -1
+        self.order.remove(key)
+        self.order.append(key)   # mark as most-recently-used
+        return self.cache[key]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`class LRUCache:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.cache = {}\n        self.order = []\n    def get(self, key):\n        if key not in self.cache:\n            return -1\n        self.order.remove(key)\n        self.order.append(key)\n        return self.cache[key]\n    def put(self, key, value):\n        if key in self.cache:\n            self.order.remove(key)\n        elif len(self.cache) >= self.capacity:\n            oldest = self.order.pop(0)\n            del self.cache[oldest]\n        self.cache[key] = value\n        self.order.append(key)\n\ncache = LRUCache(2)\ncache.put("a", 1)\ncache.put("b", 2)\ncache.get("a")        # accessing 'a' makes it recently-used\ncache.put("c", 3)      # cache full -> evicts 'b' (now the LRU key), not 'a'\nprint(cache.get("b"))   # -1 -- evicted\nprint(cache.get("a"))   # 1 -- still here, it was accessed recently`} caption="Accessing 'a' via get() before the eviction is what saves it -- without that access, 'a' would have been the LRU key and gotten evicted instead of 'b'." />
+
+<Explanation id="get">
+
+Real Redis operations map directly onto structures you already know:
+`LPUSH`/`RPUSH` (list push), `SADD` (set add), `HSET` (hash/dict set),
+`ZADD` (sorted set — like a dict where values are also sortable
+scores). Choosing the RIGHT Redis structure for a job is usually just
+recognizing which Python built-in type the problem already maps to —
+a leaderboard is a sorted set, a "has this user done X" check is a set,
+a user's profile fields are a hash.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement an LRU cache from scratch, and recognize which native Redis data structure maps onto a given application need.
+</Checkpoint>
