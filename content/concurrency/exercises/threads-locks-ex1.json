@@ -1,0 +1,11 @@
+{
+  "id": "threads-locks-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def simulate_race(schedule, initial_value=0):\n    ...\n",
+  "cases": [
+    { "call": "simulate_race([('A', 'read'), ('B', 'read'), ('A', 'write'), ('B', 'write')])", "expect": "1" },
+    { "call": "simulate_race([('A', 'read'), ('A', 'write'), ('B', 'read'), ('B', 'write')])", "expect": "2" },
+    { "call": "simulate_race([('A', 'read'), ('A', 'write')], initial_value=5)", "expect": "6" }
+  ]
+}

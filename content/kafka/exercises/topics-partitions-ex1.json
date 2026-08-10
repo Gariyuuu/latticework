@@ -1,0 +1,11 @@
+{
+  "id": "topics-partitions-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def deterministic_hash(s):\n    h = 0\n    for c in s:\n        h = (h * 31 + ord(c)) % (2 ** 32)\n    return h\n\ndef assign_partition(key, num_partitions):\n    return deterministic_hash(key) % num_partitions\n\ndef partition_messages(messages, num_partitions):\n    ...\n",
+  "cases": [
+    { "call": "partition_messages([('user-1', 'a'), ('user-2', 'b'), ('user-1', 'c'), ('user-3', 'd')], 3)", "expect": "[[('user-3', 'd')], [('user-1', 'a'), ('user-1', 'c')], [('user-2', 'b')]]" },
+    { "call": "partition_messages([], 2)", "expect": "[[], []]" },
+    { "call": "partition_messages([('a', 1)], 1)", "expect": "[[('a', 1)]]" }
+  ]
+}

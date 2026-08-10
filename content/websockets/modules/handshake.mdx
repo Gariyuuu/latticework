@@ -1,0 +1,60 @@
+---
+slug: handshake
+title: The WebSocket Handshake
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: handshake-ex1
+    difficulty: intermediate
+    concept: websockets-handshake
+    prompt: "Write `compute_accept_key(sec_websocket_key)` per RFC 6455: append the magic GUID `\"258EAFA5-E914-47DA-95CA-C5AB0DC85B11\"` to the client's key, take the SHA-1 hash of the result, then base64-encode it. Return the base64 string."
+  - id: quiz-1
+    type: quiz
+    concept: websockets-handshake
+    question: "A WebSocket connection starts as a regular HTTP request. What actually happens during the handshake?"
+    options: ["The client sends an HTTP GET with an 'Upgrade: websocket' header and a random key; the server proves it understood by hashing that key with a fixed magic GUID and returning the result, then both sides switch the SAME TCP connection to the WebSocket framing protocol", "The client and server open two separate connections, one for HTTP and one for WebSocket", "The server generates a new TCP connection for every WebSocket message", "WebSocket has no relationship to HTTP at all"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A WebSocket connection begins life as a normal HTTP request with an
+`Upgrade: websocket` header and a random client-generated key
+(`Sec-WebSocket-Key`). The server proves it's a real WebSocket-aware
+server — not just an HTTP server ignoring the Upgrade header — by
+combining that key with a fixed, publicly-known "magic" GUID, hashing
+it, and sending the result back as `Sec-WebSocket-Accept`. Only after
+this exchange does the SAME underlying TCP connection switch from
+HTTP framing to WebSocket framing — no new connection is opened.
+
+```python
+import hashlib
+import base64
+
+def compute_accept_key(sec_websocket_key):
+    GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
+    combined = sec_websocket_key + GUID
+    sha1_digest = hashlib.sha1(combined.encode()).digest()
+    return base64.b64encode(sha1_digest).decode()
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`import hashlib\nimport base64\n\ndef compute_accept_key(sec_websocket_key):\n    GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"\n    combined = sec_websocket_key + GUID\n    sha1_digest = hashlib.sha1(combined.encode()).digest()\n    return base64.b64encode(sha1_digest).decode()\n\n# The exact example key from RFC 6455 itself\nprint(compute_accept_key("dGhlIHNhbXBsZSBub25jZQ=="))\n# s3pPLMBiTxaQ9kYGzzhZRbK+xOo= -- matches the RFC's own worked example exactly`} caption="Because the GUID is publicly fixed and the hash is one-way, this isn't a security mechanism -- it's purely a 'yes, I am actually speaking the WebSocket protocol, not just echoing your HTTP request' handshake." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute the WebSocket handshake's Sec-WebSocket-Accept value exactly as RFC 6455 specifies, and understand why the handshake upgrades an existing HTTP connection rather than opening a new one.
+</Checkpoint>

@@ -8,22 +8,22 @@
   "usefulFor": [
     "research-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "lexing-parsing",
       "title": "Lexing & Parsing",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "asts",
       "title": "ASTs",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "codegen-intuition",
       "title": "Codegen Intuition",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

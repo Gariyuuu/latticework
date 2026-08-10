@@ -1,0 +1,54 @@
+---
+slug: race-conditions
+title: Detecting Race Conditions
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: race-conditions-ex1
+    difficulty: intermediate
+    concept: concurrency-race-conditions
+    prompt: "Using the provided `simulate_race` from the previous module, write `is_race_safe(schedule, initial_value=0)`: return True if the final value equals `initial_value` plus the number of `'write'` steps in the schedule (i.e. no update was lost), False otherwise."
+  - id: quiz-1
+    type: quiz
+    concept: concurrency-race-conditions
+    question: "What makes `is_race_safe` a useful way to think about race-condition testing?"
+    options: ["It compares the ACTUAL result of a given interleaving against the mathematically expected result if every operation counted independently — any mismatch proves a lost update happened, without needing to inspect the interleaving by hand", "It guarantees a program has no race conditions if run once successfully", "It only works for exactly two threads", "It requires running the program thousands of times to get a statistical answer"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Rather than staring at an interleaving and reasoning about it by hand,
+you can check correctness mechanically: if `N` increments happen, the
+final value should be exactly `initial_value + N` — no more, no less.
+Any interleaving where the actual result falls short reveals a lost
+update, definitively, without needing to trace through the schedule
+step by step.
+
+```python
+def is_race_safe(schedule, initial_value=0):
+    final = simulate_race(schedule, initial_value)
+    num_writes = sum(1 for _, step in schedule if step == "write")
+    return final == initial_value + num_writes
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`# simulate_race() as defined in the previous module\ndef is_race_safe(schedule, initial_value=0):\n    final = simulate_race(schedule, initial_value)\n    num_writes = sum(1 for _, step in schedule if step == "write")\n    return final == initial_value + num_writes\n\nbad = [("A", "read"), ("B", "read"), ("A", "write"), ("B", "write")]\ngood = [("A", "read"), ("A", "write"), ("B", "read"), ("B", "write")]\nprint(is_race_safe(bad))    # False -- 2 writes happened, but only +1 landed\nprint(is_race_safe(good))   # True -- 2 writes happened, both landed`} caption="This 'expected count vs. actual result' comparison is a general debugging technique, not just for concurrency -- it's the same idea as a checksum: derive an independently-computable expected value, then check the real system against it." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can mechanically detect whether a specific thread interleaving lost an update, by comparing the actual result against the mathematically expected one.
+</Checkpoint>

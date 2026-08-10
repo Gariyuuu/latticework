@@ -9,22 +9,22 @@
     "software-engineer",
     "quant-developer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "threads-locks",
       "title": "Threads & Locks",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "race-conditions",
       "title": "Race Conditions",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "async-models",
       "title": "Async Models",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

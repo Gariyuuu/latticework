@@ -1,0 +1,11 @@
+{
+  "id": "asts-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def parse(tokens):\n    pos = [0]\n    def peek():\n        return tokens[pos[0]] if pos[0] < len(tokens) else None\n    def advance():\n        tok = tokens[pos[0]]\n        pos[0] += 1\n        return tok\n    def parse_factor():\n        tok = advance()\n        if tok == '(':\n            node = parse_expr()\n            advance()\n            return node\n        return tok\n    def parse_term():\n        node = parse_factor()\n        while peek() in ('*', '/'):\n            op = advance()\n            node = (op, node, parse_factor())\n        return node\n    def parse_expr():\n        node = parse_term()\n        while peek() in ('+', '-'):\n            op = advance()\n            node = (op, node, parse_term())\n        return node\n    return parse_expr()\n\ndef eval_ast(node):\n    ...\n",
+  "cases": [
+    { "call": "eval_ast(parse([12, '+', 3, '*', 4]))", "expect": "24" },
+    { "call": "eval_ast(parse(['(', 1, '+', 2, ')', '*', '(', 3, '+', 4, ')']))", "expect": "21" },
+    { "call": "eval_ast(parse([10, '-', 2, '-', 3]))", "expect": "5" }
+  ]
+}

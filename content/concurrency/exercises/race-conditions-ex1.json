@@ -1,0 +1,11 @@
+{
+  "id": "race-conditions-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def simulate_race(schedule, initial_value=0):\n    shared = initial_value\n    thread_local = {}\n    for thread_id, step in schedule:\n        if step == 'read':\n            thread_local[thread_id] = shared\n        elif step == 'write':\n            shared = thread_local[thread_id] + 1\n    return shared\n\ndef is_race_safe(schedule, initial_value=0):\n    ...\n",
+  "cases": [
+    { "call": "is_race_safe([('A', 'read'), ('B', 'read'), ('A', 'write'), ('B', 'write')])", "expect": "False" },
+    { "call": "is_race_safe([('A', 'read'), ('A', 'write'), ('B', 'read'), ('B', 'write')])", "expect": "True" },
+    { "call": "is_race_safe([('A', 'read'), ('A', 'write'), ('B', 'read'), ('B', 'write'), ('C', 'read'), ('C', 'write')])", "expect": "True" }
+  ]
+}

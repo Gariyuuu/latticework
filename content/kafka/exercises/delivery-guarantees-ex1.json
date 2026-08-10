@@ -1,0 +1,11 @@
+{
+  "id": "delivery-guarantees-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def dedup_process(messages):\n    ...\n",
+  "cases": [
+    { "call": "dedup_process([(1, 'a'), (2, 'b'), (1, 'a-redelivered'), (3, 'c'), (2, 'b-redelivered')])", "expect": "['a', 'b', 'c']" },
+    { "call": "dedup_process([(1, 'x'), (1, 'x'), (1, 'x')])", "expect": "['x']" },
+    { "call": "dedup_process([])", "expect": "[]" }
+  ]
+}

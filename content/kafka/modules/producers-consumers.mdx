@@ -1,0 +1,55 @@
+---
+slug: producers-consumers
+title: Producers & Consumers
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: producers-consumers-ex1
+    difficulty: intermediate
+    concept: kafka-producers-consumers
+    prompt: "Write `consume_from_offset(log, committed_offset, batch_size)`: return a tuple `(batch, new_offset)` where `batch` is up to `batch_size` messages from `log` starting at `committed_offset`, and `new_offset` is `committed_offset` advanced by however many messages were actually read."
+  - id: quiz-1
+    type: quiz
+    concept: kafka-producers-consumers
+    question: "Why does a Kafka consumer track a COMMITTED OFFSET instead of just remembering 'the last message I saw' in memory?"
+    options: ["The offset is what makes the consumer's position durable and resumable — if the consumer crashes and restarts, it reads the last committed offset and picks up exactly where it left off, instead of losing its place or re-reading from the very beginning", "Offsets are only used for debugging, not for actually resuming consumption", "Kafka automatically deletes messages once any consumer has seen them", "The offset determines which partition a message belongs to"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A Kafka partition is an append-only log, and each message in it has a
+sequential position called an **offset**. Consumers don't get messages
+pushed to them automatically — they PULL, tracking their own position by
+periodically **committing** the offset of the last message they've fully
+processed. This is what makes consumption resumable: after a crash or
+restart, a consumer just reads its last committed offset and continues
+from exactly there, rather than losing its place.
+
+```python
+def consume_from_offset(log, committed_offset, batch_size):
+    batch = log[committed_offset:committed_offset + batch_size]
+    new_offset = committed_offset + len(batch)
+    return batch, new_offset
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def consume_from_offset(log, committed_offset, batch_size):\n    batch = log[committed_offset:committed_offset + batch_size]\n    new_offset = committed_offset + len(batch)\n    return batch, new_offset\n\nlog = ["m0", "m1", "m2", "m3", "m4", "m5"]\nbatch, offset = consume_from_offset(log, 0, 3)\nprint(batch, offset)          # ['m0', 'm1', 'm2'] 3\n\n# consumer crashes here, restarts, reads its last committed offset (3), and resumes:\nbatch, offset = consume_from_offset(log, offset, 3)\nprint(batch, offset)          # ['m3', 'm4', 'm5'] 6 -- picks up exactly where it left off`} caption="Notice consume_from_offset never mutates the log itself -- reading is non-destructive in Kafka (unlike, say, popping a queue), which is exactly why MULTIPLE independent consumer groups can each read the same topic at their own pace without interfering with each other." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement offset-based consumption that resumes correctly after a restart, the mechanism that makes Kafka consumers durable and independently pace-able.
+</Checkpoint>

@@ -1,0 +1,77 @@
+---
+slug: codegen-intuition
+title: Code Generation Intuition
+estimatedMinutes: 22
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: vm-explanation
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: codegen-intuition-ex1
+    difficulty: advanced
+    concept: compilers-codegen
+    prompt: "Write `compile_to_bytecode(node)`: given an AST (a number, or a `(op, left, right)` tuple), return a flat list of instructions — `('PUSH', n)` for numbers, `('OP', op)` for operators — in POST-ORDER (both operands before the operator) so a stack machine can execute them in order."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: codegen-intuition-ex2
+    difficulty: advanced
+    concept: compilers-codegen
+    prompt: "Write `run_bytecode(bytecode)`: execute the instruction list from `compile_to_bytecode` on a stack machine — `PUSH` pushes its value, `OP` pops two values and pushes the result of applying the operator (second-popped `op` first-popped... i.e. `a op b` where `a` was pushed first). Return the final stack's only value."
+  - id: quiz-1
+    type: quiz
+    concept: compilers-codegen
+    question: "Why does compiling an AST to bytecode use POST-ORDER traversal (children before the operator)?"
+    options: ["A stack machine can only apply an operator once both its operands are already sitting on the stack, so both children's code must run and push their values BEFORE the operator's instruction appears", "Post-order is simply the fastest tree traversal to implement", "Pre-order would produce more compact bytecode", "The operator needs to know its position in the source text"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+The final stage turns an AST into instructions a simple machine can
+execute directly, without recursion. A classic target is a **stack
+machine**: `PUSH` puts a value on a stack, and an operator instruction
+pops two values off, combines them, and pushes the result back. This is
+literally how real bytecode VMs (the JVM, Python's own CPython
+bytecode, WebAssembly) execute — expression evaluation as a sequence of
+push/pop stack operations.
+
+```python
+def compile_to_bytecode(node):
+    if isinstance(node, int):
+        return [("PUSH", node)]
+    op, left, right = node
+    return compile_to_bytecode(left) + compile_to_bytecode(right) + [("OP", op)]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def compile_to_bytecode(node):\n    if isinstance(node, int):\n        return [("PUSH", node)]\n    op, left, right = node\n    return compile_to_bytecode(left) + compile_to_bytecode(right) + [("OP", op)]\n\n# AST for "12 + 3 * 4"\nnode = ("+", 12, ("*", 3, 4))\nprint(compile_to_bytecode(node))\n# [('PUSH', 12), ('PUSH', 3), ('PUSH', 4), ('OP', '*'), ('OP', '+')]`} caption="Notice '*' appears in the bytecode BEFORE '+', even though '+' is the AST's root -- the multiplication's operands get pushed and combined first because compile_to_bytecode recurses into the right child (the '*' subtree) before emitting the '+' instruction." />
+
+<Explanation id="vm-explanation">
+
+Running that bytecode is the mirror image of generating it: walk the
+instruction list left to right, maintaining a stack. `PUSH 12` →
+stack is `[12]`. `PUSH 3` → `[12, 3]`. `PUSH 4` → `[12, 3, 4]`. `OP *`
+pops `4` and `3`, pushes `12` → stack is `[12, 12]`. `OP +` pops `12`
+and `12`, pushes `24` → stack is `[24]`, the final answer.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compile an AST to stack-machine bytecode via post-order traversal, and execute that bytecode on a simple stack VM — the same push/pop model real bytecode interpreters use.
+</Checkpoint>

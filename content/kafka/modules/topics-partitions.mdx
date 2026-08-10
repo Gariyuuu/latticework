@@ -1,0 +1,59 @@
+---
+slug: topics-partitions
+title: Topics & Partitions
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: topics-partitions-ex1
+    difficulty: intermediate
+    concept: kafka-topics-partitions
+    prompt: "Using the provided `assign_partition(key, num_partitions)`, write `partition_messages(messages, num_partitions)`: `messages` is a list of `(key, value)` pairs. Route each message to its assigned partition, and return a list of `num_partitions` lists, each holding the `(key, value)` pairs routed to it, IN ORIGINAL ORDER within each partition."
+  - id: quiz-1
+    type: quiz
+    concept: kafka-topics-partitions
+    question: "Why does Kafka guarantee message ORDER only within a single partition, not across an entire topic?"
+    options: ["A topic is split into independently-appended partitions specifically so producers/consumers can scale in parallel — enforcing a single global order across all of them would mean funneling every write through one place, defeating that parallelism", "Kafka doesn't actually guarantee any ordering, even within a partition", "Partitions are just a display/UI grouping with no effect on how messages are stored", "Ordering only matters for numeric keys, not string keys"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A Kafka **topic** is a named stream of messages, but it isn't stored as
+one single ordered log — it's split into multiple **partitions**, each
+its own independently-appended, ordered log. A message's **key**
+deterministically decides which partition it lands in (typically `hash(key)
+% num_partitions`), which guarantees every message with the same key
+always lands in the same partition — and therefore stays in order
+relative to every other message with that key.
+
+```python
+def deterministic_hash(s):
+    h = 0
+    for c in s:
+        h = (h * 31 + ord(c)) % (2 ** 32)
+    return h
+
+def assign_partition(key, num_partitions):
+    return deterministic_hash(key) % num_partitions
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def deterministic_hash(s):\n    h = 0\n    for c in s:\n        h = (h * 31 + ord(c)) % (2 ** 32)\n    return h\n\ndef assign_partition(key, num_partitions):\n    return deterministic_hash(key) % num_partitions\n\nprint(assign_partition("user-1", 3))\nprint(assign_partition("user-1", 3))   # same key -> always the same partition\nprint(assign_partition("user-2", 3))   # different key -> may land elsewhere`} caption="This uses a hand-rolled polynomial hash, NOT Python's built-in hash() -- CPython randomizes hash() for strings by default (a security feature called hash randomization), so the same key would map to a DIFFERENT partition on every process restart, breaking the 'same key always goes to the same partition' guarantee entirely." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can route keyed messages to partitions deterministically, and understand why Kafka only guarantees ordering within a partition, not across a whole topic.
+</Checkpoint>

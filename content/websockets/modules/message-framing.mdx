@@ -1,0 +1,58 @@
+---
+slug: message-framing
+title: Message Framing
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: message-framing-ex1
+    difficulty: intermediate
+    concept: websockets-framing
+    prompt: "Write `encode_frame(payload)`: build a minimal WebSocket text frame header for a small (< 126 byte), unmasked, single-frame payload — byte 0 is `0x81` (FIN=1, opcode=1 for text), byte 1 is the payload length. Return the header bytes concatenated with `payload`."
+  - id: quiz-1
+    type: quiz
+    concept: websockets-framing
+    question: "Unlike HTTP, WebSocket doesn't send messages as plain, self-delimited text. Why does it need explicit frame headers at all?"
+    options: ["TCP is just a byte stream with no message boundaries — the receiver needs an explicit length (or continuation markers) in each frame to know exactly where one WebSocket message ends and the next begins", "Frame headers are purely for compatibility with old browsers", "WebSocket frames replace the need for a TCP connection entirely", "Frame headers only matter for binary messages, not text"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+TCP delivers a raw stream of bytes with no built-in concept of "where
+one message ends." WebSocket solves this with explicit **frames**: each
+message is wrapped in a small header that says (among other things) how
+long the payload is, so the receiver knows exactly where to stop
+reading. The first header byte packs two things into one byte: the top
+bit is `FIN` (is this the final frame of the message?), and the bottom 4
+bits are the **opcode** (`0x1` = text, `0x2` = binary, `0x8` = close).
+
+```python
+def encode_frame(payload):
+    header = bytearray()
+    header.append(0x81)          # FIN=1, opcode=1 (text) packed into one byte
+    length = len(payload)
+    if length < 126:
+        header.append(length)     # small payloads: length fits directly in byte 1
+    return bytes(header) + payload
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def encode_frame(payload):\n    header = bytearray()\n    header.append(0x81)\n    length = len(payload)\n    if length < 126:\n        header.append(length)\n    return bytes(header) + payload\n\nframe = encode_frame(b"Hi")\nprint(frame.hex())   # 81024869 -- 0x81 (FIN+text), 0x02 (length=2), then "Hi" as bytes`} caption="0x81 is 10000001 in binary -- the leading 1 is FIN, and 0001 is the text opcode. Real frames also need a masking bit (client-to-server frames MUST be masked with a random key per RFC 6455, server-to-client frames must NOT be) -- this simplified version only covers the unmasked server-to-client case." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can build a minimal WebSocket frame header and understand why explicit framing is necessary on top of TCP's raw byte stream.
+</Checkpoint>

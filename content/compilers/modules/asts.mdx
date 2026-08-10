@@ -1,0 +1,91 @@
+---
+slug: asts
+title: Abstract Syntax Trees
+estimatedMinutes: 22
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: eval-explanation
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: asts-ex1
+    difficulty: advanced
+    concept: compilers-asts
+    prompt: "Using the provided `parse(tokens)` (already correct — builds an AST as nested tuples `(op, left, right)`, respecting `*`/`/` before `+`/`-`), write `eval_ast(node)`: evaluate the AST and return the numeric result."
+  - id: quiz-1
+    type: quiz
+    concept: compilers-asts
+    question: "Why does the AST for `1 + 2 * 3` look like `('+', 1, ('*', 2, 3))` and not `('*', ('+', 1, 2), 3)`?"
+    options: ["Because multiplication has higher precedence than addition, the parser must group the '2 * 3' together FIRST, so it becomes the right child of the '+' node — the tree's shape encodes operator precedence directly", "Because tokens are always grouped left to right regardless of the operator", "Because '+' always becomes the root of any expression", "Because the tokenizer decides precedence, not the parser"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Once you have tokens, the **parser** groups them into a tree that
+reflects the expression's actual structure — the **Abstract Syntax
+Tree (AST)**. This is where operator precedence gets encoded: `1 + 2 *
+3` must parse so that `2 * 3` is evaluated as a single unit before being
+added to `1`, which means the AST has to nest the multiplication
+INSIDE the addition, not the other way around.
+
+```python
+def parse(tokens):
+    pos = [0]
+    def peek():
+        return tokens[pos[0]] if pos[0] < len(tokens) else None
+    def advance():
+        tok = tokens[pos[0]]
+        pos[0] += 1
+        return tok
+    def parse_factor():
+        tok = advance()
+        if tok == "(":
+            node = parse_expr()
+            advance()  # consume ")"
+            return node
+        return tok
+    def parse_term():
+        node = parse_factor()
+        while peek() in ("*", "/"):
+            op = advance()
+            node = (op, node, parse_factor())
+        return node
+    def parse_expr():
+        node = parse_term()
+        while peek() in ("+", "-"):
+            op = advance()
+            node = (op, node, parse_term())
+        return node
+    return parse_expr()
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`# parse() as defined above\ntokens = [12, "+", 3, "*", 4]\nprint(parse(tokens))\n# ('+', 12, ('*', 3, 4)) -- the '3 * 4' is nested INSIDE the '+', so it evaluates first`} caption="parse_term() (handling * and /) is called FROM WITHIN parse_expr() (handling + and -) rather than the other way around -- that call-nesting order is precisely what makes higher-precedence operators end up deeper in the tree." />
+
+<Explanation id="eval-explanation">
+
+Evaluating an AST is a direct recursive walk: a leaf (a plain number) is
+already its own value; an internal node is "evaluate both children, then
+apply the operator." This same recursive-tree-walk shape reappears
+constantly — it's exactly how Data Structures' `trees-bsts` module
+walks a binary search tree, just applied to compute a result instead of
+searching for a key.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You understand how operator precedence gets encoded directly into an AST's shape, and can write a recursive evaluator that walks that tree.
+</Checkpoint>

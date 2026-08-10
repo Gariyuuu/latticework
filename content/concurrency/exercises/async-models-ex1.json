@@ -1,0 +1,11 @@
+{
+  "id": "async-models-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def run_event_loop(tasks):\n    ...\n",
+  "cases": [
+    { "call": "run_event_loop({'A': ['a1', 'a2'], 'B': ['b1']})", "expect": "[('A', 'a1'), ('B', 'b1'), ('A', 'a2')]" },
+    { "call": "run_event_loop({'A': ['a1'], 'B': ['b1'], 'C': ['c1']})", "expect": "[('A', 'a1'), ('B', 'b1'), ('C', 'c1')]" },
+    { "call": "run_event_loop({'A': ['a1', 'a2', 'a3']})", "expect": "[('A', 'a1'), ('A', 'a2'), ('A', 'a3')]" }
+  ]
+}

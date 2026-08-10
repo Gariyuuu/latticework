@@ -1,0 +1,11 @@
+{
+  "id": "reconnection-patterns-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def next_retry_delay(attempt, base=1, cap=30):\n    ...\n",
+  "cases": [
+    { "call": "[next_retry_delay(a) for a in range(7)]", "expect": "[1, 2, 4, 8, 16, 30, 30]" },
+    { "call": "next_retry_delay(3, base=2, cap=100)", "expect": "16" },
+    { "call": "next_retry_delay(0)", "expect": "1" }
+  ]
+}

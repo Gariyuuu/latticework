@@ -1,0 +1,59 @@
+---
+slug: delivery-guarantees
+title: Delivery Guarantees
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: delivery-guarantees-ex1
+    difficulty: intermediate
+    concept: kafka-delivery-guarantees
+    prompt: "Write `dedup_process(messages)`: `messages` is a list of `(message_id, payload)` pairs, possibly containing REDELIVERED duplicates (same `message_id` appearing more than once). Return a list of `payload`s, processing each unique `message_id` only once, in first-seen order."
+  - id: quiz-1
+    type: quiz
+    concept: kafka-delivery-guarantees
+    question: "Kafka's default guarantee is AT-LEAST-ONCE delivery (a message might be redelivered after a consumer crash before it commits its offset). How does an idempotent consumer turn that into effectively-exactly-once PROCESSING?"
+    options: ["By tracking which message IDs it has already processed and skipping duplicates on redelivery — the message might arrive twice, but its EFFECT only happens once", "By asking Kafka to guarantee exactly-once delivery instead", "By processing every message twice on purpose to be safe", "By deleting messages from the log immediately after reading them"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Kafka's default delivery guarantee is **at-least-once**: if a consumer
+crashes after processing a message but before committing its offset,
+that message gets redelivered on restart — so a consumer must be
+prepared to see the same message more than once. Making the consumer
+**idempotent** (processing the same message twice has the same effect
+as processing it once) closes this gap: track which message IDs have
+already been handled, and skip anything already seen.
+
+```python
+def dedup_process(messages):
+    seen = set()
+    result = []
+    for msg_id, payload in messages:
+        if msg_id not in seen:
+            seen.add(msg_id)
+            result.append(payload)
+    return result
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def dedup_process(messages):\n    seen = set()\n    result = []\n    for msg_id, payload in messages:\n        if msg_id not in seen:\n            seen.add(msg_id)\n            result.append(payload)\n    return result\n\n# msg 1 and msg 2 each get redelivered once (simulating a post-crash redelivery)\nmessages = [(1, "a"), (2, "b"), (1, "a-redelivered"), (3, "c"), (2, "b-redelivered")]\nprint(dedup_process(messages))\n# ['a', 'b', 'c'] -- each ID processed exactly once, regardless of how many times it arrived`} caption="This is the exact same 'build a set, check membership' pattern from Data Structures' hash-tables module -- deduplication is fundamentally a set-membership problem, whether you're deduping API requests, DB writes, or Kafka messages." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement idempotent message processing via ID-based deduplication, turning Kafka's at-least-once delivery into effectively-once processing.
+</Checkpoint>

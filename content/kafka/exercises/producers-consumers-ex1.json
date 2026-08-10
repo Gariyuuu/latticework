@@ -1,0 +1,11 @@
+{
+  "id": "producers-consumers-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def consume_from_offset(log, committed_offset, batch_size):\n    ...\n",
+  "cases": [
+    { "call": "consume_from_offset(['m0', 'm1', 'm2', 'm3', 'm4', 'm5'], 0, 3)", "expect": "(['m0', 'm1', 'm2'], 3)" },
+    { "call": "consume_from_offset(['m0', 'm1', 'm2', 'm3', 'm4', 'm5'], 3, 3)", "expect": "(['m3', 'm4', 'm5'], 6)" },
+    { "call": "consume_from_offset(['m0', 'm1', 'm2', 'm3', 'm4', 'm5'], 6, 3)", "expect": "([], 6)" }
+  ]
+}

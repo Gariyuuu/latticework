@@ -1,0 +1,58 @@
+---
+slug: vector-representations
+title: Vector Representations
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: vector-representations-ex1
+    difficulty: beginner
+    concept: embeddings-vector-representations
+    prompt: "Write `average_vector(vectors)`: given a list of equal-length numeric vectors (tuples), return their element-wise average as a tuple, each component rounded to 4 decimal places."
+  - id: quiz-1
+    type: quiz
+    concept: embeddings-vector-representations
+    question: "In a recommendation system, why would you represent a user's preferences as the AVERAGE of the embedding vectors of items they liked?"
+    options: ["Averaging pulls the resulting vector toward the region of embedding space shared by everything the user liked, so it points roughly 'toward' their taste, not any single item", "Averaging is required by the mathematical definition of an embedding", "It's the only operation vectors support", "It guarantees the result has unit length"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+An **embedding** is just a vector — a fixed-length list of numbers —
+that represents something (a word, an image, a user, a product) in a
+space where distance and direction carry meaning: similar things end up
+as nearby vectors. One of the simplest useful operations on embeddings
+is **averaging**: combine several item vectors into a single vector that
+represents, say, "what this user tends to like."
+
+```python
+def average_vector(vectors):
+    n = len(vectors)
+    dim = len(vectors[0])
+    result = [0.0] * dim
+    for v in vectors:
+        for i in range(dim):
+            result[i] += v[i]
+    return tuple(round(result[i] / n, 4) for i in range(dim))
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def average_vector(vectors):\n    n = len(vectors)\n    dim = len(vectors[0])\n    result = [0.0] * dim\n    for v in vectors:\n        for i in range(dim):\n            result[i] += v[i]\n    return tuple(round(result[i] / n, 4) for i in range(dim))\n\n# Two liked movies, each a tiny (action, romance, comedy) embedding\nliked = [(1, 0, 1), (0, 1, 1)]\nprint(average_vector(liked))   # (0.5, 0.5, 1.0) -- a "taste profile" pointing toward comedy`} caption="This is the same coordinate-wise accumulation as computing a centroid in k-means clustering -- 'average a bunch of vectors together' shows up constantly across ML, not just embeddings." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can combine multiple embedding vectors into a single representative vector via element-wise averaging.
+</Checkpoint>

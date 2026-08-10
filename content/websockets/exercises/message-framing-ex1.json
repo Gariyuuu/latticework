@@ -1,0 +1,11 @@
+{
+  "id": "message-framing-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def encode_frame(payload):\n    ...\n",
+  "cases": [
+    { "call": "encode_frame(b'Hi').hex()", "expect": "81024869" },
+    { "call": "encode_frame(b'').hex()", "expect": "8100" },
+    { "call": "encode_frame(b'Hello, WS!').hex()", "expect": "810a48656c6c6f2c20575321" }
+  ]
+}

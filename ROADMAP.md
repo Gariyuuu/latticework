@@ -310,6 +310,47 @@ same change as any feature work.
   from HTTP's caching module (name resolution, not HTTP response
   caching); `load-balancing` implements round-robin and weighted
   round-robin request distribution.
+- Fully built: Embeddings (3/3 — vector-representations,
+  similarity-metrics, use-cases) — **Done**. Reaches 37/99.
+  `similarity-metrics` reuses `magnitude()` from Linear Algebra's
+  vectors-matrices module directly; `use-cases` implements brute-force
+  top-k nearest-neighbor retrieval by cosine similarity — the core
+  operation behind semantic search, recommendations, and RAG.
+- Fully built: Compilers Fundamentals (3/3 — lexing-parsing, asts,
+  codegen-intuition) — **Done**. Reaches 38/99. A genuinely coherent
+  3-module arc: `lexing-parsing` tokenizes an arithmetic expression
+  string, `asts` parses tokens into a precedence-respecting AST (nested
+  tuples) and evaluates it recursively, `codegen-intuition` compiles
+  that same AST to stack-machine bytecode (post-order traversal) and
+  executes it on a small push/pop VM — mirroring how real bytecode
+  interpreters (JVM, CPython, WASM) actually work.
+- Fully built: WebSockets (3/3 — handshake, message-framing,
+  reconnection-patterns) — **Done**. Reaches 39/99. `handshake`
+  implements the real RFC 6455 `Sec-WebSocket-Accept` computation
+  (SHA-1 + base64 of key+magic-GUID), verified against the RFC's own
+  worked example (`dGhlIHNhbXBsZSBub25jZQ==` → `s3pPLMBiTxaQ9kYGzzhZRbK+xOo=`)
+  — a genuine protocol implementation, not a simplified stand-in.
+  `message-framing` builds a minimal unmasked text-frame header;
+  grading uses `.hex()` on the resulting bytes to avoid bytes-repr
+  ambiguity in the expected string.
+- Fully built: Concurrency (3/3 — threads-locks, race-conditions,
+  async-models) — **Done**. Reaches 40/99. Since this environment can't
+  grade true parallel execution, `threads-locks` models an explicit
+  interleaving schedule (`[(thread_id, step), ...]`) and simulates a
+  read-modify-write race step by step — deterministic and gradeable
+  while still illustrating a real lost-update bug. `async-models`'s
+  cooperative round-robin scheduler reuses the exact queue-rotation
+  pattern from Networking's load-balancing module, applied to task
+  scheduling instead of request routing.
+- Fully built: Kafka Fundamentals (3/3 — topics-partitions,
+  producers-consumers, delivery-guarantees) — **Done**. Reaches
+  **41/99 skills built**. `topics-partitions` deliberately uses a
+  hand-rolled deterministic string hash instead of Python's built-in
+  `hash()` — CPython randomizes `hash()` for strings by default (a
+  security feature), which would make partition assignment
+  non-reproducible across runs and defeat the whole exercise.
+  `delivery-guarantees`'s idempotent-consumer dedup reuses the same
+  set-membership pattern as Data Structures' hash-tables module.
 - Linux, PyTorch, C++ — **Planned** (metadata skeletons done as part
   of the wider ~70-90 skill catalog; module content not yet authored).
   Linux needs the CLI-simulation exercise type, which isn't implemented

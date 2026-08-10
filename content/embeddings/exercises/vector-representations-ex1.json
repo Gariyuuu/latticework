@@ -1,0 +1,11 @@
+{
+  "id": "vector-representations-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def average_vector(vectors):\n    ...\n",
+  "cases": [
+    { "call": "average_vector([(1, 0, 1), (0, 1, 1)])", "expect": "(0.5, 0.5, 1.0)" },
+    { "call": "average_vector([(2, 4), (4, 8), (6, 12)])", "expect": "(4.0, 8.0)" },
+    { "call": "average_vector([(1, 1, 1)])", "expect": "(1.0, 1.0, 1.0)" }
+  ]
+}

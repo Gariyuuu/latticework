@@ -1,0 +1,58 @@
+---
+slug: threads-locks
+title: Threads & Locks
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: threads-locks-ex1
+    difficulty: intermediate
+    concept: concurrency-threads-locks
+    prompt: "Write `simulate_race(schedule, initial_value=0)`: `schedule` is a list of `(thread_id, step)` pairs where `step` is `'read'` (thread caches the current shared value) or `'write'` (thread writes cached-value + 1 back to shared). Simulate the schedule in order and return the final shared value — this models an UNSYNCHRONIZED read-modify-write increment."
+  - id: quiz-1
+    type: quiz
+    concept: concurrency-threads-locks
+    question: "Two threads both increment a shared counter once, with no lock, starting from 0. What's the WORST-case final value, and why?"
+    options: ["1 — if both threads read the value (0) before either writes, they both compute 0+1=1 and the second write silently overwrites the first, losing one increment entirely", "2 — increments always add up correctly regardless of ordering", "0 — unsynchronized access always resets the counter", "It's impossible to predict, so no worst case exists"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+"Increment a counter" looks atomic in source code (`counter += 1`) but
+is actually three separate steps at the hardware level: **read** the
+current value, **compute** the new value, **write** it back. When two
+threads run this without coordination, their steps can interleave in
+ways that lose updates — this is a **race condition**.
+
+```python
+def simulate_race(schedule, initial_value=0):
+    shared = initial_value
+    thread_local = {}
+    for thread_id, step in schedule:
+        if step == "read":
+            thread_local[thread_id] = shared
+        elif step == "write":
+            shared = thread_local[thread_id] + 1
+    return shared
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def simulate_race(schedule, initial_value=0):\n    shared = initial_value\n    thread_local = {}\n    for thread_id, step in schedule:\n        if step == "read":\n            thread_local[thread_id] = shared\n        elif step == "write":\n            shared = thread_local[thread_id] + 1\n    return shared\n\n# BAD interleaving: both threads read 0 before either writes\nbad = [("A", "read"), ("B", "read"), ("A", "write"), ("B", "write")]\nprint(simulate_race(bad))    # 1 -- B's write clobbers A's increment (lost update)\n\n# GOOD interleaving: A fully completes before B starts\ngood = [("A", "read"), ("A", "write"), ("B", "read"), ("B", "write")]\nprint(simulate_race(good))   # 2 -- both increments actually count`} caption="A lock's entire job is to make the 'BAD' interleaving impossible -- it forces every thread's read+write pair to complete as one uninterrupted unit before another thread's read can start, which is exactly the 'GOOD' schedule above." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can simulate an explicit thread interleaving to see exactly how an unsynchronized read-modify-write produces a lost update.
+</Checkpoint>

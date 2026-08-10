@@ -9,22 +9,22 @@
     "ai-engineer",
     "ml-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "vector-representations",
       "title": "Vector Representations",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "similarity-metrics",
       "title": "Similarity Metrics",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "use-cases",
       "title": "Use Cases",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

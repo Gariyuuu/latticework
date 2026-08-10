@@ -1,0 +1,11 @@
+{
+  "id": "codegen-intuition-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def run_bytecode(bytecode):\n    ...\n",
+  "cases": [
+    { "call": "run_bytecode([('PUSH', 12), ('PUSH', 3), ('PUSH', 4), ('OP', '*'), ('OP', '+')])", "expect": "24" },
+    { "call": "run_bytecode([('PUSH', 1), ('PUSH', 2), ('OP', '+'), ('PUSH', 3), ('PUSH', 4), ('OP', '+'), ('OP', '*')])", "expect": "21" },
+    { "call": "run_bytecode([('PUSH', 10), ('PUSH', 2), ('OP', '-'), ('PUSH', 3), ('OP', '-')])", "expect": "5" }
+  ]
+}

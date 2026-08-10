@@ -11,22 +11,22 @@
     "full-stack-engineer",
     "backend-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "handshake",
       "title": "Handshake",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "message-framing",
       "title": "Message Framing",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "reconnection-patterns",
       "title": "Reconnection Patterns",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

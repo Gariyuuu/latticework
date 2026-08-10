@@ -1,0 +1,54 @@
+---
+slug: reconnection-patterns
+title: Reconnection Patterns
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: reconnection-patterns-ex1
+    difficulty: beginner
+    concept: websockets-reconnection
+    prompt: "Write `next_retry_delay(attempt, base=1, cap=30)`: return `base * 2^attempt`, capped at `cap`. `attempt` starts at 0 for the first retry."
+  - id: quiz-1
+    type: quiz
+    concept: websockets-reconnection
+    question: "Why does a WebSocket client use EXPONENTIAL backoff (doubling the delay each retry) instead of retrying immediately every time?"
+    options: ["Immediate, repeated reconnect attempts from every disconnected client at once can overwhelm a server that's already struggling (or just restarting) — spacing retries out, and capping the max delay, gives the server room to recover", "Exponential backoff is required by the WebSocket protocol specification", "It makes the eventual reconnection happen faster", "It only matters for servers with more than 1000 concurrent clients"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Network connections drop — servers restart, wifi hiccups, load
+balancers cycle instances. A WebSocket client needs a reconnection
+strategy, and retrying instantly, over and over, is actively harmful: if
+a server goes down and every single client reconnects the SAME instant
+it comes back up, that flood of simultaneous reconnects can knock it
+back down (a "thundering herd"). **Exponential backoff** fixes this by
+doubling the wait between attempts, capped at some maximum so it doesn't
+grow forever.
+
+```python
+def next_retry_delay(attempt, base=1, cap=30):
+    return min(base * (2 ** attempt), cap)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def next_retry_delay(attempt, base=1, cap=30):\n    return min(base * (2 ** attempt), cap)\n\nfor attempt in range(7):\n    print(attempt, next_retry_delay(attempt))\n# 0 1\n# 1 2\n# 2 4\n# 3 8\n# 4 16\n# 5 30  -- would be 32, but capped at 30\n# 6 30  -- stays capped from here on`} caption="Real production systems also add random 'jitter' on top of this (a small random offset per client) so that even clients which started retrying at the exact same moment don't all reconnect in lockstep -- the cap alone solves 'don't grow forever,' jitter solves 'don't all arrive at once.'" />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement capped exponential backoff and explain why it prevents a reconnection storm from overwhelming a recovering server.
+</Checkpoint>

@@ -1,0 +1,11 @@
+{
+  "id": "similarity-metrics-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def dot(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\ndef magnitude(a):\n    return sum(x ** 2 for x in a) ** 0.5\n\ndef cosine_similarity(a, b):\n    ...\n",
+  "cases": [
+    { "call": "cosine_similarity((1, 0), (1, 0))", "expect": "1.0" },
+    { "call": "cosine_similarity((1, 0), (0, 1))", "expect": "0.0" },
+    { "call": "cosine_similarity((1, 2, 3), (4, 5, 6))", "expect": "0.9746" }
+  ]
+}

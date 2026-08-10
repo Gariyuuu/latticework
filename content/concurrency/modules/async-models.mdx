@@ -1,0 +1,65 @@
+---
+slug: async-models
+title: Async Models
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: async-models-ex1
+    difficulty: intermediate
+    concept: concurrency-async-models
+    prompt: "Write `run_event_loop(tasks)`: `tasks` is a dict mapping task ID to a list of step labels. Simulate a single-threaded, cooperative round-robin scheduler: repeatedly take the task at the front of the queue, run ONE of its remaining steps (append `(task_id, step)` to the trace), and if that task still has steps left, put it back at the END of the queue. Return the full trace."
+  - id: quiz-1
+    type: quiz
+    concept: concurrency-async-models
+    question: "How does Python's asyncio event loop achieve concurrency WITHOUT using multiple OS threads?"
+    options: ["It's cooperative: a single thread runs one task until that task voluntarily yields control (e.g. at an `await`), then the loop picks the next ready task — tasks interleave in a single thread rather than running truly simultaneously on multiple cores", "It secretly spawns a hidden OS thread per task behind the scenes", "It uses the GPU to run tasks in parallel", "asyncio cannot run more than one task at a time under any circumstances"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Threads achieve concurrency via true (or OS-scheduled) parallelism, with
+all the race-condition risk from the previous modules. **Async/event
+loops** take a completely different approach: a SINGLE thread runs one
+task at a time, but each task voluntarily **yields** control back to the
+loop at defined points (an `await` in real `asyncio`) instead of running
+to completion. The loop then picks the next ready task. Because only one
+task ever actually executes at once, there's no read-modify-write race
+condition to worry about — the tradeoff is that a task which never
+yields blocks everything else.
+
+```python
+def run_event_loop(tasks):
+    queue = list(tasks.keys())
+    remaining = {tid: list(steps) for tid, steps in tasks.items()}
+    trace = []
+    while queue:
+        tid = queue.pop(0)
+        if remaining[tid]:
+            step = remaining[tid].pop(0)
+            trace.append((tid, step))
+            if remaining[tid]:
+                queue.append(tid)   # not done yet -- go to the back of the line
+    return trace
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def run_event_loop(tasks):\n    queue = list(tasks.keys())\n    remaining = {tid: list(steps) for tid, steps in tasks.items()}\n    trace = []\n    while queue:\n        tid = queue.pop(0)\n        if remaining[tid]:\n            step = remaining[tid].pop(0)\n            trace.append((tid, step))\n            if remaining[tid]:\n                queue.append(tid)\n    return trace\n\nprint(run_event_loop({"A": ["a1", "a2"], "B": ["b1"]}))\n# [('A', 'a1'), ('B', 'b1'), ('A', 'a2')] -- A yields after a1, B runs its only step, then A resumes`} caption="This queue.pop(0) / queue.append(tid) pattern is the exact same round-robin rotation used in Networking's load-balancing module -- here it's rotating which TASK gets the CPU next, instead of which SERVER gets the next request." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can simulate cooperative round-robin task scheduling, and understand why a single-threaded event loop sidesteps the race conditions that plague preemptively-scheduled threads.
+</Checkpoint>

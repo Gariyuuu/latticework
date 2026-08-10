@@ -1,0 +1,68 @@
+---
+slug: lexing-parsing
+title: Lexing & Parsing
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: lexing-parsing-ex1
+    difficulty: intermediate
+    concept: compilers-lexing
+    prompt: "Write `tokenize(expr)`: split an arithmetic expression string (digits, `+ - * / ( )`, and spaces) into a list of tokens — integers as `int`, operators/parens as single-character strings. Skip spaces."
+  - id: quiz-1
+    type: quiz
+    concept: compilers-lexing
+    question: "What is a 'lexer' (tokenizer) responsible for, that a parser is NOT?"
+    options: ["Turning raw source text into a flat sequence of meaningful tokens (numbers, operators, keywords), with no understanding yet of how those tokens combine into valid structure", "Executing the program", "Deciding whether the syntax is grammatically valid", "Generating machine code"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Every compiler (and interpreter) starts the same way: turn raw source
+text into structure. The first stage is **lexing** (tokenizing) — scan
+character by character and group them into meaningful chunks called
+**tokens**: `"12 + 3"` becomes `[12, "+", 3]`. The lexer doesn't know or
+care whether the tokens form a valid expression — that's the parser's
+job, next.
+
+```python
+def tokenize(expr):
+    tokens = []
+    i = 0
+    while i < len(expr):
+        c = expr[i]
+        if c == " ":
+            i += 1
+            continue
+        if c.isdigit():
+            j = i
+            while j < len(expr) and expr[j].isdigit():
+                j += 1
+            tokens.append(int(expr[i:j]))
+            i = j
+        elif c in "+-*/()":
+            tokens.append(c)
+            i += 1
+    return tokens
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def tokenize(expr):\n    tokens = []\n    i = 0\n    while i < len(expr):\n        c = expr[i]\n        if c == " ":\n            i += 1\n            continue\n        if c.isdigit():\n            j = i\n            while j < len(expr) and expr[j].isdigit():\n                j += 1\n            tokens.append(int(expr[i:j]))\n            i = j\n        elif c in "+-*/()":\n            tokens.append(c)\n            i += 1\n    return tokens\n\nprint(tokenize("12 + 3 * (4 - 1)"))\n# [12, '+', 3, '*', '(', 4, '-', 1, ')']`} caption="The inner while loop that scans forward while expr[j].isdigit() is exactly how a real lexer handles multi-character tokens -- a single digit could be the start of a much longer number, so the lexer has to keep consuming until it finds a character that clearly doesn't belong." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can write a lexer that turns an arithmetic expression string into a token stream, the first stage of every compiler and interpreter.
+</Checkpoint>

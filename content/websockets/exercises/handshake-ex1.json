@@ -1,0 +1,11 @@
+{
+  "id": "handshake-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import hashlib\nimport base64\n\ndef compute_accept_key(sec_websocket_key):\n    ...\n",
+  "cases": [
+    { "call": "compute_accept_key('dGhlIHNhbXBsZSBub25jZQ==')", "expect": "s3pPLMBiTxaQ9kYGzzhZRbK+xOo=" },
+    { "call": "compute_accept_key('x3JJHMbDL1EzLkh9GBhXDw==')", "expect": "HSmrc0sMlYUkAGmm5OPpG2HaGWk=" },
+    { "call": "compute_accept_key('AQIDBAUGBwgJCgsMDQ4PEC==')", "expect": "OfS0wDaT5NoxF2gqm7Zj2YtetzM=" }
+  ]
+}

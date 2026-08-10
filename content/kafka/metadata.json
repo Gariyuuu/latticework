@@ -9,22 +9,22 @@
     "data-engineer",
     "backend-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "topics-partitions",
       "title": "Topics & Partitions",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "producers-consumers",
       "title": "Producers/Consumers",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "delivery-guarantees",
       "title": "Delivery Guarantees",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

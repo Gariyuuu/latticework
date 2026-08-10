@@ -1,0 +1,57 @@
+---
+slug: similarity-metrics
+title: Similarity Metrics
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: similarity-metrics-ex1
+    difficulty: beginner
+    concept: embeddings-similarity-metrics
+    prompt: "Write `cosine_similarity(a, b)`: return the cosine of the angle between two equal-length vectors, rounded to 4 decimal places. Cosine similarity is `dot(a, b) / (magnitude(a) * magnitude(b))`."
+  - id: quiz-1
+    type: quiz
+    concept: embeddings-similarity-metrics
+    question: "Why is cosine similarity often preferred over raw Euclidean distance for comparing embedding vectors?"
+    options: ["Cosine similarity measures DIRECTION (are the vectors pointing the same way?) and ignores magnitude, so it isn't thrown off by one vector simply being 'longer' than another for unrelated reasons", "Cosine similarity is always faster to compute than Euclidean distance", "Euclidean distance cannot be computed for vectors with negative numbers", "Cosine similarity only works for 2-dimensional vectors"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Once you have vectors, you need a way to measure how "close" two of
+them are. **Cosine similarity** measures the angle between two vectors,
+not their distance — two vectors pointing in exactly the same direction
+score `1.0` regardless of how long each one is, opposite directions
+score `-1.0`, and perpendicular vectors score `0.0`.
+
+```python
+def dot(a, b):
+    return sum(x * y for x, y in zip(a, b))
+
+def magnitude(a):
+    return sum(x ** 2 for x in a) ** 0.5
+
+def cosine_similarity(a, b):
+    return round(dot(a, b) / (magnitude(a) * magnitude(b)), 4)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def dot(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\ndef magnitude(a):\n    return sum(x ** 2 for x in a) ** 0.5\n\ndef cosine_similarity(a, b):\n    return round(dot(a, b) / (magnitude(a) * magnitude(b)), 4)\n\nprint(cosine_similarity((1, 1), (2, 2)))   # 1.0 -- same direction, different length\nprint(cosine_similarity((1, 0), (0, 1)))   # 0.0 -- perpendicular, totally unrelated`} caption="magnitude() here is the exact same function from Linear Algebra's vectors-matrices module -- cosine similarity is just dot-product-over-magnitudes, built entirely from operations you've already implemented." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute cosine similarity from scratch and understand why it measures direction rather than distance.
+</Checkpoint>
