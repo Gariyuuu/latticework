@@ -1,0 +1,11 @@
+{
+  "id": "managed-services-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def break_even_months(on_demand_rate_per_hour, reserved_upfront_cost, reserved_rate_per_hour, hours_per_month=720):\n    ...\n",
+  "cases": [
+    { "call": "break_even_months(0.10, 500, 0.06)", "expect": "17.36" },
+    { "call": "break_even_months(0.10, 1000, 0.06)", "expect": "34.72" },
+    { "call": "break_even_months(0.05, 500, 0.06)", "expect": "None" }
+  ]
+}

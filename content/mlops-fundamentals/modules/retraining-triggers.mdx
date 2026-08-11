@@ -1,0 +1,60 @@
+---
+slug: retraining-triggers
+title: Retraining Triggers
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: retraining-triggers-ex1
+    difficulty: intermediate
+    concept: mlops-retraining-triggers
+    prompt: "Write `should_retrain(drift_score, performance_drop, days_since_training, drift_threshold=0.5, perf_threshold=0.05, max_days=30)`: return a list of every reason retraining is warranted — `'drift'` if `drift_score > drift_threshold`, `'performance_drop'` if `performance_drop > perf_threshold`, `'stale'` if `days_since_training > max_days`. Return an empty list if none apply."
+  - id: quiz-1
+    type: quiz
+    concept: mlops-retraining-triggers
+    question: "Why check MULTIPLE independent signals (drift, performance drop, staleness) instead of retraining on a fixed schedule alone?"
+    options: ["A fixed schedule can miss a sudden problem that happens right after the last retrain (too slow to react) while also retraining unnecessarily often when nothing has actually changed (wasted compute) — multiple live signals let the system react exactly when something's actually wrong", "Fixed schedules are technically impossible to implement for ML pipelines", "Checking multiple signals always contradicts checking a single signal", "Performance drop can only be measured once per year"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Retraining a model isn't free — it costs compute, time, and risk (a
+newly retrained model could be worse). Automated retraining pipelines
+usually check several independent signals rather than retraining
+blindly on a calendar schedule: has the input data DRIFTED (from
+`monitoring`)? Has live performance actually DROPPED? Is the model
+simply STALE (too long since its last update, regardless of any other
+signal)? Any one of these can justify a retrain.
+
+```python
+def should_retrain(drift_score, performance_drop, days_since_training, drift_threshold=0.5, perf_threshold=0.05, max_days=30):
+    reasons = []
+    if drift_score > drift_threshold:
+        reasons.append("drift")
+    if performance_drop > perf_threshold:
+        reasons.append("performance_drop")
+    if days_since_training > max_days:
+        reasons.append("stale")
+    return reasons
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def should_retrain(drift_score, performance_drop, days_since_training, drift_threshold=0.5, perf_threshold=0.05, max_days=30):\n    reasons = []\n    if drift_score > drift_threshold:\n        reasons.append("drift")\n    if performance_drop > perf_threshold:\n        reasons.append("performance_drop")\n    if days_since_training > max_days:\n        reasons.append("stale")\n    return reasons\n\nprint(should_retrain(0.1, 0.01, 5))     # [] -- everything looks healthy\nprint(should_retrain(0.8, 0.01, 5))     # ['drift'] -- only the drift signal fired\nprint(should_retrain(0.9, 0.1, 40))     # ['drift', 'performance_drop', 'stale'] -- everything fired at once`} caption="Returning ALL matching reasons (not just the first one, or a single boolean) matters in practice -- an on-call engineer investigating an alert wants to know it's BOTH drifting AND stale, not just that 'something' triggered, since that changes how urgently and how they'd respond." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can combine multiple independent monitoring signals into a retraining decision, and explain why reactive multi-signal triggers beat a fixed retraining schedule.
+</Checkpoint>

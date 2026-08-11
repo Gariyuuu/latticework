@@ -1,0 +1,11 @@
+{
+  "id": "microservices-vs-monolith-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def recommend_architecture(team_size, deploy_frequency_per_week, independent_scaling_needed):\n    ...\n",
+  "cases": [
+    { "call": "recommend_architecture(5, 2, False)", "expect": "monolith" },
+    { "call": "recommend_architecture(30, 10, True)", "expect": "microservices" },
+    { "call": "recommend_architecture(25, 1, True)", "expect": "microservices" }
+  ]
+}

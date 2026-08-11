@@ -1,0 +1,10 @@
+{
+  "id": "chat-completions-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def build_messages(system_prompt, history, new_user_message):\n    ...\n",
+  "cases": [
+    { "call": "build_messages('You are helpful.', [], 'Hi there')", "expect": "[{'role': 'system', 'content': 'You are helpful.'}, {'role': 'user', 'content': 'Hi there'}]" },
+    { "call": "build_messages('You are helpful.', [('user', 'Hi'), ('assistant', 'Hello!')], 'How are you?')", "expect": "[{'role': 'system', 'content': 'You are helpful.'}, {'role': 'user', 'content': 'Hi'}, {'role': 'assistant', 'content': 'Hello!'}, {'role': 'user', 'content': 'How are you?'}]" }
+  ]
+}

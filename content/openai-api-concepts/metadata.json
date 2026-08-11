@@ -8,22 +8,22 @@
   "usefulFor": [
     "ai-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "chat-completions",
       "title": "Chat Completions",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "streaming",
       "title": "Streaming",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "function-tool-calling",
       "title": "Function/Tool Calling",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

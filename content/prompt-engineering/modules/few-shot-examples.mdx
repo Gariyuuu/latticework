@@ -1,0 +1,61 @@
+---
+slug: few-shot-examples
+title: Selecting Few-Shot Examples
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: few-shot-examples-ex1
+    difficulty: intermediate
+    concept: prompt-engineering-few-shot
+    prompt: "Using the provided `cosine_similarity`, write `select_few_shot_examples(query_vector, examples, k)`: `examples` is a list of `(example_id, vector)`. Return the `k` example IDs whose vectors are most similar to `query_vector`, most similar first."
+  - id: quiz-1
+    type: quiz
+    concept: prompt-engineering-few-shot
+    question: "Why select few-shot examples by SIMILARITY to the current query, rather than using the same fixed set of examples for every prompt?"
+    options: ["Examples that are semantically close to the current query demonstrate the exact pattern the model needs to follow right now — a fixed, generic set of examples might not illustrate the specific edge case or format the current query actually needs", "Similarity-based selection always produces a shorter prompt than a fixed example set", "Fixed examples cannot be included in a prompt at all", "The model ignores every example after the first one regardless of relevance"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Few-shot prompting** shows a model a handful of example input/output
+pairs before asking it to handle a new case. A FIXED set of examples,
+reused for every query, often doesn't match the specific pattern the
+current query actually needs. Dynamic example selection fixes this:
+embed a library of candidate examples once, then for each new query,
+retrieve the `k` examples most similar to it — the exact same retrieval
+idea from Embeddings and RAG Fundamentals, applied here to prompt
+construction instead of document search.
+
+```python
+def cosine_similarity(a, b):
+    dot = sum(x * y for x, y in zip(a, b))
+    mag_a = sum(x ** 2 for x in a) ** 0.5
+    mag_b = sum(x ** 2 for x in b) ** 0.5
+    return dot / (mag_a * mag_b)
+
+def select_few_shot_examples(query_vector, examples, k):
+    scored = sorted(examples, key=lambda e: -cosine_similarity(query_vector, e[1]))
+    return [example_id for example_id, _ in scored[:k]]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`# cosine_similarity() as defined above\ndef select_few_shot_examples(query_vector, examples, k):\n    scored = sorted(examples, key=lambda e: -cosine_similarity(query_vector, e[1]))\n    return [example_id for example_id, _ in scored[:k]]\n\nexamples = [("refund_request", (1, 0)), ("shipping_question", (0, 1)), ("cancel_order", (0.9, 0.1))]\nprint(select_few_shot_examples((1, 0), examples, k=2))\n# ['refund_request', 'cancel_order'] -- both closer in "meaning" to the query than shipping_question`} caption="At real scale, this is exactly how tools like DSPy and LangChain's example selectors work -- a small library of curated, embedded examples, with the k most relevant ones pulled dynamically into each prompt rather than hand-picking a static few-shot set once and reusing it everywhere." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can dynamically select the most relevant few-shot examples for a given query via similarity search, instead of relying on one fixed example set for every prompt.
+</Checkpoint>

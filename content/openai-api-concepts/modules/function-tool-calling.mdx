@@ -1,0 +1,58 @@
+---
+slug: function-tool-calling
+title: Function / Tool Calling
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: function-tool-calling-ex1
+    difficulty: intermediate
+    concept: openai-api-tool-calling
+    prompt: "Write `call_tool(tool_call, registry)`: `tool_call` is a dict with `'name'` (a function name) and `'arguments'` (a JSON string of keyword arguments). `registry` maps function names to actual callables. Parse the arguments, look up the function by name, call it with those arguments, and return the result."
+  - id: quiz-1
+    type: quiz
+    concept: openai-api-tool-calling
+    question: "When a model 'calls a function,' what is actually happening — does the model itself execute any code?"
+    options: ["No — the model only outputs a structured request (a function name plus JSON arguments); YOUR application code is responsible for parsing that request, actually calling the real function, and sending the result back to the model in a follow-up message", "Yes, the model runs the function directly inside its own inference process", "The API provider executes the function on their servers automatically", "Function calling replaces the need for the application to have any code at all"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Function calling** (or "tool calling") lets a model request that your
+application run a specific function — but the model NEVER executes
+anything itself. It only outputs a structured request: a function name
+and a JSON string of arguments. Your application code is responsible
+for parsing that, dispatching to the real function, and (typically)
+sending the result back to the model in a follow-up call so it can use
+that result in its final answer.
+
+```python
+import json
+
+def call_tool(tool_call, registry):
+    name = tool_call["name"]
+    args = json.loads(tool_call["arguments"])
+    fn = registry[name]
+    return fn(**args)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`import json\n\ndef call_tool(tool_call, registry):\n    name = tool_call["name"]\n    args = json.loads(tool_call["arguments"])\n    fn = registry[name]\n    return fn(**args)\n\ndef get_weather(city, unit="celsius"):\n    return f"{city}: 22 {unit}"\n\nregistry = {"get_weather": get_weather}\n\n# this is what the MODEL would output -- just a name and a JSON string, nothing executed yet\ntool_call = {"name": "get_weather", "arguments": '{"city": "Tokyo"}'}\nprint(call_tool(tool_call, registry))\n# Tokyo: 22 celsius -- YOUR code did the actual work, dispatching by name and unpacking the parsed args`} caption="The registry dict here is doing the same job as Git's is_ancestor or any dispatch-by-key pattern -- mapping a NAME the model provides to the REAL function your application controls, which is also exactly why tool calling is safe: the model can only request functions you've explicitly registered, never arbitrary code." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can parse and dispatch a model's function-call request to a real registered function, and understand that the model only requests — your application always does the actual execution.
+</Checkpoint>

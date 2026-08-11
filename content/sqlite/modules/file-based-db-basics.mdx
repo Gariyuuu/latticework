@@ -1,0 +1,56 @@
+---
+slug: file-based-db-basics
+title: File-Based Database Basics
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: sql
+  - id: exercise-1
+    type: exercise
+    exerciseType: sql-query
+    testCasesId: file-based-db-basics-ex1
+    difficulty: beginner
+    concept: sqlite-file-based-basics
+    prompt: "The `settings` table stores an app's local configuration as key/value pairs, each with an `updated_at` timestamp. Write a query that returns the `key` and `value` of every setting updated after timestamp `99`, ordered by `key`."
+  - id: quiz-1
+    type: quiz
+    concept: sqlite-file-based-basics
+    question: "What makes SQLite fundamentally different from a database like PostgreSQL or MySQL, architecturally?"
+    options: ["SQLite isn't a separate server process at all — it's a library linked directly into your application, and the entire database lives in a single ordinary file on disk, with no network protocol or client-server connection involved", "SQLite can only store a single table per database file", "SQLite requires a constant network connection to function", "SQLite and PostgreSQL use the exact same underlying storage engine"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+SQLite isn't a client-server database like PostgreSQL or MySQL — there's
+no separate database server to connect to at all. It's a **library**
+linked directly into your application, and an entire database (tables,
+indexes, everything) lives in one ordinary file on disk. This makes it
+an extremely common choice for local app storage, mobile apps, embedded
+systems, and anywhere a full server would be unnecessary overhead — the
+exact same SQL you already know from the SQL course still applies.
+
+```sql
+CREATE TABLE settings (key TEXT, value TEXT, updated_at INTEGER);
+INSERT INTO settings (key, value, updated_at) VALUES
+  ('theme', 'dark', 100),
+  ('language', 'en', 105),
+  ('notifications', 'on', 98);
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="sql" code={`SELECT key, value\nFROM settings\nWHERE updated_at > 99\nORDER BY key;\n\n-- language | en\n-- theme    | dark\n-- ('notifications' is excluded -- its updated_at (98) doesn't clear the threshold)`} caption="This whole database -- schema, data, everything -- is just ONE FILE, which is exactly why SQLite is the default storage engine baked into iOS and Android, and why tools like this in-browser sandbox itself can run a real embedded SQLite (via the sql.js WASM build) with zero server setup at all." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You understand SQLite's embedded, file-based architecture, and can query it with the same SQL you already know.
+</Checkpoint>

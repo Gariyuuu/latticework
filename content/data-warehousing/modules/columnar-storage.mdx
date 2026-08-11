@@ -1,0 +1,56 @@
+---
+slug: columnar-storage
+title: Columnar Storage
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: columnar-storage-ex1
+    difficulty: intermediate
+    concept: data-warehousing-columnar-storage
+    prompt: "Write `bytes_read(storage_type, total_rows, total_columns, bytes_per_cell, columns_needed)`: for `'row'` storage, a query must read EVERY column of every touched row (`total_rows * total_columns * bytes_per_cell`). For `'column'` storage, it only reads the columns actually needed (`total_rows * len(columns_needed) * bytes_per_cell`)."
+  - id: quiz-1
+    type: quiz
+    concept: data-warehousing-columnar-storage
+    question: "Why is columnar storage such a good fit for OLAP's typical query pattern (aggregate one or two columns across millions of rows)?"
+    options: ["Row-based storage keeps every column of a row together on disk, so reading just one column still means reading (and discarding) every OTHER column of every row touched — columnar storage keeps each column contiguous, so a query only has to read the columns it actually needs", "Columnar storage physically stores less data overall than row storage for the same table", "Row-based storage cannot store numeric columns", "Columnar storage is only useful for tables with fewer than 10 columns"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+The previous module classified queries as OLTP or OLAP — this one
+explains why WAREHOUSES physically store data differently to serve OLAP
+well. **Row-based storage** keeps a whole row's columns together on
+disk — great for OLTP's "give me everything about this one row"
+pattern. **Columnar storage** instead keeps each COLUMN contiguous — so
+an aggregate query touching only 1-2 columns never has to read (and
+discard) all the others, exactly the pattern OLAP queries have.
+
+```python
+def bytes_read(storage_type, total_rows, total_columns, bytes_per_cell, columns_needed):
+    if storage_type == "row":
+        return total_rows * total_columns * bytes_per_cell
+    elif storage_type == "column":
+        return total_rows * len(columns_needed) * bytes_per_cell
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def bytes_read(storage_type, total_rows, total_columns, bytes_per_cell, columns_needed):\n    if storage_type == "row":\n        return total_rows * total_columns * bytes_per_cell\n    elif storage_type == "column":\n        return total_rows * len(columns_needed) * bytes_per_cell\n\n# 1M rows, 50 columns, 8 bytes/cell -- an aggregate query that only needs "revenue"\nprint(bytes_read("row", 1_000_000, 50, 8, ["revenue"]))       # 400,000,000 bytes -- every column of every row\nprint(bytes_read("column", 1_000_000, 50, 8, ["revenue"]))    # 8,000,000 bytes -- only the one column needed`} caption="A 50x reduction in bytes read for the exact same query result, purely from how the data is physically laid out on disk -- no indexing, caching, or query optimization involved at all. This is why warehouses like Snowflake, BigQuery, and Redshift are all columnar under the hood." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can quantify how much I/O columnar storage saves over row storage for a column-selective aggregate query, and explain why that layout choice matches OLAP's access pattern.
+</Checkpoint>

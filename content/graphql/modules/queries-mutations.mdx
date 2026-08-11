@@ -1,0 +1,54 @@
+---
+slug: queries-mutations
+title: Queries & Mutations
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: queries-mutations-ex1
+    difficulty: intermediate
+    concept: graphql-queries-mutations
+    prompt: "Using the provided `resolve`, write `apply_mutation(data, updates, query)`: apply `updates` (a dict of field changes) on top of `data`, then return only the fields requested by `query` from the UPDATED object."
+  - id: quiz-1
+    type: quiz
+    concept: graphql-queries-mutations
+    question: "Why does a GraphQL mutation still specify a field-selection query, exactly like a read-only query does?"
+    options: ["A mutation both changes data AND returns a response in one round trip — specifying the selection lets the client immediately see exactly the updated fields it cares about, without needing a separate follow-up query just to confirm what changed", "Mutations are not allowed to return any data under the GraphQL specification", "The selection on a mutation is purely decorative and has no effect on the response", "Every mutation must return literally the entire updated object with no selection possible"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A **query** reads data; a **mutation** changes it — but in GraphQL,
+both shapes look similar: you send a request, and get back exactly the
+fields you asked for. A mutation just also applies some change first.
+This means a client can update a record and immediately see the
+resulting fields it cares about, all in one round trip, using the exact
+same `resolve` selection logic from the previous module.
+
+```python
+def apply_mutation(data, updates, query):
+    updated = dict(data)
+    updated.update(updates)
+    return resolve(query, updated)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`# resolve() as defined in the previous module\ndef apply_mutation(data, updates, query):\n    updated = dict(data)\n    updated.update(updates)\n    return resolve(query, updated)\n\nuser = {"id": 1, "name": "Alice", "age": 30, "email": "alice@old.com"}\n\n# "update this user's email, and give me back just the name and new email"\nprint(apply_mutation(user, {"email": "alice@new.com"}, {"name": True, "email": True}))\n# {'name': 'Alice', 'email': 'alice@new.com'} -- one round trip: write, then read exactly what changed`} caption="The original 'user' dict itself is never mutated in place -- apply_mutation builds a NEW dict via dict(data) then .update(updates), the same immutable-update discipline from Functional Programming's pure-functions module, applied here so the caller's original data stays untouched." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement a mutation that applies a change and returns exactly the requested fields of the result in one step, the same selective-response idea queries use.
+</Checkpoint>

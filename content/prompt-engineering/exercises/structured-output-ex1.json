@@ -1,0 +1,11 @@
+{
+  "id": "structured-output-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def validate_structured_output(output, schema):\n    ...\n",
+  "cases": [
+    { "call": "validate_structured_output({'name': 'Alice', 'age': 30, 'active': True}, {'name': str, 'age': int, 'active': bool})", "expect": "[]" },
+    { "call": "validate_structured_output({'name': 'Bob', 'age': '30', 'active': True}, {'name': str, 'age': int, 'active': bool})", "expect": "['wrong type for age: expected int, got str']" },
+    { "call": "validate_structured_output({'name': 'Carl'}, {'name': str, 'age': int, 'active': bool})", "expect": "['missing field: age', 'missing field: active']" }
+  ]
+}

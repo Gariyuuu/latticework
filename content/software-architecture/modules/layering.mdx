@@ -1,0 +1,56 @@
+---
+slug: layering
+title: Layered Architecture
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: layering-ex1
+    difficulty: intermediate
+    concept: software-architecture-layering
+    prompt: "Write `validate_layering(calls, layers)`: `layers` is an ordered list from topmost to most-foundational (e.g. `['ui', 'service', 'repository']`). `calls` is a list of `(caller_layer, callee_layer)` pairs. A call is a VIOLATION if it calls a layer positioned ABOVE the caller in `layers` (i.e. calling backward, toward the top). Return the list of violating `(caller, callee)` pairs."
+  - id: quiz-1
+    type: quiz
+    concept: software-architecture-layering
+    question: "Why is a call from the repository layer back up to the service layer specifically considered an architectural violation?"
+    options: ["It creates a circular dependency between layers that are supposed to have a strict one-directional relationship — the whole point of layering is that lower layers (like data access) stay ignorant of and independent from higher layers (like business logic or UI), so they can be reused, tested, and changed in isolation", "Repository code is technically incapable of calling other functions", "Upward calls are always slower than downward calls", "Layering only applies to exactly 3 layers, never more or fewer"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A **layered architecture** organizes code into ordered tiers — typically
+something like UI → Service (business logic) → Repository (data
+access) — where each layer only calls DOWNWARD into layers below it,
+never back upward. This keeps the foundation (data access) independent
+and reusable, and keeps changes to the UI from ever needing to touch
+business logic or storage code.
+
+```python
+def validate_layering(calls, layers):
+    violations = []
+    for caller, callee in calls:
+        if layers.index(callee) < layers.index(caller):
+            violations.append((caller, callee))
+    return violations
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def validate_layering(calls, layers):\n    violations = []\n    for caller, callee in calls:\n        if layers.index(callee) < layers.index(caller):\n            violations.append((caller, callee))\n    return violations\n\nlayers = ["ui", "service", "repository"]\ncalls = [("ui", "service"), ("service", "repository"), ("repository", "service")]\nprint(validate_layering(calls, layers))\n# [('repository', 'service')] -- repository calling back UP into service breaks the rule`} caption="layers.index(x) gives each layer's position (0 = topmost); a call is only valid when it goes to an EQUAL or HIGHER index (same layer, or strictly downward) -- this is the exact same 'compare positions in an ordered list' idea CI/CD's topological_order builds on, just checking a constraint instead of computing an order." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can validate a call graph against a layered architecture's one-directional dependency rule, catching violations that would couple foundational code to higher-level logic.
+</Checkpoint>

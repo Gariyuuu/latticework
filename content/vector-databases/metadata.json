@@ -10,17 +10,17 @@
   "usefulFor": [
     "ai-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "indexing-hnsw-ivf",
       "title": "Indexing (HNSW/IVF)",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "hybrid-search",
       "title": "Hybrid Search",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "tradeoffs",

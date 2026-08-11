@@ -1,0 +1,11 @@
+{
+  "id": "streaming-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def accumulate_stream(chunks):\n    ...\n",
+  "cases": [
+    { "call": "accumulate_stream([{'delta': {'role': 'assistant'}}, {'delta': {'content': 'Hello'}}, {'delta': {'content': ', '}}, {'delta': {'content': 'world!'}}, {'delta': {}}])", "expect": "Hello, world!" },
+    { "call": "accumulate_stream([{'delta': {'content': 'a'}}, {'delta': {'content': 'b'}}])", "expect": "ab" },
+    { "call": "accumulate_stream([])", "expect": "" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "olap-vs-oltp-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def classify_query(has_aggregation, is_point_lookup):\n    ...\n",
+  "cases": [
+    { "call": "classify_query(False, True)", "expect": "OLTP" },
+    { "call": "classify_query(True, False)", "expect": "OLAP" },
+    { "call": "classify_query(True, True)", "expect": "OLAP" }
+  ]
+}

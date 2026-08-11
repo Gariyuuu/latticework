@@ -1,0 +1,11 @@
+{
+  "id": "simd-basics-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import math\n\ndef vectorized_speedup(n_elements, lane_width, scalar_cycles_per_element, vector_overhead_cycles):\n    ...\n",
+  "cases": [
+    { "call": "vectorized_speedup(1000, 8, 1, 1)", "expect": "4.0" },
+    { "call": "vectorized_speedup(1000, 4, 1, 1)", "expect": "2.0" },
+    { "call": "vectorized_speedup(16, 8, 1, 1)", "expect": "4.0" }
+  ]
+}

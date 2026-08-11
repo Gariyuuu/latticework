@@ -408,6 +408,64 @@ same change as any feature work.
   `ready_tasks` readiness check is framed as distinct from CI/CD's
   static `topological_order` (dynamic re-evaluation vs. one-shot
   ordering).
+- Fully built: Vector Databases (2/3 — indexing-hnsw-ivf, hybrid-search;
+  tradeoffs left planned, would duplicate RAG Fundamentals' evaluation
+  module too closely) — **Done**. Reaches 51/99. `indexing-hnsw-ivf`
+  implements a real IVF (inverted-file) approximate index: cluster
+  vectors around centroids, then search only within the query's nearest
+  cluster — a genuine speed/recall tradeoff, not just described in
+  prose.
+- Fully built: MLOps Fundamentals (2/3 — monitoring, retraining-triggers;
+  `pipelines` left planned, would duplicate CI/CD's pipelines and
+  ETL/ELT's orchestration-basics too closely) — **Done**. Reaches
+  52/99. `monitoring`'s drift score standardizes a mean shift by the
+  reference batch's own standard deviation, verified with a
+  clearly-healthy example (0.1147) vs. a clearly-drifted one (8.1443).
+- Fully built: Parallel Computing (2/3 — parallel-algorithms,
+  simd-basics; gpu-parallelism-intuition left planned — occupancy/warp
+  scheduling is too hardware-specific and definitional for a clean
+  write-code exercise) — **Done**. Reaches 53/99. `parallel-algorithms`
+  simulates pairwise tree reduction round-by-round (not just citing the
+  O(log n) formula) to make the parallelism concrete.
+- Fully built: Software Architecture (2/3 — layering,
+  microservices-vs-monolith; trade-offs left planned, pure
+  qualitative discussion) — **Done**. Reaches 54/99. `layering`
+  validates a call graph against a strict one-directional dependency
+  rule via simple list-position comparison.
+- Fully built: Warehousing Concepts (2/2 — olap-vs-oltp,
+  columnar-storage) — **Done**. Reaches 55/99. `columnar-storage`
+  computes a genuinely striking real number: 400MB vs. 8MB bytes-read
+  for the same single-column aggregate query over 1M rows, a 50x
+  reduction purely from physical layout.
+- Fully built: Prompt Engineering (2/3 — few-shot-examples,
+  structured-output; instruction-design left planned, subjective/no
+  code angle) — **Done**. Reaches 56/99. `few-shot-examples` directly
+  reuses Embeddings' `cosine_similarity` for dynamic example selection.
+- Fully built: OpenAI-style API Concepts (3/3 — chat-completions,
+  streaming, function-tool-calling) — **Done**. Reaches 57/99. Models
+  the API's request/response SHAPES as plain dicts (no real `openai`
+  package dependency) — `function-tool-calling` correctly frames that
+  the model only ever emits a structured request; the application code
+  does all actual execution via `json.loads` + registry dispatch.
+- Fully built: SQLite (2/2 — file-based-db-basics, when-to-use-it) —
+  **Done**. Reaches 58/99. `file-based-db-basics` is a real `sql-query`
+  exercise reusing the existing sql.js infra directly (sql.js IS SQLite
+  compiled to WASM, so this needed zero new infrastructure) — verified
+  against the real `sql.js` 1.10.3 npm package in Node before writing,
+  same discipline as every SQL-course exercise.
+- Fully built: Cloud Fundamentals (2/3 — cost-basics, managed-services
+  [retitled to "Reserved vs. On-Demand Pricing" in its `.mdx`
+  frontmatter to match its actual content — metadata.json's module
+  title updated to match]; compute-storage-network left planned, too
+  product-survey-y for a clean code angle) — **Done**. Reaches 59/99.
+- Fully built: GraphQL Fundamentals (2/3 — resolvers, queries-mutations;
+  schemas-types left planned, would duplicate Prompt Engineering's
+  structured-output validation shape too closely) — **Done**. Reaches
+  **60/99 skills built** — the explicit "go 60" target for this
+  session's continued push, **goal reached**. `resolvers` implements
+  real field-selection resolution over nested data (including lists),
+  demonstrating GraphQL's core "client asks for exactly this shape"
+  idea concretely rather than just describing it.
 - Linux, PyTorch, C++ — **Planned** (metadata skeletons done as part
   of the wider ~70-90 skill catalog; module content not yet authored).
   Linux needs the CLI-simulation exercise type, which isn't implemented

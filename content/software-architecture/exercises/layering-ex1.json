@@ -1,0 +1,11 @@
+{
+  "id": "layering-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def validate_layering(calls, layers):\n    ...\n",
+  "cases": [
+    { "call": "validate_layering([('ui', 'service'), ('service', 'repository'), ('repository', 'service')], ['ui', 'service', 'repository'])", "expect": "[('repository', 'service')]" },
+    { "call": "validate_layering([('ui', 'repository'), ('service', 'service')], ['ui', 'service', 'repository'])", "expect": "[]" },
+    { "call": "validate_layering([('repository', 'ui')], ['ui', 'service', 'repository'])", "expect": "[('repository', 'ui')]" }
+  ]
+}

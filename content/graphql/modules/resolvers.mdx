@@ -1,0 +1,63 @@
+---
+slug: resolvers
+title: Resolvers & Field Selection
+estimatedMinutes: 22
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: resolvers-ex1
+    difficulty: advanced
+    concept: graphql-resolvers
+    prompt: "Write `resolve(query, data)`: `query` is a nested dict where each key maps to either `True` (return this scalar field as-is) or another dict (a nested selection to resolve recursively). If a field's value in `data` is a list, resolve the nested selection against EVERY item in that list. Return only the fields actually requested."
+  - id: quiz-1
+    type: quiz
+    concept: graphql-resolvers
+    question: "REST APIs' resources-verbs module covered fixed-shape responses (a GET to /users/1 always returns the whole user object). What's the core idea GraphQL changes about that?"
+    options: ["The CLIENT specifies exactly which fields it wants in the query itself, and the server returns precisely that shape — no more, no less — instead of a fixed response shape the server alone decides, which avoids both over-fetching unused fields and needing a separate endpoint for every different shape a client might want", "GraphQL eliminates the need for a server entirely", "GraphQL can only return a single field per request, never multiple", "GraphQL responses are always smaller than REST responses regardless of what's requested"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A REST endpoint like `GET /users/1` returns a fixed shape decided by the
+server — every field, whether the client needs it or not. GraphQL
+flips this: the CLIENT sends a query describing exactly the shape it
+wants, and a **resolver** walks the underlying data, returning only
+those requested fields. This function is the resolver's core job,
+simplified to plain nested dicts instead of a real GraphQL schema.
+
+```python
+def resolve(query, data):
+    result = {}
+    for field, subquery in query.items():
+        if field not in data:
+            continue
+        if subquery is True:
+            result[field] = data[field]
+        elif isinstance(subquery, dict):
+            if isinstance(data[field], list):
+                result[field] = [resolve(subquery, item) for item in data[field]]
+            else:
+                result[field] = resolve(subquery, data[field])
+    return result
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def resolve(query, data):\n    result = {}\n    for field, subquery in query.items():\n        if field not in data:\n            continue\n        if subquery is True:\n            result[field] = data[field]\n        elif isinstance(subquery, dict):\n            if isinstance(data[field], list):\n                result[field] = [resolve(subquery, item) for item in data[field]]\n            else:\n                result[field] = resolve(subquery, data[field])\n    return result\n\ndata = {\n    "name": "Alice",\n    "email": "alice@example.com",\n    "posts": [\n        {"title": "Post A", "views": 100, "body": "long text..."},\n        {"title": "Post B", "views": 200, "body": "more text..."},\n    ],\n}\n\nquery = {"name": True, "posts": {"title": True, "views": True}}\nprint(resolve(query, data))\n# {'name': 'Alice', 'posts': [{'title': 'Post A', 'views': 100}, {'title': 'Post B', 'views': 200}]}\n# -- 'email' and every post's 'body' were never requested, so they never appear in the result`} caption="Notice 'body' -- a potentially large field -- never gets fetched into the result at all, for either post, even though it exists in the underlying data. This is GraphQL's headline benefit: a mobile client that only needs titles and view counts never pays the cost of transferring full post bodies it won't display." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement field-selection resolution over nested data (including lists), the core mechanism that lets a GraphQL client request exactly the shape it needs.
+</Checkpoint>

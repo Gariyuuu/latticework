@@ -1,0 +1,58 @@
+---
+slug: when-to-use-it
+title: When to Use SQLite
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: when-to-use-it-ex1
+    difficulty: beginner
+    concept: sqlite-when-to-use
+    prompt: "Write `should_use_sqlite(concurrent_writers, data_size_gb, needs_network_access)`: return `False` if the app needs network access to the database, `False` if there's more than 1 concurrent writer, `False` if `data_size_gb` exceeds `100`, otherwise `True`."
+  - id: quiz-1
+    type: quiz
+    concept: sqlite-when-to-use
+    question: "Why does SQLite become a poor fit once an application needs MULTIPLE concurrent WRITERS?"
+    options: ["SQLite locks the entire database file during a write, so concurrent write transactions from different processes serialize rather than running in parallel — fine for a single app instance, but a real bottleneck once multiple processes need to write at the same time", "SQLite cannot store more than one row at a time under any circumstances", "SQLite requires a paid license once more than one writer connects", "Concurrent writers are only a problem for read queries, never writes"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+SQLite is an excellent default for local, single-process, embedded
+storage — but it has real limits that make a client-server database the
+better choice past a certain point: it locks the whole file during
+writes (so many concurrent writers serialize rather than running in
+parallel), and it isn't designed to be accessed directly over a network
+by multiple separate application servers.
+
+```python
+def should_use_sqlite(concurrent_writers, data_size_gb, needs_network_access):
+    if needs_network_access:
+        return False
+    if concurrent_writers > 1:
+        return False
+    if data_size_gb > 100:
+        return False
+    return True
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def should_use_sqlite(concurrent_writers, data_size_gb, needs_network_access):\n    if needs_network_access:\n        return False\n    if concurrent_writers > 1:\n        return False\n    if data_size_gb > 100:\n        return False\n    return True\n\nprint(should_use_sqlite(1, 0.5, False))    # True -- a single local process, small data, no network needed\nprint(should_use_sqlite(1, 0.5, True))     # False -- multiple app servers need network access to share data\nprint(should_use_sqlite(5, 0.5, False))    # False -- 5 concurrent writers will contend for the same file lock`} caption="A mobile app's local cache, a desktop app's settings file, or a single-process CLI tool's data store are exactly the 'True' cases here -- a multi-instance web application's shared production database is exactly the 'False' case, which is why you'd reach for PostgreSQL or a managed cloud database instead." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can reason through whether SQLite fits a given use case based on concurrency, scale, and network-access requirements.
+</Checkpoint>

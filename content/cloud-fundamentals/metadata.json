@@ -12,7 +12,7 @@
     "research-engineer",
     "data-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "compute-storage-network",
@@ -21,13 +21,13 @@
     },
     {
       "slug": "managed-services",
-      "title": "Managed Services",
-      "status": "planned"
+      "title": "Reserved vs. On-Demand Pricing",
+      "status": "built"
     },
     {
       "slug": "cost-basics",
       "title": "Cost Basics",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

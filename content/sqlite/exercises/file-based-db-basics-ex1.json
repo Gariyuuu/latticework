@@ -1,0 +1,12 @@
+{
+  "id": "file-based-db-basics-ex1",
+  "type": "sql-query",
+  "language": "sql",
+  "starterCode": "-- settings(key, value, updated_at)\nSELECT\n",
+  "setupSql": "CREATE TABLE settings (key TEXT, value TEXT, updated_at INTEGER);\nINSERT INTO settings (key, value, updated_at) VALUES\n  ('theme', 'dark', 100),\n  ('language', 'en', 105),\n  ('notifications', 'on', 98);",
+  "expectedColumns": ["key", "value"],
+  "expectedRows": [
+    ["language", "en"],
+    ["theme", "dark"]
+  ]
+}

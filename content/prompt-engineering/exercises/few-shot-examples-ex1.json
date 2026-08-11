@@ -1,0 +1,10 @@
+{
+  "id": "few-shot-examples-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def cosine_similarity(a, b):\n    dot = sum(x * y for x, y in zip(a, b))\n    mag_a = sum(x ** 2 for x in a) ** 0.5\n    mag_b = sum(x ** 2 for x in b) ** 0.5\n    return dot / (mag_a * mag_b)\n\ndef select_few_shot_examples(query_vector, examples, k):\n    ...\n",
+  "cases": [
+    { "call": "select_few_shot_examples((1, 0), [('ex1', (1, 0)), ('ex2', (0, 1)), ('ex3', (0.9, 0.1))], 2)", "expect": "['ex1', 'ex3']" },
+    { "call": "select_few_shot_examples((0, 1), [('ex1', (1, 0)), ('ex2', (0, 1)), ('ex3', (0.9, 0.1))], 1)", "expect": "['ex2']" }
+  ]
+}

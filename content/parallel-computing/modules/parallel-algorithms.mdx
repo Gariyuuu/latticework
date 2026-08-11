@@ -1,0 +1,66 @@
+---
+slug: parallel-algorithms
+title: Parallel Reduction
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: parallel-algorithms-ex1
+    difficulty: intermediate
+    concept: parallel-computing-reduction
+    prompt: "Write `tree_sum(values)`: sum a list of numbers using PAIRWISE reduction — each round, combine adjacent pairs (carrying over any unpaired final element unchanged) until only one value remains. Return `(total, rounds)`."
+  - id: quiz-1
+    type: quiz
+    concept: parallel-computing-reduction
+    question: "Why does pairwise tree reduction only need O(log n) ROUNDS to sum n elements, versus O(n) sequential additions?"
+    options: ["Every pair in a round can be combined SIMULTANEOUSLY on separate processors, so each round roughly halves the number of remaining values — halving repeatedly reaches 1 element in about log2(n) rounds, regardless of how large n is", "Pairwise reduction actually needs the same number of steps as sequential addition, just reordered", "Tree reduction only works when n is a power of 2", "Rounds and total operations are always exactly equal"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Summing `n` numbers sequentially takes `n - 1` additions, one after
+another — no way to speed that up with more processors, since each
+addition needs the previous one's result. **Tree (pairwise) reduction**
+restructures the same computation to expose parallelism: in each round,
+combine independent PAIRS of values simultaneously. Since every pair in
+a round is independent, they can all run on separate processors at once
+— and the number of values still roughly HALVES every round, so the
+whole reduction finishes in only `O(log n)` rounds instead of `O(n)`
+sequential steps.
+
+```python
+def tree_sum(values):
+    rounds = 0
+    current = list(values)
+    while len(current) > 1:
+        next_round = []
+        for i in range(0, len(current), 2):
+            if i + 1 < len(current):
+                next_round.append(current[i] + current[i + 1])
+            else:
+                next_round.append(current[i])
+        current = next_round
+        rounds += 1
+    return (current[0], rounds)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def tree_sum(values):\n    rounds = 0\n    current = list(values)\n    while len(current) > 1:\n        next_round = []\n        for i in range(0, len(current), 2):\n            if i + 1 < len(current):\n                next_round.append(current[i] + current[i + 1])\n            else:\n                next_round.append(current[i])\n        current = next_round\n        rounds += 1\n    return (current[0], rounds)\n\nprint(tree_sum([1, 2, 3, 4, 5, 6, 7, 8]))\n# (36, 3) -- 8 values collapse to 1 in just 3 rounds: 8 -> 4 -> 2 -> 1\n\nprint(tree_sum([1, 2, 3]))\n# (6, 2) -- an odd count means one value just carries over unpaired each round it's left alone`} caption="This function itself still runs sequentially in Python -- it's SIMULATING what a parallel reduction would do round-by-round, counting rounds as the metric that matters (since on real parallel hardware, every pair within a round genuinely executes at the same time, making rounds -- not total additions -- the thing that determines wall-clock speed)." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can simulate pairwise tree reduction and count its rounds, and understand why restructuring a sequential reduction this way exposes O(log n) parallelism.
+</Checkpoint>

@@ -1,0 +1,11 @@
+{
+  "id": "columnar-storage-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def bytes_read(storage_type, total_rows, total_columns, bytes_per_cell, columns_needed):\n    ...\n",
+  "cases": [
+    { "call": "bytes_read('row', 1000000, 50, 8, ['revenue'])", "expect": "400000000" },
+    { "call": "bytes_read('column', 1000000, 50, 8, ['revenue'])", "expect": "8000000" },
+    { "call": "bytes_read('column', 1000000, 50, 8, ['revenue', 'cost', 'region'])", "expect": "24000000" }
+  ]
+}

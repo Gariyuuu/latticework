@@ -1,0 +1,11 @@
+{
+  "id": "cost-basics-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def monthly_cost(compute_hours, compute_rate, storage_gb, storage_rate, egress_gb, egress_rate):\n    ...\n",
+  "cases": [
+    { "call": "monthly_cost(720, 0.05, 100, 0.02, 50, 0.09)", "expect": "42.5" },
+    { "call": "monthly_cost(0, 0.05, 500, 0.02, 0, 0.09)", "expect": "10.0" },
+    { "call": "monthly_cost(100, 0.10, 0, 0.02, 0, 0.09)", "expect": "10.0" }
+  ]
+}

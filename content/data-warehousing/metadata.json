@@ -10,17 +10,17 @@
   "usefulFor": [
     "data-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "olap-vs-oltp",
       "title": "OLAP vs OLTP",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "columnar-storage",
       "title": "Columnar Storage",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

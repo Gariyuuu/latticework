@@ -1,0 +1,10 @@
+{
+  "id": "resolvers-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def resolve(query, data):\n    ...\n",
+  "cases": [
+    { "call": "resolve({'name': True, 'posts': {'title': True, 'views': True}}, {'name': 'Alice', 'age': 30, 'email': 'alice@example.com', 'posts': [{'title': 'Post A', 'views': 100, 'body': 'long text'}, {'title': 'Post B', 'views': 200, 'body': 'more text'}]})", "expect": "{'name': 'Alice', 'posts': [{'title': 'Post A', 'views': 100}, {'title': 'Post B', 'views': 200}]}" },
+    { "call": "resolve({'name': True, 'email': True}, {'name': 'Alice', 'age': 30, 'email': 'alice@example.com'})", "expect": "{'name': 'Alice', 'email': 'alice@example.com'}" }
+  ]
+}

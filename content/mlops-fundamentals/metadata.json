@@ -10,7 +10,7 @@
   "usefulFor": [
     "ml-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "pipelines",
@@ -20,12 +20,12 @@
     {
       "slug": "monitoring",
       "title": "Monitoring",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "retraining-triggers",
       "title": "Retraining Triggers",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

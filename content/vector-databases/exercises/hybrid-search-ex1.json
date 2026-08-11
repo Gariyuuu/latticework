@@ -1,0 +1,10 @@
+{
+  "id": "hybrid-search-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def cosine_similarity(a, b):\n    dot = sum(x * y for x, y in zip(a, b))\n    mag_a = sum(x ** 2 for x in a) ** 0.5\n    mag_b = sum(x ** 2 for x in b) ** 0.5\n    return dot / (mag_a * mag_b)\n\ndef keyword_score(query_terms, doc_terms):\n    query_set = set(query_terms)\n    doc_set = set(doc_terms)\n    if not query_set:\n        return 0.0\n    return len(query_set & doc_set) / len(query_set)\n\ndef hybrid_score(vector_sim, keyword_sim, alpha=0.5):\n    return round(alpha * vector_sim + (1 - alpha) * keyword_sim, 4)\n\ndef rank_hybrid(query_vector, query_terms, candidates, alpha=0.5):\n    ...\n",
+  "cases": [
+    { "call": "rank_hybrid((1, 0), ['python', 'tutorial'], [('doc1', (1, 0), ['python', 'tutorial']), ('doc2', (0.9, 0.1), ['java', 'guide']), ('doc3', (0, 1), ['python', 'tutorial', 'advanced'])])", "expect": "['doc1', 'doc3', 'doc2']" },
+    { "call": "rank_hybrid((1, 0), ['python', 'tutorial'], [('doc1', (1, 0), ['python', 'tutorial']), ('doc2', (0.9, 0.1), ['java', 'guide']), ('doc3', (0, 1), ['python', 'tutorial', 'advanced'])], alpha=1.0)", "expect": "['doc1', 'doc2', 'doc3']" }
+  ]
+}

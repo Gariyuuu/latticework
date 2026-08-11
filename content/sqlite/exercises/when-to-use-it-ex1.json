@@ -1,0 +1,11 @@
+{
+  "id": "when-to-use-it-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def should_use_sqlite(concurrent_writers, data_size_gb, needs_network_access):\n    ...\n",
+  "cases": [
+    { "call": "should_use_sqlite(1, 0.5, False)", "expect": "True" },
+    { "call": "should_use_sqlite(1, 0.5, True)", "expect": "False" },
+    { "call": "should_use_sqlite(5, 0.5, False)", "expect": "False" }
+  ]
+}

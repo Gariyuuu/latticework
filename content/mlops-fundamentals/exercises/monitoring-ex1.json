@@ -1,0 +1,11 @@
+{
+  "id": "monitoring-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def feature_drift(reference_values, current_values):\n    ...\n",
+  "cases": [
+    { "call": "feature_drift([10, 12, 11, 9, 13, 10, 11], [11, 10, 12, 9, 13])", "expect": "0.1147" },
+    { "call": "feature_drift([10, 12, 11, 9, 13, 10, 11], [20, 22, 21, 19, 23])", "expect": "8.1443" },
+    { "call": "feature_drift([5, 5, 5], [5, 5, 5])", "expect": "0.0" }
+  ]
+}

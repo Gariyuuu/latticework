@@ -28,7 +28,7 @@
     },
     {
       "slug": "load-balancing",
-      "title": "Load Balancing",
+      "title": "Consistent Hashing",
       "status": "built"
     },
     {

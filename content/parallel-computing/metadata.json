@@ -11,17 +11,17 @@
     "research-engineer",
     "quant-developer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "simd-basics",
       "title": "SIMD Basics",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "parallel-algorithms",
       "title": "Parallel Algorithms",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "gpu-parallelism-intuition",

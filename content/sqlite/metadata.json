@@ -10,17 +10,17 @@
   "usefulFor": [
     "software-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "file-based-db-basics",
       "title": "File-based DB Basics",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "when-to-use-it",
       "title": "When to Use It",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

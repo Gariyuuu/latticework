@@ -1,0 +1,58 @@
+---
+slug: streaming
+title: Streaming Responses
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: streaming-ex1
+    difficulty: intermediate
+    concept: openai-api-streaming
+    prompt: "Write `accumulate_stream(chunks)`: each chunk is a dict like `{'delta': {'content': '...'}}`, where `'content'` may be missing or `None` (e.g. the very first chunk just announces the role). Concatenate every present, non-empty `content` value in order and return the full accumulated text."
+  - id: quiz-1
+    type: quiz
+    concept: openai-api-streaming
+    question: "Why would an application request a STREAMING response instead of waiting for the complete chat completion?"
+    options: ["Streaming lets the UI start displaying tokens as they're generated instead of waiting for the entire (potentially long) response to finish — dramatically improving perceived responsiveness even though the total generation time is the same", "Streaming responses are always shorter than non-streaming ones", "Streaming is required for the API to work at all", "Non-streaming responses cannot include more than one sentence"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Without streaming, an application has to wait for the model to finish
+generating the ENTIRE response before showing anything — for a long
+answer, that can feel sluggish even if total generation time is
+identical. **Streaming** sends the response incrementally as small
+**delta** chunks, each containing just the next few tokens of text, so
+the UI can render output as it arrives — the "typing" effect familiar
+from chat interfaces.
+
+```python
+def accumulate_stream(chunks):
+    text = ""
+    for chunk in chunks:
+        content = chunk.get("delta", {}).get("content")
+        if content:
+            text += content
+    return text
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def accumulate_stream(chunks):\n    text = ""\n    for chunk in chunks:\n        content = chunk.get("delta", {}).get("content")\n        if content:\n            text += content\n    return text\n\nchunks = [\n    {"delta": {"role": "assistant"}},   # first chunk just announces who's speaking, no content yet\n    {"delta": {"content": "Hello"}},\n    {"delta": {"content": ", "}},\n    {"delta": {"content": "world!"}},\n    {"delta": {}},                        # final chunk, signals the stream is done\n]\nprint(accumulate_stream(chunks))\n# Hello, world! -- each chunk's tiny fragment, concatenated back into the full message`} caption="A real streaming client (via Server-Sent Events) processes these chunks one at a time AS THEY ARRIVE over the network, updating the UI after each one -- accumulate_stream here just simulates receiving the whole sequence at once and reconstructing the final text, the same reconstruction step a real client does incrementally." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can reconstruct a complete message from streamed delta chunks, and understand why streaming improves perceived responsiveness without changing total generation time.
+</Checkpoint>

@@ -1,0 +1,58 @@
+---
+slug: structured-output
+title: Validating Structured Output
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: structured-output-ex1
+    difficulty: intermediate
+    concept: prompt-engineering-structured-output
+    prompt: "Write `validate_structured_output(output, schema)`: `schema` maps a required field name to its expected Python type. For each field in `schema`, record `'missing field: {field}'` if it's absent from `output`, or `'wrong type for {field}: expected {type}, got {type}'` if present with the wrong type. Return the list of error messages (empty if valid)."
+  - id: quiz-1
+    type: quiz
+    concept: prompt-engineering-structured-output
+    question: "Why does asking an LLM to produce STRUCTURED output (e.g. a specific JSON shape) still require validating the result in code, rather than trusting it directly?"
+    options: ["An LLM generates its response as unstructured text under the hood — even when instructed to follow a schema, it can still produce malformed JSON, missing fields, or wrong types, so downstream code needs to validate before trusting the output the same way it would validate any external input", "LLMs are contractually guaranteed by their providers to never violate a requested schema", "Validation is only necessary for outputs longer than 1000 characters", "Structured output mode makes validation completely unnecessary by design"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Asking a model to "return JSON with fields X, Y, Z" doesn't guarantee
+it actually will — a field can be missing, misspelled, or the wrong
+type (a string where a number was expected). Since an LLM's output is
+still just generated text underneath, structured output needs the same
+validation discipline as any other untrusted external input: check it
+against an expected shape before your code relies on it.
+
+```python
+def validate_structured_output(output, schema):
+    errors = []
+    for field, expected_type in schema.items():
+        if field not in output:
+            errors.append(f"missing field: {field}")
+        elif not isinstance(output[field], expected_type):
+            errors.append(f"wrong type for {field}: expected {expected_type.__name__}, got {type(output[field]).__name__}")
+    return errors
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def validate_structured_output(output, schema):\n    errors = []\n    for field, expected_type in schema.items():\n        if field not in output:\n            errors.append(f"missing field: {field}")\n        elif not isinstance(output[field], expected_type):\n            errors.append(f"wrong type for {field}: expected {expected_type.__name__}, got {type(output[field]).__name__}")\n    return errors\n\nschema = {"name": str, "age": int, "active": bool}\n\nprint(validate_structured_output({"name": "Alice", "age": 30, "active": True}, schema))\n# [] -- valid\n\nprint(validate_structured_output({"name": "Bob", "age": "30", "active": True}, schema))\n# ["wrong type for age: expected int, got str"] -- the model returned "30" as a string, not a number`} caption="This is exactly the class of bug that libraries like Pydantic and instructor exist to catch automatically at the framework level -- but the underlying check is this same idea: walk the expected schema, confirm every field exists with the right type, and surface EVERY problem found rather than stopping at the first one." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can validate an LLM's structured output against an expected schema, catching missing fields and type mismatches before your code trusts the result.
+</Checkpoint>

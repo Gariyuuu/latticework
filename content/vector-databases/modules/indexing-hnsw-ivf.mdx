@@ -1,0 +1,105 @@
+---
+slug: indexing-hnsw-ivf
+title: Approximate Indexing (IVF)
+estimatedMinutes: 24
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: indexing-hnsw-ivf-ex1
+    difficulty: advanced
+    concept: vector-databases-ivf
+    prompt: "Using the provided `nearest_centroid`, write `build_ivf_index(vectors, centroids)`: `vectors` is a dict of `id -> vector`. Assign every vector to its nearest centroid's cluster, and return a dict mapping cluster index to the list of vector IDs assigned to it (one empty list per centroid, even if unused)."
+  - id: search-explanation
+    type: explanation
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: indexing-hnsw-ivf-ex2
+    difficulty: advanced
+    concept: vector-databases-ivf
+    prompt: "Using `nearest_centroid`, write `ivf_search(query, vectors, centroids, index, k)`: find the query's nearest cluster, then rank only the vectors already assigned to THAT cluster by similarity to `query`, returning the top `k` vector IDs."
+  - id: quiz-1
+    type: quiz
+    concept: vector-databases-ivf
+    question: "Why is an IVF search only APPROXIMATE, not guaranteed to find the true nearest neighbors, unlike Embeddings' brute-force top_k_similar?"
+    options: ["IVF only compares the query against vectors in ONE cluster (the query's nearest centroid), so a true nearest neighbor that happens to sit in a DIFFERENT cluster near the boundary would never be considered at all", "IVF always returns fewer results than requested", "IVF requires the query vector to already exist in the index", "IVF and brute-force search always return identical results"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Embeddings' `use-cases` module did brute-force search: compare the query
+against EVERY candidate. That's exact, but scales linearly with the
+number of vectors — too slow for millions of them. Real vector
+databases use approximate indexes instead. **IVF** (Inverted File
+Index) is one of the simplest: pre-cluster all vectors around a fixed
+set of **centroids**, then at search time only compare the query
+against vectors in its OWN nearest cluster — a small fraction of the
+total.
+
+```python
+def cosine_similarity(a, b):
+    dot = sum(x * y for x, y in zip(a, b))
+    mag_a = sum(x ** 2 for x in a) ** 0.5
+    mag_b = sum(x ** 2 for x in b) ** 0.5
+    return dot / (mag_a * mag_b)
+
+def nearest_centroid(vector, centroids):
+    best_idx = 0
+    best_sim = -2
+    for i, c in enumerate(centroids):
+        sim = cosine_similarity(vector, c)
+        if sim > best_sim:
+            best_sim = sim
+            best_idx = i
+    return best_idx
+
+def build_ivf_index(vectors, centroids):
+    index = {i: [] for i in range(len(centroids))}
+    for vec_id, vec in vectors.items():
+        cluster = nearest_centroid(vec, centroids)
+        index[cluster].append(vec_id)
+    return index
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`# cosine_similarity() and nearest_centroid() as defined above\ndef build_ivf_index(vectors, centroids):\n    index = {i: [] for i in range(len(centroids))}\n    for vec_id, vec in vectors.items():\n        cluster = nearest_centroid(vec, centroids)\n        index[cluster].append(vec_id)\n    return index\n\ncentroids = [(1, 0), (0, 1)]   # 2 rough "directions" to cluster around\nvectors = {"a": (0.9, 0.1), "b": (0.1, 0.9), "c": (1, 0), "d": (0, 1)}\nprint(build_ivf_index(vectors, centroids))\n# {0: ['a', 'c'], 1: ['b', 'd']} -- vectors grouped by which centroid they're closest to`} caption="In a real system, the centroids themselves are learned via k-means clustering over the actual vector data (not chosen by hand) -- but the assignment step (nearest_centroid) works identically either way." />
+
+<Explanation id="search-explanation">
+
+Once vectors are clustered, a search only needs to: (1) find which
+cluster the QUERY itself is nearest to, then (2) rank only that
+cluster's members by similarity. This is dramatically faster than
+scanning everything — the tradeoff is that a true nearest neighbor
+sitting in a neighboring cluster, just across the boundary, gets missed
+entirely. That's the "approximate" in Approximate Nearest Neighbor.
+
+```python
+def ivf_search(query, vectors, centroids, index, k):
+    cluster = nearest_centroid(query, centroids)
+    candidates = index[cluster]
+    scored = [(vec_id, cosine_similarity(query, vectors[vec_id])) for vec_id in candidates]
+    scored.sort(key=lambda pair: -pair[1])
+    return [vec_id for vec_id, _ in scored[:k]]
+```
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can build a cluster-based approximate index and search within just the query's nearest cluster, and understand why that trades some recall for a large speedup over brute-force search.
+</Checkpoint>

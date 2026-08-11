@@ -1,0 +1,59 @@
+---
+slug: hybrid-search
+title: Hybrid Search
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: hybrid-search-ex1
+    difficulty: advanced
+    concept: vector-databases-hybrid-search
+    prompt: "Using the provided `cosine_similarity`, `keyword_score`, and `hybrid_score`, write `rank_hybrid(query_vector, query_terms, candidates, alpha=0.5)`: `candidates` is a list of `(doc_id, vector, terms)`. Compute each candidate's hybrid score and return the doc IDs sorted highest-score first."
+  - id: quiz-1
+    type: quiz
+    concept: vector-databases-hybrid-search
+    question: "Why would a search system combine keyword matching AND vector similarity instead of relying on just one?"
+    options: ["Vector similarity captures semantic/conceptual closeness but can miss an exact term a user specifically typed (like a product code or name); keyword matching catches exact terms but misses paraphrases and synonyms — combining both covers each other's blind spots", "Keyword matching is strictly better than vector similarity in every case", "Vector similarity can only be computed for documents shorter than 100 words", "Combining the two always doubles the search latency with no benefit"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Pure vector search is great at semantic matching (a query about "canine
+companions" can retrieve a document about "dogs" even with zero shared
+words) but can miss an exact term the user cared about — a product SKU,
+an exact name. Pure keyword search is the opposite: exact matches
+guaranteed, but no notion of "close in meaning." **Hybrid search**
+blends both signals into one score, capturing the strengths of each.
+
+```python
+def keyword_score(query_terms, doc_terms):
+    query_set = set(query_terms)
+    doc_set = set(doc_terms)
+    if not query_set:
+        return 0.0
+    return len(query_set & doc_set) / len(query_set)
+
+def hybrid_score(vector_sim, keyword_sim, alpha=0.5):
+    return round(alpha * vector_sim + (1 - alpha) * keyword_sim, 4)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def cosine_similarity(a, b):\n    dot = sum(x * y for x, y in zip(a, b))\n    mag_a = sum(x ** 2 for x in a) ** 0.5\n    mag_b = sum(x ** 2 for x in b) ** 0.5\n    return dot / (mag_a * mag_b)\n\ndef keyword_score(query_terms, doc_terms):\n    query_set = set(query_terms)\n    doc_set = set(doc_terms)\n    if not query_set:\n        return 0.0\n    return len(query_set & doc_set) / len(query_set)\n\ndef hybrid_score(vector_sim, keyword_sim, alpha=0.5):\n    return round(alpha * vector_sim + (1 - alpha) * keyword_sim, 4)\n\n# alpha controls the blend -- 0.5 weighs semantic and keyword signals equally\nprint(hybrid_score(vector_sim=0.9, keyword_sim=0.5))            # 0.7\nprint(hybrid_score(vector_sim=0.9, keyword_sim=0.5, alpha=0.8))  # 0.82 -- lean more on semantics`} caption="alpha is a tunable knob a real search system exposes -- turning it toward 1.0 trusts semantic similarity more (better for vague, conversational queries), toward 0.0 trusts exact keyword overlap more (better for queries with specific names/codes the user typed deliberately)." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can blend vector similarity and keyword overlap into a single tunable hybrid ranking score, covering each signal's individual blind spots.
+</Checkpoint>

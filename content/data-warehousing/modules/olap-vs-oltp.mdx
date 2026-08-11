@@ -1,0 +1,58 @@
+---
+slug: olap-vs-oltp
+title: OLAP vs. OLTP
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: olap-vs-oltp-ex1
+    difficulty: beginner
+    concept: data-warehousing-olap-oltp
+    prompt: "Write `classify_query(has_aggregation, is_point_lookup)`: return `'OLTP'` if it's a point lookup with no aggregation; `'OLAP'` if it involves aggregation (regardless of lookup type); otherwise `'OLTP'`."
+  - id: quiz-1
+    type: quiz
+    concept: data-warehousing-olap-oltp
+    question: "Why does a single database engine rarely serve BOTH a production app's transactional traffic AND its analytics queries well?"
+    options: ["OLTP workloads (many small, fast point lookups and writes) and OLAP workloads (large aggregate scans across millions of rows) have opposite storage and indexing needs — optimizing for one tends to hurt the other, which is why analytics is usually offloaded to a separate warehouse", "OLAP queries are technically impossible to run on an OLTP database", "OLTP and OLAP are just two names for the exact same workload pattern", "Modern databases only support one query per second regardless of type"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Database workloads split into two very different shapes. **OLTP**
+(Online Transaction Processing) is what a live application does
+constantly: fast, small, point lookups and writes — "get user 4821's
+profile," "insert this order." **OLAP** (Online Analytical Processing)
+is what a data warehouse does: large aggregate scans across huge
+swaths of history — "total revenue per region per month for the last
+two years." The access patterns are different enough that optimizing a
+database engine for one tends to actively hurt the other.
+
+```python
+def classify_query(has_aggregation, is_point_lookup):
+    if is_point_lookup and not has_aggregation:
+        return "OLTP"
+    if has_aggregation:
+        return "OLAP"
+    return "OLTP"
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def classify_query(has_aggregation, is_point_lookup):\n    if is_point_lookup and not has_aggregation:\n        return "OLTP"\n    if has_aggregation:\n        return "OLAP"\n    return "OLTP"\n\nprint(classify_query(has_aggregation=False, is_point_lookup=True))\n# OLTP -- "SELECT * FROM users WHERE id = 4821"\n\nprint(classify_query(has_aggregation=True, is_point_lookup=False))\n# OLAP -- "SELECT region, SUM(revenue) FROM orders GROUP BY region"`} caption="This is exactly why running heavy analytics queries directly against a production app's OLTP database is a classic operational mistake -- a big GROUP BY aggregate scan competing for the same resources as live user-facing point lookups can slow down or even lock out the app's real traffic." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can classify a query by its access pattern, and understand why OLTP and OLAP workloads are usually served by separate, differently-optimized systems.
+</Checkpoint>

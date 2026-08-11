@@ -1,0 +1,11 @@
+{
+  "id": "function-tool-calling-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import json\n\ndef get_weather(city, unit='celsius'):\n    return f'{city}: 22 {unit}'\n\ndef add(a, b):\n    return a + b\n\nregistry = {'get_weather': get_weather, 'add': add}\n\ndef call_tool(tool_call, registry):\n    ...\n",
+  "cases": [
+    { "call": "call_tool({'name': 'get_weather', 'arguments': '{\"city\": \"Tokyo\"}'}, registry)", "expect": "Tokyo: 22 celsius" },
+    { "call": "call_tool({'name': 'add', 'arguments': '{\"a\": 2, \"b\": 3}'}, registry)", "expect": "5" },
+    { "call": "call_tool({'name': 'get_weather', 'arguments': '{\"city\": \"Paris\", \"unit\": \"fahrenheit\"}'}, registry)", "expect": "Paris: 22 fahrenheit" }
+  ]
+}

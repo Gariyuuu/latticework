@@ -1,0 +1,56 @@
+---
+slug: chat-completions
+title: Chat Completions
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: chat-completions-ex1
+    difficulty: beginner
+    concept: openai-api-chat-completions
+    prompt: "Write `build_messages(system_prompt, history, new_user_message)`: build the messages list a chat completions API expects — a `system` message first, then each `(role, content)` pair from `history` in order, then a final `user` message with `new_user_message`. Each message is a dict with `'role'` and `'content'` keys."
+  - id: quiz-1
+    type: quiz
+    concept: openai-api-chat-completions
+    question: "Why does a chat completions API require the ENTIRE conversation history on every single request, rather than the server remembering previous turns?"
+    options: ["The API is stateless — each request is independent and the model has no memory of previous calls, so the full conversation (system prompt + every prior turn) must be resent every time to give the model the context it needs to respond coherently", "Sending history is optional and has no effect on the response", "The model remembers previous conversations automatically across requests", "History is only needed for conversations longer than 100 messages"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A chat completions API call is **stateless** — the server has no memory
+of anything sent in a previous request. Every call must include the
+full conversation so far as a list of role-tagged messages: a `system`
+message (instructions/persona), then alternating `user`/`assistant`
+turns, ending with the newest `user` message the model should respond
+to.
+
+```python
+def build_messages(system_prompt, history, new_user_message):
+    messages = [{"role": "system", "content": system_prompt}]
+    for role, content in history:
+        messages.append({"role": role, "content": content})
+    messages.append({"role": "user", "content": new_user_message})
+    return messages
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def build_messages(system_prompt, history, new_user_message):\n    messages = [{"role": "system", "content": system_prompt}]\n    for role, content in history:\n        messages.append({"role": role, "content": content})\n    messages.append({"role": "user", "content": new_user_message})\n    return messages\n\nhistory = [("user", "Hi"), ("assistant", "Hello! How can I help?")]\nprint(build_messages("You are a helpful assistant.", history, "What's the weather like?"))\n# [{'role': 'system', ...}, {'role': 'user', 'content': 'Hi'}, {'role': 'assistant', ...}, {'role': 'user', 'content': "What's the weather like?"}]`} caption="Every single call resends the WHOLE history -- which is exactly why long conversations cost more tokens per turn as they grow, and exactly why LLM Fundamentals' context-windows module (truncating/chunking old history once it gets too long) matters for any chat application that runs for a while." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can construct a properly-ordered messages list for a stateless chat completions API, and understand why the full history must be resent on every call.
+</Checkpoint>

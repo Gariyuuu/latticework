@@ -1,0 +1,57 @@
+---
+slug: cost-basics
+title: Cloud Cost Basics
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: cost-basics-ex1
+    difficulty: beginner
+    concept: cloud-fundamentals-cost-basics
+    prompt: "Write `monthly_cost(compute_hours, compute_rate, storage_gb, storage_rate, egress_gb, egress_rate)`: total cost is `compute_hours * compute_rate + storage_gb * storage_rate + egress_gb * egress_rate`, rounded to 2 decimal places."
+  - id: quiz-1
+    type: quiz
+    concept: cloud-fundamentals-cost-basics
+    question: "Cloud bills often have a surprise line item: EGRESS (data leaving the cloud provider's network). Why does egress get billed separately and aggressively, while data coming IN is usually free?"
+    options: ["Cloud providers want to make it cheap and easy to get your data and workloads INTO their platform, but charge for data leaving specifically because that friction (and cost) discourages migrating to a competitor or serving data directly to users from outside their ecosystem", "Egress is technically more expensive to run than ingress at the hardware level", "Ingress bandwidth is unlimited while egress bandwidth is physically limited", "Egress charges are a legal requirement in every country"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Cloud costs typically break down into a few core dimensions: **compute**
+(billed per hour or per second a resource runs), **storage** (billed
+per GB per month, regardless of whether it's ever read), and
+**egress** (billed per GB of data leaving the provider's network —
+famously the line item that surprises people, since data coming IN is
+almost always free).
+
+```python
+def monthly_cost(compute_hours, compute_rate, storage_gb, storage_rate, egress_gb, egress_rate):
+    return round(
+        compute_hours * compute_rate
+        + storage_gb * storage_rate
+        + egress_gb * egress_rate,
+        2,
+    )
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def monthly_cost(compute_hours, compute_rate, storage_gb, storage_rate, egress_gb, egress_rate):\n    return round(\n        compute_hours * compute_rate\n        + storage_gb * storage_rate\n        + egress_gb * egress_rate,\n        2,\n    )\n\n# a small server running all month (720 hours), 100GB stored, 50GB served to users\nprint(monthly_cost(compute_hours=720, compute_rate=0.05, storage_gb=100, storage_rate=0.02, egress_gb=50, egress_rate=0.09))\n# 42.5 -- compute ($36) + storage ($2) + egress ($4.50)`} caption="Notice egress at just 50GB already costs more per GB than storing 100GB for the entire month -- that asymmetry (cheap storage, cheap ingress, expensive egress) is deliberate provider economics, and it's exactly why architectures that serve lots of data directly out of the cloud (video, large API responses) budget for egress specifically." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute a monthly cloud cost estimate from compute, storage, and egress usage, and understand why egress is priced so differently from ingress.
+</Checkpoint>

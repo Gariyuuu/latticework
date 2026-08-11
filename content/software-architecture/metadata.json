@@ -13,17 +13,17 @@
     "backend-engineer",
     "research-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "layering",
       "title": "Layering",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "microservices-vs-monolith",
       "title": "Microservices vs Monolith",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "trade-offs",

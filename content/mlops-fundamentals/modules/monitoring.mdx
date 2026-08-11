@@ -1,0 +1,58 @@
+---
+slug: monitoring
+title: Monitoring & Drift Detection
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: monitoring-ex1
+    difficulty: intermediate
+    concept: mlops-monitoring
+    prompt: "Write `feature_drift(reference_values, current_values)`: compute the difference between the two sample means, divided by the REFERENCE sample's standard deviation (a standardized drift score). Return `0.0` if the reference standard deviation is `0`. Round to 4 decimal places."
+  - id: quiz-1
+    type: quiz
+    concept: mlops-monitoring
+    question: "Why standardize the drift score by dividing by the reference standard deviation, instead of just comparing raw mean values?"
+    options: ["A raw mean difference of, say, 2 is huge for a feature that normally varies by only 0.1, but tiny for one that normally varies by 1000 — dividing by the reference spread puts drift on a comparable, feature-independent scale", "Standardizing always makes the drift score exactly 1.0", "Standard deviation is only meaningful for normally-distributed data", "Raw mean differences cannot be computed for any real dataset"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A deployed model's input data can silently shift over time — user
+behavior changes, an upstream system starts sending slightly different
+values, a seasonal pattern kicks in. **Data drift monitoring** compares
+a live batch of feature values against a trusted reference batch (often
+the training data) to catch this before it quietly degrades predictions.
+A simple, effective drift signal: how many reference standard
+deviations apart are the two batches' means?
+
+```python
+def feature_drift(reference_values, current_values):
+    ref_mean = sum(reference_values) / len(reference_values)
+    cur_mean = sum(current_values) / len(current_values)
+    ref_std = (sum((x - ref_mean) ** 2 for x in reference_values) / len(reference_values)) ** 0.5
+    if ref_std == 0:
+        return 0.0
+    return round(abs(cur_mean - ref_mean) / ref_std, 4)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def feature_drift(reference_values, current_values):\n    ref_mean = sum(reference_values) / len(reference_values)\n    cur_mean = sum(current_values) / len(current_values)\n    ref_std = (sum((x - ref_mean) ** 2 for x in reference_values) / len(reference_values)) ** 0.5\n    if ref_std == 0:\n        return 0.0\n    return round(abs(cur_mean - ref_mean) / ref_std, 4)\n\nreference = [10, 12, 11, 9, 13, 10, 11]\nsimilar_batch = [11, 10, 12, 9, 13]\nshifted_batch = [20, 22, 21, 19, 23]\n\nprint(feature_drift(reference, similar_batch))   # 0.1147 -- barely different from the reference\nprint(feature_drift(reference, shifted_batch))   # 8.1443 -- the mean has shifted by over 8 reference std-devs`} caption="A score around 0.1 is well within normal sampling noise for this reference distribution; a score of 8+ is a huge, unmistakable shift -- exactly the kind of jump that should page someone or trigger a retraining check, which is exactly what the next module covers." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute a standardized data drift score for a feature, putting shifts of very different magnitudes on a comparable scale.
+</Checkpoint>

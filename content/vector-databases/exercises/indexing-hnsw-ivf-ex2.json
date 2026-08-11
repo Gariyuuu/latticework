@@ -1,0 +1,10 @@
+{
+  "id": "indexing-hnsw-ivf-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def cosine_similarity(a, b):\n    dot = sum(x * y for x, y in zip(a, b))\n    mag_a = sum(x ** 2 for x in a) ** 0.5\n    mag_b = sum(x ** 2 for x in b) ** 0.5\n    return dot / (mag_a * mag_b)\n\ndef nearest_centroid(vector, centroids):\n    best_idx = 0\n    best_sim = -2\n    for i, c in enumerate(centroids):\n        sim = cosine_similarity(vector, c)\n        if sim > best_sim:\n            best_sim = sim\n            best_idx = i\n    return best_idx\n\ndef ivf_search(query, vectors, centroids, index, k):\n    ...\n",
+  "cases": [
+    { "call": "ivf_search((1, 0), {'a': (0.9, 0.1), 'b': (0.1, 0.9), 'c': (1, 0), 'd': (0, 1)}, [(1, 0), (0, 1)], {0: ['a', 'c'], 1: ['b', 'd']}, 2)", "expect": "['c', 'a']" },
+    { "call": "ivf_search((0, 1), {'a': (0.9, 0.1), 'b': (0.1, 0.9), 'c': (1, 0), 'd': (0, 1)}, [(1, 0), (0, 1)], {0: ['a', 'c'], 1: ['b', 'd']}, 1)", "expect": "['d']" }
+  ]
+}

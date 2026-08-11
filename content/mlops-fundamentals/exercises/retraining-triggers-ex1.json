@@ -1,0 +1,11 @@
+{
+  "id": "retraining-triggers-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def should_retrain(drift_score, performance_drop, days_since_training, drift_threshold=0.5, perf_threshold=0.05, max_days=30):\n    ...\n",
+  "cases": [
+    { "call": "should_retrain(0.1, 0.01, 5)", "expect": "[]" },
+    { "call": "should_retrain(0.8, 0.01, 5)", "expect": "['drift']" },
+    { "call": "should_retrain(0.9, 0.1, 40)", "expect": "['drift', 'performance_drop', 'stale']" }
+  ]
+}

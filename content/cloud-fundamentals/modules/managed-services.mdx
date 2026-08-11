@@ -1,0 +1,57 @@
+---
+slug: managed-services
+title: Reserved vs. On-Demand Pricing
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: managed-services-ex1
+    difficulty: intermediate
+    concept: cloud-fundamentals-reserved-pricing
+    prompt: "Write `break_even_months(on_demand_rate_per_hour, reserved_upfront_cost, reserved_rate_per_hour, hours_per_month=720)`: compute the monthly cost under each pricing model, then return how many months of savings it takes for the reserved option's upfront cost to pay for itself (`upfront_cost / monthly_savings`, rounded to 2 decimal places). Return `None` if the reserved rate isn't actually cheaper per month."
+  - id: quiz-1
+    type: quiz
+    concept: cloud-fundamentals-reserved-pricing
+    question: "Why would a cloud provider offer a CHEAPER hourly rate in exchange for an upfront payment (reserved/committed pricing) instead of just charging everyone the same on-demand rate?"
+    options: ["An upfront commitment gives the provider predictable, guaranteed revenue and lets them plan capacity ahead of time — they pass some of that reduced business risk back to the customer as a lower rate, in exchange for the customer giving up flexibility", "Reserved pricing exists purely to confuse customers into overpaying", "On-demand and reserved instances run on physically different, unequal hardware", "Providers are legally required to offer at least two pricing tiers"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Cloud providers typically offer a steep discount for **reserved**
+(or "committed use") capacity — pay some amount upfront (or commit to a
+term) in exchange for a lower per-hour rate versus **on-demand**
+pricing. Whether that's a good deal depends entirely on how long you'll
+actually run the resource: the upfront cost needs enough months of
+savings to pay itself off before it's worth it.
+
+```python
+def break_even_months(on_demand_rate_per_hour, reserved_upfront_cost, reserved_rate_per_hour, hours_per_month=720):
+    monthly_on_demand = on_demand_rate_per_hour * hours_per_month
+    monthly_reserved = reserved_rate_per_hour * hours_per_month
+    monthly_savings = monthly_on_demand - monthly_reserved
+    if monthly_savings <= 0:
+        return None
+    return round(reserved_upfront_cost / monthly_savings, 2)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def break_even_months(on_demand_rate_per_hour, reserved_upfront_cost, reserved_rate_per_hour, hours_per_month=720):\n    monthly_on_demand = on_demand_rate_per_hour * hours_per_month\n    monthly_reserved = reserved_rate_per_hour * hours_per_month\n    monthly_savings = monthly_on_demand - monthly_reserved\n    if monthly_savings <= 0:\n        return None\n    return round(reserved_upfront_cost / monthly_savings, 2)\n\nprint(break_even_months(0.10, 500, 0.06))   # 17.36 -- pays off after ~17 and a half months of running 24/7\nprint(break_even_months(0.05, 500, 0.06))   # None -- the "reserved" rate is actually MORE expensive here, never worth it`} caption="A workload you'll run for 6 months should almost never buy a reservation with an 18-month break-even point -- this exact calculation is the deciding factor real infrastructure teams run before committing budget to reserved capacity, not a guess based on the sticker discount percentage alone." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute a reserved-vs-on-demand break-even point, and understand why providers exchange a lower rate for the reduced business risk of an upfront commitment.
+</Checkpoint>

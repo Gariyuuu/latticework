@@ -1,0 +1,62 @@
+---
+slug: microservices-vs-monolith
+title: Microservices vs. Monolith
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: microservices-vs-monolith-ex1
+    difficulty: beginner
+    concept: software-architecture-microservices-monolith
+    prompt: "Write `recommend_architecture(team_size, deploy_frequency_per_week, independent_scaling_needed)`: award one point each if `team_size > 20`, `deploy_frequency_per_week > 5`, or `independent_scaling_needed` is true. Return `'microservices'` if the total is `2` or more, otherwise `'monolith'`."
+  - id: quiz-1
+    type: quiz
+    concept: software-architecture-microservices-monolith
+    question: "Why does team SIZE factor into the monolith-vs-microservices decision at all — isn't this purely a technical question?"
+    options: ["Microservices let independent teams own, deploy, and scale their own services without stepping on each other — that coordination benefit only starts to outweigh the added operational complexity once a single team (or codebase) gets large enough that everyone working in one monolith actually starts blocking each other", "Team size has no real bearing on architecture decisions in practice", "A monolith can only be maintained by teams smaller than 5 people", "Microservices always require exactly one team per service"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Neither a monolith (one deployable codebase) nor microservices (many
+independently deployable services) is universally "better" — it's a
+genuine tradeoff. Microservices buy independent deployment and scaling
+per-service, at the cost of real operational complexity (network calls
+where function calls used to be, distributed tracing, more
+infrastructure to run). That cost is worth paying once a few conditions
+line up: a large enough team that a shared monolith becomes a bottleneck,
+frequent independent deploys, or components with genuinely different
+scaling needs.
+
+```python
+def recommend_architecture(team_size, deploy_frequency_per_week, independent_scaling_needed):
+    score = 0
+    if team_size > 20:
+        score += 1
+    if deploy_frequency_per_week > 5:
+        score += 1
+    if independent_scaling_needed:
+        score += 1
+    return "microservices" if score >= 2 else "monolith"
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def recommend_architecture(team_size, deploy_frequency_per_week, independent_scaling_needed):\n    score = 0\n    if team_size > 20:\n        score += 1\n    if deploy_frequency_per_week > 5:\n        score += 1\n    if independent_scaling_needed:\n        score += 1\n    return "microservices" if score >= 2 else "monolith"\n\nprint(recommend_architecture(5, 2, False))            # monolith -- small team, infrequent deploys, no scaling need\nprint(recommend_architecture(30, 10, True))            # microservices -- all 3 signals point that way\nprint(recommend_architecture(25, 1, True))              # microservices -- 2 of 3 signals is still enough`} caption="This is a deliberately simplified heuristic, not a rigorous formula -- real teams weigh these factors qualitatively, often starting with a monolith and splitting out services only as specific pain points (a slow deploy pipeline, one component needing very different scaling) actually show up, rather than deciding everything upfront." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can reason through the monolith-vs-microservices tradeoff using concrete organizational signals, not just technical ones.
+</Checkpoint>

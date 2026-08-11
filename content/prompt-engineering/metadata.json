@@ -8,7 +8,7 @@
   "usefulFor": [
     "ai-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "instruction-design",
@@ -18,12 +18,12 @@
     {
       "slug": "few-shot-examples",
       "title": "Few-shot Examples",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "structured-output",
       "title": "Structured Output",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

@@ -1,0 +1,58 @@
+---
+slug: simd-basics
+title: SIMD Basics
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: simd-basics-ex1
+    difficulty: intermediate
+    concept: parallel-computing-simd
+    prompt: "Write `vectorized_speedup(n_elements, lane_width, scalar_cycles_per_element, vector_overhead_cycles)`: scalar cost is `n_elements * scalar_cycles_per_element`. Vector cost is `ceil(n_elements / lane_width)` vector instructions, each costing `scalar_cycles_per_element + vector_overhead_cycles`. Return `scalar_cost / vector_cost`, rounded to 4 decimal places."
+  - id: quiz-1
+    type: quiz
+    concept: parallel-computing-simd
+    question: "What does SIMD (Single Instruction, Multiple Data) actually parallelize, and how is that DIFFERENT from Concurrency's multi-threading?"
+    options: ["One SIMD instruction applies the SAME operation to multiple data elements packed into one wide hardware register simultaneously (data-level parallelism within a single core) — multi-threading instead runs independent instruction streams across separate cores", "SIMD and multi-threading are two names for the exact same hardware mechanism", "SIMD requires multiple CPU cores, just like multi-threading does", "SIMD can only add numbers, never perform other operations"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**SIMD** (Single Instruction, Multiple Data) is a different kind of
+parallelism than threads or processes: a single CPU instruction operates
+on several data elements packed into one wide register at once — e.g.
+adding 8 numbers to 8 other numbers in ONE instruction, instead of 8
+separate additions. This is exactly what libraries like NumPy exploit
+under the hood for vectorized operations, and why `arr + arr` beats a
+Python `for` loop so dramatically.
+
+```python
+import math
+
+def vectorized_speedup(n_elements, lane_width, scalar_cycles_per_element, vector_overhead_cycles):
+    scalar_cost = n_elements * scalar_cycles_per_element
+    n_vector_ops = math.ceil(n_elements / lane_width)
+    vector_cost = n_vector_ops * (scalar_cycles_per_element + vector_overhead_cycles)
+    return round(scalar_cost / vector_cost, 4)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`import math\n\ndef vectorized_speedup(n_elements, lane_width, scalar_cycles_per_element, vector_overhead_cycles):\n    scalar_cost = n_elements * scalar_cycles_per_element\n    n_vector_ops = math.ceil(n_elements / lane_width)\n    vector_cost = n_vector_ops * (scalar_cycles_per_element + vector_overhead_cycles)\n    return round(scalar_cost / vector_cost, 4)\n\nprint(vectorized_speedup(1000, lane_width=8, scalar_cycles_per_element=1, vector_overhead_cycles=1))\n# 4.0 -- half the theoretical max (8x), since instruction overhead eats into the gain\n\nprint(vectorized_speedup(1000, lane_width=4, scalar_cycles_per_element=1, vector_overhead_cycles=1))\n# 2.0 -- a narrower SIMD register (4 lanes instead of 8) gives less speedup, as expected`} caption="The theoretical maximum speedup equals lane_width (process 8 elements per instruction -> up to 8x) -- but real speedup is always lower, because each vector instruction still carries fixed overhead that a pure lane_width multiplier ignores. This gap between theoretical and real speedup is exactly why real-world SIMD gains rarely hit the 'obvious' number." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can quantify SIMD's realistic speedup accounting for per-instruction overhead, and distinguish data-level parallelism (SIMD) from thread-level parallelism (Concurrency).
+</Checkpoint>
