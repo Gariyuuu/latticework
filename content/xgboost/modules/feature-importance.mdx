@@ -1,0 +1,60 @@
+---
+slug: feature-importance
+title: Feature Importance
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+    packages: ["xgboost", "scikit-learn"]
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: feature-importance-ex1
+    difficulty: intermediate
+    concept: xgboost-feature-importance
+    prompt: "Write `most_important_feature(X_train, y_train, feature_names)`: train an `XGBRegressor(n_estimators=20, max_depth=2, random_state=0)`, then use its `.feature_importances_` array to return the name (from `feature_names`) of the single most important feature."
+  - id: quiz-1
+    type: quiz
+    concept: xgboost-feature-importance
+    question: "Where does XGBoost's feature_importances_ score for each feature actually come from?"
+    options: ["It's derived from how much each feature was actually used to build splits across every tree in the ensemble, and how much those splits reduced error — a feature the model leans on heavily to make good predictions ends up with a high score", "It's computed once before training even begins, based only on the raw correlation between each feature and the target", "Every feature always receives an equal importance score by design", "Feature importance is set manually by the person building the model, not computed by XGBoost"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+After training an ensemble of trees, XGBoost can tell you which
+features it actually relied on: `.feature_importances_` scores each
+feature by how much it was used across every tree's splits, weighted
+by how much those splits actually reduced error. A feature the model
+barely ever splits on — or splits on without much benefit — scores low;
+one the model consistently leans on to make accurate predictions scores
+high.
+
+```python
+from xgboost import XGBRegressor
+
+def most_important_feature(X_train, y_train, feature_names):
+    model = XGBRegressor(n_estimators=20, max_depth=2, random_state=0)
+    model.fit(X_train, y_train)
+    importances = model.feature_importances_
+    best_idx = max(range(len(importances)), key=lambda i: importances[i])
+    return feature_names[best_idx]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["xgboost", "scikit-learn"]} code={`from xgboost import XGBRegressor\nimport random\n\nrandom.seed(0)\n# feature 0 ("signal") perfectly determines y; feature 1 ("noise") is pure random noise\nX_train = [[i, random.uniform(0, 100)] for i in range(30)]\ny_train = [i * 2 for i in range(30)]\n\ndef most_important_feature(X_train, y_train, feature_names):\n    model = XGBRegressor(n_estimators=20, max_depth=2, random_state=0)\n    model.fit(X_train, y_train)\n    importances = model.feature_importances_\n    best_idx = max(range(len(importances)), key=lambda i: importances[i])\n    return feature_names[best_idx]\n\nprint(most_important_feature(X_train, y_train, ["signal", "noise"]))\n# signal -- the model correctly identifies the genuinely predictive feature, ignoring the noise`} caption="This is exactly why feature importance is such a practically useful debugging tool -- if a feature you EXPECTED to matter scores near zero, or one you thought was irrelevant scores surprisingly high, that's a real signal to double-check your data (a leak, a bug, or a genuinely surprising real pattern)." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can extract and interpret feature importance from a trained XGBoost model, and understand it's derived from actual split usage across the ensemble, not a precomputed correlation.
+</Checkpoint>

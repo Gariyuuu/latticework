@@ -11,7 +11,7 @@
   "usefulFor": [
     "data-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "rdds-dataframes",
@@ -21,12 +21,12 @@
     {
       "slug": "transformations-actions",
       "title": "Transformations & Actions",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "partitioning",
       "title": "Partitioning",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

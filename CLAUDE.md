@@ -103,32 +103,39 @@ on a missing env var without surfacing that clearly in the UI — see
 
 ## Known limitations (see ROADMAP.md for the full, current list)
 
-- **70 skills have real lesson content** (up from the original
-  Python-only MVP) — targets of 50 then 60 then 70 have all been
-  reached across this session. Full per-track module counts and design
-  notes are in ROADMAP.md "Content coverage," not duplicated here since
-  it changes every session. Quick index: Python/Data Structures/
-  Algorithms/NumPy/Pandas/Probability/Statistics (all complete), SQL
-  (7/10), Linear Algebra (2/3), Monte Carlo Simulation, Stochastic
-  Processes Fundamentals, Calculus Review, Optimization, Numerical
-  Methods, Complexity Analysis, Functional Programming, OOP, Design
-  Patterns, Feature Engineering, Financial Markets, Model Evaluation,
-  Debugging, Time Series, HTTP, Clean Code, REST APIs, Redis, Networking
-  Basics, Embeddings, Compilers Fundamentals, WebSockets, Concurrency,
-  Kafka Fundamentals, ML Experiment Design, Model Deployment, Memory
-  Management, RAG Fundamentals, CI/CD, ETL/ELT, Warehousing Concepts,
-  OpenAI-style API Concepts, SQLite, SciPy, AWS Concepts, GCP Concepts
-  (all complete), Quant Finance Fundamentals (5/9), Authentication
-  (2/3), Testing (2/4), Database Design (2/3), Data Modeling (2/2),
-  Operating Systems (2/3), MongoDB (2/3), Git (2/4), Distributed Systems
-  Fundamentals (2/3), LLM Fundamentals (3/4), System Design Fundamentals
-  (3/4), Vector Databases (2/3), MLOps Fundamentals (2/3), Parallel
-  Computing (2/3), Software Architecture (2/3), Prompt Engineering
-  (2/3), Cloud Fundamentals (2/3), GraphQL Fundamentals (2/3),
-  Scikit-learn (3/4), Pydantic (2/2), Matplotlib (2/4), Computer
-  Networking (1/3), CSS (1/4), Docker (2/4), GitHub (2/3). The rest of
-  the technology catalog is metadata-only (by design — see
-  `docs/COURSE_CONTENT_SPEC.md`).
+- **74 skills have real lesson content** (up from the original
+  Python-only MVP) — targets of 50, 60, then 70 were all reached this
+  session; a user request to go to 99 (the full catalog) was assessed
+  and found NOT fully achievable via content authoring alone — see
+  ROADMAP.md "Content coverage" for the precise, verified breakdown of
+  why the remaining 25 skills are infra-blocked, not just unwritten.
+  Full per-track module counts and design notes are in ROADMAP.md, not
+  duplicated here since it changes every session. Quick index: Python/
+  Data Structures/Algorithms/NumPy/Pandas/Probability/Statistics (all
+  complete), SQL (7/10), Linear Algebra (2/3), Monte Carlo Simulation,
+  Stochastic Processes Fundamentals, Calculus Review, Optimization,
+  Numerical Methods, Complexity Analysis, Functional Programming, OOP,
+  Design Patterns, Feature Engineering, Financial Markets, Model
+  Evaluation, Debugging, Time Series, HTTP, Clean Code, REST APIs,
+  Redis, Networking Basics, Embeddings, Compilers Fundamentals,
+  WebSockets, Concurrency, Kafka Fundamentals, ML Experiment Design,
+  Model Deployment, Memory Management, RAG Fundamentals, CI/CD, ETL/ELT,
+  Warehousing Concepts, OpenAI-style API Concepts, SQLite, SciPy, AWS
+  Concepts, GCP Concepts, XGBoost, LightGBM (all complete), Quant
+  Finance Fundamentals (5/9), Authentication (2/3), Testing (2/4),
+  Database Design (2/3), Data Modeling (2/2), Operating Systems (2/3),
+  MongoDB (2/3), Git (2/4), Distributed Systems Fundamentals (2/3), LLM
+  Fundamentals (3/4), System Design Fundamentals (3/4), Vector Databases
+  (2/3), MLOps Fundamentals (2/3), Parallel Computing (2/3), Software
+  Architecture (2/3), Prompt Engineering (2/3), Cloud Fundamentals
+  (2/3), GraphQL Fundamentals (2/3), Scikit-learn (3/4), Pydantic (2/2),
+  Matplotlib (2/4), Computer Networking (1/3), CSS (1/4), Docker (2/4),
+  GitHub (2/3), Snowflake Fundamentals (2/3), Apache Spark Fundamentals
+  (2/3, explicitly a verified pure-Python simulation of Spark's
+  execution model — `pyspark` is confirmed unavailable in Pyodide). The
+  rest of the technology catalog is metadata-only, and for 25 of those
+  skills that's a hard infrastructure blocker, not a content gap — see
+  ROADMAP.md (by design — see also `docs/COURSE_CONTENT_SPEC.md`).
   Monte Carlo and
   Stochastic Processes content need genuine randomness — made gradeable
   via `random.seed()`, only after verifying seeded `random.random()`/

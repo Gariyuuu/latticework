@@ -1,0 +1,71 @@
+---
+slug: transformations-actions
+title: Transformations vs. Actions
+estimatedMinutes: 24
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: transformations-actions-ex1
+    difficulty: advanced
+    concept: spark-transformations-actions
+    prompt: "Given the provided `LazyRDD` class (with `map` and `filter` already implemented as lazy — they just record the operation and return a new `LazyRDD`), write `collect(self)`: actually execute every recorded operation, in order, against `self.data`, and return the final list of results."
+  - id: quiz-1
+    type: quiz
+    concept: spark-transformations-actions
+    question: "This module builds a small Python simulation of Spark's core execution model (real Spark isn't runnable in this browser sandbox). What real Spark concept does LazyRDD.map()/.filter() returning a NEW LazyRDD without running anything demonstrate?"
+    options: ["Spark's TRANSFORMATIONS (map, filter, and similar) are lazy — calling them just builds up a description of the computation (a plan), without touching any actual data; only an ACTION (like collect() or count()) triggers real execution of the whole chain at once", "Spark transformations execute immediately, exactly like a normal Python list comprehension would", "Actions in Spark are lazy, while transformations execute immediately", "There is no meaningful distinction between transformations and actions in Spark"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Apache Spark's execution model has one central idea: **transformations**
+(`map`, `filter`, `join`, and similar) are LAZY — calling one doesn't
+touch any data, it just records "here's another step in the plan."
+Only an **action** (`collect()`, `count()`, `save()`) actually triggers
+execution, running every recorded transformation in one pass. This
+module builds a small pure-Python simulation of that exact model — real
+Spark needs a JVM and isn't runnable in this browser sandbox, but the
+laziness behavior itself is real and directly testable.
+
+```python
+class LazyRDD:
+    def __init__(self, data, ops=None):
+        self.data = data
+        self.ops = ops or []
+
+    def map(self, fn):
+        return LazyRDD(self.data, self.ops + [("map", fn)])
+
+    def filter(self, fn):
+        return LazyRDD(self.data, self.ops + [("filter", fn)])
+
+    def collect(self):
+        result = list(self.data)
+        for kind, fn in self.ops:
+            if kind == "map":
+                result = [fn(x) for x in result]
+            elif kind == "filter":
+                result = [x for x in result if fn(x)]
+        return result
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`# LazyRDD as defined above\nlog = []\n\ndef double(x):\n    log.append(f"map {x}")\n    return x * 2\n\ndef over_five(x):\n    log.append(f"filter {x}")\n    return x > 5\n\nrdd = LazyRDD([1, 2, 3, 4, 5])\ntransformed = rdd.map(double).filter(over_five)   # nothing executed yet -- just a recorded plan\n\nprint(len(log))         # 0 -- .map() and .filter() never touched a single element\n\nresult = transformed.collect()   # THIS is the action -- now it actually runs\nprint(len(log))          # 10 -- 5 map calls + 5 filter calls, all triggered by collect()\nprint(result)            # [6, 8, 10]`} caption="This is exactly why Spark code that builds a long transformation chain but never calls an action does NOTHING at all when run -- a genuinely common real beginner confusion, and precisely the behavior len(log) == 0 before collect() proves here." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement lazy transformation chaining and eager action execution, the core distinction that makes Spark's execution model different from an ordinary eagerly-evaluated Python pipeline.
+</Checkpoint>

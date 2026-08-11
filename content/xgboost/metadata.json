@@ -11,22 +11,22 @@
     "data-scientist",
     "ml-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "gradient-boosting-intuition",
       "title": "Gradient Boosting Intuition",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "tuning",
       "title": "Tuning",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "feature-importance",
       "title": "Feature Importance",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

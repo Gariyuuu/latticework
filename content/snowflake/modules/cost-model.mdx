@@ -1,0 +1,61 @@
+---
+slug: cost-model
+title: Auto-Suspend & Billing Windows
+estimatedMinutes: 22
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: cost-model-ex1
+    difficulty: advanced
+    concept: snowflake-cost-model
+    prompt: "Write `merged_running_windows(query_windows, auto_suspend_seconds)`: each `(start, end)` in `query_windows` is a query's execution window. A warehouse stays running until `auto_suspend_seconds` after a query finishes; if another query starts before that running window ends, the warehouse never actually suspends, and the windows merge into one. Return the merged list of `(start, running_end)` windows, sorted by start time."
+  - id: quiz-1
+    type: quiz
+    concept: snowflake-cost-model
+    question: "Why does a warehouse's AUTO-SUSPEND timer matter for cost, given that Snowflake bills per-second while a warehouse is actually running?"
+    options: ["A warehouse doesn't suspend the INSTANT a query finishes — it stays running (and billing) for the auto-suspend duration in case another query arrives soon, since resuming from a full suspend has its own overhead; a short auto-suspend timer saves money on idle time but risks paying that resume overhead more often if queries are spaced just far enough apart", "Auto-suspend has no effect on billing whatsoever, only on query latency", "A warehouse bills a flat monthly fee regardless of whether auto-suspend is enabled", "Auto-suspend timers can only be set to exactly 60 seconds, with no other option"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Snowflake bills per-second while a warehouse is running — but a
+warehouse doesn't suspend the instant a query finishes. It stays alive
+for an `auto_suspend_seconds` grace period first, in case another
+query arrives soon (avoiding the overhead of a full resume). If queries
+are spaced closer together than that grace period, the warehouse never
+actually suspends between them at all — the billed "running" period
+merges into one continuous window instead of two separate ones.
+
+```python
+def merged_running_windows(query_windows, auto_suspend_seconds):
+    windows = sorted(query_windows)
+    merged = []
+    for start, end in windows:
+        running_end = end + auto_suspend_seconds
+        if merged and start <= merged[-1][1]:
+            merged[-1] = (merged[-1][0], max(merged[-1][1], running_end))
+        else:
+            merged.append((start, running_end))
+    return merged
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def merged_running_windows(query_windows, auto_suspend_seconds):\n    windows = sorted(query_windows)\n    merged = []\n    for start, end in windows:\n        running_end = end + auto_suspend_seconds\n        if merged and start <= merged[-1][1]:\n            merged[-1] = (merged[-1][0], max(merged[-1][1], running_end))\n        else:\n            merged.append((start, running_end))\n    return merged\n\n# two queries only 30s apart, well within a 60s auto-suspend window\nprint(merged_running_windows([(0, 10), (40, 50)], auto_suspend_seconds=60))\n# [(0, 110)] -- the warehouse never actually suspends between them; billed as ONE continuous run\n\n# two queries 290s apart, well past the 60s grace period\nprint(merged_running_windows([(0, 10), (300, 310)], auto_suspend_seconds=60))\n# [(0, 70), (300, 370)] -- the warehouse fully suspended and resumed between them; billed as TWO separate runs`} caption="This is the exact same interval-merging pattern as GitHub's has_conflict overlap check and Model Deployment's rolling-progress logic -- 'merge windows that touch or overlap' is one of the most reusable patterns in this whole curriculum, showing up in scheduling, conflict detection, AND billing." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute merged warehouse-running windows accounting for auto-suspend, and understand the tradeoff between minimizing idle billing and avoiding frequent resume overhead.
+</Checkpoint>

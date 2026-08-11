@@ -1,0 +1,60 @@
+---
+slug: leaf-wise-growth
+title: Leaf-Wise Tree Growth
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+    packages: ["lightgbm", "scikit-learn"]
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: leaf-wise-growth-ex1
+    difficulty: intermediate
+    concept: lightgbm-leaf-wise-growth
+    prompt: "Write `train_and_predict(X_train, y_train, X_test, num_leaves)`: train an `LGBMRegressor(n_estimators=20, num_leaves=num_leaves, random_state=0, verbosity=-1, min_child_samples=1)`, fit it, and return predictions on `X_test` as a list, each rounded to 4 decimal places."
+  - id: quiz-1
+    type: quiz
+    concept: lightgbm-leaf-wise-growth
+    question: "XGBoost's default tree growth is LEVEL-WISE (expand every leaf at the current depth before going deeper). LightGBM grows LEAF-WISE instead. What's the difference?"
+    options: ["Leaf-wise growth always splits whichever SINGLE leaf (anywhere in the tree) would reduce error the most next, regardless of depth — this tends to reach lower error with fewer total splits than level-wise growth, but can produce deeper, more asymmetric trees that are more prone to overfitting on small datasets", "Leaf-wise and level-wise growth always produce mathematically identical trees", "Leaf-wise growth ignores the target variable entirely when deciding where to split", "Level-wise growth is a made-up term with no real meaning in gradient boosting"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+XGBoost's default strategy grows trees LEVEL-WISE: expand every leaf at
+the current depth before going any deeper, keeping the tree roughly
+balanced. LightGBM's signature difference is LEAF-WISE growth: instead
+of expanding a whole level at once, always split whichever SINGLE leaf
+(anywhere in the tree, at any depth) would reduce error the most next.
+This tends to reach a given error level with fewer total splits — but
+can produce deeper, more lopsided trees, which is why LightGBM's
+`num_leaves` (a direct cap on total leaves) is its primary complexity
+control, rather than `max_depth`.
+
+```python
+from lightgbm import LGBMRegressor
+
+def train_and_predict(X_train, y_train, X_test, num_leaves):
+    model = LGBMRegressor(n_estimators=20, num_leaves=num_leaves, random_state=0, verbosity=-1, min_child_samples=1)
+    model.fit(X_train, y_train)
+    return [round(float(p), 4) for p in model.predict(X_test)]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["lightgbm", "scikit-learn"]} code={`from lightgbm import LGBMRegressor\n\nX_train = [[i] for i in range(20)]\ny_train = [i ** 1.5 for i in range(20)]\nX_test = [[5], [15]]\n\ndef train_and_predict(X_train, y_train, X_test, num_leaves):\n    model = LGBMRegressor(n_estimators=20, num_leaves=num_leaves, random_state=0, verbosity=-1, min_child_samples=1)\n    model.fit(X_train, y_train)\n    return [round(float(p), 4) for p in model.predict(X_test)]\n\nprint(train_and_predict(X_train, y_train, X_test, num_leaves=4))\n# [13.7412, 49.9111] -- a tight leaf budget, simpler trees\n\nprint(train_and_predict(X_train, y_train, X_test, num_leaves=31))\n# [14.0006, 50.1544] -- LightGBM's default leaf budget, more complex trees`} caption="num_leaves is doing the same job max_depth did for XGBoost -- capping how complex each tree is allowed to get -- just measured directly in leaf count rather than depth, which fits leaf-wise growth's asymmetric tree shapes more naturally than a depth limit would." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can train a LightGBM model and control its complexity via num_leaves, and understand how leaf-wise growth differs structurally from XGBoost's level-wise default.
+</Checkpoint>

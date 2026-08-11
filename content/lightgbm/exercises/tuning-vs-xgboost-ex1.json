@@ -1,0 +1,11 @@
+{
+  "id": "tuning-vs-xgboost-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["lightgbm", "scikit-learn"],
+  "starterCode": "from lightgbm import LGBMRegressor\n\ndef evaluate_num_leaves(X_train, y_train, X_test, y_test, num_leaves):\n    ...\n",
+  "cases": [
+    { "call": "evaluate_num_leaves([[i] for i in range(20)], [i ** 1.5 for i in range(20)], [[5], [15]], [5 ** 1.5, 15 ** 1.5], 2)", "expect": "37.7579" },
+    { "call": "evaluate_num_leaves([[i] for i in range(20)], [i ** 1.5 for i in range(20)], [[5], [15]], [5 ** 1.5, 15 ** 1.5], 31)", "expect": "35.5016" }
+  ]
+}

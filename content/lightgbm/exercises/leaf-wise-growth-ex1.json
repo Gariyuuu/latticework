@@ -1,0 +1,11 @@
+{
+  "id": "leaf-wise-growth-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["lightgbm", "scikit-learn"],
+  "starterCode": "from lightgbm import LGBMRegressor\n\ndef train_and_predict(X_train, y_train, X_test, num_leaves):\n    ...\n",
+  "cases": [
+    { "call": "train_and_predict([[i] for i in range(20)], [i ** 1.5 for i in range(20)], [[5], [15]], 4)", "expect": "[13.7412, 49.9111]" },
+    { "call": "train_and_predict([[i] for i in range(20)], [i ** 1.5 for i in range(20)], [[5], [15]], 31)", "expect": "[14.0006, 50.1544]" }
+  ]
+}

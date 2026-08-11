@@ -1,0 +1,11 @@
+{
+  "id": "gradient-boosting-intuition-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["xgboost", "scikit-learn"],
+  "starterCode": "from xgboost import XGBRegressor\n\ndef train_and_score(X_train, y_train, X_test, y_test, n_estimators):\n    ...\n",
+  "cases": [
+    { "call": "train_and_score([[i] for i in range(20)], [i ** 1.5 for i in range(20)], [[5], [15]], [5 ** 1.5, 15 ** 1.5], 1)", "expect": "245.5557" },
+    { "call": "train_and_score([[i] for i in range(20)], [i ** 1.5 for i in range(20)], [[5], [15]], [5 ** 1.5, 15 ** 1.5], 50)", "expect": "0.0156" }
+  ]
+}

@@ -10,7 +10,7 @@
   "usefulFor": [
     "data-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "architecture",
@@ -20,12 +20,12 @@
     {
       "slug": "virtual-warehouses",
       "title": "Virtual Warehouses",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "cost-model",
       "title": "Cost Model",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

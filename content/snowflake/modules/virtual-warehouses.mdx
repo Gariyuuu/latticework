@@ -1,0 +1,54 @@
+---
+slug: virtual-warehouses
+title: Virtual Warehouse Sizing
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: virtual-warehouses-ex1
+    difficulty: beginner
+    concept: snowflake-virtual-warehouses
+    prompt: "Write `warehouse_cost(size, hours, credit_price=3.0)`: each T-shirt size doubles the credits-per-hour of the size below it — `X-Small`=1, `Small`=2, `Medium`=4, `Large`=8, `X-Large`=16. Return `size_credits * hours * credit_price`, rounded to 2 decimal places."
+  - id: quiz-1
+    type: quiz
+    concept: snowflake-virtual-warehouses
+    question: "Snowflake separates STORAGE from COMPUTE — data sits in one place, but any number of independently-sized 'virtual warehouses' can query it. Why is that architectural split valuable?"
+    options: ["Multiple teams (or workloads) can run their OWN appropriately-sized compute against the SAME underlying data simultaneously, with zero contention between them and no need to duplicate the data — a small warehouse for ad-hoc queries and a huge one for a nightly batch job can both run at once without slowing each other down", "Separating storage from compute means data can only be queried by one warehouse at a time", "Virtual warehouses physically move the data to a different location before querying it", "This separation exists purely for marketing purposes and has no real technical benefit"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Snowflake's core architectural idea: STORAGE (your data) and COMPUTE
+(the "virtual warehouses" that query it) are completely separate.
+Multiple warehouses — sized independently, billed independently — can
+query the exact same data at the same time with zero contention.
+Warehouse sizes follow a doubling "T-shirt size" scale: each size up
+doubles both the compute power and the credits-per-hour cost.
+
+```python
+def warehouse_cost(size, hours, credit_price=3.0):
+    size_credits = {"X-Small": 1, "Small": 2, "Medium": 4, "Large": 8, "X-Large": 16}
+    credits = size_credits[size] * hours
+    return round(credits * credit_price, 2)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def warehouse_cost(size, hours, credit_price=3.0):\n    size_credits = {"X-Small": 1, "Small": 2, "Medium": 4, "Large": 8, "X-Large": 16}\n    credits = size_credits[size] * hours\n    return round(credits * credit_price, 2)\n\nprint(warehouse_cost("Small", hours=2))    # 12.0\nprint(warehouse_cost("Large", hours=2))    # 48.0 -- Large is 4x the size of Small, so exactly 4x the cost for the same duration`} caption="Because storage and compute are separate, a team can freely resize (or entirely shut down) their warehouse without touching the data at all -- spin up a Large warehouse for an hour to blast through a big backfill, then drop back to X-Small for routine queries, paying only for compute actually used at each size." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute virtual warehouse costs across Snowflake's T-shirt sizing scale, and understand why separating storage from compute lets multiple workloads run concurrently without contention.
+</Checkpoint>

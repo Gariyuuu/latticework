@@ -1,0 +1,11 @@
+{
+  "id": "virtual-warehouses-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def warehouse_cost(size, hours, credit_price=3.0):\n    ...\n",
+  "cases": [
+    { "call": "warehouse_cost('Small', 2)", "expect": "12.0" },
+    { "call": "warehouse_cost('Large', 2)", "expect": "48.0" },
+    { "call": "warehouse_cost('X-Small', 10)", "expect": "30.0" }
+  ]
+}

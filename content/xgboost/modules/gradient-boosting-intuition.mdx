@@ -1,0 +1,59 @@
+---
+slug: gradient-boosting-intuition
+title: Gradient Boosting Intuition
+estimatedMinutes: 22
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+    packages: ["xgboost", "scikit-learn"]
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: gradient-boosting-intuition-ex1
+    difficulty: advanced
+    concept: xgboost-gradient-boosting
+    prompt: "Write `train_and_score(X_train, y_train, X_test, y_test, n_estimators)`: train an `XGBRegressor(n_estimators=n_estimators, max_depth=2, random_state=0)`, fit it, predict on `X_test`, and return the mean squared error against `y_test`, rounded to 4 decimal places."
+  - id: quiz-1
+    type: quiz
+    concept: xgboost-gradient-boosting
+    question: "Unlike a single decision tree, XGBoost builds MANY small trees in sequence. What does each new tree actually learn to predict?"
+    options: ["Each new tree is trained to predict the RESIDUAL ERRORS of everything built so far (how wrong the current combined prediction is), and its output gets added to correct those errors — repeated many times, the ensemble's combined prediction keeps getting closer to the true values", "Each tree is trained completely independently on the same original target, then the results are simply averaged", "Only the very first tree matters; the rest are duplicates for redundancy", "Later trees replace earlier trees entirely rather than adding to their predictions"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Scikit-learn's `estimators-api` module trained a single decision tree.
+**Gradient boosting** (what XGBoost implements) builds an ENSEMBLE of
+many small trees, but not independently — each new tree is trained
+specifically to predict the RESIDUAL ERRORS of everything built so far,
+and its output gets added on top to correct those errors. Round by
+round, the combined prediction gets closer to the true values.
+
+```python
+from xgboost import XGBRegressor
+
+def train_and_score(X_train, y_train, X_test, y_test, n_estimators):
+    model = XGBRegressor(n_estimators=n_estimators, max_depth=2, random_state=0)
+    model.fit(X_train, y_train)
+    preds = model.predict(X_test)
+    mse = sum((float(p) - y) ** 2 for p, y in zip(preds, y_test)) / len(y_test)
+    return round(mse, 4)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["xgboost", "scikit-learn"]} code={`from xgboost import XGBRegressor\n\nX_train = [[i] for i in range(20)]\ny_train = [i ** 1.5 for i in range(20)]   # a curved, non-linear relationship\nX_test = [[5], [15]]\ny_test = [5 ** 1.5, 15 ** 1.5]\n\ndef train_and_score(X_train, y_train, X_test, y_test, n_estimators):\n    model = XGBRegressor(n_estimators=n_estimators, max_depth=2, random_state=0)\n    model.fit(X_train, y_train)\n    preds = model.predict(X_test)\n    mse = sum((float(p) - y) ** 2 for p, y in zip(preds, y_test)) / len(y_test)\n    return round(mse, 4)\n\nprint(train_and_score(X_train, y_train, X_test, y_test, n_estimators=1))\n# 245.5557 -- one small tree barely captures the curve at all\n\nprint(train_and_score(X_train, y_train, X_test, y_test, n_estimators=50))\n# 0.0156 -- 50 rounds of error-correction later, the fit is nearly exact`} caption="That's roughly a 15,000x reduction in error just from adding more boosting rounds -- a dramatic, concrete illustration of what 'boosting' actually buys you: each of those 50 tiny trees only needs to fix what's STILL wrong after the previous 49, and those small corrections compound fast." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can train an XGBoost model and measure how error drops as boosting rounds increase, and understand that each new tree specifically targets the ensemble's current residual error.
+</Checkpoint>

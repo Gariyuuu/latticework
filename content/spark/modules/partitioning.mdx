@@ -1,0 +1,62 @@
+---
+slug: partitioning
+title: Partitioning
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: partitioning-ex1
+    difficulty: intermediate
+    concept: spark-partitioning
+    prompt: "Write `partitioned_sum(data, num_partitions)`: split `data` round-robin into `num_partitions` groups (like Kafka's partition assignment), compute each partition's sum independently, then combine (reduce) those partial sums into one final total."
+  - id: quiz-1
+    type: quiz
+    concept: spark-partitioning
+    question: "Why does Spark split a dataset into partitions and compute a result like a sum in two stages (per-partition sums, then combine) instead of just summing the whole dataset in one pass?"
+    options: ["Each partition can be processed independently and IN PARALLEL, on a different machine or core — computing a partial sum per partition, then combining those few partial results, does the same total work but spreads the heavy part (scanning all the data) across many workers simultaneously instead of one worker doing everything sequentially", "Splitting into partitions always produces a mathematically different final answer than a single-pass sum", "Partitioning exists purely to make the code more complicated with no performance benefit", "Spark can only compute sums correctly when there is exactly one partition"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Once a dataset is split into **partitions** (chunks that can live on
+different machines), Spark processes each partition independently and
+IN PARALLEL — this is the same "split into pieces, compute in parallel
+on each piece" idea from Parallel Computing's `parallel-algorithms`
+module. An aggregate like `sum()` uses the classic map-reduce shape:
+compute a partial sum per partition (the parallel part), then combine
+those few partial sums into one final total (the fast, sequential
+"reduce" part).
+
+```python
+def partition_data(data, num_partitions):
+    partitions = [[] for _ in range(num_partitions)]
+    for i, item in enumerate(data):
+        partitions[i % num_partitions].append(item)
+    return partitions
+
+def partitioned_sum(data, num_partitions):
+    partitions = partition_data(data, num_partitions)
+    partial_sums = [sum(p) for p in partitions]
+    return sum(partial_sums)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def partition_data(data, num_partitions):\n    partitions = [[] for _ in range(num_partitions)]\n    for i, item in enumerate(data):\n        partitions[i % num_partitions].append(item)\n    return partitions\n\nprint(partition_data(list(range(10)), num_partitions=3))\n# [[0, 3, 6, 9], [1, 4, 7], [2, 5, 8]] -- round-robin distribution across 3 partitions\n\ndef partitioned_sum(data, num_partitions):\n    partitions = partition_data(data, num_partitions)\n    partial_sums = [sum(p) for p in partitions]\n    return sum(partial_sums)\n\nprint(partitioned_sum(list(range(1, 101)), num_partitions=4))\n# 5050 -- each of the 4 partitions COULD be summed on a totally separate machine, then just 4 numbers get combined`} caption="Notice the final combine step only has to add together num_partitions small numbers (here, just 4), not scan all 100 original values again -- this is exactly why map-reduce-shaped aggregation scales well: the expensive full-dataset scan happens in parallel, and the sequential 'stitch it together' step stays cheap regardless of how large the original dataset was." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement partition-and-reduce aggregation, the map-reduce shape that lets Spark (and distributed computing generally) scan huge datasets in parallel while keeping the final combine step cheap.
+</Checkpoint>

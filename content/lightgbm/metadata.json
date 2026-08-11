@@ -11,17 +11,17 @@
     "data-scientist",
     "ml-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "leaf-wise-growth",
       "title": "Leaf-wise Growth",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "tuning-vs-xgboost",
       "title": "Tuning vs XGBoost",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

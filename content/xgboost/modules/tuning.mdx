@@ -1,0 +1,61 @@
+---
+slug: tuning
+title: Learning Rate & Rounds
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+    packages: ["xgboost", "scikit-learn"]
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: tuning-ex1
+    difficulty: advanced
+    concept: xgboost-tuning
+    prompt: "Write `evaluate_learning_rate(X_train, y_train, X_test, y_test, n_estimators, learning_rate)`: train an `XGBRegressor(n_estimators=n_estimators, learning_rate=learning_rate, max_depth=2, random_state=0)`, and return the mean squared error on `X_test`/`y_test`, rounded to 4 decimal places."
+  - id: quiz-1
+    type: quiz
+    concept: xgboost-tuning
+    question: "Why does a LOW learning_rate need MORE boosting rounds to reach the same fit quality as a HIGH learning_rate?"
+    options: ["learning_rate scales down how much of each new tree's correction actually gets applied — a low rate takes small, cautious steps toward the correct residual, which is more stable and often generalizes better, but simply needs more rounds to accumulate the same total correction a few large steps would", "learning_rate only affects training speed in wall-clock time, never the final model's accuracy", "A lower learning_rate always produces a worse final model regardless of how many rounds are used", "learning_rate and n_estimators control completely unrelated, independent aspects of the model"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+The previous module showed more boosting rounds reduce error — but
+`n_estimators` isn't the only knob. `learning_rate` scales down how
+much of each new tree's correction actually gets applied (a
+`learning_rate` of 0.1 only applies 10% of what a tree "wants" to
+correct). A HIGH learning rate corrects aggressively in few rounds; a
+LOW learning rate takes smaller, more cautious steps — more stable and
+often better-generalizing, but it needs many more rounds to accumulate
+the same total correction.
+
+```python
+from xgboost import XGBRegressor
+
+def evaluate_learning_rate(X_train, y_train, X_test, y_test, n_estimators, learning_rate):
+    model = XGBRegressor(n_estimators=n_estimators, learning_rate=learning_rate, max_depth=2, random_state=0)
+    model.fit(X_train, y_train)
+    preds = model.predict(X_test)
+    mse = sum((float(p) - y) ** 2 for p, y in zip(preds, y_test)) / len(y_test)
+    return round(mse, 4)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["xgboost", "scikit-learn"]} code={`from xgboost import XGBRegressor\n\nX_train = [[i] for i in range(20)]\ny_train = [i ** 1.5 for i in range(20)]\nX_test = [[5], [15]]\ny_test = [5 ** 1.5, 15 ** 1.5]\n\ndef evaluate_learning_rate(X_train, y_train, X_test, y_test, n_estimators, learning_rate):\n    model = XGBRegressor(n_estimators=n_estimators, learning_rate=learning_rate, max_depth=2, random_state=0)\n    model.fit(X_train, y_train)\n    preds = model.predict(X_test)\n    mse = sum((float(p) - y) ** 2 for p, y in zip(preds, y_test)) / len(y_test)\n    return round(mse, 4)\n\n# SAME 10 rounds, two very different learning rates\nprint(evaluate_learning_rate(X_train, y_train, X_test, y_test, n_estimators=10, learning_rate=0.3))\n# 1.6209 -- aggressive steps, fits well quickly\n\nprint(evaluate_learning_rate(X_train, y_train, X_test, y_test, n_estimators=10, learning_rate=0.05))\n# 168.7723 -- cautious steps, 10 rounds simply isn't enough yet to add up to a good fit`} caption="This ISN'T evidence that a high learning_rate is just better -- it's evidence that low learning_rate + few rounds is UNDER-trained. Given enough additional rounds, a low learning rate typically catches up to (and sometimes surpasses) a high learning rate's final fit quality, more stably." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can evaluate how learning_rate and n_estimators interact, and understand why they must be tuned together, not independently.
+</Checkpoint>

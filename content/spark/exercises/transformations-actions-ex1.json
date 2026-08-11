@@ -1,0 +1,9 @@
+{
+  "id": "transformations-actions-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "class LazyRDD:\n    def __init__(self, data, ops=None):\n        self.data = data\n        self.ops = ops or []\n\n    def map(self, fn):\n        return LazyRDD(self.data, self.ops + [('map', fn)])\n\n    def filter(self, fn):\n        return LazyRDD(self.data, self.ops + [('filter', fn)])\n\n    def collect(self):\n        ...\n\ndef build_and_run():\n    log = []\n    def double(x):\n        log.append(f'map {x}')\n        return x * 2\n    def over_five(x):\n        log.append(f'filter {x}')\n        return x > 5\n\n    rdd = LazyRDD([1, 2, 3, 4, 5])\n    transformed = rdd.map(double).filter(over_five)\n    before_collect = len(log)\n    result = transformed.collect()\n    after_collect = len(log)\n    return (before_collect, after_collect, result)\n",
+  "cases": [
+    { "call": "build_and_run()", "expect": "(0, 10, [6, 8, 10])" }
+  ]
+}

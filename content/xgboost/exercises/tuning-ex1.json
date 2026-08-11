@@ -1,0 +1,11 @@
+{
+  "id": "tuning-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["xgboost", "scikit-learn"],
+  "starterCode": "from xgboost import XGBRegressor\n\ndef evaluate_learning_rate(X_train, y_train, X_test, y_test, n_estimators, learning_rate):\n    ...\n",
+  "cases": [
+    { "call": "evaluate_learning_rate([[i] for i in range(20)], [i ** 1.5 for i in range(20)], [[5], [15]], [5 ** 1.5, 15 ** 1.5], 10, 0.3)", "expect": "1.6209" },
+    { "call": "evaluate_learning_rate([[i] for i in range(20)], [i ** 1.5 for i in range(20)], [[5], [15]], [5 ** 1.5, 15 ** 1.5], 10, 0.05)", "expect": "168.7723" }
+  ]
+}

@@ -1,0 +1,60 @@
+---
+slug: tuning-vs-xgboost
+title: Tuning num_leaves
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+    packages: ["lightgbm", "scikit-learn"]
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: tuning-vs-xgboost-ex1
+    difficulty: advanced
+    concept: lightgbm-tuning
+    prompt: "Write `evaluate_num_leaves(X_train, y_train, X_test, y_test, num_leaves)`: train an `LGBMRegressor(n_estimators=20, num_leaves=num_leaves, random_state=0, verbosity=-1, min_child_samples=1)`, and return the mean squared error on `X_test`/`y_test`, rounded to 4 decimal places."
+  - id: quiz-1
+    type: quiz
+    concept: lightgbm-tuning
+    question: "XGBoost's tuning module showed n_estimators and learning_rate need to be tuned TOGETHER. What's the equivalent coupled relationship for LightGBM's num_leaves?"
+    options: ["A larger num_leaves lets each tree fit more complex patterns per round (often needing FEWER total boosting rounds for the same fit), but risks overfitting faster on small datasets — num_leaves and n_estimators trade off against each other the same way learning_rate and n_estimators did for XGBoost", "num_leaves has no relationship to n_estimators whatsoever", "Increasing num_leaves always requires decreasing n_estimators to keep training time constant", "num_leaves only matters when learning_rate is set to exactly 1.0"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Just as XGBoost's `learning_rate` and `n_estimators` trade off (small
+steps need more rounds), LightGBM's `num_leaves` trades off against
+`n_estimators` too: a larger leaf budget lets each individual tree
+capture more complexity per round — often reaching a good fit in fewer
+total rounds — but risks overfitting faster, especially on small
+datasets, since bigger, leaf-wise-grown trees can carve out very
+specific (and potentially noise-fitting) regions of the data.
+
+```python
+from lightgbm import LGBMRegressor
+
+def evaluate_num_leaves(X_train, y_train, X_test, y_test, num_leaves):
+    model = LGBMRegressor(n_estimators=20, num_leaves=num_leaves, random_state=0, verbosity=-1, min_child_samples=1)
+    model.fit(X_train, y_train)
+    preds = model.predict(X_test)
+    mse = sum((float(p) - y) ** 2 for p, y in zip(preds, y_test)) / len(y_test)
+    return round(mse, 4)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["lightgbm", "scikit-learn"]} code={`from lightgbm import LGBMRegressor\n\nX_train = [[i] for i in range(20)]\ny_train = [i ** 1.5 for i in range(20)]\nX_test = [[5], [15]]\ny_test = [5 ** 1.5, 15 ** 1.5]\n\ndef evaluate_num_leaves(X_train, y_train, X_test, y_test, num_leaves):\n    model = LGBMRegressor(n_estimators=20, num_leaves=num_leaves, random_state=0, verbosity=-1, min_child_samples=1)\n    model.fit(X_train, y_train)\n    preds = model.predict(X_test)\n    mse = sum((float(p) - y) ** 2 for p, y in zip(preds, y_test)) / len(y_test)\n    return round(mse, 4)\n\nprint(evaluate_num_leaves(X_train, y_train, X_test, y_test, num_leaves=2))\n# 37.7579 -- a tiny leaf budget, each tree can barely split at all\n\nprint(evaluate_num_leaves(X_train, y_train, X_test, y_test, num_leaves=31))\n# 35.5016 -- a bigger budget helps, but with only 20 rounds total, the improvement is modest`} caption="Notice the improvement here (37.76 -> 35.50) is much smaller than XGBoost's learning_rate demo (168.77 -> 1.62) -- num_leaves=2 is an EXTREME restriction (barely more than a single split per tree), so this specific comparison mostly illustrates the floor of what's achievable with a near-stump-sized tree budget, not a dramatic tuning win." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can tune LightGBM's num_leaves and understand its tradeoff against n_estimators, the leaf-wise-growth analog of XGBoost's learning_rate/n_estimators relationship.
+</Checkpoint>

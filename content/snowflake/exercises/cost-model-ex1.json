@@ -1,0 +1,10 @@
+{
+  "id": "cost-model-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def merged_running_windows(query_windows, auto_suspend_seconds):\n    ...\n",
+  "cases": [
+    { "call": "merged_running_windows([(0, 10), (40, 50)], 60)", "expect": "[(0, 110)]" },
+    { "call": "merged_running_windows([(0, 10), (300, 310)], 60)", "expect": "[(0, 70), (300, 370)]" }
+  ]
+}

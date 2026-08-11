@@ -1,0 +1,10 @@
+{
+  "id": "partitioning-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def partition_data(data, num_partitions):\n    partitions = [[] for _ in range(num_partitions)]\n    for i, item in enumerate(data):\n        partitions[i % num_partitions].append(item)\n    return partitions\n\ndef partitioned_sum(data, num_partitions):\n    ...\n",
+  "cases": [
+    { "call": "partitioned_sum(list(range(10)), 3)", "expect": "45" },
+    { "call": "partitioned_sum(list(range(1, 101)), 4)", "expect": "5050" }
+  ]
+}

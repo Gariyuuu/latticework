@@ -1,0 +1,10 @@
+{
+  "id": "feature-importance-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["xgboost", "scikit-learn"],
+  "starterCode": "from xgboost import XGBRegressor\n\ndef most_important_feature(X_train, y_train, feature_names):\n    ...\n",
+  "cases": [
+    { "call": "most_important_feature([[i, (i * 37) % 97] for i in range(30)], [i * 2 for i in range(30)], ['signal', 'noise'])", "expect": "signal" }
+  ]
+}

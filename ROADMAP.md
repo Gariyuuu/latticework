@@ -528,6 +528,63 @@ same change as any feature work.
   merge conflicts via line-range interval overlap, the same
   interval-intersection check used for scheduling/booking conflicts
   elsewhere.
+- Fully built: XGBoost (3/3 — gradient-boosting-intuition, tuning,
+  feature-importance) — **Done**. Reaches 71/99. Verified against the
+  real `xgboost` npm-Pyodide package (needed `scikit-learn` loaded
+  alongside it too — `XGBRegressor`'s sklearn-compatible wrapper
+  imports `sklearn` internally and throws `ImportError` without it,
+  caught during verification, not discovered live). The `n_estimators`
+  demo shows a genuinely dramatic ~15,000x MSE reduction (245.56 ->
+  0.0156) from 1 to 50 boosting rounds — real numbers, not
+  illustrative fabrication.
+- Fully built: LightGBM (2/2 — leaf-wise-growth, tuning-vs-xgboost) —
+  **Done**. Reaches 72/99. Deliberately contrasts XGBoost's default
+  level-wise tree growth with LightGBM's leaf-wise growth and its
+  `num_leaves` complexity knob (vs. XGBoost's `max_depth`) — a real
+  structural difference between the two libraries, not just a rename.
+- Fully built: Snowflake Fundamentals (2/3 — virtual-warehouses,
+  cost-model; `architecture` left planned, no code-testable angle
+  distinct from the two built modules) — **Done**. Reaches 73/99. Pure
+  cost/billing arithmetic, no execution claims — `cost-model`'s
+  auto-suspend window-merging reuses the same interval-merge pattern as
+  GitHub's `has_conflict` and Model Deployment's rolling-progress logic.
+- Fully built: Apache Spark Fundamentals (2/3 — transformations-actions,
+  partitioning; `rdds-dataframes` left planned, would restate
+  transformations-actions' own content) — **Done**. Reaches
+  **74/99 skills built**. **Explicitly a simulation, stated as such in
+  the lesson prose** — `pyspark` is confirmed NOT available in Pyodide
+  (verified via an actual `loadPackage()` attempt), so this module
+  builds a small pure-Python `LazyRDD` class that genuinely reproduces
+  Spark's lazy-transformation/eager-action execution model (verified:
+  `.map()`/`.filter()` log zero calls until `.collect()` actually
+  runs), rather than claiming to run real Spark. Same honesty standard
+  as Concurrency's `threads-locks` simulation.
+- **"go 99" assessed and found NOT fully achievable via content alone
+  — 25 of the 99 catalog skills are blocked by missing infrastructure,
+  not by unwritten content.** Verified precisely, not assumed: a
+  scratch `npm install pyodide` + `loadPackage()` sweep confirmed
+  `tensorflow`, `pytorch`/`torch`, `keras`, `plotly`, `polars`,
+  `transformers`/`huggingface_hub`, `pymysql`, `psycopg2` are **not
+  available** in Pyodide's package index at all — no amount of content
+  work can make an unavailable package loadable. Separately, `bash`,
+  `cli-terminal`, `linux` need a CLI-simulation exercise type that
+  doesn't exist (see "Learning engine"); `c`, `cpp`, `go`, `java`,
+  `javascript`, `julia`, `kotlin`, `matlab`, `r`, `rust`, `swift`,
+  `typescript` need their own language execution sandboxes, none of
+  which are built (`docs/ARCHITECTURE.md`'s execution provider model
+  only covers Python/SQL); `html`/`jupyter` have no meaningful
+  code-testable angle in this platform's exercise model. `mysql`/
+  `postgresql` were deliberately NOT force-fit onto the sql.js
+  (SQLite) provider — their planned modules (storage-engines, EXPLAIN
+  output, indexing internals) are genuinely dialect-specific behavior
+  that sql.js's SQLite engine cannot honestly reproduce; testing them
+  against SQLite would teach students something actively wrong about
+  MySQL/Postgres. These 25 tracks remain metadata-only skeletons by
+  necessity, not by oversight — closing them requires new
+  infrastructure (a CLI-sim exercise type, a JS/TS or other-language
+  sandbox, or server-side execution per `docs/SECURITY.md`), which is
+  a distinct engineering effort from the content-authoring work this
+  entire "go to N" push has been.
 - Linux, PyTorch, C++ — **Planned** (metadata skeletons done as part
   of the wider ~70-90 skill catalog; module content not yet authored).
   Linux needs the CLI-simulation exercise type, which isn't implemented
