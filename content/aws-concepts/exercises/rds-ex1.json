@@ -1,0 +1,11 @@
+{
+  "id": "rds-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def route_query(is_write, replicas_latency_ms):\n    ...\n",
+  "cases": [
+    { "call": "route_query(True, {'replica-a': 5, 'replica-b': 2})", "expect": "primary" },
+    { "call": "route_query(False, {'replica-a': 5, 'replica-b': 2})", "expect": "replica-b" },
+    { "call": "route_query(False, {})", "expect": "primary" }
+  ]
+}

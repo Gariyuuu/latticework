@@ -1,0 +1,59 @@
+---
+slug: train-test-split
+title: Train/Test Splitting
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+    packages: ["scikit-learn"]
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: train-test-split-ex1
+    difficulty: intermediate
+    concept: sklearn-train-test-split
+    prompt: "Write `same_test_set(X, y, test_size, seed_a, seed_b)`: split `(X, y)` twice with `train_test_split`, once using `random_state=seed_a` and once using `random_state=seed_b`. Return `True` if both splits produced the exact same `X_test`, `False` otherwise."
+  - id: quiz-1
+    type: quiz
+    concept: sklearn-train-test-split
+    question: "Why does `train_test_split`'s `random_state` parameter matter for reproducibility, given that a train/test split is supposed to be a RANDOM shuffle?"
+    options: ["Without a fixed seed, every run shuffles differently, so results (and any bugs) become impossible to reproduce exactly — pinning `random_state` makes the 'random' split completely deterministic across runs, which is essential for debugging and for fair before/after model comparisons", "random_state controls how many rows end up in the test set, not which ones", "Fixing random_state disables randomness in the underlying model, not just the split", "random_state is ignored unless the dataset has more than 1000 rows"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+`train_test_split` shuffles the data before splitting it, which means
+two calls without a fixed seed produce DIFFERENT train/test sets every
+time — making it impossible to reproduce a specific result or fairly
+compare "model A vs. model B" (since they'd see different data). The
+`random_state` parameter fixes this: the shuffle becomes fully
+deterministic, exactly like `random.seed()` from Monte Carlo Simulation's
+seeded-randomness technique, just scoped to scikit-learn's own random
+number generation.
+
+```python
+from sklearn.model_selection import train_test_split
+
+def same_test_set(X, y, test_size, seed_a, seed_b):
+    _, X_test_a, _, _ = train_test_split(X, y, test_size=test_size, random_state=seed_a)
+    _, X_test_b, _, _ = train_test_split(X, y, test_size=test_size, random_state=seed_b)
+    return X_test_a == X_test_b
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["scikit-learn"]} code={`from sklearn.model_selection import train_test_split\n\nX = [[i] for i in range(20)]\ny = [0 if i < 10 else 1 for i in range(20)]\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)\nprint(len(X_train), len(X_test))   # 15 5 -- 25% of 20 rows held out for testing\n\n# calling it again with the SAME random_state reproduces the exact same split\nX_train2, X_test2, _, _ = train_test_split(X, y, test_size=0.25, random_state=42)\nprint(X_test == X_test2)   # True`} caption="test_size=0.25 controls HOW MANY rows go to the test set; random_state controls WHICH rows -- two completely independent knobs that are easy to conflate when first learning this API." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can use train_test_split with a fixed random_state to produce fully reproducible splits, and understand why reproducibility matters for debugging and fair model comparisons.
+</Checkpoint>

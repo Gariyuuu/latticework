@@ -1,0 +1,57 @@
+---
+slug: optimization
+title: Optimization with SciPy
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+    packages: ["scipy"]
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: optimization-ex1
+    difficulty: intermediate
+    concept: scipy-optimization
+    prompt: "Write `find_minimum(a, b, c, x0)`: use `scipy.optimize.minimize` to find the `x` that minimizes `f(x) = a*x^2 + b*x + c`, starting the search from `x0`. Return `x` rounded to 4 decimal places."
+  - id: quiz-1
+    type: quiz
+    concept: scipy-optimization
+    question: "Optimization's own course implements gradient descent from scratch. Why reach for scipy.optimize instead, in practice?"
+    options: ["scipy.optimize provides battle-tested, well-tuned implementations of multiple optimization algorithms (not just gradient descent) with automatic step-size and convergence handling — writing your own is valuable for understanding the mechanics, but production code shouldn't reinvent a numerically robust solver", "scipy.optimize.minimize can only be used for quadratic functions", "Hand-written gradient descent is always faster than scipy's implementation", "scipy.optimize requires a GPU to run"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Optimization's course built gradient descent from scratch — genuinely
+useful for understanding HOW iterative optimization works. In practice,
+though, real code reaches for `scipy.optimize`: a well-tested library
+with several optimization algorithms, automatic step-size selection,
+and robust convergence handling that a hand-rolled implementation
+usually doesn't get right on the first try.
+
+```python
+from scipy.optimize import minimize
+
+def find_minimum(a, b, c, x0):
+    f = lambda x: a * x[0] ** 2 + b * x[0] + c
+    result = minimize(f, x0=[x0])
+    return round(result.x[0], 4)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["scipy"]} code={`from scipy.optimize import minimize\n\ndef find_minimum(a, b, c, x0):\n    f = lambda x: a * x[0] ** 2 + b * x[0] + c\n    result = minimize(f, x0=[x0])\n    return round(result.x[0], 4)\n\nprint(find_minimum(1, -4, 5, x0=0))    # 2.0 -- f(x) = x^2 - 4x + 5, true minimum at x=2 (matches -b/2a)\nprint(find_minimum(2, 8, 1, x0=0))     # -2.0 -- f(x) = 2x^2 + 8x + 1, true minimum at x=-2`} caption="minimize() found the exact same answer -b/(2a) gives algebraically for a quadratic -- for functions where there's no clean closed-form solution (which is most real objective functions), this same call works identically, iterating numerically instead." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can use scipy.optimize.minimize to find a function's minimum numerically, and understand why production code relies on a tested library rather than a hand-rolled optimizer.
+</Checkpoint>

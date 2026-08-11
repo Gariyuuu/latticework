@@ -1,0 +1,63 @@
+---
+slug: settings-management
+title: Settings Management
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+    packages: ["pydantic"]
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: settings-management-ex1
+    difficulty: beginner
+    concept: pydantic-settings-management
+    prompt: "Given the provided `Settings` model (`debug: bool = False`, `max_connections: int = 10`, `timeout_seconds: float = 30.0`), write `load_settings(overrides)`: construct `Settings(**overrides)` and return `(settings.debug, settings.max_connections, settings.timeout_seconds)`."
+  - id: quiz-1
+    type: quiz
+    concept: pydantic-settings-management
+    question: "Why is a typed model like this a better way to manage application configuration than just using a plain dict of settings?"
+    options: ["A typed model validates and coerces every value AT STARTUP (a malformed config fails loudly and immediately, before the app does any real work) and gives autocomplete/type-checking everywhere the settings are used — a plain dict offers neither, letting bad config silently propagate", "Plain dicts cannot store configuration values at all", "Typed models run faster than dict lookups at every point of use", "A typed model can only hold exactly 3 settings, never more or fewer"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Application configuration ("is debug mode on? what's the connection
+pool size?") often comes from scattered sources — environment
+variables, a config file, command-line overrides. Loading all of that
+into a plain dict works, but any typo or wrong-typed value silently
+becomes a runtime bug later, wherever that setting happens to get used.
+A typed settings model validates everything up front, at startup,
+where a bad value fails loudly and immediately instead of causing a
+confusing bug three function calls deep.
+
+```python
+from pydantic import BaseModel
+
+class Settings(BaseModel):
+    debug: bool = False
+    max_connections: int = 10
+    timeout_seconds: float = 30.0
+
+def load_settings(overrides):
+    settings = Settings(**overrides)
+    return (settings.debug, settings.max_connections, settings.timeout_seconds)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["pydantic"]} code={`from pydantic import BaseModel\n\nclass Settings(BaseModel):\n    debug: bool = False\n    max_connections: int = 10\n    timeout_seconds: float = 30.0\n\ndef load_settings(overrides):\n    settings = Settings(**overrides)\n    return (settings.debug, settings.max_connections, settings.timeout_seconds)\n\nprint(load_settings({}))\n# (False, 10, 30.0) -- nothing overridden, every field falls back to its default\n\nprint(load_settings({"max_connections": "50"}))\n# (False, 50, 30.0) -- "50" (as it would arrive from an env var, always a string) coerces cleanly to int 50`} caption="That last example is exactly why pydantic models are a natural fit for settings specifically -- environment variables are ALWAYS strings, no matter what type the setting conceptually is, so automatic coercion (a numeric string becoming an int) is a real practical convenience here, not just an edge case to worry about." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can define typed settings with sensible defaults and load overrides through validation, catching bad configuration at startup instead of deep inside application logic.
+</Checkpoint>

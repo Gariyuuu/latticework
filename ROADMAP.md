@@ -466,6 +466,68 @@ same change as any feature work.
   real field-selection resolution over nested data (including lists),
   demonstrating GraphQL's core "client asks for exactly this shape"
   idea concretely rather than just describing it.
+- Fully built: Scikit-learn (3/4 — estimators-api, train-test-split,
+  pipelines; `model-evaluation` left planned, would duplicate the
+  already-built Model Evaluation course's ground) — **Done**. Reaches
+  61/99. Deliberately focuses on the API MECHANICS (fit/predict,
+  reproducible splitting, leak-proof pipelines) rather than re-teaching
+  statistical concepts Model Evaluation already covers — the same
+  "use the library" vs. "understand the theory" split as NumPy vs.
+  Linear Algebra.
+- Fully built: SciPy (4/4 — optimization, statistics, linear-algebra,
+  interpolation) — **Done**. Reaches 62/99. Deliberately closes gaps
+  earlier from-scratch courses left open on record: `statistics`
+  implements the REAL Student's t-test that Statistics' course couldn't
+  (no t-distribution in the stdlib, noted explicitly at the time);
+  `linear-algebra` implements LU decomposition, which Linear Algebra's
+  course explicitly deferred as "not reasonably hand-implementable."
+- Fully built: Pydantic (2/2 — models-validation, settings-management)
+  — **Done**. Reaches 63/99. `models-validation` surfaces a real,
+  easy-to-miss gotcha verified against the actual `pydantic` 2.7.0
+  package: it COERCES a numeric string to `int` rather than rejecting
+  it, unlike Prompt Engineering's hand-written `isinstance()` check.
+- Fully built: Matplotlib (2/4 — basic-plots, subplots; styling/
+  saving-figures left planned) — **Done**. Reaches 64/99. Grades by
+  inspecting the returned `Figure`/`Axes` OBJECT's state (line count,
+  axis labels, grid shape) rather than comparing rendered pixels —
+  exactly how real matplotlib test suites verify plotting code.
+  `subplots` surfaces a genuine gotcha: `plt.subplots()` returns a
+  squeezed 1D array for a single row/column grid, a 2D array otherwise.
+- Fully built: AWS Concepts (3/3 — ec2-s3-iam, lambda, rds) — **Done**.
+  Reaches 65/99. `ec2-s3-iam` implements real IAM evaluation semantics
+  (explicit deny always wins over any allow, default deny otherwise) —
+  a genuine, widely-applicable algorithm, not just a described concept.
+- Fully built: GCP Concepts (3/3 — compute-engine-gcs, bigquery, iam) —
+  **Done**. Reaches 66/99. `iam` is deliberately framed as a contrast to
+  AWS Concepts' explicit-deny model: GCP's basic IAM is purely additive
+  (union of role permissions, no deny mechanism at that level) — a real
+  structural difference between the two clouds, not just different
+  service names.
+- Fully built: Computer Networking (1/3 — routing-basics; osi-model and
+  sockets left planned, heavy overlap with the already-built Networking
+  Basics track and no strong code-testable angle of their own) —
+  **Done**. Reaches 67/99. Implements real Dijkstra's algorithm via
+  `heapq`, applied to network latency instead of an abstract graph
+  weight.
+- Fully built: CSS (1/4 — box-model; flexbox/grid/responsive-design left
+  planned — real layout algorithms, not meaningfully simulatable without
+  an actual browser layout engine) — **Done**. Reaches 68/99. Computes
+  rendered dimensions under both `content-box` and `border-box`,
+  illustrating the classic box-sizing gotcha with real numbers (224px
+  vs. 200px for the same declared 200px width).
+- Fully built: Docker (2/4 — images-containers, dockerfile; volumes-
+  networking/compose left planned) — **Done**. Reaches 69/99.
+  `dockerfile`'s cache-invalidation-point function directly explains WHY
+  the standard "COPY deps, install, THEN copy code" Dockerfile ordering
+  convention exists, rather than just stating it as a best practice.
+- Fully built: GitHub (2/3 — pull-requests, issues-projects;
+  actions-basics left planned, would duplicate CI/CD's `pipelines`
+  topological-sort content too closely) — **Done**. Reaches
+  **70/99 skills built** — the explicit "go 70" target for this
+  session's continued push, **goal reached**. `pull-requests` detects
+  merge conflicts via line-range interval overlap, the same
+  interval-intersection check used for scheduling/booking conflicts
+  elsewhere.
 - Linux, PyTorch, C++ — **Planned** (metadata skeletons done as part
   of the wider ~70-90 skill catalog; module content not yet authored).
   Linux needs the CLI-simulation exercise type, which isn't implemented
@@ -580,26 +642,31 @@ every one of the resulting 45 built lesson pages was fetched from a live
 dev server to confirm it actually renders, before being committed to
 content.
 
-Three instances of the same MDX bug were caught this way (across
+Six instances of the same MDX bug have now been caught (across
 multiple sessions): a backslash-escaped quote inside a JSX attribute
 (e.g. `caption="...\"#\"..."`) — JSX attributes don't support backslash-
 escaping, so it silently breaks MDX compilation for that one lesson (500
 on page load, with no typecheck/lint/build error). Found in
 `data-structures/modules/tries.mdx`, the pre-existing
-`python/modules/functions.mdx` (which had apparently never been
-dev-server-rendered since it was first written), and — in the Batch 7
-"go to 50" push — `system-design/modules/scalability-basics.mdx`, where
-a caption embedded a quoted example phrase. All three are fixed now.
-**Rule for all future content:** never backslash-escape a quote inside a
-JSX attribute string; rephrase to avoid embedding the quote character
-instead. `content:sync` only validates frontmatter/JSON schema, not MDX
-body syntax — it will NOT catch this class of bug, and neither does
-`next build` (confirmed again this session: `npm run build` passed
-clean with the bug still present in the file — only an actual
-dev-server page fetch surfaced the 500). Always load every new or
-edited lesson page in a running dev server before calling content
-done, and grep new content for `caption="[^"]*\\"` as a fast
-pre-check before that full render sweep.
+`python/modules/functions.mdx`, `system-design/modules/
+scalability-basics.mdx` (Batch 7), and THREE MORE in Batch 9's "go 70"
+push — `pydantic/modules/settings-management.mdx`,
+`pydantic/modules/models-validation.mdx`, and
+`matplotlib/modules/basic-plots.mdx` (all three had a caption quoting a
+code snippet like `matplotlib.use("AGG")` or a coerced value like
+`"50"`). All six are fixed now. Starting Batch 9, a proactive
+`grep -rn 'caption="[^"]*\\\\"'` sweep across ALL new content (not just
+spot-checking) became a standing step BEFORE the dev-server render
+check — it caught all three Batch 9 instances at once, cheaper than
+relying on the render sweep alone to surface them one 500 at a time.
+**Rule for all future content, reinforced by how often this recurs:**
+never backslash-escape a quote inside a JSX attribute string; rephrase
+to avoid embedding the quote character instead — this is apparently an
+easy mistake to make when a caption wants to quote a code identifier or
+a string literal value. `content:sync` only validates frontmatter/JSON
+schema, not MDX body syntax — it will NOT catch this class of bug, and
+neither does `next build`. Always run the grep sweep AND load every new
+lesson page in a running dev server before calling content done.
 
 Next content candidates (SQL/NumPy/Pandas/Probability/Statistics) all
 need new infrastructure first — either the sql.js sandbox provider, or

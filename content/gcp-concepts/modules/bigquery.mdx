@@ -1,0 +1,54 @@
+---
+slug: bigquery
+title: BigQuery Cost Estimation
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: bigquery-ex1
+    difficulty: beginner
+    concept: gcp-bigquery-cost
+    prompt: "Write `query_cost(bytes_scanned, price_per_tb=6.25)`: convert `bytes_scanned` to terabytes (divide by `1024**4`) and multiply by `price_per_tb`. Round to 4 decimal places."
+  - id: quiz-1
+    type: quiz
+    concept: gcp-bigquery-cost
+    question: "BigQuery's on-demand pricing charges by BYTES SCANNED, not by query runtime or result size. What does that mean for how you should write queries to control cost?"
+    options: ["A query that scans an entire huge table to return just one row costs exactly as much as one that returns a million rows from that same full scan — the cost driver is how much data had to be READ, so selecting fewer columns or using partitioned/clustered tables to scan less data directly reduces cost", "Query cost depends only on how long the query takes to run, not the data it touches", "Selecting fewer columns in a query never affects its cost in BigQuery", "BigQuery charges a flat fee per query regardless of table size"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Data Warehousing's `columnar-storage` module showed why columnar
+storage makes column-selective queries so much cheaper in terms of
+BYTES READ. BigQuery's real pricing takes that idea directly to your
+bill: on-demand queries are billed per terabyte of data SCANNED, at a
+flat rate — meaning the exact columnar-storage savings from that
+earlier module translate directly into dollars, not just abstract I/O
+efficiency.
+
+```python
+def query_cost(bytes_scanned, price_per_tb=6.25):
+    tb_scanned = bytes_scanned / (1024 ** 4)
+    return round(tb_scanned * price_per_tb, 4)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def query_cost(bytes_scanned, price_per_tb=6.25):\n    tb_scanned = bytes_scanned / (1024 ** 4)\n    return round(tb_scanned * price_per_tb, 4)\n\nprint(query_cost(1024 ** 4))              # 6.25 -- scanning exactly 1 TB costs $6.25 at the standard on-demand rate\nprint(query_cost(1024 ** 3 * 500))         # 3.0518 -- scanning 500 GB (half a TB) costs about half as much`} caption="This is the exact real-world consequence of Data Warehousing's columnar-storage lesson: if a query only needs 2 of a table's 50 columns, a columnar engine like BigQuery only scans (and bills for) those 2 columns -- selecting fewer columns isn't just a performance habit, it's a direct cost lever." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can estimate BigQuery's on-demand query cost from bytes scanned, and understand why minimizing scanned data (not just query complexity) is the real cost lever.
+</Checkpoint>

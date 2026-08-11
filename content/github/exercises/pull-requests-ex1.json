@@ -1,0 +1,11 @@
+{
+  "id": "pull-requests-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def has_conflict(branch_a_changes, branch_b_changes):\n    ...\n",
+  "cases": [
+    { "call": "has_conflict([(10, 20)], [(15, 25)])", "expect": "True" },
+    { "call": "has_conflict([(10, 20)], [(25, 30)])", "expect": "False" },
+    { "call": "has_conflict([(1, 5), (50, 60)], [(6, 10), (55, 58)])", "expect": "True" }
+  ]
+}

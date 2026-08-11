@@ -1,0 +1,11 @@
+{
+  "id": "iam-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def has_permission(role_bindings, permission, role_permissions):\n    ...\n",
+  "cases": [
+    { "call": "has_permission(['roles/viewer'], 'storage.objects.create', {'roles/viewer': {'storage.objects.get', 'storage.objects.list'}, 'roles/editor': {'storage.objects.get', 'storage.objects.list', 'storage.objects.create'}})", "expect": "False" },
+    { "call": "has_permission(['roles/viewer', 'roles/editor'], 'storage.objects.create', {'roles/viewer': {'storage.objects.get', 'storage.objects.list'}, 'roles/editor': {'storage.objects.get', 'storage.objects.list', 'storage.objects.create'}})", "expect": "True" },
+    { "call": "has_permission([], 'storage.objects.get', {'roles/viewer': {'storage.objects.get'}})", "expect": "False" }
+  ]
+}

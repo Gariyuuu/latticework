@@ -11,22 +11,22 @@
     "data-engineer",
     "ml-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "compute-engine-gcs",
       "title": "Compute Engine/GCS",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "bigquery",
       "title": "BigQuery",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "iam",
       "title": "IAM",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

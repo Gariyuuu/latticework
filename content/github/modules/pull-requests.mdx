@@ -1,0 +1,56 @@
+---
+slug: pull-requests
+title: Pull Requests & Merge Conflicts
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: pull-requests-ex1
+    difficulty: intermediate
+    concept: github-pull-requests
+    prompt: "Write `has_conflict(branch_a_changes, branch_b_changes)`: each argument is a list of `(start_line, end_line)` ranges that branch modified in the SAME file. Return `True` if any range from `branch_a_changes` overlaps any range from `branch_b_changes`."
+  - id: quiz-1
+    type: quiz
+    concept: github-pull-requests
+    question: "Why can two branches BOTH modify the same file without a merge conflict, as long as they touch different line ranges?"
+    options: ["Git's merge algorithm operates on LINE RANGES within a file, not the whole file as one unit — if the two branches' changed regions don't overlap, git can automatically combine both sets of edits into the file; a conflict only arises when both branches touched the SAME lines with different content", "Git always considers any two branches editing the same file to be a conflict, full stop", "Merge conflicts only happen when editing different files entirely", "Non-overlapping edits are automatically discarded rather than merged"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A pull request merge conflict happens when git can't automatically
+combine two branches' changes to the same file. The key insight: git
+operates at the LINE-RANGE level, not the whole-file level — two
+branches can both edit the same file safely, as long as their edited
+line ranges don't overlap. A conflict only appears when both branches
+genuinely touched the SAME lines with different content.
+
+```python
+def has_conflict(branch_a_changes, branch_b_changes):
+    for a_start, a_end in branch_a_changes:
+        for b_start, b_end in branch_b_changes:
+            if a_start <= b_end and b_start <= a_end:
+                return True
+    return False
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def has_conflict(branch_a_changes, branch_b_changes):\n    for a_start, a_end in branch_a_changes:\n        for b_start, b_end in branch_b_changes:\n            if a_start <= b_end and b_start <= a_end:\n                return True\n    return False\n\nprint(has_conflict([(10, 20)], [(15, 25)]))\n# True -- both touched lines 15-20, genuinely overlapping edits\n\nprint(has_conflict([(10, 20)], [(25, 30)]))\n# False -- completely separate regions of the file, git can merge both automatically`} caption="a_start <= b_end and b_start <= a_end is the standard interval-overlap check -- the exact same test used for calendar scheduling conflicts, resource booking, or any 'do these two ranges intersect' problem, here applied to lines of a file instead of time slots." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can detect merge conflicts via line-range overlap, the same interval-intersection check git's merge algorithm relies on at its core.
+</Checkpoint>

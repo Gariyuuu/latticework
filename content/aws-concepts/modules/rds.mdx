@@ -1,0 +1,58 @@
+---
+slug: rds
+title: RDS Read Replicas
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: rds-ex1
+    difficulty: intermediate
+    concept: aws-rds-read-replicas
+    prompt: "Write `route_query(is_write, replicas_latency_ms)`: writes always go to `'primary'`. Reads route to whichever replica in `replicas_latency_ms` (a dict of replica name to latency) has the LOWEST latency — or `'primary'` if the dict is empty."
+  - id: quiz-1
+    type: quiz
+    concept: aws-rds-read-replicas
+    question: "Why must WRITES always go to the primary database instance, never a read replica, in a typical RDS replication setup?"
+    options: ["Read replicas are kept in sync via one-way replication FROM the primary — they're read-only copies that continuously apply changes made on the primary, so writing directly to a replica would create data that never propagates back and diverges from the source of truth", "Read replicas are physically incapable of accepting any network connection", "Writing to a replica is slower than writing to the primary, but otherwise identical", "RDS automatically converts any write sent to a replica into a read instead"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+An RDS **read replica** is a read-only copy of the primary database,
+kept in sync via one-way replication — changes flow FROM the primary
+TO each replica, never the other direction. This is exactly why writes
+must always target the primary: a write sent to a replica would create
+data with nowhere to propagate to, immediately diverging from the
+source of truth. Reads, on the other hand, can be routed to whichever
+replica currently has the lowest latency, spreading read load across
+several instances.
+
+```python
+def route_query(is_write, replicas_latency_ms):
+    if is_write:
+        return "primary"
+    if not replicas_latency_ms:
+        return "primary"
+    return min(replicas_latency_ms, key=replicas_latency_ms.get)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def route_query(is_write, replicas_latency_ms):\n    if is_write:\n        return "primary"\n    if not replicas_latency_ms:\n        return "primary"\n    return min(replicas_latency_ms, key=replicas_latency_ms.get)\n\nreplicas = {"replica-a": 5, "replica-b": 2}\n\nprint(route_query(is_write=True, replicas_latency_ms=replicas))    # primary -- always, regardless of replica latency\nprint(route_query(is_write=False, replicas_latency_ms=replicas))   # replica-b -- lowest latency wins\nprint(route_query(is_write=False, replicas_latency_ms={}))         # primary -- no replicas configured, fall back`} caption="This read/write split is exactly what a connection-pooling proxy (like RDS Proxy, or an app-level read/write router) does automatically -- application code just issues queries, and the routing layer decides primary-vs-replica based on whether it's a write, completely transparent to the caller." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can route reads and writes correctly in a primary/read-replica setup, and understand why writes can never target a replica under one-way replication.
+</Checkpoint>

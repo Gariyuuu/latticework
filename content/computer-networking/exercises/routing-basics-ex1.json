@@ -1,0 +1,11 @@
+{
+  "id": "routing-basics-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import heapq\n\ndef shortest_path_cost(graph, start, end):\n    ...\n",
+  "cases": [
+    { "call": "shortest_path_cost({'A': {'B': 4, 'C': 1}, 'C': {'B': 1, 'D': 5}, 'B': {'D': 1}, 'D': {}}, 'A', 'D')", "expect": "3" },
+    { "call": "shortest_path_cost({'A': {'B': 4, 'C': 1}, 'C': {'B': 1, 'D': 5}, 'B': {'D': 1}, 'D': {}}, 'A', 'B')", "expect": "2" },
+    { "call": "shortest_path_cost({'A': {'B': 4, 'C': 1}, 'C': {'B': 1, 'D': 5}, 'B': {'D': 1}, 'D': {}}, 'D', 'A')", "expect": "None" }
+  ]
+}

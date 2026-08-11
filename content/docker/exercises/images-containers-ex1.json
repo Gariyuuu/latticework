@@ -1,0 +1,11 @@
+{
+  "id": "images-containers-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def download_size(image_layers, already_pulled):\n    ...\n",
+  "cases": [
+    { "call": "download_size([('sha:base', 50000000), ('sha:python', 30000000), ('sha:app', 2000000)], set())", "expect": "82000000" },
+    { "call": "download_size([('sha:base', 50000000), ('sha:python', 30000000), ('sha:app', 2000000)], {'sha:base', 'sha:python'})", "expect": "2000000" },
+    { "call": "download_size([('sha:base', 50000000), ('sha:python', 30000000), ('sha:app', 2000000)], {'sha:base', 'sha:python', 'sha:app'})", "expect": "0" }
+  ]
+}

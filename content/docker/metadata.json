@@ -15,17 +15,17 @@
     "data-engineer",
     "ml-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "images-containers",
       "title": "Images & Containers",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "dockerfile",
       "title": "Dockerfile",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "volumes-networking",

@@ -1,0 +1,12 @@
+{
+  "id": "models-validation-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["pydantic"],
+  "starterCode": "from pydantic import BaseModel, ValidationError\n\nclass User(BaseModel):\n    name: str\n    age: int\n    active: bool = True\n\ndef validate_user(data):\n    ...\n",
+  "cases": [
+    { "call": "validate_user({'name': 'Alice', 'age': 30})", "expect": "('ok', 'Alice', 30, True)" },
+    { "call": "validate_user({'name': 'Carl', 'age': '25'})", "expect": "('ok', 'Carl', 25, True)" },
+    { "call": "validate_user({'name': 'Bob', 'age': 'not a number'})", "expect": "('error', 1)" }
+  ]
+}

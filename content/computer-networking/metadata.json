@@ -10,7 +10,7 @@
   "usefulFor": [
     "software-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "osi-model",
@@ -20,7 +20,7 @@
     {
       "slug": "routing-basics",
       "title": "Routing Basics",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "sockets",

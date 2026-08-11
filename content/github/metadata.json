@@ -21,12 +21,12 @@
     "quant-researcher",
     "quant-trader"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "pull-requests",
       "title": "Pull Requests",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "actions-basics",
@@ -36,7 +36,7 @@
     {
       "slug": "issues-projects",
       "title": "Issues & Projects",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

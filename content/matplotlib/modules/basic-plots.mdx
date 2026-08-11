@@ -1,0 +1,62 @@
+---
+slug: basic-plots
+title: Basic Plots
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+    packages: ["matplotlib"]
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: basic-plots-ex1
+    difficulty: intermediate
+    concept: matplotlib-basic-plots
+    prompt: "Write `count_lines_and_label(x, y_series_list, xlabel)`: create a figure and axes with `plt.subplots()`, call `ax.plot(x, y)` once for each series in `y_series_list`, set the x-axis label to `xlabel`, and return `(len(ax.get_lines()), ax.get_xlabel())`."
+  - id: quiz-1
+    type: quiz
+    concept: matplotlib-basic-plots
+    question: "Why does this exercise grade a plot by inspecting `ax.get_lines()` and `ax.get_xlabel()` instead of comparing the rendered image?"
+    options: ["A Matplotlib Figure/Axes is a real, inspectable Python OBJECT with queryable state (how many lines were added, what the labels are) — checking that state directly is exact and deterministic, unlike comparing pixel images which is fragile across even tiny rendering differences", "Matplotlib cannot render actual images in a browser sandbox under any circumstances", "ax.get_lines() is the only method Matplotlib provides for any purpose", "Image comparison is always more reliable than checking object state"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Matplotlib's core mental model: `plt.subplots()` returns a `Figure` and
+an `Axes` object, and everything else — `ax.plot()`, `ax.set_xlabel()`,
+`ax.bar()` — mutates that same `Axes` in place. Because the `Axes` is a
+real Python object, you can inspect it programmatically: how many lines
+did I actually add? What's the axis label set to? This is exactly how
+real matplotlib test suites verify plotting code, without ever
+comparing rendered pixels.
+
+```python
+import matplotlib
+matplotlib.use("AGG")
+import matplotlib.pyplot as plt
+
+def count_lines_and_label(x, y_series_list, xlabel):
+    fig, ax = plt.subplots()
+    for y in y_series_list:
+        ax.plot(x, y)
+    ax.set_xlabel(xlabel)
+    return (len(ax.get_lines()), ax.get_xlabel())
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["matplotlib"]} code={`import matplotlib\nmatplotlib.use("AGG")\nimport matplotlib.pyplot as plt\n\ndef count_lines_and_label(x, y_series_list, xlabel):\n    fig, ax = plt.subplots()\n    for y in y_series_list:\n        ax.plot(x, y)\n    ax.set_xlabel(xlabel)\n    return (len(ax.get_lines()), ax.get_xlabel())\n\nprint(count_lines_and_label([1, 2, 3], [[4, 5, 6], [6, 5, 4]], "time"))\n# (2, 'time') -- two separate ax.plot() calls added two separate Line2D objects to the same axes`} caption="matplotlib.use with the AGG backend selects a non-interactive renderer that draws to an in-memory buffer instead of trying to open a display window -- essential in any headless environment (a server, a test runner, or this sandbox) where there's no screen to show a plot on." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can build a plot with matplotlib's Figure/Axes API and verify its structure by inspecting the resulting objects directly, the same technique real plotting-code test suites use.
+</Checkpoint>

@@ -1,0 +1,11 @@
+{
+  "id": "train-test-split-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["scikit-learn"],
+  "starterCode": "from sklearn.model_selection import train_test_split\n\ndef same_test_set(X, y, test_size, seed_a, seed_b):\n    ...\n",
+  "cases": [
+    { "call": "same_test_set([[i] for i in range(20)], [0 if i < 10 else 1 for i in range(20)], 0.25, 42, 42)", "expect": "True" },
+    { "call": "same_test_set([[i] for i in range(20)], [0 if i < 10 else 1 for i in range(20)], 0.25, 42, 0)", "expect": "False" }
+  ]
+}

@@ -1,0 +1,53 @@
+---
+slug: images-containers
+title: Images & Layer Sharing
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: images-containers-ex1
+    difficulty: intermediate
+    concept: docker-images-layers
+    prompt: "Write `download_size(image_layers, already_pulled)`: `image_layers` is a list of `(layer_id, size_bytes)` pairs making up an image. Return the total bytes that would ACTUALLY need downloading — the sum of every layer's size, skipping any `layer_id` already present in `already_pulled`."
+  - id: quiz-1
+    type: quiz
+    concept: docker-images-layers
+    question: "Why does pulling a second Docker image on the same machine often download far less data than the image's total size would suggest?"
+    options: ["A Docker image is a stack of content-addressed layers, and if a layer's exact content already exists locally (e.g. shared base OS or runtime layers from a previously-pulled image), Docker skips re-downloading it — only genuinely NEW layers get pulled", "Docker always compresses every image down to a fixed small size regardless of contents", "Docker only downloads images once per calendar day no matter how many are requested", "Every image shares literally the same single layer by default"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A Docker image isn't one monolithic file — it's a stack of **layers**,
+each identified by a content hash. Layers are stored once and shared
+across every image that happens to use them: two images both built
+`FROM python:3.12` share that exact base layer on disk. Pulling a new
+image only needs to download layers that AREN'T already present
+locally — which is why a second, related image often pulls in seconds
+instead of minutes.
+
+```python
+def download_size(image_layers, already_pulled):
+    return sum(size for layer_id, size in image_layers if layer_id not in already_pulled)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def download_size(image_layers, already_pulled):\n    return sum(size for layer_id, size in image_layers if layer_id not in already_pulled)\n\nlayers = [("sha:base", 50_000_000), ("sha:python", 30_000_000), ("sha:app", 2_000_000)]\n\nprint(download_size(layers, already_pulled=set()))\n# 82000000 -- nothing cached yet, download everything\n\nprint(download_size(layers, already_pulled={"sha:base", "sha:python"}))\n# 2000000 -- base OS and Python runtime already pulled by a PREVIOUS image, only the small app layer is new`} caption="This is exactly why official language images (python, node, etc.) are worth standardizing on across a team's projects -- every image built FROM the same base tag shares that base layer locally, so pulling your tenth project's image barely costs anything beyond its own small application layer." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute the actual incremental download size of an image given already-cached layers, and understand why Docker's layer-sharing model makes related images cheap to pull.
+</Checkpoint>

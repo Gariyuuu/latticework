@@ -1,0 +1,11 @@
+{
+  "id": "box-model-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def element_dimensions(content_width, content_height, padding, border, margin, box_sizing='content-box'):\n    ...\n",
+  "cases": [
+    { "call": "element_dimensions(200, 100, (10,10,10,10), (2,2,2,2), (5,5,5,5))", "expect": "(224, 124, 234, 134)" },
+    { "call": "element_dimensions(200, 100, (10,10,10,10), (2,2,2,2), (5,5,5,5), box_sizing='border-box')", "expect": "(200, 100, 210, 110)" },
+    { "call": "element_dimensions(50, 50, (0,0,0,0), (0,0,0,0), (0,0,0,0))", "expect": "(50, 50, 50, 50)" }
+  ]
+}

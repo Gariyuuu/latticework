@@ -1,0 +1,61 @@
+---
+slug: compute-engine-gcs
+title: GCS Storage Classes
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: compute-engine-gcs-ex1
+    difficulty: beginner
+    concept: gcp-gcs-storage-classes
+    prompt: "Write `recommend_storage_class(accesses_per_year)`: return `'standard'` if `accesses_per_year >= 12`, `'nearline'` if `>= 4`, `'coldline'` if `>= 1`, otherwise `'archive'`."
+  - id: quiz-1
+    type: quiz
+    concept: gcp-gcs-storage-classes
+    question: "Why would a colder (less frequently accessed) storage class cost LESS per GB to store but MORE per GB to retrieve?"
+    options: ["The pricing is designed around the assumption that data in a colder class is rarely read — cheap storage rewards keeping data there long-term, while a retrieval fee (and the tradeoff of accepting it) discourages using a cold tier for data you actually access often, which would rack up retrieval fees fast", "Colder storage classes physically store data on faster hardware than standard storage", "Retrieval fees exist purely to generate extra revenue with no relation to actual usage patterns", "Storage class only affects durability, never affects any cost at all"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Cloud object storage (GCS, and S3's equivalent tiers) offers several
+storage classes trading storage cost against retrieval cost, based on
+how often data is expected to be accessed: **Standard** (frequent
+access, higher storage cost, cheap/free retrieval), **Nearline**,
+**Coldline**, and **Archive** (progressively colder — cheaper to store,
+more expensive and slower to retrieve). Picking the wrong class either
+wastes money on unnecessary standard-tier storage, or racks up
+retrieval fees on data that's actually accessed often.
+
+```python
+def recommend_storage_class(accesses_per_year):
+    if accesses_per_year >= 12:
+        return "standard"
+    elif accesses_per_year >= 4:
+        return "nearline"
+    elif accesses_per_year >= 1:
+        return "coldline"
+    else:
+        return "archive"
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def recommend_storage_class(accesses_per_year):\n    if accesses_per_year >= 12:\n        return "standard"\n    elif accesses_per_year >= 4:\n        return "nearline"\n    elif accesses_per_year >= 1:\n        return "coldline"\n    else:\n        return "archive"\n\nprint(recommend_storage_class(50))   # standard -- accessed constantly, avoid retrieval fees entirely\nprint(recommend_storage_class(6))    # nearline -- accessed occasionally\nprint(recommend_storage_class(0))    # archive -- essentially never accessed, minimize storage cost`} caption="This mirrors Cloud Fundamentals' reserved-vs-on-demand pricing lesson exactly -- both are 'commit to a usage pattern upfront in exchange for a better rate' tradeoffs, just applied to storage access frequency here instead of compute uptime." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can recommend the right storage class based on expected access frequency, and understand why colder tiers trade cheaper storage for more expensive retrieval.
+</Checkpoint>

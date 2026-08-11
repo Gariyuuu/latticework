@@ -14,22 +14,22 @@
     "research-engineer",
     "data-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "ec2-s3-iam",
       "title": "EC2/S3/IAM",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "lambda",
       "title": "Lambda",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "rds",
       "title": "RDS",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

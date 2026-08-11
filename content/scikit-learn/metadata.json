@@ -11,22 +11,22 @@
     "data-scientist",
     "ml-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "estimators-api",
       "title": "Estimators API",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "train-test-split",
       "title": "Train/Test Split",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "pipelines",
       "title": "Pipelines",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "model-evaluation",

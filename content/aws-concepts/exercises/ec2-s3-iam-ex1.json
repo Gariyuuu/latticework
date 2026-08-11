@@ -1,0 +1,11 @@
+{
+  "id": "ec2-s3-iam-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def evaluate_policies(policies, action):\n    ...\n",
+  "cases": [
+    { "call": "evaluate_policies([{'effect': 'allow', 'action': 's3:GetObject'}], 's3:GetObject')", "expect": "allow" },
+    { "call": "evaluate_policies([{'effect': 'allow', 'action': 's3:GetObject'}, {'effect': 'deny', 'action': 's3:GetObject'}], 's3:GetObject')", "expect": "deny" },
+    { "call": "evaluate_policies([{'effect': 'allow', 'action': 's3:PutObject'}], 's3:GetObject')", "expect": "deny" }
+  ]
+}

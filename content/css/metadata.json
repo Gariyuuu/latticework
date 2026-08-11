@@ -11,12 +11,12 @@
     "full-stack-engineer",
     "software-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "box-model",
       "title": "Box Model",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "flexbox",

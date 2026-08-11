@@ -1,0 +1,11 @@
+{
+  "id": "issues-projects-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def priority_score(labels, days_open, label_weights):\n    ...\n",
+  "cases": [
+    { "call": "priority_score(['bug'], 3, {'critical': 20, 'bug': 10, 'enhancement': 2})", "expect": "10" },
+    { "call": "priority_score(['critical', 'bug'], 21, {'critical': 20, 'bug': 10, 'enhancement': 2})", "expect": "33" },
+    { "call": "priority_score(['enhancement'], 100, {'critical': 20, 'bug': 10, 'enhancement': 2})", "expect": "12" }
+  ]
+}

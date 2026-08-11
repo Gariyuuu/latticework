@@ -1,0 +1,54 @@
+---
+slug: lambda
+title: Lambda Concurrency
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: lambda-ex1
+    difficulty: intermediate
+    concept: aws-lambda-concurrency
+    prompt: "Write `should_throttle(current_concurrent_executions, reserved_concurrency, account_limit)`: if `reserved_concurrency` is set (not `None`), a function can never exceed IT specifically, regardless of the account-wide limit. If it's `None`, the function shares the account-wide `account_limit` instead. Return `True` if `current_concurrent_executions` has already reached whichever limit applies."
+  - id: quiz-1
+    type: quiz
+    concept: aws-lambda-concurrency
+    question: "Why would you set RESERVED concurrency on a specific Lambda function, given it's usually a smaller number than the shared account-wide limit?"
+    options: ["Reserved concurrency guarantees that function ALWAYS has capacity available (it's set aside just for it) while simultaneously capping it from consuming the entire account's shared pool during a traffic spike and starving every other function", "Reserved concurrency makes a function execute faster per invocation", "Setting reserved concurrency removes the function from the account limit calculation entirely, with no cap at all", "Reserved concurrency is required before a Lambda function can be deployed"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+By default, every Lambda function in an AWS account shares one
+account-wide concurrency limit — a traffic spike on one function can
+starve every other function of capacity. **Reserved concurrency**
+carves out (and caps) a slice of that pool for one specific function:
+it's GUARANTEED that capacity even if everything else is maxed out, but
+it also can never scale beyond that reserved number, no matter how much
+headroom the rest of the account has.
+
+```python
+def should_throttle(current_concurrent_executions, reserved_concurrency, account_limit):
+    limit = reserved_concurrency if reserved_concurrency is not None else account_limit
+    return current_concurrent_executions >= limit
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def should_throttle(current_concurrent_executions, reserved_concurrency, account_limit):\n    limit = reserved_concurrency if reserved_concurrency is not None else account_limit\n    return current_concurrent_executions >= limit\n\nprint(should_throttle(5, None, 10))    # False -- no reservation, shares the account limit (10), room to spare\nprint(should_throttle(10, None, 10))   # True -- hit the shared account limit exactly\nprint(should_throttle(3, 3, 1000))     # True -- reserved to just 3, capped there even though the account limit is huge`} caption="The third example is the real point of this feature: a function reserved at exactly 3 throttles at 3 executions EVEN THOUGH the account limit is 1000 -- reservation caps a function's ceiling independently of how much room exists elsewhere in the account." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can determine whether a Lambda invocation would be throttled under reserved vs. shared account-wide concurrency, and understand the guarantee/cap tradeoff reservation makes.
+</Checkpoint>

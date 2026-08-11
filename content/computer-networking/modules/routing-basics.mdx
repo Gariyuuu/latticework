@@ -1,0 +1,68 @@
+---
+slug: routing-basics
+title: Routing Basics
+estimatedMinutes: 22
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: routing-basics-ex1
+    difficulty: advanced
+    concept: networking-routing
+    prompt: "Write `shortest_path_cost(graph, start, end)`: `graph` maps each node to a dict of `{neighbor: latency}`. Using Dijkstra's algorithm, return the lowest total latency from `start` to `end`, or `None` if `end` is unreachable."
+  - id: quiz-1
+    type: quiz
+    concept: networking-routing
+    question: "Real internet routers don't run a single global Dijkstra computation for the whole internet. Why not, and what do routing protocols do instead?"
+    options: ["The internet's topology is far too large and constantly changing for any single router to hold a complete, up-to-date global graph — real protocols instead exchange smaller pieces of routing information between neighboring routers (e.g. distance-vector or link-state updates), each building a local view good enough to make the next-hop decision", "The internet doesn't actually use shortest-path logic at all, only random routing", "Dijkstra's algorithm is mathematically impossible to run on more than 100 nodes", "Every router already has instant, perfect knowledge of the entire internet's topology"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A network is a graph: nodes are routers, edges are links with some
+cost (latency, hop count, bandwidth). Finding the best route between
+two points is exactly the shortest-path problem from Algorithms'
+`graph-algorithms` module — **Dijkstra's algorithm**, applied here to
+network latency instead of an abstract edge weight.
+
+```python
+import heapq
+
+def shortest_path_cost(graph, start, end):
+    distances = {start: 0}
+    visited = set()
+    heap = [(0, start)]
+    while heap:
+        dist, node = heapq.heappop(heap)
+        if node in visited:
+            continue
+        visited.add(node)
+        if node == end:
+            return dist
+        for neighbor, weight in graph.get(node, {}).items():
+            new_dist = dist + weight
+            if neighbor not in distances or new_dist < distances[neighbor]:
+                distances[neighbor] = new_dist
+                heapq.heappush(heap, (new_dist, neighbor))
+    return None
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`import heapq\n\ndef shortest_path_cost(graph, start, end):\n    distances = {start: 0}\n    visited = set()\n    heap = [(0, start)]\n    while heap:\n        dist, node = heapq.heappop(heap)\n        if node in visited:\n            continue\n        visited.add(node)\n        if node == end:\n            return dist\n        for neighbor, weight in graph.get(node, {}).items():\n            new_dist = dist + weight\n            if neighbor not in distances or new_dist < distances[neighbor]:\n                distances[neighbor] = new_dist\n                heapq.heappush(heap, (new_dist, neighbor))\n    return None\n\ngraph = {\n    "A": {"B": 4, "C": 1},\n    "C": {"B": 1, "D": 5},\n    "B": {"D": 1},\n    "D": {},\n}\nprint(shortest_path_cost(graph, "A", "D"))\n# 3 -- A -> C -> B -> D (1+1+1=3) beats the direct-looking A -> B -> D (4+1=5)`} caption="This heapq-based priority queue is exactly Data Structures' heaps module in action -- always exploring the currently-cheapest-known path next is what guarantees Dijkstra finds the true shortest path, rather than getting stuck following whichever edge looks shortest one hop at a time." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute the lowest-latency path through a network graph with Dijkstra's algorithm, and understand why real internet routing uses distributed, local-information protocols instead of one global computation.
+</Checkpoint>

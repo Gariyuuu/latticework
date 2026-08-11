@@ -1,0 +1,12 @@
+{
+  "id": "lambda-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def should_throttle(current_concurrent_executions, reserved_concurrency, account_limit):\n    ...\n",
+  "cases": [
+    { "call": "should_throttle(5, None, 10)", "expect": "False" },
+    { "call": "should_throttle(10, None, 10)", "expect": "True" },
+    { "call": "should_throttle(3, 3, 1000)", "expect": "True" },
+    { "call": "should_throttle(2, 3, 1000)", "expect": "False" }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "id": "compute-engine-gcs-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def recommend_storage_class(accesses_per_year):\n    ...\n",
+  "cases": [
+    { "call": "recommend_storage_class(50)", "expect": "standard" },
+    { "call": "recommend_storage_class(6)", "expect": "nearline" },
+    { "call": "recommend_storage_class(2)", "expect": "coldline" },
+    { "call": "recommend_storage_class(0)", "expect": "archive" }
+  ]
+}

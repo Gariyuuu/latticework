@@ -1,0 +1,12 @@
+{
+  "id": "settings-management-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["pydantic"],
+  "starterCode": "from pydantic import BaseModel\n\nclass Settings(BaseModel):\n    debug: bool = False\n    max_connections: int = 10\n    timeout_seconds: float = 30.0\n\ndef load_settings(overrides):\n    ...\n",
+  "cases": [
+    { "call": "load_settings({})", "expect": "(False, 10, 30.0)" },
+    { "call": "load_settings({'debug': True})", "expect": "(True, 10, 30.0)" },
+    { "call": "load_settings({'max_connections': '50'})", "expect": "(False, 50, 30.0)" }
+  ]
+}

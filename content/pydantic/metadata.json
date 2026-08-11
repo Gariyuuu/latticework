@@ -11,17 +11,17 @@
     "backend-engineer",
     "ai-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "models-validation",
       "title": "Models & Validation",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "settings-management",
       "title": "Settings Management",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

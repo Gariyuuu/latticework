@@ -1,0 +1,62 @@
+---
+slug: pipelines
+title: Pipelines
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+    packages: ["scikit-learn"]
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: pipelines-ex1
+    difficulty: advanced
+    concept: sklearn-pipelines
+    prompt: "Write `build_and_run_pipeline(X_train, y_train, X_test)`: build a `Pipeline` chaining a `StandardScaler()` step named `'scaler'` and a `DecisionTreeClassifier(random_state=0)` step named `'clf'`, fit it on the training data, and return its predictions on `X_test` as a list of ints."
+  - id: quiz-1
+    type: quiz
+    concept: sklearn-pipelines
+    question: "Why bundle preprocessing (like scaling) and the model together in a single Pipeline, instead of just scaling the data manually before calling fit()?"
+    options: ["A Pipeline guarantees the EXACT SAME preprocessing steps run automatically on any new data passed to predict() — manually scaling risks forgetting to apply the identical transformation at prediction time, or accidentally fitting the scaler on test data and leaking information from it", "Pipelines run faster than calling fit() and transform() separately", "Pipelines are required by scikit-learn — you cannot call fit() without one", "A Pipeline can only contain exactly two steps, never more"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Real models almost always need preprocessing before training — scaling
+features, encoding categories. Doing that by hand invites a subtle but
+serious bug: forgetting to apply the EXACT SAME transformation to new
+data at prediction time, or accidentally fitting a scaler using
+statistics from the test set (leaking information the model shouldn't
+have access to). A `Pipeline` bundles preprocessing and the model into
+one estimator that shares scikit-learn's usual `fit`/`predict`
+interface — call `.fit()` once, and every step (fit correctly, in
+order) happens automatically forever after.
+
+```python
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.tree import DecisionTreeClassifier
+
+def build_and_run_pipeline(X_train, y_train, X_test):
+    pipe = Pipeline([("scaler", StandardScaler()), ("clf", DecisionTreeClassifier(random_state=0))])
+    pipe.fit(X_train, y_train)
+    return [int(p) for p in pipe.predict(X_test)]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["scikit-learn"]} code={`from sklearn.pipeline import Pipeline\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.tree import DecisionTreeClassifier\n\npipe = Pipeline([("scaler", StandardScaler()), ("clf", DecisionTreeClassifier(random_state=0))])\n\nX_train = [[1], [2], [3], [8], [9], [10]]\ny_train = [0, 0, 0, 1, 1, 1]\npipe.fit(X_train, y_train)\n\nprint(list(pipe.predict([[2.5], [9.5]])))\n# [0, 1] -- pipe.predict() scales the new data with the SAME fitted scaler, then classifies it, all in one call`} caption="Behind the scenes, pipe.fit(X_train, y_train) fits the scaler on X_train ONLY, then fits the classifier on the SCALED training data -- pipe.predict(X_test) reuses that already-fitted scaler (never re-fitting it on X_test), which is exactly the leak-proof behavior manual step-by-step code has to get right by hand every time." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can chain preprocessing and modeling steps into a single Pipeline, and understand why that prevents the data-leakage and inconsistent-preprocessing bugs manual step-by-step code is prone to.
+</Checkpoint>

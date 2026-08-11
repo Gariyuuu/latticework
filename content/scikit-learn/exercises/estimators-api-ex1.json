@@ -1,0 +1,11 @@
+{
+  "id": "estimators-api-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["scikit-learn"],
+  "starterCode": "from sklearn.tree import DecisionTreeClassifier\n\ndef train_and_predict(X_train, y_train, X_test):\n    ...\n",
+  "cases": [
+    { "call": "train_and_predict([[1], [2], [3], [8], [9], [10]], [0, 0, 0, 1, 1, 1], [[2.5], [9.5]])", "expect": "[0, 1]" },
+    { "call": "train_and_predict([[1], [2], [3], [8], [9], [10]], [0, 0, 0, 1, 1, 1], [[0], [11]])", "expect": "[0, 1]" }
+  ]
+}

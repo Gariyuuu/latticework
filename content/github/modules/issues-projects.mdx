@@ -1,0 +1,54 @@
+---
+slug: issues-projects
+title: Issue Triage
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: issues-projects-ex1
+    difficulty: intermediate
+    concept: github-issue-triage
+    prompt: "Write `priority_score(labels, days_open, label_weights)`: sum each label's weight (via `label_weights`, defaulting to `0` for an unrecognized label), then add an age bonus of `min(days_open // 7, 10)` (capped at 10). Return the total."
+  - id: quiz-1
+    type: quiz
+    concept: github-issue-triage
+    question: "Why cap the age bonus at 10, instead of letting an issue's priority score grow without bound the longer it stays open?"
+    options: ["Without a cap, an old but genuinely low-priority issue would eventually outscore a brand-new critical bug just by sitting open long enough — capping age's contribution keeps LABEL SEVERITY as the dominant signal, with age only acting as a modest tiebreaker among similarly-labeled issues", "The cap exists purely to keep the returned number small for display purposes", "Age should never factor into priority at all", "Issues older than 70 days are automatically closed regardless of label"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Triaging a large issue backlog needs some way to rank what to look at
+first. A simple, effective approach: weight by label severity
+(`critical` matters more than `enhancement`), plus a modest bonus for
+how long an issue has sat open — but capped, so age alone can never
+let a low-priority issue outrank a newly-filed critical bug just by
+being old.
+
+```python
+def priority_score(labels, days_open, label_weights):
+    label_score = sum(label_weights.get(label, 0) for label in labels)
+    age_score = min(days_open // 7, 10)
+    return label_score + age_score
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def priority_score(labels, days_open, label_weights):\n    label_score = sum(label_weights.get(label, 0) for label in labels)\n    age_score = min(days_open // 7, 10)\n    return label_score + age_score\n\nweights = {"critical": 20, "bug": 10, "enhancement": 2}\n\nprint(priority_score(["bug"], days_open=3, label_weights=weights))\n# 10 -- fresh bug, label score dominates entirely\n\nprint(priority_score(["enhancement"], days_open=100, label_weights=weights))\n# 12 -- even after 100 days, the capped age bonus (10) still can't push a low-severity label very high`} caption="An enhancement open for 100 days (score 12) still ranks below a fresh critical bug (score 20+) -- exactly the intended behavior. Without the min() cap, a sufficiently old enhancement request would eventually outscore urgent new bugs purely by sitting in the backlog, which is precisely the wrong triage signal." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute a bounded, label-dominant priority score for issue triage, and understand why capping age's contribution keeps severity as the primary signal.
+</Checkpoint>

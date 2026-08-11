@@ -1,0 +1,68 @@
+---
+slug: box-model
+title: The Box Model
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: box-model-ex1
+    difficulty: intermediate
+    concept: css-box-model
+    prompt: "Write `element_dimensions(content_width, content_height, padding, border, margin, box_sizing='content-box')`: `padding`/`border`/`margin` are each `(top, right, bottom, left)` tuples. Under `'content-box'` (the default), the rendered box adds padding and border ON TOP of the given content size. Under `'border-box'`, the given width/height ALREADY includes padding and border. Return `(rendered_width, rendered_height, total_space_width, total_space_height)`, where the `total_space_*` values also add in the margin."
+  - id: quiz-1
+    type: quiz
+    concept: css-box-model
+    question: "Why is `box-sizing: border-box` so commonly recommended over the CSS default (`content-box`)?"
+    options: ["With content-box, setting width: 200px only sets the CONTENT area — padding and border add on top, so the element's actual rendered size keeps changing every time you adjust padding; border-box makes the width you set the element's FINAL rendered size, with padding/border eating into it instead of adding to it, which is far more predictable to design with", "border-box makes elements render faster than content-box", "content-box is deprecated and no longer supported by modern browsers", "border-box removes the ability to set padding or border entirely"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Every element's rendered size is layers: **content**, then
+**padding**, then **border**, then **margin** (space outside the
+border, not part of the element itself). The default `box-sizing:
+content-box` means a declared `width` only sets the CONTENT layer —
+padding and border get added on top, so the element's actual footprint
+grows every time you add padding. `box-sizing: border-box` instead
+treats the declared width as the element's FINAL size, with padding and
+border eating into it.
+
+```python
+def element_dimensions(content_width, content_height, padding, border, margin, box_sizing="content-box"):
+    pad_h = padding[1] + padding[3]
+    pad_v = padding[0] + padding[2]
+    border_h = border[1] + border[3]
+    border_v = border[0] + border[2]
+    margin_h = margin[1] + margin[3]
+    margin_v = margin[0] + margin[2]
+
+    if box_sizing == "content-box":
+        rendered_width = content_width + pad_h + border_h
+        rendered_height = content_height + pad_v + border_v
+    else:
+        rendered_width = content_width
+        rendered_height = content_height
+
+    return (rendered_width, rendered_height, rendered_width + margin_h, rendered_height + margin_v)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def element_dimensions(content_width, content_height, padding, border, margin, box_sizing="content-box"):\n    pad_h = padding[1] + padding[3]\n    pad_v = padding[0] + padding[2]\n    border_h = border[1] + border[3]\n    border_v = border[0] + border[2]\n    margin_h = margin[1] + margin[3]\n    margin_v = margin[0] + margin[2]\n\n    if box_sizing == "content-box":\n        rendered_width = content_width + pad_h + border_h\n        rendered_height = content_height + pad_v + border_v\n    else:\n        rendered_width = content_width\n        rendered_height = content_height\n\n    return (rendered_width, rendered_height, rendered_width + margin_h, rendered_height + margin_v)\n\n# width: 200px; padding: 10px; border: 2px; margin: 5px -- same declared values, different box-sizing\nprint(element_dimensions(200, 100, (10,10,10,10), (2,2,2,2), (5,5,5,5)))\n# (224, 124, 234, 134) -- content-box: padding+border ADDED on top of the declared 200x100\n\nprint(element_dimensions(200, 100, (10,10,10,10), (2,2,2,2), (5,5,5,5), box_sizing="border-box"))\n# (200, 100, 210, 110) -- border-box: the declared 200x100 IS the final rendered size`} caption="A layout built assuming border-box (predictable sizes) will visibly overflow its intended space if a browser or component accidentally falls back to content-box -- this exact 24px-wider-than-expected surprise is one of the most common real CSS layout bugs, and precisely why border-box is the near-universal recommended default." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute an element's rendered dimensions under both box-sizing models, and understand why border-box is the far more predictable default for layout work.
+</Checkpoint>

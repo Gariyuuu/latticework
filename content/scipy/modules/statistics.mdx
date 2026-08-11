@@ -1,0 +1,57 @@
+---
+slug: statistics
+title: A Real T-Test with SciPy
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+    packages: ["scipy"]
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: statistics-ex1
+    difficulty: intermediate
+    concept: scipy-statistics
+    prompt: "Write `one_sample_ttest(sample, popmean)`: use `scipy.stats.ttest_1samp` to test whether `sample`'s mean differs from `popmean`. Return `(t_statistic, p_value)`, each rounded to 4 decimal places."
+  - id: quiz-1
+    type: quiz
+    concept: scipy-statistics
+    question: "Statistics' own hypothesis-testing module had to use a z-test instead of a t-test, and explicitly noted why. What was that reason?"
+    options: ["Python's stdlib has no t-distribution CDF/PPF implementation, so a true t-test wasn't possible with stdlib alone — scipy.stats closes exactly that gap by providing the real Student's t-distribution machinery", "Z-tests are always more accurate than t-tests for any sample size", "T-tests cannot be computed for samples smaller than 100", "The stdlib z-test and a true t-test always produce identical results anyway"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Statistics' `hypothesis-testing` module used a z-test
+(`statistics.NormalDist`) specifically because Python's standard library
+has no t-distribution implementation — noted at the time as a deliberate
+simplification, accurate for large samples but not the textbook-standard
+choice for small ones. `scipy.stats` closes that exact gap: a real
+Student's t-distribution, and a one-line function for the most common
+test.
+
+```python
+from scipy import stats
+
+def one_sample_ttest(sample, popmean):
+    t_statistic, p_value = stats.ttest_1samp(sample, popmean)
+    return (round(t_statistic, 4), round(p_value, 4))
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["scipy"]} code={`from scipy import stats\n\ndef one_sample_ttest(sample, popmean):\n    t_statistic, p_value = stats.ttest_1samp(sample, popmean)\n    return (round(t_statistic, 4), round(p_value, 4))\n\nsample = [12.1, 11.8, 12.5, 12.0, 11.9, 12.3, 12.2]   # sample mean is about 12.11\n\nprint(one_sample_ttest(sample, popmean=12.0))\n# (1.2545, 0.2563) -- small t-statistic, large p-value: not significantly different from 12.0\n\nprint(one_sample_ttest(sample, popmean=10.0))\n# (23.2083, 0.0) -- huge t-statistic, p near zero: overwhelmingly different from 10.0`} caption="This is the real, textbook-standard t-test — the exact test Statistics' own course had to approximate with a z-test due to a genuine stdlib limitation, now available in one function call once scipy is in play." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can run a real one-sample t-test with scipy.stats, closing the exact gap the pure-stdlib Statistics course had to work around.
+</Checkpoint>

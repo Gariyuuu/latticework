@@ -1,0 +1,11 @@
+{
+  "id": "basic-plots-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["matplotlib"],
+  "starterCode": "import matplotlib\nmatplotlib.use('AGG')\nimport matplotlib.pyplot as plt\n\ndef count_lines_and_label(x, y_series_list, xlabel):\n    ...\n",
+  "cases": [
+    { "call": "count_lines_and_label([1, 2, 3], [[4, 5, 6], [6, 5, 4]], 'time')", "expect": "(2, 'time')" },
+    { "call": "count_lines_and_label([1, 2, 3], [[1, 2, 3]], 'x')", "expect": "(1, 'x')" }
+  ]
+}

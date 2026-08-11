@@ -1,0 +1,55 @@
+---
+slug: interpolation
+title: Interpolation
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+    packages: ["scipy"]
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: interpolation-ex1
+    difficulty: intermediate
+    concept: scipy-interpolation
+    prompt: "Write `interpolate_value(x_known, y_known, x_query)`: use `scipy.interpolate.interp1d` to build a linear interpolator from the known points, then return its estimate at `x_query`, rounded to 4 decimal places."
+  - id: quiz-1
+    type: quiz
+    concept: scipy-interpolation
+    question: "What is interpolation actually doing, conceptually, when it estimates a value at an x between two known data points?"
+    options: ["It assumes some smooth relationship (e.g. a straight line, for linear interpolation) between the two nearest known points, and reads off the value that relationship predicts at the query point — an educated estimate, not a measured value", "It looks up the exact stored value for every possible x, including ones never measured", "It always returns the average of every single known y value in the dataset", "It only works when x_query exactly equals one of the known x values"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Given a handful of known `(x, y)` points, **interpolation** estimates
+`y` at some NEW `x` that falls between them — assuming some smooth
+relationship connects the known points. The simplest version, linear
+interpolation, just draws a straight line between each pair of adjacent
+known points and reads off where the query `x` lands on that line.
+
+```python
+from scipy.interpolate import interp1d
+
+def interpolate_value(x_known, y_known, x_query):
+    f = interp1d(x_known, y_known)
+    return round(float(f(x_query)), 4)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["scipy"]} code={`from scipy.interpolate import interp1d\n\nx_known = [0, 1, 2, 3, 4]\ny_known = [0, 10, 20, 15, 5]\n\nprint(interpolate_value(x_known, y_known, x_query=0.5))\n# 5.0 -- halfway between (0, 0) and (1, 10), a straight line predicts the midpoint\n\nprint(interpolate_value(x_known, y_known, x_query=2.5))\n# 17.5 -- halfway between (2, 20) and (3, 15)`} caption="interp1d is 'linear' by default, but scipy also supports 'cubic' and other smoother interpolation kinds -- the same core idea (estimate between known points) with a curve instead of straight-line segments, useful when the underlying data is known to be smoother than a jagged piecewise-linear fit suggests." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can interpolate estimated values between known data points using scipy.interpolate, and understand interpolation as an assumption-based estimate, not a measured value.
+</Checkpoint>

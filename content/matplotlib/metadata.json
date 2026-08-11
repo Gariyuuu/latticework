@@ -14,17 +14,17 @@
     "quant-researcher",
     "quant-trader"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "basic-plots",
       "title": "Basic Plots",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "subplots",
       "title": "Subplots",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "styling",

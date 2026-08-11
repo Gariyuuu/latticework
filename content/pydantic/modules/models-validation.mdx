@@ -1,0 +1,64 @@
+---
+slug: models-validation
+title: Models & Validation
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+    packages: ["pydantic"]
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: models-validation-ex1
+    difficulty: intermediate
+    concept: pydantic-models-validation
+    prompt: "Given the provided `User` model (`name: str`, `age: int`, `active: bool = True`), write `validate_user(data)`: try constructing `User(**data)`. On success, return `(\"ok\", user.name, user.age, user.active)`. On a `ValidationError`, return `(\"error\", len(e.errors()))` — the number of fields that failed."
+  - id: quiz-1
+    type: quiz
+    concept: pydantic-models-validation
+    question: "Prompt Engineering's structured-output module hand-wrote a validator checking field presence and exact type with isinstance(). What does pydantic do differently when a field like age: int receives the string \"25\"?"
+    options: ["Pydantic COERCES compatible values by default — a numeric string like \"25\" is automatically converted to the int 25 rather than being rejected outright, unlike a strict isinstance() check which would reject any type that doesn't already match exactly", "Pydantic always rejects any value that isn't already the exact declared type", "Pydantic silently ignores type annotations entirely", "Pydantic can only validate string fields, never numbers or booleans"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Prompt Engineering's `structured-output` module validated a dict by
+hand: check each field exists, check its type with `isinstance()`.
+Pydantic automates this with declarative models — define the shape once
+as a class, and get validation (plus something `isinstance()` doesn't
+do: automatic type COERCION for compatible values) for free every time
+you construct one.
+
+```python
+from pydantic import BaseModel, ValidationError
+
+class User(BaseModel):
+    name: str
+    age: int
+    active: bool = True
+
+def validate_user(data):
+    try:
+        user = User(**data)
+        return ("ok", user.name, user.age, user.active)
+    except ValidationError as e:
+        return ("error", len(e.errors()))
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["pydantic"]} code={`from pydantic import BaseModel, ValidationError\n\nclass User(BaseModel):\n    name: str\n    age: int\n    active: bool = True\n\ndef validate_user(data):\n    try:\n        user = User(**data)\n        return ("ok", user.name, user.age, user.active)\n    except ValidationError as e:\n        return ("error", len(e.errors()))\n\nprint(validate_user({"name": "Alice", "age": 30}))\n# ('ok', 'Alice', 30, True) -- 'active' used its default since it wasn't provided\n\nprint(validate_user({"name": "Carl", "age": "25"}))\n# ('ok', 'Carl', 25, True) -- "25" (a string) was automatically coerced to the int 25\n\nprint(validate_user({"name": "Bob", "age": "not a number"}))\n# ('error', 1) -- "not a number" can't be coerced to int at all, so THIS fails`} caption="This coercion behavior is a real, easy-to-miss gotcha -- a hand-written isinstance() check (like Prompt Engineering's structured-output) would have flatly rejected a numeric string passed as age, while pydantic accepts it because it can be unambiguously converted. Worth knowing before assuming pydantic validation is exactly as strict as manual type-checking." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can validate data against a pydantic model and handle ValidationError, and understand pydantic's automatic type coercion behavior versus a strict isinstance() check.
+</Checkpoint>

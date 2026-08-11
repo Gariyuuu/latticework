@@ -1,0 +1,12 @@
+{
+  "id": "subplots-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["matplotlib"],
+  "starterCode": "import matplotlib\nmatplotlib.use('AGG')\nimport matplotlib.pyplot as plt\n\ndef create_subplot_grid(rows, cols):\n    ...\n",
+  "cases": [
+    { "call": "create_subplot_grid(2, 3)", "expect": "(2, 3)" },
+    { "call": "create_subplot_grid(1, 4)", "expect": "4" },
+    { "call": "create_subplot_grid(3, 1)", "expect": "3" }
+  ]
+}

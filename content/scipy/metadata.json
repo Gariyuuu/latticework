@@ -12,27 +12,27 @@
     "data-scientist",
     "quant-researcher"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "optimization",
       "title": "Optimization",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "statistics",
       "title": "Statistics",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "linear-algebra",
       "title": "Linear Algebra",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "interpolation",
       "title": "Interpolation",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

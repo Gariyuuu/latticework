@@ -1,0 +1,57 @@
+---
+slug: subplots
+title: Subplots
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+    packages: ["matplotlib"]
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: subplots-ex1
+    difficulty: intermediate
+    concept: matplotlib-subplots
+    prompt: "Write `create_subplot_grid(rows, cols)`: call `plt.subplots(rows, cols)` to get a grid of axes. If `rows == 1` or `cols == 1`, `plt.subplots` returns a flat 1D array — return `len(axes)`. Otherwise it returns a 2D array — return `(len(axes), len(axes[0]))`."
+  - id: quiz-1
+    type: quiz
+    concept: matplotlib-subplots
+    question: "Why does `plt.subplots(rows, cols)` return a genuinely DIFFERENT shaped object (1D array vs. 2D array) depending on whether rows or cols equals 1?"
+    options: ["Matplotlib squeezes out any axis of a grid that only has one row or one column, since a 1×N or N×1 grid is naturally just a flat list of axes — this 'squeeze' behavior is real and worth knowing, since code written assuming a always-2D grid will break the moment someone requests a single row or column", "It's a bug in matplotlib that was never fixed", "plt.subplots always returns exactly the same shape no matter what rows/cols are passed", "The array only has more than one dimension when rows and cols are both odd numbers"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+`plt.subplots(rows, cols)` creates a grid of `Axes` objects for
+multiple plots in one figure — genuinely useful for comparing several
+charts side by side. A real gotcha worth knowing up front: the shape of
+the returned `axes` array depends on the grid shape itself. A full
+grid (both `rows` and `cols` greater than 1) returns a proper 2D array;
+a single row OR a single column gets automatically "squeezed" down to a
+flat 1D array instead.
+
+```python
+def create_subplot_grid(rows, cols):
+    fig, axes = plt.subplots(rows, cols)
+    if rows == 1 or cols == 1:
+        return len(axes)
+    return (len(axes), len(axes[0]))
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["matplotlib"]} code={`import matplotlib\nmatplotlib.use("AGG")\nimport matplotlib.pyplot as plt\n\ndef create_subplot_grid(rows, cols):\n    fig, axes = plt.subplots(rows, cols)\n    if rows == 1 or cols == 1:\n        return len(axes)\n    return (len(axes), len(axes[0]))\n\nprint(create_subplot_grid(2, 3))   # (2, 3) -- a real 2D grid, axes[row][col] indexing works\nprint(create_subplot_grid(1, 4))   # 4 -- squeezed to a flat 1D array, axes[i] indexing only`} caption="Code that blindly does axes[0][0] will crash with a TypeError the moment someone calls it with rows=1 -- this is a real, commonly-hit bug in matplotlib code, and exactly why libraries built on top of it (like seaborn) often normalize this shape difference away internally before you ever see it." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can create a subplot grid and understand matplotlib's dimension-squeezing behavior for single-row or single-column grids, a real gotcha that trips up naive indexing code.
+</Checkpoint>

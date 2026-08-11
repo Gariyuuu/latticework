@@ -1,0 +1,11 @@
+{
+  "id": "bigquery-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def query_cost(bytes_scanned, price_per_tb=6.25):\n    ...\n",
+  "cases": [
+    { "call": "query_cost(1024 ** 4)", "expect": "6.25" },
+    { "call": "query_cost(1024 ** 3 * 500)", "expect": "3.0518" },
+    { "call": "query_cost(1024 ** 4 * 2)", "expect": "12.5" }
+  ]
+}

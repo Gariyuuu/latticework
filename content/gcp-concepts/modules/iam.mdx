@@ -1,0 +1,55 @@
+---
+slug: iam
+title: GCP IAM
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: iam-ex1
+    difficulty: intermediate
+    concept: gcp-iam
+    prompt: "Write `has_permission(role_bindings, permission, role_permissions)`: `role_bindings` is a list of role names granted to a user, `role_permissions` maps a role name to the set of permissions it grants. Return `True` if ANY of the user's roles grants `permission`, `False` otherwise."
+  - id: quiz-1
+    type: quiz
+    concept: gcp-iam
+    question: "AWS Concepts' ec2-s3-iam module covered explicit-deny-always-wins evaluation. How does GCP's basic IAM model differ?"
+    options: ["GCP's basic role-binding IAM is PURELY ADDITIVE — a user's total permissions are just the union of every role they're bound to, with no built-in explicit-deny mechanism at this level (GCP added deny-by-condition as a separate, more advanced feature later)", "GCP IAM and AWS IAM evaluate policies in exactly the same way, deny-always-wins included", "GCP IAM only allows a user to hold exactly one role at a time", "GCP IAM has no concept of permissions at all, only role names"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Unlike AWS IAM's explicit-deny-wins evaluation, GCP's basic IAM model is
+simpler and purely ADDITIVE: a user's total permissions are just the
+union of every role they're bound to. There's no built-in "deny"
+mechanism at this level — if any bound role grants a permission, the
+user has it, full stop. (GCP does offer more advanced conditional/deny
+policies for finer control, but the base model is additive-only.)
+
+```python
+def has_permission(role_bindings, permission, role_permissions):
+    for role in role_bindings:
+        if permission in role_permissions.get(role, set()):
+            return True
+    return False
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def has_permission(role_bindings, permission, role_permissions):\n    for role in role_bindings:\n        if permission in role_permissions.get(role, set()):\n            return True\n    return False\n\nrole_permissions = {\n    "roles/viewer": {"storage.objects.get", "storage.objects.list"},\n    "roles/editor": {"storage.objects.get", "storage.objects.list", "storage.objects.create"},\n}\n\nprint(has_permission(["roles/viewer"], "storage.objects.create", role_permissions))\n# False -- viewer alone doesn't grant create\n\nprint(has_permission(["roles/viewer", "roles/editor"], "storage.objects.create", role_permissions))\n# True -- editor grants it, and additive union means having BOTH roles only ever adds permissions, never removes any`} caption="Because it's purely additive, binding a user to MORE roles in GCP's basic IAM model can only ever grant them MORE access, never less -- there's no way for one role binding to take away a permission another role granted, which is the key structural difference from AWS's deny-can-override-allow model." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can evaluate GCP's additive role-binding IAM model, and articulate how it structurally differs from AWS's explicit-deny-wins evaluation.
+</Checkpoint>

@@ -1,0 +1,60 @@
+---
+slug: linear-algebra
+title: Matrix Decompositions
+estimatedMinutes: 22
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+    packages: ["scipy"]
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: linear-algebra-ex1
+    difficulty: advanced
+    concept: scipy-matrix-decompositions
+    prompt: "Write `lu_reconstructs(matrix)`: use `scipy.linalg.lu` to compute the LU decomposition of `matrix` (`P, L, U = lu(A)`), then return whether `P @ L @ U` reconstructs the original matrix (use `numpy.allclose` to compare, since floating-point decomposition won't be bit-exact)."
+  - id: quiz-1
+    type: quiz
+    concept: scipy-matrix-decompositions
+    question: "Linear Algebra's own course deliberately left matrix-decompositions unbuilt, noting LU/QR/SVD 'aren't reasonably hand-implementable the way dot-product/eigenvalues are.' Why not?"
+    options: ["Decompositions like LU require careful numerical pivoting strategies to stay stable for arbitrary matrices — a naive from-scratch implementation is both intricate to get right AND prone to serious numerical error, unlike the more direct formulas used for dot products or 2×2 eigenvalues", "LU decomposition is mathematically undefined for any matrix larger than 2x2", "Decompositions don't actually decompose a matrix into meaningful factors", "scipy.linalg.lu is the only way to multiply two matrices together"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Linear Algebra's course taught vectors, matrices, and eigenvalues from
+first principles in plain Python — but explicitly stopped short of
+matrix DECOMPOSITIONS (LU, QR, SVD), noting they aren't
+reasonably hand-implementable the way a dot product or a 2×2
+eigenvalue formula is. Real decomposition algorithms need careful
+numerical pivoting to stay stable, which is exactly the kind of thing a
+tested library like `scipy.linalg` gets right so you don't have to.
+
+```python
+from scipy.linalg import lu
+import numpy as np
+
+def lu_reconstructs(matrix):
+    A = np.array(matrix, dtype=float)
+    P, L, U = lu(A)
+    reconstructed = P @ L @ U
+    return bool(np.allclose(reconstructed, A))
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["scipy"]} code={`from scipy.linalg import lu\nimport numpy as np\n\ndef lu_reconstructs(matrix):\n    A = np.array(matrix, dtype=float)\n    P, L, U = lu(A)\n    reconstructed = P @ L @ U\n    return bool(np.allclose(reconstructed, A))\n\nprint(lu_reconstructs([[4, 3], [6, 3]]))\n# True -- P (a permutation for numerical stability) times L (lower-triangular) times U (upper-triangular) rebuilds the original`} caption="LU decomposition splits a matrix into a permutation P and two triangular factors L and U -- triangular matrices are far cheaper to solve equations with than a general matrix, which is exactly why this decomposition exists: it's the fast path scipy.linalg.solve uses internally for solving linear systems." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute and verify an LU decomposition with scipy.linalg, closing the exact gap Linear Algebra's from-scratch course deliberately left open.
+</Checkpoint>

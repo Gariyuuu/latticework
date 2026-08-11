@@ -1,0 +1,57 @@
+---
+slug: dockerfile
+title: Dockerfile Layer Caching
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: dockerfile-ex1
+    difficulty: intermediate
+    concept: docker-dockerfile-caching
+    prompt: "Write `find_rebuild_point(current_instructions, cached_instructions)`: compare the two instruction lists position by position. Return the index of the FIRST instruction that differs (or is new), since that instruction and everything after it must rebuild. Return `None` if every instruction matches (a full cache hit)."
+  - id: quiz-1
+    type: quiz
+    concept: docker-dockerfile-caching
+    question: "Why do well-written Dockerfiles put `COPY requirements.txt .` and `RUN pip install ...` BEFORE `COPY . .` (copying the rest of the application code)?"
+    options: ["Docker's build cache invalidates from the FIRST changed instruction onward — since application code changes far more often than its dependency list, putting the dependency install steps first means routine code-only changes don't force a slow dependency reinstall, only the fast final COPY layer rebuilds", "Instruction order in a Dockerfile has no effect on build behavior at all", "COPY requirements.txt . is required by Docker's syntax to appear before any other instruction", "Putting COPY . . first would make the resulting image smaller"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Docker caches each Dockerfile instruction as its own layer, and reuses
+a cached layer as long as that instruction (and everything before it)
+hasn't changed. The moment ONE instruction changes, that layer AND
+every layer after it must rebuild from scratch — layers before the
+change stay cached. This is exactly why instruction ORDER matters:
+putting slow, rarely-changing steps (installing dependencies) before
+fast, frequently-changing ones (copying application code) keeps routine
+code changes cheap to rebuild.
+
+```python
+def find_rebuild_point(current_instructions, cached_instructions):
+    for i in range(len(current_instructions)):
+        if i >= len(cached_instructions) or current_instructions[i] != cached_instructions[i]:
+            return i
+    return None
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def find_rebuild_point(current_instructions, cached_instructions):\n    for i in range(len(current_instructions)):\n        if i >= len(cached_instructions) or current_instructions[i] != cached_instructions[i]:\n            return i\n    return None\n\ncached = [\n    "FROM python:3.12",\n    "COPY requirements.txt .",\n    "RUN pip install -r requirements.txt",\n    "COPY . .",\n]\n\n# only the application code changed (the final COPY) -- dependencies are untouched\ncurrent = ["FROM python:3.12", "COPY requirements.txt .", "RUN pip install -r requirements.txt", "COPY . . # v2"]\nprint(find_rebuild_point(current, cached))\n# 3 -- only the LAST layer needs to rebuild; the slow pip install stays cached`} caption="If COPY . . came BEFORE the pip install step instead, changing even a single line of application code would invalidate the cache starting from that copy -- forcing pip install to rerun on EVERY code change, turning a 2-second rebuild into a multi-minute one for no good reason." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can determine which Dockerfile layers must rebuild after a change, and understand why instruction ORDER is a real, deliberate performance decision, not an arbitrary style choice.
+</Checkpoint>

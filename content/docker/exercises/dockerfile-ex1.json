@@ -1,0 +1,11 @@
+{
+  "id": "dockerfile-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def find_rebuild_point(current_instructions, cached_instructions):\n    ...\n",
+  "cases": [
+    { "call": "find_rebuild_point(['FROM python:3.12', 'COPY requirements.txt .', 'RUN pip install -r requirements.txt', 'COPY . .'], ['FROM python:3.12', 'COPY requirements.txt .', 'RUN pip install -r requirements.txt', 'COPY . .'])", "expect": "None" },
+    { "call": "find_rebuild_point(['FROM python:3.12', 'COPY requirements.txt .', 'RUN pip install -r requirements.txt --upgrade', 'COPY . .'], ['FROM python:3.12', 'COPY requirements.txt .', 'RUN pip install -r requirements.txt', 'COPY . .'])", "expect": "2" },
+    { "call": "find_rebuild_point(['FROM python:3.12', 'COPY requirements.txt .', 'RUN pip install -r requirements.txt', 'COPY . . # v2'], ['FROM python:3.12', 'COPY requirements.txt .', 'RUN pip install -r requirements.txt', 'COPY . .'])", "expect": "3" }
+  ]
+}

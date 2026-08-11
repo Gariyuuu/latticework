@@ -1,0 +1,11 @@
+{
+  "id": "optimization-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["scipy"],
+  "starterCode": "from scipy.optimize import minimize\n\ndef find_minimum(a, b, c, x0):\n    ...\n",
+  "cases": [
+    { "call": "find_minimum(1, -4, 5, 0)", "expect": "2.0" },
+    { "call": "find_minimum(2, 8, 1, 0)", "expect": "-2.0" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "interpolation-ex1",
+  "type": "write-code",
+  "language": "python",
+  "packages": ["scipy"],
+  "starterCode": "from scipy.interpolate import interp1d\n\ndef interpolate_value(x_known, y_known, x_query):\n    ...\n",
+  "cases": [
+    { "call": "interpolate_value([0, 1, 2, 3, 4], [0, 10, 20, 15, 5], 0.5)", "expect": "5.0" },
+    { "call": "interpolate_value([0, 1, 2, 3, 4], [0, 10, 20, 15, 5], 2.5)", "expect": "17.5" }
+  ]
+}

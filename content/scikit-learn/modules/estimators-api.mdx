@@ -1,0 +1,59 @@
+---
+slug: estimators-api
+title: The Estimator API
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+    packages: ["scikit-learn"]
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: estimators-api-ex1
+    difficulty: intermediate
+    concept: sklearn-estimators-api
+    prompt: "Write `train_and_predict(X_train, y_train, X_test)`: train a `DecisionTreeClassifier(random_state=0)` on `X_train`/`y_train`, then return its predictions on `X_test` as a plain list of ints."
+  - id: quiz-1
+    type: quiz
+    concept: sklearn-estimators-api
+    question: "Why does virtually every scikit-learn model share the exact same `fit(X, y)` / `predict(X)` interface, regardless of the underlying algorithm?"
+    options: ["A consistent interface across wildly different algorithms (decision trees, linear models, SVMs, neural nets) means code that trains and evaluates a model doesn't need to change when you swap which algorithm you're using — you can experiment by changing one line", "fit() and predict() are the only two functions scikit-learn's models are capable of running", "Every scikit-learn model uses identical internal math regardless of name", "The shared interface is required by Python's language specification"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Model Evaluation's course already covered the STATISTICAL ideas —
+metrics, cross-validation, bias-variance. This course covers the
+practical API layer real projects use to apply those ideas: scikit-learn.
+Every estimator (a model, in scikit-learn's vocabulary) shares the same
+shape regardless of algorithm: `.fit(X, y)` trains it, `.predict(X)`
+produces predictions. That consistency is deliberate — it's what lets
+you swap `DecisionTreeClassifier` for `LogisticRegression` by changing
+one line, with everything else (data prep, evaluation) unchanged.
+
+```python
+from sklearn.tree import DecisionTreeClassifier
+
+def train_and_predict(X_train, y_train, X_test):
+    model = DecisionTreeClassifier(random_state=0)
+    model.fit(X_train, y_train)
+    return [int(p) for p in model.predict(X_test)]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" packages={["scikit-learn"]} code={`from sklearn.tree import DecisionTreeClassifier\n\ndef train_and_predict(X_train, y_train, X_test):\n    model = DecisionTreeClassifier(random_state=0)\n    model.fit(X_train, y_train)\n    return [int(p) for p in model.predict(X_test)]\n\nX_train = [[1], [2], [3], [8], [9], [10]]\ny_train = [0, 0, 0, 1, 1, 1]\nprint(train_and_predict(X_train, y_train, [[2.5], [9.5]]))\n# [0, 1] -- correctly separates the two clusters it was trained on`} caption="random_state=0 matters here for the SAME reason it mattered in Model Deployment and ML Experiment Design -- some parts of tree-building involve tie-breaking choices, and pinning the seed is what makes .fit() produce the exact same tree (and therefore exact same predictions) every single run, which is required for grading." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can train and predict with any scikit-learn estimator via its shared fit/predict interface, and understand why that consistency across algorithms is deliberate.
+</Checkpoint>

@@ -1,0 +1,61 @@
+---
+slug: ec2-s3-iam
+title: EC2, S3 & IAM Policy Evaluation
+estimatedMinutes: 22
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: ec2-s3-iam-ex1
+    difficulty: intermediate
+    concept: aws-iam-policy-evaluation
+    prompt: "Write `evaluate_policies(policies, action)`: `policies` is a list of `{'effect': 'allow'|'deny', 'action': action_name}` dicts. Any matching `'deny'` immediately wins (return `'deny'` right away). Otherwise, return `'allow'` if at least one matching `'allow'` was found, else `'deny'` (default deny)."
+  - id: quiz-1
+    type: quiz
+    concept: aws-iam-policy-evaluation
+    question: "AWS IAM's evaluation logic is: default deny, any matching Allow grants access, but an explicit Deny ALWAYS overrides any Allow. Why give Deny that absolute priority?"
+    options: ["It lets administrators write a single narrow 'deny' rule (e.g. 'deny access from outside the corporate network') that reliably overrides any broader 'allow' rule granted elsewhere — without an absolute-priority deny, a permissive policy anywhere could accidentally undermine a critical restriction", "Allow and Deny are evaluated in the order they were written, with no special priority for either", "IAM policies can only contain Allow statements, never Deny", "An explicit Deny only applies if there are zero Allow statements present"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+AWS IAM (Identity and Access Management) controls who can do what
+across every AWS service. Its evaluation logic follows one precise
+rule: by default, everything is denied; an `Allow` statement grants
+access; but an explicit `Deny` ALWAYS wins, overriding any `Allow`
+granted anywhere else. This absolute-priority deny is what lets a
+narrow security rule (e.g. "deny if outside the corporate VPN")
+reliably override broader permissions granted by other policies,
+without needing to know or edit every other policy that might apply.
+
+```python
+def evaluate_policies(policies, action):
+    decision = "deny"
+    for policy in policies:
+        if policy["action"] == action:
+            if policy["effect"] == "deny":
+                return "deny"
+            if policy["effect"] == "allow":
+                decision = "allow"
+    return decision
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def evaluate_policies(policies, action):\n    decision = "deny"\n    for policy in policies:\n        if policy["action"] == action:\n            if policy["effect"] == "deny":\n                return "deny"\n            if policy["effect"] == "allow":\n                decision = "allow"\n    return decision\n\nprint(evaluate_policies([{"effect": "allow", "action": "s3:GetObject"}], "s3:GetObject"))\n# allow\n\nprint(evaluate_policies(\n    [{"effect": "allow", "action": "s3:GetObject"}, {"effect": "deny", "action": "s3:GetObject"}],\n    "s3:GetObject",\n))\n# deny -- the explicit deny wins even though an allow exists too`} caption="This is exactly why security teams reach for a narrow explicit Deny to lock something down FAST -- they don't need to hunt down and edit every Allow statement scattered across a dozen other IAM policies that might grant the same action; one Deny statement anywhere wins outright." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can evaluate a set of IAM-style policies with explicit-deny-wins semantics, the real access control model AWS uses across every service.
+</Checkpoint>
