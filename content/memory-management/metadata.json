@@ -11,22 +11,22 @@
     "software-engineer",
     "quant-developer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "stack-vs-heap",
       "title": "Stack vs Heap",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "garbage-collection",
       "title": "Garbage Collection",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "manual-management-pitfalls",
       "title": "Manual Management Pitfalls",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

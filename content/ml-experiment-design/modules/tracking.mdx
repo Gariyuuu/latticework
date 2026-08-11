@@ -1,0 +1,64 @@
+---
+slug: tracking
+title: Experiment Tracking
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: tracking-ex1
+    difficulty: beginner
+    concept: ml-experiment-design-tracking
+    prompt: "Write `best_run(runs, metric_key='metric')`: `runs` is a list of dicts, each with a `run_id` and a metric value under `metric_key`. Return the `run_id` of the run with the highest metric."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: tracking-ex2
+    difficulty: beginner
+    concept: ml-experiment-design-tracking
+    prompt: "Write `runs_with_param(runs, param_name, param_value)`: each run has a `'params'` dict of hyperparameters. Return the `run_id`s of every run whose `params[param_name]` equals `param_value`, in the given order."
+  - id: quiz-1
+    type: quiz
+    concept: ml-experiment-design-tracking
+    question: "Why do ML teams track every experiment run's hyperparameters and metrics (e.g. via MLflow, Weights & Biases) instead of just remembering 'the last good result'?"
+    options: ["A logged history lets you query and compare across dozens or hundreds of runs later — e.g. 'which runs used batch_size=32?' or 'what was the best run overall?' — questions that are impossible to answer reliably from memory alone", "Tracking tools automatically improve model accuracy", "It's required by most ML frameworks to even train a model", "Tracked runs train faster than untracked ones"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A serious ML project runs dozens or hundreds of experiments — different
+hyperparameters, architectures, data splits. **Experiment tracking**
+means logging every run's configuration and results somewhere queryable,
+so questions like "what was my best run?" or "which runs used
+`learning_rate=0.001`?" have an actual answer instead of relying on
+memory or scattered notebook cells.
+
+```python
+def best_run(runs, metric_key="metric"):
+    return max(runs, key=lambda r: r[metric_key])["run_id"]
+
+def runs_with_param(runs, param_name, param_value):
+    return [r["run_id"] for r in runs if r["params"].get(param_name) == param_value]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def best_run(runs, metric_key="metric"):\n    return max(runs, key=lambda r: r[metric_key])["run_id"]\n\ndef runs_with_param(runs, param_name, param_value):\n    return [r["run_id"] for r in runs if r["params"].get(param_name) == param_value]\n\nruns = [\n    {"run_id": "run-1", "params": {"lr": 0.01, "batch_size": 32}, "metric": 0.82},\n    {"run_id": "run-2", "params": {"lr": 0.001, "batch_size": 32}, "metric": 0.88},\n    {"run_id": "run-3", "params": {"lr": 0.01, "batch_size": 64}, "metric": 0.79},\n]\nprint(best_run(runs))                          # run-2\nprint(runs_with_param(runs, "batch_size", 32))  # ['run-1', 'run-2']`} caption="This is a miniature version of exactly what a real experiment tracker's query interface does -- 'find the run with the max metric' and 'filter runs by a param value' are the two most common queries against any experiment log, real tool or not." />
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can query a logged set of experiment runs to find the best one and filter by hyperparameter value — the core operations any experiment tracking tool provides.
+</Checkpoint>

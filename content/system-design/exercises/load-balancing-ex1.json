@@ -1,0 +1,11 @@
+{
+  "id": "load-balancing-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import hashlib\n\ndef deterministic_hash(s):\n    return int(hashlib.md5(s.encode()).hexdigest(), 16) % (2 ** 32)\n\ndef build_ring(nodes, num_virtual=3):\n    ring = {}\n    for node in nodes:\n        for v in range(num_virtual):\n            point = deterministic_hash(f'{node}-{v}')\n            ring[point] = node\n    return ring\n\ndef assign_key_to_node(ring, key):\n    ...\n",
+  "cases": [
+    { "call": "assign_key_to_node(build_ring(['node-a', 'node-b', 'node-c']), 'user-1')", "expect": "node-b" },
+    { "call": "assign_key_to_node(build_ring(['node-a', 'node-b', 'node-c']), 'user-4')", "expect": "node-c" },
+    { "call": "assign_key_to_node(build_ring(['node-a', 'node-b', 'node-c']), 'user-1') == assign_key_to_node(build_ring(['node-a', 'node-b', 'node-c']), 'user-1')", "expect": "True" }
+  ]
+}

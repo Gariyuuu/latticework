@@ -1,0 +1,57 @@
+---
+slug: batch-vs-real-time
+title: Batch vs. Real-Time Serving
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: batch-vs-real-time-ex1
+    difficulty: intermediate
+    concept: model-deployment-tradeoffs
+    prompt: "Write `throughput_and_latency(batch_size, per_item_compute_ms, fixed_overhead_ms)`: total time for a batch is `fixed_overhead_ms + batch_size * per_item_compute_ms`. Return a tuple `(throughput, total_time_ms)` where `throughput` is requests processed per SECOND (`batch_size / (total_time_ms / 1000)`, rounded to 2 decimal places)."
+  - id: quiz-1
+    type: quiz
+    concept: model-deployment-tradeoffs
+    question: "Given `serving-patterns`'s batching mechanism, what's the fundamental tradeoff as you increase batch size?"
+    options: ["Throughput (requests/sec) goes up because the fixed overhead gets amortized over more requests, but latency for the LAST request in the batch gets worse because it has to wait for the whole batch to finish processing", "Throughput and latency both improve together with no tradeoff at all", "Larger batches always reduce both throughput and latency", "Batch size has no measurable effect on either metric"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Batching (from the previous module) isn't free — it's a genuine
+tradeoff. A bigger batch amortizes the FIXED per-batch overhead
+(loading the model onto the accelerator, kernel launch cost) over more
+requests, pushing **throughput** up. But every request in that batch has
+to wait for the ENTIRE batch to finish before getting its result, so
+**latency** goes up too. A real-time, latency-sensitive service (a
+live chat autocomplete) wants small batches; a batch-oriented,
+throughput-sensitive job (nightly scoring of a million rows) wants huge
+ones.
+
+```python
+def throughput_and_latency(batch_size, per_item_compute_ms, fixed_overhead_ms):
+    total_time_ms = fixed_overhead_ms + batch_size * per_item_compute_ms
+    throughput = batch_size / (total_time_ms / 1000)
+    return (round(throughput, 2), total_time_ms)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def throughput_and_latency(batch_size, per_item_compute_ms, fixed_overhead_ms):\n    total_time_ms = fixed_overhead_ms + batch_size * per_item_compute_ms\n    throughput = batch_size / (total_time_ms / 1000)\n    return (round(throughput, 2), total_time_ms)\n\nprint(throughput_and_latency(1, 10, 5))    # (66.67, 15)  -- fast response, low throughput\nprint(throughput_and_latency(8, 10, 5))    # (94.12, 85)  -- both improve some\nprint(throughput_and_latency(32, 10, 5))   # (98.46, 325) -- throughput barely gains more, but latency triples`} caption="Notice throughput's gains shrink as batch size grows (66.67 -> 94.12 -> 98.46, diminishing returns) while latency keeps climbing roughly linearly -- past a certain batch size you're mostly just adding latency for very little extra throughput, which is why real systems cap batch size rather than maximizing it." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can quantify the throughput/latency tradeoff of batch size, and know when a workload calls for real-time (small batch) vs. batch-oriented (large batch) serving.
+</Checkpoint>

@@ -1,0 +1,11 @@
+{
+  "id": "deployment-strategies-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def rolling_deployment_progress(total_instances, batch_size):\n    ...\n",
+  "cases": [
+    { "call": "rolling_deployment_progress(10, 3)", "expect": "[(3, 7), (6, 4), (9, 1), (10, 0)]" },
+    { "call": "rolling_deployment_progress(4, 4)", "expect": "[(4, 0)]" },
+    { "call": "rolling_deployment_progress(5, 2)", "expect": "[(2, 3), (4, 1), (5, 0)]" }
+  ]
+}

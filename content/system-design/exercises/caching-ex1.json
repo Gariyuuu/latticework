@@ -1,0 +1,11 @@
+{
+  "id": "caching-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "class LFUCache:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.cache = {}\n        self.freq = {}\n\n    def get(self, key):\n        if key not in self.cache:\n            return -1\n        self.freq[key] += 1\n        return self.cache[key]\n\n    def put(self, key, value):\n        ...\n\ndef simulate1():\n    c = LFUCache(2)\n    c.put('a', 1)\n    c.put('b', 2)\n    c.get('a')\n    c.put('c', 3)\n    return sorted(c.cache.keys())\n\ndef simulate2():\n    c = LFUCache(2)\n    c.put('x', 1)\n    c.put('y', 2)\n    c.put('x', 10)\n    c.put('z', 3)\n    return sorted(c.cache.keys())\n\ndef simulate3():\n    c = LFUCache(1)\n    c.put('only', 1)\n    c.put('replacement', 2)\n    return sorted(c.cache.keys())\n",
+  "cases": [
+    { "call": "simulate1()", "expect": "['a', 'c']" },
+    { "call": "simulate2()", "expect": "['x', 'z']" },
+    { "call": "simulate3()", "expect": "['replacement']" }
+  ]
+}

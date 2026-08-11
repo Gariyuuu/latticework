@@ -14,22 +14,22 @@
     "backend-engineer",
     "research-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "scalability-basics",
       "title": "Scalability Basics",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "caching",
       "title": "Caching",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "load-balancing",
       "title": "Load Balancing",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "trade-off-interviews",

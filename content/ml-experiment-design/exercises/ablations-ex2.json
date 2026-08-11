@@ -1,0 +1,11 @@
+{
+  "id": "ablations-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def component_contributions(full_score, ablation_scores):\n    return {name: round(full_score - score, 4) for name, score in ablation_scores.items()}\n\ndef most_important_component(full_score, ablation_scores):\n    ...\n",
+  "cases": [
+    { "call": "most_important_component(0.90, {'feature_x': 0.85, 'feature_y': 0.88, 'regularization': 0.90})", "expect": "feature_x" },
+    { "call": "most_important_component(0.75, {'a': 0.70, 'b': 0.60})", "expect": "b" },
+    { "call": "most_important_component(1.0, {'only': 0.9})", "expect": "only" }
+  ]
+}

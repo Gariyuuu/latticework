@@ -1,0 +1,69 @@
+---
+slug: tokenization
+title: Tokenization
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: tokenization-ex1
+    difficulty: beginner
+    concept: llm-tokenization
+    prompt: "Write `build_vocab(corpus_words)`: given a list of words, return a dict mapping each UNIQUE word to an integer ID, assigned in first-seen order starting from 0."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: tokenization-ex2
+    difficulty: beginner
+    concept: llm-tokenization
+    prompt: "Write `encode(text, vocab, unk_id=-1)`: split `text` on whitespace, and return the list of each word's ID from `vocab` — or `unk_id` for any word not in the vocabulary."
+  - id: quiz-1
+    type: quiz
+    concept: llm-tokenization
+    question: "Why can't a language model work directly on raw text characters — why does it need tokenization first?"
+    options: ["A model's input layer expects a fixed, finite vocabulary of integer IDs it can map to learned vector embeddings — tokenization is what converts unbounded raw text into that fixed, numeric representation", "Tokenization is only needed for languages that don't use spaces", "Raw text is too large to fit in a computer's memory without tokenizing", "Tokenizing text makes it load faster from disk"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A language model's input layer works entirely with numbers — vectors
+looked up from a fixed **vocabulary** — not raw text. **Tokenization**
+is the bridge: split text into pieces (words, or in real LLMs, smaller
+sub-word chunks via algorithms like BPE), then map each piece to an
+integer ID via a vocabulary built ahead of time from training data.
+Anything not seen during vocabulary-building becomes an "unknown" token.
+
+```python
+def build_vocab(corpus_words):
+    vocab = {}
+    for w in corpus_words:
+        if w not in vocab:
+            vocab[w] = len(vocab)
+    return vocab
+
+def encode(text, vocab, unk_id=-1):
+    words = text.split()
+    return [vocab.get(w, unk_id) for w in words]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def build_vocab(corpus_words):\n    vocab = {}\n    for w in corpus_words:\n        if w not in vocab:\n            vocab[w] = len(vocab)\n    return vocab\n\ndef encode(text, vocab, unk_id=-1):\n    words = text.split()\n    return [vocab.get(w, unk_id) for w in words]\n\nvocab = build_vocab(["the", "cat", "sat", "on", "the", "mat"])\nprint(vocab)                          # {'the': 0, 'cat': 1, 'sat': 2, 'on': 3, 'mat': 4}\nprint(encode("the cat sat", vocab))    # [0, 1, 2]\nprint(encode("the dog sat", vocab))    # [0, -1, 2] -- 'dog' never appeared while building the vocab`} caption="Real tokenizers (BPE, WordPiece, SentencePiece) split on SUB-WORD units rather than whole words specifically so an unseen word like 'dog' never has to become a single opaque <unk> token -- it can instead be broken into familiar smaller pieces the model has actually seen before." />
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can build a word-level vocabulary and encode text into integer token IDs, the numeric bridge every language model's input layer relies on.
+</Checkpoint>

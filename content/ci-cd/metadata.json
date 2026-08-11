@@ -14,22 +14,22 @@
     "backend-engineer",
     "research-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "pipelines",
       "title": "Pipelines",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "automated-testing-gates",
       "title": "Automated Testing Gates",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "deployment-strategies",
       "title": "Deployment Strategies",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

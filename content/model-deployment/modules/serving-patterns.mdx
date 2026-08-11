@@ -1,0 +1,69 @@
+---
+slug: serving-patterns
+title: Serving Patterns
+estimatedMinutes: 22
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: serving-patterns-ex1
+    difficulty: advanced
+    concept: model-deployment-serving-patterns
+    prompt: "Write `batch_requests(requests, max_batch_size, max_wait)`: `requests` is a list of `(request_id, arrival_time)` sorted by arrival time. Group requests into batches: start a new batch's clock at the first request's arrival time; keep adding requests to the CURRENT batch as long as it's under `max_batch_size` AND the request arrives within `max_wait` of the batch's start time; otherwise start a new batch. Return a list of batches (each a list of request IDs)."
+  - id: quiz-1
+    type: quiz
+    concept: model-deployment-serving-patterns
+    question: "Why does a model server use DYNAMIC batching (grouping several incoming requests before running inference) instead of running each request through the model immediately, one at a time?"
+    options: ["Running inference on a batch of N inputs is usually far more efficient per-item than running N separate single-item inferences (better GPU/CPU utilization), so batching trades a small amount of added latency for much higher throughput", "Batching is required by all machine learning frameworks", "Batching guarantees zero latency for every request", "Batching only matters for models trained with a fixed batch size"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Running a model on hardware like a GPU is usually far more
+efficient per-item when processing many inputs at once (a **batch**)
+than one at a time — the hardware's parallelism goes largely unused on a
+single input. A model server exploits this with **dynamic batching**:
+instead of running inference the instant each request arrives, it waits
+briefly to accumulate a batch, bounded by both a maximum size (don't
+grow the batch forever) and a maximum wait time (don't make the first
+request in the batch wait too long for later ones to show up).
+
+```python
+def batch_requests(requests, max_batch_size, max_wait):
+    batches = []
+    current_batch = []
+    batch_start = None
+    for req_id, arrival in requests:
+        if not current_batch:
+            current_batch = [req_id]
+            batch_start = arrival
+        elif len(current_batch) < max_batch_size and (arrival - batch_start) <= max_wait:
+            current_batch.append(req_id)
+        else:
+            batches.append(current_batch)
+            current_batch = [req_id]
+            batch_start = arrival
+    if current_batch:
+        batches.append(current_batch)
+    return batches
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def batch_requests(requests, max_batch_size, max_wait):\n    batches = []\n    current_batch = []\n    batch_start = None\n    for req_id, arrival in requests:\n        if not current_batch:\n            current_batch = [req_id]\n            batch_start = arrival\n        elif len(current_batch) < max_batch_size and (arrival - batch_start) <= max_wait:\n            current_batch.append(req_id)\n        else:\n            batches.append(current_batch)\n            current_batch = [req_id]\n            batch_start = arrival\n    if current_batch:\n        batches.append(current_batch)\n    return batches\n\nrequests = [("r1", 0), ("r2", 1), ("r3", 2), ("r4", 5), ("r5", 6)]\nprint(batch_requests(requests, max_batch_size=3, max_wait=3))\n# [['r1', 'r2', 'r3'], ['r4', 'r5']] -- r4 arrives too late (t=5) to join the first batch's window`} caption="Both stopping conditions matter independently: max_batch_size caps GPU memory usage per batch, max_wait caps how long the FIRST request in a batch has to sit around waiting for company -- a real server tunes both based on its latency SLA and hardware." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement dynamic request batching bounded by both size and wait time, the mechanism model servers use to trade a little latency for much higher throughput.
+</Checkpoint>

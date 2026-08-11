@@ -1,0 +1,11 @@
+{
+  "id": "batch-vs-real-time-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def throughput_and_latency(batch_size, per_item_compute_ms, fixed_overhead_ms):\n    ...\n",
+  "cases": [
+    { "call": "throughput_and_latency(1, 10, 5)", "expect": "(66.67, 15)" },
+    { "call": "throughput_and_latency(8, 10, 5)", "expect": "(94.12, 85)" },
+    { "call": "throughput_and_latency(32, 10, 5)", "expect": "(98.46, 325)" }
+  ]
+}

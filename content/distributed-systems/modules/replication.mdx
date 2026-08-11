@@ -1,0 +1,75 @@
+---
+slug: replication
+title: Replication & Quorums
+estimatedMinutes: 22
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: read-explanation
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: replication-ex1
+    difficulty: beginner
+    concept: distributed-systems-replication
+    prompt: "Write `has_strong_consistency(w, r, n)`: given a replicated system with `n` total replicas, a write quorum of `w`, and a read quorum of `r`, return whether the system guarantees strong consistency (every read sees the latest write) — true exactly when `w + r > n`."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: replication-ex2
+    difficulty: intermediate
+    concept: distributed-systems-replication
+    prompt: "Write `read_latest(contacted_replicas)`: `contacted_replicas` is a list of `(value, timestamp)` pairs from the replicas actually contacted during a read. Return the `value` with the highest `timestamp` (a 'read repair' style latest-write-wins resolution)."
+  - id: quiz-1
+    type: quiz
+    concept: distributed-systems-replication
+    question: "Why does `w + r > n` guarantee that a read quorum always overlaps with the most recent write quorum?"
+    options: ["If the write touched `w` replicas and the read contacts `r` replicas out of `n` total, and `w + r > n`, then by the pigeonhole principle at least one replica must have been part of BOTH the write and the read — guaranteeing the read sees the latest value somewhere in its quorum", "It's an arbitrary convention with no mathematical justification", "It only works when w equals r exactly", "It guarantees every replica always has identical data at all times"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A replicated system doesn't have to write to (or read from) every
+single replica to stay correct — it just needs enough OVERLAP between
+who received a write and who's consulted on a read. This is the
+**quorum** model: a write succeeds once `w` replicas acknowledge it, a
+read succeeds once `r` replicas respond. The classic guarantee —
+`w + r > n` — comes straight from the pigeonhole principle: if those two
+groups are drawn from the same `n` replicas and their sizes sum to more
+than `n`, they MUST share at least one replica in common.
+
+```python
+def has_strong_consistency(w, r, n):
+    return w + r > n
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def has_strong_consistency(w, r, n):\n    return w + r > n\n\nprint(has_strong_consistency(2, 2, 3))   # True -- 2+2=4 > 3, quorums must overlap\nprint(has_strong_consistency(1, 1, 3))   # False -- 1+1=2, not > 3, a write and read could miss each other entirely`} caption="w=r=1 with n=3 (has_strong_consistency returns False) is exactly how an eventually-consistent system like DynamoDB can be CONFIGURED to behave -- fast, cheap reads/writes, but no guarantee a read sees the latest write. The SAME replicas, with w=2, r=2, become strongly consistent -- consistency here is a tunable knob, not a fixed property of the system." />
+
+<Explanation id="read-explanation">
+
+When a read quorum's `r` replicas don't all agree (because a write is
+still propagating), the client needs a way to pick the "right" answer.
+The simplest rule is **last-write-wins**: attach a timestamp to every
+write, and on a read, take whichever contacted replica has the highest
+timestamp.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can reason about quorum-based consistency guarantees via the pigeonhole overlap argument, and resolve conflicting replica reads with last-write-wins.
+</Checkpoint>

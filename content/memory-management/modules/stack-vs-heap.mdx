@@ -1,0 +1,63 @@
+---
+slug: stack-vs-heap
+title: Stack vs. Heap
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: stack-vs-heap-ex1
+    difficulty: intermediate
+    concept: memory-management-stack-heap
+    prompt: "Write `simulate_call_stack(calls, max_depth)`: `calls` is a list of `('call', fn_name)` or `('return',)` events. Maintain a stack of active calls; if a `'call'` ever pushes the stack past `max_depth`, immediately return `'stack overflow'`. If every event processes without exceeding `max_depth`, return `'ok'`."
+  - id: quiz-1
+    type: quiz
+    concept: memory-management-stack-heap
+    question: "Why does unbounded RECURSION (a function that keeps calling itself with no base case) crash with a 'stack overflow' specifically, rather than just running forever?"
+    options: ["Each function call pushes a new frame onto a FIXED-SIZE call stack (local variables, return address); recursion with no base case keeps pushing frames until the stack's fixed memory region is exhausted, crashing the program", "Recursive functions are stored on the heap, which has no size limit, so they never actually crash", "The CPU refuses to execute more than a fixed number of function calls total, ever", "Stack overflow only happens with loops, never with recursive function calls"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Most languages split memory into (at least) two regions with very
+different behavior. The **stack** holds each function call's local
+variables and return address as a **frame**, pushed on call and popped
+on return — fast, automatic, but FIXED SIZE, which is exactly why deep
+or infinite recursion crashes with a stack overflow. The **heap** holds
+dynamically-allocated data that can outlive the function that created
+it (an object returned from a function, a growable list) — flexible,
+but slower to allocate and (in languages without a garbage collector)
+manually managed.
+
+```python
+def simulate_call_stack(calls, max_depth):
+    stack = []
+    for event in calls:
+        if event[0] == "call":
+            stack.append(event[1])
+            if len(stack) > max_depth:
+                return "stack overflow"
+        elif event[0] == "return":
+            stack.pop()
+    return "ok"
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def simulate_call_stack(calls, max_depth):\n    stack = []\n    for event in calls:\n        if event[0] == "call":\n            stack.append(event[1])\n            if len(stack) > max_depth:\n                return "stack overflow"\n        elif event[0] == "return":\n            stack.pop()\n    return "ok"\n\n# f() calls g(), g() returns, f() returns -- a normal, bounded call sequence\nprint(simulate_call_stack([("call", "f"), ("call", "g"), ("return",), ("return",)], max_depth=3))\n# 'ok'\n\n# unbounded recursion, no returns ever happen\nprint(simulate_call_stack([("call", "recurse")] * 5, max_depth=4))\n# 'stack overflow' -- the 5th call pushes past the limit`} caption="Python actually enforces this exact same idea via sys.getrecursionlimit() (default 1000) -- it deliberately crashes a runaway-recursive function with a RecursionError well before the OS's real, much larger call stack would actually overflow and crash the whole interpreter." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can simulate a bounded call stack and detect a stack overflow, and understand why unbounded recursion specifically crashes this way (a fixed-size stack, not an unbounded heap).
+</Checkpoint>

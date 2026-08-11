@@ -1,0 +1,57 @@
+---
+slug: consensus-basics
+title: Consensus Basics
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: consensus-basics-ex1
+    difficulty: intermediate
+    concept: distributed-systems-consensus
+    prompt: "Write `elect_leader(votes, total_nodes)`: `votes` maps candidate ID to vote count. A candidate wins if their count reaches a MAJORITY (`total_nodes // 2 + 1`). Return the winning candidate's ID, or `None` if no candidate has a majority (a split vote)."
+  - id: quiz-1
+    type: quiz
+    concept: distributed-systems-consensus
+    question: "Why does leader election require a MAJORITY of votes (more than half) rather than just the most votes among candidates?"
+    options: ["A majority guarantees at most one candidate can win in any single round — two different candidates can't BOTH get more than half of the same fixed pool of votes — which prevents a 'split-brain' with two nodes simultaneously believing they're the leader", "A majority makes the election finish faster", "Plurality (most votes) is mathematically impossible to compute in a distributed system", "Majority voting is only needed when there are more than 10 nodes"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+When multiple nodes in a distributed system need to agree on something
+— who's the leader, what the next value in a replicated log is —
+they run a **consensus** protocol (Raft, Paxos, and friends all solve
+this same core problem). The foundation of most of these protocols is
+majority voting: a candidate only wins if strictly more than half the
+nodes vote for it, which mathematically guarantees no two different
+candidates can both win in the same round.
+
+```python
+def elect_leader(votes, total_nodes):
+    majority = total_nodes // 2 + 1
+    for candidate, count in votes.items():
+        if count >= majority:
+            return candidate
+    return None
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def elect_leader(votes, total_nodes):\n    majority = total_nodes // 2 + 1\n    for candidate, count in votes.items():\n        if count >= majority:\n            return candidate\n    return None\n\nprint(elect_leader({"A": 3, "B": 2}, 5))         # A -- 3 out of 5 is a majority (needs 3)\nprint(elect_leader({"A": 2, "B": 2, "C": 1}, 5))  # None -- split vote, nobody reached 3`} caption="A split vote isn't a bug -- it's an expected outcome in real Raft too, and the protocol's answer is simply to time out and hold ANOTHER election round (usually with randomized timers per node so the same split doesn't just repeat forever)." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement majority-vote leader election and understand why a strict majority (not just a plurality) is what prevents two nodes from both believing they're the leader.
+</Checkpoint>

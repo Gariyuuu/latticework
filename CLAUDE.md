@@ -103,22 +103,26 @@ on a missing env var without surfacing that clearly in the UI — see
 
 ## Known limitations (see ROADMAP.md for the full, current list)
 
-- 41 skills have real lesson content (up from the original Python-only
-  MVP) — full per-track module counts and design notes are in
-  ROADMAP.md "Content coverage," not duplicated here since it changes
-  every session. Quick index: Python/Data Structures/Algorithms/NumPy/
-  Pandas/Probability/Statistics (all complete), SQL (7/10), Linear
-  Algebra (2/3), Monte Carlo Simulation, Stochastic Processes
-  Fundamentals, Calculus Review, Optimization, Numerical Methods,
-  Complexity Analysis, Functional Programming, OOP, Design Patterns,
-  Feature Engineering, Financial Markets, Model Evaluation, Debugging,
-  Time Series, HTTP, Clean Code, REST APIs, Redis, Networking Basics,
-  Embeddings, Compilers Fundamentals, WebSockets, Concurrency, Kafka
-  Fundamentals (all complete), Quant Finance Fundamentals (5/9),
-  Authentication (2/3), Testing (2/4), Database Design (2/3), Data
-  Modeling (2/2), Operating Systems (2/3), MongoDB (2/3), Git (2/4).
-  The rest of the technology catalog is metadata-only (by design — see
-  `docs/COURSE_CONTENT_SPEC.md`).
+- **50 skills have real lesson content** (up from the original
+  Python-only MVP) — the explicit "go to 50" target for this session's
+  content push, reached. Full per-track module counts and design notes
+  are in ROADMAP.md "Content coverage," not duplicated here since it
+  changes every session. Quick index: Python/Data Structures/
+  Algorithms/NumPy/Pandas/Probability/Statistics (all complete), SQL
+  (7/10), Linear Algebra (2/3), Monte Carlo Simulation, Stochastic
+  Processes Fundamentals, Calculus Review, Optimization, Numerical
+  Methods, Complexity Analysis, Functional Programming, OOP, Design
+  Patterns, Feature Engineering, Financial Markets, Model Evaluation,
+  Debugging, Time Series, HTTP, Clean Code, REST APIs, Redis,
+  Networking Basics, Embeddings, Compilers Fundamentals, WebSockets,
+  Concurrency, Kafka Fundamentals, ML Experiment Design, Model
+  Deployment, Memory Management, RAG Fundamentals, CI/CD, ETL/ELT (all
+  complete), Quant Finance Fundamentals (5/9), Authentication (2/3),
+  Testing (2/4), Database Design (2/3), Data Modeling (2/2), Operating
+  Systems (2/3), MongoDB (2/3), Git (2/4), Distributed Systems
+  Fundamentals (2/3), LLM Fundamentals (3/4), System Design
+  Fundamentals (3/4). The rest of the technology catalog is
+  metadata-only (by design — see `docs/COURSE_CONTENT_SPEC.md`).
   Monte Carlo and
   Stochastic Processes content need genuine randomness — made gradeable
   via `random.seed()`, only after verifying seeded `random.random()`/

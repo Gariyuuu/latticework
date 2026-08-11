@@ -1,0 +1,71 @@
+---
+slug: evaluation
+title: Evaluating Retrieval
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: evaluation-ex1
+    difficulty: intermediate
+    concept: rag-evaluation
+    prompt: "Write `precision_at_k(retrieved, relevant, k)`: of the first `k` items in `retrieved`, what fraction are in the `relevant` set? Round to 4 decimal places."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: evaluation-ex2
+    difficulty: intermediate
+    concept: rag-evaluation
+    prompt: "Write `recall_at_k(retrieved, relevant, k)`: of everything in the `relevant` set, what fraction appear somewhere in the first `k` items of `retrieved`? Round to 4 decimal places."
+  - id: quiz-1
+    type: quiz
+    concept: rag-evaluation
+    question: "What's the practical difference between optimizing for precision@k vs. recall@k in a retrieval system?"
+    options: ["High precision means little of what you retrieved is irrelevant noise (good for a tight token budget); high recall means you're not missing relevant items (good when completeness matters more than staying compact) — the right balance depends on the use case", "Precision and recall always move together, so optimizing one automatically optimizes the other", "Recall@k only matters when k equals the total number of documents", "Precision@k cannot be computed unless the relevant set has exactly k items"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Once you have a retrieval pipeline, you need a way to measure whether
+it's actually any good. Two standard metrics, borrowed straight from
+Model Evaluation's broader metrics module but applied here to ranked
+retrieval: **precision@k** (of what you retrieved, how much was
+actually relevant?) and **recall@k** (of everything relevant, how much
+did you actually retrieve?). They trade off against each other — you
+could get perfect recall by just retrieving everything, tanking
+precision, or perfect precision by retrieving only one thing you're
+certain about, tanking recall.
+
+```python
+def precision_at_k(retrieved, relevant, k):
+    top_k = retrieved[:k]
+    hits = sum(1 for r in top_k if r in relevant)
+    return round(hits / k, 4)
+
+def recall_at_k(retrieved, relevant, k):
+    top_k = retrieved[:k]
+    hits = sum(1 for r in top_k if r in relevant)
+    return round(hits / len(relevant), 4)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def precision_at_k(retrieved, relevant, k):\n    top_k = retrieved[:k]\n    hits = sum(1 for r in top_k if r in relevant)\n    return round(hits / k, 4)\n\ndef recall_at_k(retrieved, relevant, k):\n    top_k = retrieved[:k]\n    hits = sum(1 for r in top_k if r in relevant)\n    return round(hits / len(relevant), 4)\n\nretrieved = ["c3", "c1", "c5", "c2", "c4"]\nrelevant = {"c1", "c2", "c6"}\n\nprint(precision_at_k(retrieved, relevant, 3))   # 0.3333 -- 1 of the top 3 (c1) is relevant\nprint(recall_at_k(retrieved, relevant, 3))      # 0.3333 -- caught 1 of the 3 total relevant chunks\nprint(recall_at_k(retrieved, relevant, 5))      # 0.6667 -- caught 2 of 3 (c1, c2), but never retrieved c6 at all`} caption="c6 never shows up in `retrieved` at ANY k here -- no amount of increasing k will ever recover it, since it just isn't in the candidate list at all. That's a genuinely different failure mode from 'it's relevant but ranked too low' -- it means the retrieval step itself never even considered it a candidate." />
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute precision@k and recall@k for a ranked retrieval result, and reason about the tradeoff between them.
+</Checkpoint>

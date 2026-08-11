@@ -8,22 +8,22 @@
   "usefulFor": [
     "ml-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "serving-patterns",
       "title": "Serving Patterns",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "batch-vs-real-time",
       "title": "Batch vs Real-time",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "versioning",
       "title": "Versioning",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

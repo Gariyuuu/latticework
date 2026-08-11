@@ -1,0 +1,11 @@
+{
+  "id": "ablations-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def component_contributions(full_score, ablation_scores):\n    ...\n",
+  "cases": [
+    { "call": "component_contributions(0.90, {'feature_x': 0.85, 'feature_y': 0.88, 'regularization': 0.90})", "expect": "{'feature_x': 0.05, 'feature_y': 0.02, 'regularization': 0.0}" },
+    { "call": "component_contributions(0.75, {'a': 0.70, 'b': 0.60})", "expect": "{'a': 0.05, 'b': 0.15}" },
+    { "call": "component_contributions(0.5, {'only': 0.5})", "expect": "{'only': 0.0}" }
+  ]
+}

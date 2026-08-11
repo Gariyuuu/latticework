@@ -1,0 +1,77 @@
+---
+slug: caching
+title: Caching Strategies
+estimatedMinutes: 22
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: caching-ex1
+    difficulty: advanced
+    concept: system-design-caching
+    prompt: "Using the provided `LFUCache` class (with `__init__` and `get` already implemented), write its `put(self, key, value)` method: if `key` already exists, update its value and bump its frequency; otherwise, if the cache is at capacity, evict whichever key has the LOWEST frequency (ties broken by insertion order — the key that was inserted first among the tied keys), then insert the new key with frequency 1."
+  - id: quiz-1
+    type: quiz
+    concept: system-design-caching
+    question: "How does LFU (Least Frequently Used) eviction differ from LRU (Least Recently Used), and when would you prefer it?"
+    options: ["LFU tracks access COUNT and evicts the least-accessed item overall, so a genuinely popular item survives even if it hasn't been touched in a while — useful when popularity is stable and a brief lull shouldn't evict a hot item that LRU would kick out", "LFU and LRU always evict the exact same item in every scenario", "LFU requires more memory per entry than any other eviction policy", "LFU can only be used for numeric cache keys"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Data Structures' `tries` and Redis's `data-structures` module both
+covered **LRU** (Least Recently Used) eviction — kick out whatever
+hasn't been touched in the longest time. **LFU** (Least Frequently
+Used) takes a different signal: track how many times each entry has
+been accessed, and evict whichever has the LOWEST total count. The
+difference matters when access patterns are bursty: an item accessed
+1000 times an hour ago, then not touched for a few minutes, survives
+under LFU (it's still the most-accessed overall) but could get evicted
+by LRU (it's technically "least recently used" right now).
+
+```python
+class LFUCache:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = {}
+        self.freq = {}
+
+    def get(self, key):
+        if key not in self.cache:
+            return -1
+        self.freq[key] += 1
+        return self.cache[key]
+
+    def put(self, key, value):
+        if key in self.cache:
+            self.cache[key] = value
+            self.freq[key] += 1
+            return
+        if len(self.cache) >= self.capacity:
+            order = list(self.cache.keys())
+            least_key = min(self.freq, key=lambda k: (self.freq[k], order.index(k)))
+            del self.cache[least_key]
+            del self.freq[least_key]
+        self.cache[key] = value
+        self.freq[key] = 1
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`# LFUCache as defined above\nc = LFUCache(2)\nc.put("a", 1)\nc.put("b", 2)\nc.get("a")          # a's frequency is now 2, b's is still 1\nc.put("c", 3)        # cache is full -- evict the LOWEST frequency key, which is 'b'\nprint(sorted(c.cache.keys()))   # ['a', 'c'] -- b got evicted, not a, despite a being inserted first`} caption="This is exactly why LFU beats LRU for this scenario: under LRU, 'a' (accessed a moment ago via get) would look MORE recently used than 'b', so LRU would ALSO keep 'a' here -- but if 'b' had instead been the more historically popular key, LFU would protect it in a way LRU never could, since LRU only looks at recency, never total count." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement LFU cache eviction and articulate when it's a better fit than LRU: protecting consistently popular items through brief lulls in access.
+</Checkpoint>

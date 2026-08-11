@@ -1,0 +1,56 @@
+---
+slug: versioning
+title: Model Versioning & Canary Rollouts
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: versioning-ex1
+    difficulty: intermediate
+    concept: model-deployment-versioning
+    prompt: "Write `next_canary_stage(current_pct, error_rate, error_threshold=0.05, cap=100)`: if `error_rate` exceeds `error_threshold`, return `0` (full rollback). Otherwise, if `current_pct` is `0`, return `5` (start the canary at 5%); else return `min(current_pct * 2, cap)` (double the traffic percentage, capped)."
+  - id: quiz-1
+    type: quiz
+    concept: model-deployment-versioning
+    question: "What problem does a CANARY rollout (gradually increasing a new model version's traffic share: 5% -> 10% -> 25% -> 100%) solve that an instant 100% cutover doesn't?"
+    options: ["It limits the blast radius of a bad new version — a regression only affects a small slice of real traffic while it's being detected, instead of every single user the moment the new version goes live", "It makes the new model version train faster", "It's required by law for any production ML system", "It removes the need for monitoring the new version at all"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Deploying a new model version instantly to 100% of traffic means any
+regression — a bug, a subtle accuracy drop, a latency spike — hits every
+single user immediately. A **canary rollout** instead ramps up
+gradually: start the new version on a small slice of traffic (say 5%),
+watch its error rate, and only increase that slice if things look
+healthy. Any regression only affects a small fraction of traffic while
+it's being caught, and can be rolled back to 0% instantly.
+
+```python
+def next_canary_stage(current_pct, error_rate, error_threshold=0.05, cap=100):
+    if error_rate > error_threshold:
+        return 0
+    next_pct = min(current_pct * 2, cap) if current_pct > 0 else 5
+    return next_pct
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def next_canary_stage(current_pct, error_rate, error_threshold=0.05, cap=100):\n    if error_rate > error_threshold:\n        return 0\n    next_pct = min(current_pct * 2, cap) if current_pct > 0 else 5\n    return next_pct\n\npct = 0\nfor observed_error_rate in [0.01, 0.02, 0.01, 0.01]:\n    pct = next_canary_stage(pct, observed_error_rate)\n    print(pct)\n# 5, 10, 20, 40 -- doubling each healthy stage\n\nprint(next_canary_stage(20, 0.08))   # 0 -- error rate spiked above threshold, instant rollback`} caption="The rollback branch always wins regardless of current_pct -- a canary at 80% traffic gets rolled all the way back to 0% just as fast as one at 5%, because the whole point of the pattern is that bad behavior gets caught and reversed quickly at ANY stage." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement a canary rollout's stage-progression logic — gradual ramp-up on healthy metrics, instant rollback on a regression.
+</Checkpoint>

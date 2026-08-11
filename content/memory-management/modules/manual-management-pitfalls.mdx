@@ -1,0 +1,67 @@
+---
+slug: manual-management-pitfalls
+title: Manual Management Pitfalls
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: manual-management-pitfalls-ex1
+    difficulty: intermediate
+    concept: memory-management-manual-pitfalls
+    prompt: "Write `detect_memory_bugs(operations)`: `operations` is a list of `('alloc', ptr)`, `('free', ptr)`, or `('use', ptr)`. Track which pointers are currently allocated. Record `('double-free', ptr)` if `'free'` is called on a pointer that isn't currently allocated, and `('use-after-free', ptr)` if `'use'` is called on one. Return the list of bugs found, in order."
+  - id: quiz-1
+    type: quiz
+    concept: memory-management-manual-pitfalls
+    question: "In a language with manual memory management (C, C++), why is USE-AFTER-FREE considered one of the most dangerous classes of bug, security-wise?"
+    options: ["The freed memory can be reallocated for something else entirely; code that still 'uses' the old pointer ends up reading or writing through whatever NEW object now occupies that memory, which attackers can exploit by controlling what gets allocated there next", "Use-after-free bugs always crash the program instantly and safely", "Use-after-free only affects performance, never correctness or security", "Modern compilers automatically fix every use-after-free bug"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Languages without a garbage collector (C, C++, and similar) require the
+programmer to explicitly `free` every allocation — and getting this
+wrong produces two of the most notorious bug classes in software:
+**double-free** (freeing the same pointer twice, corrupting the
+allocator's internal bookkeeping) and **use-after-free** (reading or
+writing through a pointer after its memory has already been freed and
+potentially reused for something else entirely — a serious security
+vulnerability class, not just a correctness bug).
+
+```python
+def detect_memory_bugs(operations):
+    allocated = set()
+    bugs = []
+    for kind, ptr in operations:
+        if kind == "alloc":
+            allocated.add(ptr)
+        elif kind == "free":
+            if ptr not in allocated:
+                bugs.append(("double-free", ptr))
+            else:
+                allocated.remove(ptr)
+        elif kind == "use":
+            if ptr not in allocated:
+                bugs.append(("use-after-free", ptr))
+    return bugs
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def detect_memory_bugs(operations):\n    allocated = set()\n    bugs = []\n    for kind, ptr in operations:\n        if kind == "alloc":\n            allocated.add(ptr)\n        elif kind == "free":\n            if ptr not in allocated:\n                bugs.append(("double-free", ptr))\n            else:\n                allocated.remove(ptr)\n        elif kind == "use":\n            if ptr not in allocated:\n                bugs.append(("use-after-free", ptr))\n    return bugs\n\nprint(detect_memory_bugs([("alloc", "p1"), ("free", "p1"), ("free", "p1")]))\n# [('double-free', 'p1')] -- the second free() has nothing left to free\n\nprint(detect_memory_bugs([("alloc", "p1"), ("free", "p1"), ("use", "p1")]))\n# [('use-after-free', 'p1')] -- reading/writing through p1 after it was already freed`} caption="This exact class of bug is precisely why Rust's ownership/borrow checker exists -- it rejects code with a possible use-after-free or double-free AT COMPILE TIME, and why garbage-collected languages (Python, Java, Go) sidestep the whole category by never letting the programmer free anything manually at all." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can detect double-free and use-after-free bugs by tracking allocation state, and understand why use-after-free is a serious security concern, not just a crash.
+</Checkpoint>

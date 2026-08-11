@@ -11,22 +11,22 @@
   "usefulFor": [
     "ai-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "retrieval-pipeline",
       "title": "Retrieval Pipeline",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "chunking-strategies",
       "title": "Chunking Strategies",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "evaluation",
       "title": "Evaluation",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

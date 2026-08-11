@@ -1,0 +1,11 @@
+{
+  "id": "stack-vs-heap-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def simulate_call_stack(calls, max_depth):\n    ...\n",
+  "cases": [
+    { "call": "simulate_call_stack([('call', 'f'), ('call', 'g'), ('return',), ('return',)], 3)", "expect": "ok" },
+    { "call": "simulate_call_stack([('call', 'f'), ('call', 'g'), ('call', 'h'), ('call', 'i')], 3)", "expect": "stack overflow" },
+    { "call": "simulate_call_stack([('call', 'recurse')] * 5, 4)", "expect": "stack overflow" }
+  ]
+}

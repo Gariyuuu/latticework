@@ -1,0 +1,11 @@
+{
+  "id": "serving-patterns-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def batch_requests(requests, max_batch_size, max_wait):\n    ...\n",
+  "cases": [
+    { "call": "batch_requests([('r1', 0), ('r2', 1), ('r3', 2), ('r4', 5), ('r5', 6)], 3, 3)", "expect": "[['r1', 'r2', 'r3'], ['r4', 'r5']]" },
+    { "call": "batch_requests([('r1', 0), ('r2', 1), ('r3', 2), ('r4', 5), ('r5', 6)], 2, 10)", "expect": "[['r1', 'r2'], ['r3', 'r4'], ['r5']]" },
+    { "call": "batch_requests([('r1', 0)], 4, 5)", "expect": "[['r1']]" }
+  ]
+}

@@ -1,0 +1,57 @@
+---
+slug: automated-testing-gates
+title: Automated Testing Gates
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: automated-testing-gates-ex1
+    difficulty: beginner
+    concept: ci-cd-testing-gates
+    prompt: "Write `deployment_gate(pass_rate, coverage, min_pass_rate=0.95, min_coverage=0.80)`: return `'blocked: pass rate too low'` if `pass_rate < min_pass_rate`; else `'blocked: coverage too low'` if `coverage < min_coverage`; else `'approved'`."
+  - id: quiz-1
+    type: quiz
+    concept: ci-cd-testing-gates
+    question: "Why does a real CI/CD pipeline enforce a testing gate automatically, rather than just letting a human decide whether to deploy after looking at the test results?"
+    options: ["An automated gate is consistent and can't be skipped under deadline pressure — it turns 'someone should really check the tests pass before deploying' from a hopeful norm into an enforced rule the pipeline itself won't bypass", "Automated gates run faster than the tests themselves", "Human review is impossible once code has been written", "Gates are only useful for very large teams, never small ones"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Now that `pipelines` established stage ORDER, this module covers what
+decides whether a stage actually PASSES. An automated **testing gate**
+checks measurable thresholds — test pass rate, code coverage — and
+blocks the pipeline from proceeding to deployment if either one falls
+short. The value isn't just catching bugs; it's that the check is
+automatic and consistent, immune to "we're behind schedule, let's just
+ship it" pressure that could compromise a manual review.
+
+```python
+def deployment_gate(pass_rate, coverage, min_pass_rate=0.95, min_coverage=0.80):
+    if pass_rate < min_pass_rate:
+        return "blocked: pass rate too low"
+    if coverage < min_coverage:
+        return "blocked: coverage too low"
+    return "approved"
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def deployment_gate(pass_rate, coverage, min_pass_rate=0.95, min_coverage=0.80):\n    if pass_rate < min_pass_rate:\n        return "blocked: pass rate too low"\n    if coverage < min_coverage:\n        return "blocked: coverage too low"\n    return "approved"\n\nprint(deployment_gate(1.0, 0.85))    # approved -- both thresholds clear\nprint(deployment_gate(0.90, 0.85))   # blocked: pass rate too low -- some tests are failing\nprint(deployment_gate(1.0, 0.70))    # blocked: coverage too low -- tests pass, but too much code is untested`} caption="Pass rate is checked BEFORE coverage on purpose -- a failing test is a more urgent signal than insufficient coverage (something is provably broken vs. something might be untested), so the gate reports whichever problem is more actionable first rather than listing every issue at once." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement an automated deployment gate that enforces test-quality thresholds consistently, without relying on manual judgment under pressure.
+</Checkpoint>

@@ -1,0 +1,11 @@
+{
+  "id": "versioning-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def next_canary_stage(current_pct, error_rate, error_threshold=0.05, cap=100):\n    ...\n",
+  "cases": [
+    { "call": "next_canary_stage(0, 0.01)", "expect": "5" },
+    { "call": "next_canary_stage(80, 0.01)", "expect": "100" },
+    { "call": "next_canary_stage(20, 0.08)", "expect": "0" }
+  ]
+}

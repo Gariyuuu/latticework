@@ -1,0 +1,60 @@
+---
+slug: ablations
+title: Ablation Studies
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: ablations-ex1
+    difficulty: intermediate
+    concept: ml-experiment-design-ablations
+    prompt: "Write `component_contributions(full_score, ablation_scores)`: `ablation_scores` maps a component's name to the model's score WITH that component removed. Return a dict mapping each component to its contribution (`full_score - score_without_it`), rounded to 4 decimal places."
+  - id: exercise-2
+    type: exercise
+    exerciseType: write-code
+    testCasesId: ablations-ex2
+    difficulty: intermediate
+    concept: ml-experiment-design-ablations
+    prompt: "Using the provided `component_contributions`, write `most_important_component(full_score, ablation_scores)`: return the name of the component with the LARGEST contribution (the one whose removal hurt the score the most)."
+  - id: quiz-1
+    type: quiz
+    concept: ml-experiment-design-ablations
+    question: "In an ablation study, what does it mean if removing a component barely changes the score at all?"
+    options: ["That component isn't contributing much to the model's performance in its current form — a strong candidate to simplify away or investigate further, since complexity should earn its keep", "The component is broken and needs to be fixed immediately", "The model's overall architecture must be wrong", "That component is the most important part of the model"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+An **ablation study** answers "how much is each piece of my system
+actually contributing?" by systematically removing one component at a
+time and re-measuring performance. A component whose removal barely
+hurts the score isn't pulling its weight — it's a candidate to simplify
+away, or a sign something's misconfigured.
+
+```python
+def component_contributions(full_score, ablation_scores):
+    return {name: round(full_score - score, 4) for name, score in ablation_scores.items()}
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def component_contributions(full_score, ablation_scores):\n    return {name: round(full_score - score, 4) for name, score in ablation_scores.items()}\n\nfull_score = 0.90\n# score of the model with EACH component individually removed\nablations = {"feature_x": 0.85, "feature_y": 0.88, "regularization": 0.90}\nprint(component_contributions(full_score, ablations))\n# {'feature_x': 0.05, 'feature_y': 0.02, 'regularization': 0.0}\n# regularization contributes NOTHING here -- removing it didn't hurt the score at all`} caption="A contribution of exactly 0.0 (or even negative -- removing a component that IMPROVES the score) is a genuinely useful finding, not a bug in the study: it means that piece of complexity isn't earning its keep, or is actively hurting." />
+
+<Exercise id="exercise-1" />
+
+<Exercise id="exercise-2" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can quantify each component's contribution via leave-one-out ablation, and identify the most (or least) impactful piece of a system.
+</Checkpoint>

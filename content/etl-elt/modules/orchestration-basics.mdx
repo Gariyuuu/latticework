@@ -1,0 +1,58 @@
+---
+slug: orchestration-basics
+title: Orchestration Basics
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: orchestration-basics-ex1
+    difficulty: intermediate
+    concept: etl-orchestration
+    prompt: "Write `ready_tasks(dependencies, completed)`: `dependencies` maps each task to a list of prerequisite tasks. Return the list of tasks that are NOT already in `completed` but whose every prerequisite IS in `completed` — i.e. tasks ready to run right now."
+  - id: quiz-1
+    type: quiz
+    concept: etl-orchestration
+    question: "CI/CD's `pipelines` module computed a FULL static execution order upfront (topological sort). Why does a live orchestrator (like Airflow) instead repeatedly ask 'what's ready to run RIGHT NOW'?"
+    options: ["A live system needs to react to tasks actually finishing (possibly out of order, with retries and variable durations) rather than assuming a fixed schedule — recomputing readiness after each completion handles that dynamism, where a single precomputed order cannot", "Ready-task checking is mathematically a completely different problem from topological sort", "A precomputed order is always wrong if there are more than 2 tasks", "Live orchestrators never need to know about task dependencies at all"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+CI/CD's `pipelines` module computed one FULL execution order upfront —
+useful when everything runs predictably start to finish. A real data
+pipeline orchestrator (Airflow, Dagster, and similar tools) instead runs
+a live loop: given which tasks have already completed, figure out which
+tasks are ready to run RIGHT NOW (every prerequisite satisfied), launch
+them, wait for more completions, and repeat. This handles retries,
+variable task durations, and partial failures far better than a single
+fixed schedule computed in advance.
+
+```python
+def ready_tasks(dependencies, completed):
+    ready = []
+    for task, deps in dependencies.items():
+        if task not in completed and all(d in completed for d in deps):
+            ready.append(task)
+    return ready
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def ready_tasks(dependencies, completed):\n    ready = []\n    for task, deps in dependencies.items():\n        if task not in completed and all(d in completed for d in deps):\n            ready.append(task)\n    return ready\n\ndeps = {\n    "extract": [],\n    "transform": ["extract"],\n    "load": ["transform"],\n    "notify": ["load"],\n}\nprint(ready_tasks(deps, set()))                          # ['extract'] -- only task with no prerequisites\nprint(ready_tasks(deps, {"extract"}))                     # ['transform'] -- extract just finished, unlocking it\nprint(ready_tasks(deps, {"extract", "transform", "load", "notify"}))  # [] -- everything's already done`} caption="An orchestrator calls this exact function again every time a task finishes -- 'extract done' unlocks 'transform', 'transform done' unlocks 'load', and so on -- rather than committing to one static order the way CI/CD's topological_order did." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute which tasks are ready to run given a dependency graph and a set of completed tasks — the core readiness check behind live workflow orchestrators.
+</Checkpoint>

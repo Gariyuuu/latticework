@@ -1,0 +1,11 @@
+{
+  "id": "attention-intuition-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "import math\n\ndef softmax(scores):\n    max_score = max(scores)\n    exps = [math.exp(s - max_score) for s in scores]\n    total = sum(exps)\n    return [round(e / total, 4) for e in exps]\n\ndef attention_output(query, keys, values):\n    ...\n",
+  "cases": [
+    { "call": "attention_output((1, 0), [(1, 0), (0, 1)], [(10, 0), (0, 10)])", "expect": "(7.311, 2.689)" },
+    { "call": "attention_output((0, 1), [(1, 0), (0, 1)], [(10, 0), (0, 10)])", "expect": "(2.689, 7.311)" },
+    { "call": "attention_output((1, 1), [(1, 1)], [(5, 5)])", "expect": "(5.0, 5.0)" }
+  ]
+}

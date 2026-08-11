@@ -1,0 +1,11 @@
+{
+  "id": "manual-management-pitfalls-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def detect_memory_bugs(operations):\n    ...\n",
+  "cases": [
+    { "call": "detect_memory_bugs([('alloc', 'p1'), ('use', 'p1'), ('free', 'p1')])", "expect": "[]" },
+    { "call": "detect_memory_bugs([('alloc', 'p1'), ('free', 'p1'), ('free', 'p1')])", "expect": "[('double-free', 'p1')]" },
+    { "call": "detect_memory_bugs([('alloc', 'p1'), ('free', 'p1'), ('use', 'p1')])", "expect": "[('use-after-free', 'p1')]" }
+  ]
+}

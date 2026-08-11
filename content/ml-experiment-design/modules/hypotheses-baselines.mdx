@@ -1,0 +1,56 @@
+---
+slug: hypotheses-baselines
+title: Hypotheses & Baselines
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: hypotheses-baselines-ex1
+    difficulty: intermediate
+    concept: ml-experiment-design-baselines
+    prompt: "Write `significant_improvements(results, baseline_metric, min_improvement=0.02)`: `results` maps model name to its metric. Return the names of models whose metric beats `baseline_metric` by at least `min_improvement`, sorted best-metric-first."
+  - id: quiz-1
+    type: quiz
+    concept: ml-experiment-design-baselines
+    question: "Why does `significant_improvements` require a MINIMUM improvement margin instead of just checking `model_metric > baseline_metric`?"
+    options: ["A tiny improvement (e.g. +0.001 accuracy) is often just noise from randomness in training/evaluation, not a real signal that the model is actually better — a margin filters out differences too small to trust", "The margin is required by scikit-learn's API", "Without a margin, the function would run slower", "A margin guarantees statistical significance at the p<0.05 level"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Before building anything sophisticated, every ML project needs a
+**baseline** — the simplest reasonable approach (a constant prediction,
+a simple heuristic, or a basic model) that any "real" model must beat to
+justify its added complexity. A new model's metric being HIGHER than the
+baseline isn't automatically meaningful, though — training and
+evaluation both have some inherent noise, so a proper comparison checks
+for an improvement large enough to trust, not just any improvement at
+all.
+
+```python
+def significant_improvements(results, baseline_metric, min_improvement=0.02):
+    winners = [(name, m) for name, m in results.items() if m - baseline_metric >= min_improvement]
+    winners.sort(key=lambda pair: -pair[1])
+    return [name for name, _ in winners]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def significant_improvements(results, baseline_metric, min_improvement=0.02):\n    winners = [(name, m) for name, m in results.items() if m - baseline_metric >= min_improvement]\n    winners.sort(key=lambda pair: -pair[1])\n    return [name for name, _ in winners]\n\nresults = {"model_a": 0.85, "model_b": 0.81, "model_c": 0.90}\nprint(significant_improvements(results, 0.80, 0.02))\n# ['model_c', 'model_a'] -- model_b's +0.01 doesn't clear the margin, so it's excluded`} caption="This is deliberately a simple heuristic (a fixed margin), not a rigorous statistical test -- a real experiment would follow this up with Statistics' hypothesis-testing/confidence-intervals modules to get an actual p-value or confidence interval on the difference, rather than eyeballing a fixed threshold." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can filter and rank candidate models by whether they clear a meaningful improvement margin over a baseline, not just any positive difference.
+</Checkpoint>

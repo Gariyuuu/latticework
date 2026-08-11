@@ -1,0 +1,11 @@
+{
+  "id": "pipelines-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def topological_order(stages):\n    ...\n",
+  "cases": [
+    { "call": "topological_order({'build': [], 'test': ['build'], 'lint': ['build'], 'deploy': ['test', 'lint']})", "expect": "['build', 'test', 'lint', 'deploy']" },
+    { "call": "topological_order({'a': [], 'b': ['a'], 'c': ['b']})", "expect": "['a', 'b', 'c']" },
+    { "call": "topological_order({'x': [], 'y': [], 'z': ['x', 'y']})", "expect": "['x', 'y', 'z']" }
+  ]
+}

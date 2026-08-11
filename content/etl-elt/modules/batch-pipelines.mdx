@@ -1,0 +1,55 @@
+---
+slug: batch-pipelines
+title: Batch Pipelines
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: batch-pipelines-ex1
+    difficulty: beginner
+    concept: etl-batch-pipelines
+    prompt: "Write `process_in_batches(items, batch_size, transform)`: split `items` into consecutive chunks of at most `batch_size`, call `transform(batch)` on each chunk (which returns a list), and return all the results concatenated together in order."
+  - id: quiz-1
+    type: quiz
+    concept: etl-batch-pipelines
+    question: "Why would an ETL pipeline process a huge dataset in BATCHES rather than loading everything into memory and transforming it all at once?"
+    options: ["A dataset too large to fit in memory at once can still be processed a bounded chunk at a time — batching trades some overhead (repeated setup per batch) for bounded, predictable memory usage regardless of the total dataset size", "Batching always makes a pipeline run faster than processing everything at once", "Transform functions can only accept exactly one item at a time, never a list", "Batching is required by every database's write API"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**ETL** (Extract, Transform, Load) pipelines often deal with datasets
+far too large to hold in memory all at once. **Batch processing**
+handles this by working through the data in fixed-size chunks — extract
+a batch, transform it, load it, then move to the next batch — keeping
+memory usage bounded no matter how large the total dataset grows.
+
+```python
+def process_in_batches(items, batch_size, transform):
+    results = []
+    for i in range(0, len(items), batch_size):
+        batch = items[i:i + batch_size]
+        results.extend(transform(batch))
+    return results
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def process_in_batches(items, batch_size, transform):\n    results = []\n    for i in range(0, len(items), batch_size):\n        batch = items[i:i + batch_size]\n        results.extend(transform(batch))\n    return results\n\ndouble_batch = lambda batch: [x * 2 for x in batch]\nprint(process_in_batches([1, 2, 3, 4, 5], batch_size=2, transform=double_batch))\n# [2, 4, 6, 8, 10] -- processed as batches of [1,2], [3,4], [5], but the RESULT is one flat list`} caption="range(0, len(items), batch_size) is the standard Python idiom for chunking a sequence -- it generates the START index of each batch (0, 2, 4, ...), and items[i:i+batch_size] naturally clips the final batch short if fewer than batch_size items remain, exactly like Kafka's consume_from_offset did." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement batched processing that keeps memory usage bounded regardless of total dataset size, the foundation of any real ETL pipeline.
+</Checkpoint>

@@ -1,0 +1,70 @@
+---
+slug: attention-intuition
+title: Attention Intuition
+estimatedMinutes: 24
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: attention-explanation
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: attention-intuition-ex1
+    difficulty: advanced
+    concept: llm-attention
+    prompt: "Using the provided `softmax(scores)`, write `attention_output(query, keys, values)`: compute each key's dot-product similarity to `query`, softmax those scores into weights, then return the WEIGHTED SUM of `values` using those weights (each component rounded to 4 decimal places)."
+  - id: quiz-1
+    type: quiz
+    concept: llm-attention
+    question: "In scaled dot-product attention, what does the softmax step accomplish?"
+    options: ["It converts raw similarity scores (which can be any real number) into a proper probability distribution — non-negative weights that sum to 1 — so the final output is a genuine weighted AVERAGE of the values, not an unbounded sum", "It sorts the keys by similarity to the query", "It removes the need to compute dot products at all", "It guarantees the output has the same values as the input"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Attention** is how a transformer decides, for each position, how much
+to weight information from every OTHER position. The core computation
+has three ingredients per token: a **query** (what am I looking for?), a
+**key** (what do I offer, for others to match against?), and a **value**
+(what do I actually contribute, once matched?). A query's similarity to
+each key (via dot product) becomes that key's raw attention score.
+
+```python
+import math
+
+def softmax(scores):
+    max_score = max(scores)
+    exps = [math.exp(s - max_score) for s in scores]
+    total = sum(exps)
+    return [round(e / total, 4) for e in exps]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`import math\n\ndef softmax(scores):\n    max_score = max(scores)\n    exps = [math.exp(s - max_score) for s in scores]\n    total = sum(exps)\n    return [round(e / total, 4) for e in exps]\n\nprint(softmax([1, 2, 3]))   # [0.09, 0.2447, 0.6652] -- higher scores get exponentially more weight\nprint(softmax([0, 0, 0]))   # [0.3333, 0.3333, 0.3333] -- equal scores -> equal attention`} caption="Subtracting max_score before exponentiating (max_score - max_score = 0 for the largest score) doesn't change the final result at all -- softmax is shift-invariant -- but it keeps every exponent <= 0, which avoids overflow for large input scores. A real implementation detail, not just a style choice." />
+
+<Explanation id="attention-explanation">
+
+Once every key has a softmax weight (summing to 1 across all keys), the
+attention output for that query is simply the weighted average of every
+position's VALUE — positions with high-scoring keys contribute more,
+low-scoring ones contribute almost nothing. This is the mechanism that
+lets a model dynamically pull in context from anywhere in the sequence,
+rather than only ever looking at a fixed nearby window.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement scaled dot-product attention from scratch — query-key similarity scores, softmax normalization, and the resulting weighted sum over values.
+</Checkpoint>

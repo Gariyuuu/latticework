@@ -9,22 +9,22 @@
     "ml-engineer",
     "research-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "hypotheses-baselines",
       "title": "Hypotheses & Baselines",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "ablations",
       "title": "Ablations",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "tracking",
       "title": "Tracking",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

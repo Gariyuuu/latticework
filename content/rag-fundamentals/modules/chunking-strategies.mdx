@@ -1,0 +1,68 @@
+---
+slug: chunking-strategies
+title: Chunking Strategies
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: chunking-strategies-ex1
+    difficulty: intermediate
+    concept: rag-chunking
+    prompt: "Write `chunk_by_sentences(sentences, max_chars)`: pack a list of sentence strings into chunks (joined with a single space), never exceeding `max_chars` characters per chunk UNLESS a single sentence alone is already longer than `max_chars` (in which case it becomes its own oversized chunk — never split mid-sentence). Return the list of chunk strings."
+  - id: quiz-1
+    type: quiz
+    concept: rag-chunking
+    question: "LLM Fundamentals' `context-windows` module covered fixed-size sliding-window chunking. Why would a RAG pipeline prefer SENTENCE-boundary-aware chunking instead?"
+    options: ["A fixed-size window can cut a sentence exactly in half, so a retrieved chunk might contain an incomplete, confusing fragment of an idea — sentence-aware chunking guarantees every chunk is made of whole, coherent sentences", "Sentence-aware chunking is always faster to compute than fixed-size chunking", "Fixed-size chunking cannot be implemented for text with punctuation", "Sentence boundaries are required by the transformer architecture itself"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A RAG (retrieval-augmented generation) system's quality depends heavily
+on how source documents get split into retrievable **chunks**. LLM
+Fundamentals' fixed-size sliding window is simple, but it can slice a
+sentence in half at a chunk boundary — a retrieved chunk might then
+contain a dangling, confusing fragment. **Sentence-boundary-aware
+chunking** fixes this by packing whole sentences together, only
+starting a new chunk when the next sentence would push past the size
+limit.
+
+```python
+def chunk_by_sentences(sentences, max_chars):
+    chunks = []
+    current = []
+    current_len = 0
+    for sentence in sentences:
+        added_len = len(sentence) + (1 if current else 0)
+        if current and current_len + added_len > max_chars:
+            chunks.append(" ".join(current))
+            current = [sentence]
+            current_len = len(sentence)
+        else:
+            current.append(sentence)
+            current_len += added_len
+    if current:
+        chunks.append(" ".join(current))
+    return chunks
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def chunk_by_sentences(sentences, max_chars):\n    chunks = []\n    current = []\n    current_len = 0\n    for sentence in sentences:\n        added_len = len(sentence) + (1 if current else 0)\n        if current and current_len + added_len > max_chars:\n            chunks.append(" ".join(current))\n            current = [sentence]\n            current_len = len(sentence)\n        else:\n            current.append(sentence)\n            current_len += added_len\n    if current:\n        chunks.append(" ".join(current))\n    return chunks\n\nsentences = ["The cat sat.", "It was warm.", "The sun was bright.", "A bird sang nearby."]\nprint(chunk_by_sentences(sentences, max_chars=25))\n# ['The cat sat. It was warm.', 'The sun was bright.', 'A bird sang nearby.']\n# -- every chunk is made of COMPLETE sentences, none cut mid-way`} caption="Notice a chunk can end up slightly UNDER max_chars if the next sentence wouldn't fit -- this function always prioritizes never splitting a sentence over hitting the size limit exactly, which is the entire point of this strategy over fixed-size windows." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement sentence-boundary-aware chunking, trading a little size precision for guaranteeing every chunk stays coherent.
+</Checkpoint>

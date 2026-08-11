@@ -1,0 +1,11 @@
+{
+  "id": "replication-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def read_latest(contacted_replicas):\n    ...\n",
+  "cases": [
+    { "call": "read_latest([('v1', 100), ('v2', 105), ('v3', 103)])", "expect": "v2" },
+    { "call": "read_latest([('stale', 1), ('fresh', 2)])", "expect": "fresh" },
+    { "call": "read_latest([('only', 5)])", "expect": "only" }
+  ]
+}

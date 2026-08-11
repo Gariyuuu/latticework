@@ -1,0 +1,11 @@
+{
+  "id": "scalability-basics-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def shard_for_key(key, boundaries):\n    ...\n",
+  "cases": [
+    { "call": "shard_for_key(50, [100, 200, 300])", "expect": "0" },
+    { "call": "shard_for_key(150, [100, 200, 300])", "expect": "1" },
+    { "call": "shard_for_key(350, [100, 200, 300])", "expect": "3" }
+  ]
+}

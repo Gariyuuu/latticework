@@ -1,0 +1,11 @@
+{
+  "id": "tracking-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def runs_with_param(runs, param_name, param_value):\n    ...\n",
+  "cases": [
+    { "call": "runs_with_param([{'run_id': 'run-1', 'params': {'lr': 0.01, 'batch_size': 32}, 'metric': 0.82}, {'run_id': 'run-2', 'params': {'lr': 0.001, 'batch_size': 32}, 'metric': 0.88}, {'run_id': 'run-3', 'params': {'lr': 0.01, 'batch_size': 64}, 'metric': 0.79}], 'batch_size', 32)", "expect": "['run-1', 'run-2']" },
+    { "call": "runs_with_param([{'run_id': 'run-1', 'params': {'lr': 0.01, 'batch_size': 32}, 'metric': 0.82}, {'run_id': 'run-2', 'params': {'lr': 0.001, 'batch_size': 32}, 'metric': 0.88}, {'run_id': 'run-3', 'params': {'lr': 0.01, 'batch_size': 64}, 'metric': 0.79}], 'lr', 0.01)", "expect": "['run-1', 'run-3']" },
+    { "call": "runs_with_param([{'run_id': 'run-1', 'params': {'lr': 0.01}, 'metric': 0.82}], 'batch_size', 32)", "expect": "[]" }
+  ]
+}

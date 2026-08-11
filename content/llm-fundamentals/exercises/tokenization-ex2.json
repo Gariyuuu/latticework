@@ -1,0 +1,11 @@
+{
+  "id": "tokenization-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def encode(text, vocab, unk_id=-1):\n    ...\n",
+  "cases": [
+    { "call": "encode('the cat sat', {'the': 0, 'cat': 1, 'sat': 2, 'on': 3, 'mat': 4})", "expect": "[0, 1, 2]" },
+    { "call": "encode('the dog sat', {'the': 0, 'cat': 1, 'sat': 2, 'on': 3, 'mat': 4})", "expect": "[0, -1, 2]" },
+    { "call": "encode('the mat', {'the': 0, 'cat': 1, 'sat': 2, 'on': 3, 'mat': 4}, unk_id=99)", "expect": "[0, 4]" }
+  ]
+}

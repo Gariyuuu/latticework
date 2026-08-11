@@ -1,0 +1,66 @@
+---
+slug: retrieval-pipeline
+title: The Retrieval Pipeline
+estimatedMinutes: 22
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: retrieval-pipeline-ex1
+    difficulty: advanced
+    concept: rag-retrieval-pipeline
+    prompt: "Using the provided `cosine_similarity`, write `retrieve_within_budget(query, candidates, token_budget)`: `candidates` is a list of `(chunk_id, vector, token_count)`. Rank candidates by similarity to `query` (highest first), then greedily select chunk IDs in that order as long as adding one doesn't exceed `token_budget`. Return the selected chunk IDs in selection order."
+  - id: quiz-1
+    type: quiz
+    concept: rag-retrieval-pipeline
+    question: "Why does a RAG pipeline need a token BUDGET when selecting retrieved chunks, not just 'take the top-k most similar'?"
+    options: ["The retrieved chunks get inserted into the LLM's prompt alongside the query, and that prompt is bounded by the model's context window — a fixed top-k could still blow the budget if chunks vary in length, so budget-aware selection is what actually respects the hard context-window limit", "Token budgets are only relevant for billing purposes, not for correctness", "A token budget guarantees the LLM's response will be a fixed length", "Retrieval always happens after the context window is already full"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+This module wires together two things you've already built: Embeddings'
+cosine similarity (rank candidates by relevance) and LLM Fundamentals'
+context-window awareness (respect a hard token limit). A real RAG
+pipeline does exactly this — embed the query, score every candidate
+chunk by similarity, then greedily pack the most relevant chunks into
+the prompt until the token budget available for retrieved context runs
+out.
+
+```python
+def cosine_similarity(a, b):
+    dot = sum(x * y for x, y in zip(a, b))
+    mag_a = sum(x ** 2 for x in a) ** 0.5
+    mag_b = sum(x ** 2 for x in b) ** 0.5
+    return dot / (mag_a * mag_b)
+
+def retrieve_within_budget(query, candidates, token_budget):
+    scored = sorted(candidates, key=lambda c: -cosine_similarity(query, c[1]))
+    selected = []
+    used = 0
+    for chunk_id, vector, token_count in scored:
+        if used + token_count <= token_budget:
+            selected.append(chunk_id)
+            used += token_count
+    return selected
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`# cosine_similarity() as defined above\ndef retrieve_within_budget(query, candidates, token_budget):\n    scored = sorted(candidates, key=lambda c: -cosine_similarity(query, c[1]))\n    selected = []\n    used = 0\n    for chunk_id, vector, token_count in scored:\n        if used + token_count <= token_budget:\n            selected.append(chunk_id)\n            used += token_count\n    return selected\n\ncandidates = [("a", (1, 0), 50), ("b", (0, 1), 30), ("c", (0.9, 0.1), 40)]\nprint(retrieve_within_budget((1, 0), candidates, 100))   # ['a', 'c'] -- most relevant first, 'b' doesn't fit\nprint(retrieve_within_budget((1, 0), candidates, 50))    # ['a'] -- budget too tight for anything else`} caption="This is a GREEDY selection, not an optimal one -- it always takes the highest-similarity chunk that still fits, skipping over ones that don't, rather than solving for the absolute best-scoring COMBINATION that fits the budget (which would be a proper knapsack problem). Real RAG systems use this same greedy approach because it's simple, fast, and 'most relevant first' is usually good enough in practice." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can build a budget-aware retrieval step that combines similarity ranking with a hard token limit, the core of a real RAG pipeline's context-selection stage.
+</Checkpoint>

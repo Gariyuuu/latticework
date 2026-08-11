@@ -11,7 +11,7 @@
     "software-engineer",
     "data-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "cap-theorem",
@@ -21,12 +21,12 @@
     {
       "slug": "consensus-basics",
       "title": "Consensus Basics",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "replication",
       "title": "Replication",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

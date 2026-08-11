@@ -1,0 +1,62 @@
+---
+slug: context-windows
+title: Context Windows
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: context-windows-ex1
+    difficulty: intermediate
+    concept: llm-context-windows
+    prompt: "Write `chunk_tokens(tokens, window_size, stride)`: split `tokens` into overlapping windows of length `window_size`, advancing `stride` tokens between window starts. Include a final, possibly-shorter window if any tokens remain, then stop. Return the list of windows."
+  - id: quiz-1
+    type: quiz
+    concept: llm-context-windows
+    question: "Why would you chunk a long document into OVERLAPPING windows (stride < window_size) instead of non-overlapping ones, when feeding it to a model with a limited context window?"
+    options: ["Non-overlapping chunks can split a sentence or idea exactly at a chunk boundary, so the model never sees that piece of context in one window at all — overlap ensures content near a boundary still appears complete in at least one window", "Overlapping windows make the model run faster", "Overlap is required by every attention mechanism to function at all", "Non-overlapping windows would exceed the vocabulary size"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Every LLM has a fixed **context window** — a maximum number of tokens
+it can attend to at once. A document longer than that has to be split
+into chunks. Splitting into non-overlapping windows is the naive
+approach, but it risks cutting an idea exactly in half at a chunk
+boundary, so the model never sees that content in one coherent window.
+The fix is a **sliding window** with overlap: each new window starts
+partway through the previous one, so boundary content still shows up
+whole in at least one chunk.
+
+```python
+def chunk_tokens(tokens, window_size, stride):
+    chunks = []
+    i = 0
+    while i < len(tokens):
+        chunk = tokens[i:i + window_size]
+        chunks.append(chunk)
+        if i + window_size >= len(tokens):
+            break
+        i += stride
+    return chunks
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def chunk_tokens(tokens, window_size, stride):\n    chunks = []\n    i = 0\n    while i < len(tokens):\n        chunk = tokens[i:i + window_size]\n        chunks.append(chunk)\n        if i + window_size >= len(tokens):\n            break\n        i += stride\n    return chunks\n\ntokens = list(range(10))\nprint(chunk_tokens(tokens, window_size=4, stride=4))\n# [[0,1,2,3], [4,5,6,7], [8,9]] -- no overlap (stride == window_size)\n\nprint(chunk_tokens(tokens, window_size=4, stride=2))\n# [[0,1,2,3], [2,3,4,5], [4,5,6,7], [6,7,8,9]] -- each window shares 2 tokens with the next`} caption="stride == window_size (the first example) gives you plain non-overlapping chunking -- overlap only appears once stride is smaller than window_size, which is exactly the knob you'd tune to trade 'more redundant compute' for 'less risk of splitting content awkwardly.'" />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement sliding-window chunking with configurable overlap, the standard technique for fitting long documents through a model's fixed context window.
+</Checkpoint>

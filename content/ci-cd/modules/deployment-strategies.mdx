@@ -1,0 +1,59 @@
+---
+slug: deployment-strategies
+title: Rolling Deployments
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: deployment-strategies-ex1
+    difficulty: intermediate
+    concept: ci-cd-deployment-strategies
+    prompt: "Write `rolling_deployment_progress(total_instances, batch_size)`: repeatedly update up to `batch_size` instances at a time until all `total_instances` are updated. Return a list of `(updated_count, remaining_old_count)` tuples, one per batch, tracking cumulative progress."
+  - id: quiz-1
+    type: quiz
+    concept: ci-cd-deployment-strategies
+    question: "Model Deployment's `versioning` module covered canary rollouts (a growing PERCENTAGE of traffic). How does a rolling deployment differ?"
+    options: ["A rolling deployment replaces INSTANCES batch by batch until every instance runs the new version — there's no permanent split traffic; a canary instead keeps both versions running simultaneously, gradually shifting what percentage of traffic each gets", "Rolling deployments and canary rollouts are exactly the same technique with different names", "Rolling deployments only apply to database migrations, never to application code", "Canary rollouts always complete faster than rolling deployments"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A **rolling deployment** updates a fleet of instances in batches:
+take a few instances out of rotation, update them to the new version,
+bring them back, then move to the next batch — until every instance is
+on the new version. Unlike a canary rollout (which keeps both versions
+running side-by-side while shifting a traffic PERCENTAGE), a rolling
+deployment is a one-way march toward every instance running the new
+code, with no ongoing traffic split once it finishes.
+
+```python
+def rolling_deployment_progress(total_instances, batch_size):
+    progress = []
+    updated = 0
+    while updated < total_instances:
+        batch = min(batch_size, total_instances - updated)
+        updated += batch
+        progress.append((updated, total_instances - updated))
+    return progress
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def rolling_deployment_progress(total_instances, batch_size):\n    progress = []\n    updated = 0\n    while updated < total_instances:\n        batch = min(batch_size, total_instances - updated)\n        updated += batch\n        progress.append((updated, total_instances - updated))\n    return progress\n\nprint(rolling_deployment_progress(10, 3))\n# [(3, 7), (6, 4), (9, 1), (10, 0)] -- 4 batches, the last one smaller since only 1 instance remained`} caption="Notice the last batch is only 1 instance, not 3 -- min(batch_size, total_instances - updated) always caps a batch at whatever's actually left, the same 'don't overshoot the remaining amount' pattern used in Kafka's consume_from_offset when a partition has fewer messages left than the requested batch_size." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute rolling deployment progress batch by batch, and distinguish it from a canary rollout's traffic-percentage-based approach.
+</Checkpoint>

@@ -1,0 +1,63 @@
+---
+slug: garbage-collection
+title: Garbage Collection
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: garbage-collection-ex1
+    difficulty: intermediate
+    concept: memory-management-garbage-collection
+    prompt: "Write `simulate_refcounts(operations)`: `operations` is a list of `('alloc', obj_id)`, `('ref', obj_id)`, or `('unref', obj_id)`. `'alloc'` sets the object's count to 1; `'ref'` increments it; `'unref'` decrements it, and if it reaches 0, the object is freed (record its ID, in order, in the returned list; don't track it further). Return the list of freed object IDs."
+  - id: quiz-1
+    type: quiz
+    concept: memory-management-garbage-collection
+    question: "Reference counting is one real garbage collection strategy (used by CPython, among others). What's its most well-known failure case?"
+    options: ["Reference CYCLES — two objects that reference each other (directly or through a chain) never reach a count of 0 even after nothing else in the program can reach them, so pure reference counting alone would leak that memory forever", "Reference counting cannot free any object, ever", "Reference counting only works for numeric object types", "Reference counting is slower than every other GC strategy in all cases"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Reference counting** is one of the simplest real garbage collection
+strategies: every object tracks how many live references point to it.
+Creating a new reference increments the count; dropping one decrements
+it; the moment the count hits zero, nothing in the program can reach
+that object anymore, so it's safe to free immediately.
+
+```python
+def simulate_refcounts(operations):
+    refcounts = {}
+    freed = []
+    for kind, obj_id in operations:
+        if kind == "alloc":
+            refcounts[obj_id] = 1
+        elif kind == "ref":
+            refcounts[obj_id] += 1
+        elif kind == "unref":
+            refcounts[obj_id] -= 1
+            if refcounts[obj_id] == 0:
+                freed.append(obj_id)
+                del refcounts[obj_id]
+    return freed
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def simulate_refcounts(operations):\n    refcounts = {}\n    freed = []\n    for kind, obj_id in operations:\n        if kind == "alloc":\n            refcounts[obj_id] = 1\n        elif kind == "ref":\n            refcounts[obj_id] += 1\n        elif kind == "unref":\n            refcounts[obj_id] -= 1\n            if refcounts[obj_id] == 0:\n                freed.append(obj_id)\n                del refcounts[obj_id]\n    return freed\n\nprint(simulate_refcounts([("alloc", "a"), ("ref", "a"), ("unref", "a"), ("unref", "a")]))\n# ['a'] -- count went 1 -> 2 -> 1 -> 0, freed on the second unref\n\nprint(simulate_refcounts([("alloc", "x"), ("ref", "x"), ("ref", "x"), ("unref", "x"), ("unref", "x")]))\n# [] -- count went 1 -> 2 -> 3 -> 2 -> 1, never reached zero, still alive`} caption="This is EXACTLY why CPython (which uses reference counting as its primary GC) also needs a SEPARATE cycle-detecting collector running periodically -- pure refcounting like this simulate_refcounts function would never free two objects that reference each other, since neither one's count ever reaches zero on its own." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can simulate reference-counting garbage collection, and understand its classic blind spot: reference cycles that never reach a count of zero.
+</Checkpoint>

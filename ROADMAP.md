@@ -351,6 +351,63 @@ same change as any feature work.
   non-reproducible across runs and defeat the whole exercise.
   `delivery-guarantees`'s idempotent-consumer dedup reuses the same
   set-membership pattern as Data Structures' hash-tables module.
+- Fully built: ML Experiment Design (3/3 — hypotheses-baselines,
+  ablations, tracking) — **Done**. Reaches 42/99.
+- Fully built: Model Deployment (3/3 — serving-patterns,
+  batch-vs-real-time, versioning) — **Done**. Reaches 43/99.
+  `serving-patterns` implements real dynamic-batching logic (bounded by
+  both max size and max wait); `versioning`'s canary-stage function
+  always rolls back to 0% on a bad error rate regardless of current
+  traffic percentage.
+- Fully built: Distributed Systems Fundamentals (2/3 —
+  consensus-basics, replication; cap-theorem left planned — pure
+  classification/definitional, no code-testable angle, same reasoning
+  as SQL's schema-design) — **Done**. Reaches 44/99. `replication`'s
+  `w + r > n` quorum-overlap guarantee is derived and explained via the
+  pigeonhole principle, not just stated.
+- Fully built: LLM Fundamentals (3/4 — tokenization,
+  attention-intuition, context-windows; `limitations` left planned —
+  pure-conceptual, no code angle) — **Done**. Reaches 45/99.
+  `attention-intuition` implements real scaled dot-product attention
+  (softmax + weighted sum over values) from scratch, no numpy needed.
+- Fully built: System Design Fundamentals (3/4 — scalability-basics,
+  caching, load-balancing; trade-off-interviews left planned — pure
+  interview-prep, no code angle) — **Done**. Reaches 46/99.
+  `load-balancing` implements real consistent hashing with virtual
+  nodes (using `hashlib.md5` for proper spread, unlike Kafka's simpler
+  polynomial hash which only needed mod-N determinism, not full-range
+  uniformity) — empirically verified that adding a 4th node to a
+  3-node ring only remaps ~8% of 200 sample keys, vs. nearly 100% under
+  naive `hash(key) % num_servers`. `caching` implements LFU eviction as
+  a deliberate contrast to the LRU already covered twice (Redis, OS).
+- Fully built: Memory Management (3/3 — stack-vs-heap,
+  garbage-collection, manual-management-pitfalls) — **Done**. Reaches
+  47/99. All three simulate a specific bug class (stack overflow,
+  reference-counting's cycle blind spot, use-after-free/double-free)
+  via explicit operation sequences, gradeable without needing a real C
+  runtime.
+- Fully built: RAG Fundamentals (3/3 — chunking-strategies,
+  retrieval-pipeline, evaluation) — **Done**. Reaches 48/99. A
+  deliberate capstone-style track: `retrieval-pipeline` directly reuses
+  Embeddings' `cosine_similarity`; `chunking-strategies` is framed as a
+  distinct angle from LLM Fundamentals' fixed-size sliding window
+  (sentence-boundary-aware instead); `evaluation` applies
+  precision@k/recall@k to ranked retrieval results.
+- Fully built: CI/CD (3/3 — pipelines, automated-testing-gates,
+  deployment-strategies) — **Done**. Reaches 49/99. `pipelines` reuses
+  the topological-sort shape from Algorithms' graph-algorithms module,
+  applied to build-stage dependencies; `deployment-strategies`'s
+  rolling-deployment batching is deliberately framed as distinct from
+  Model Deployment's percentage-based canary rollout.
+- Fully built: ETL / ELT (3/3 — batch-pipelines, idempotency,
+  orchestration-basics) — **Done**. Reaches **50/99 skills built** —
+  the explicit target set for this session's "go to 50" push, **goal
+  reached**. `idempotency`'s upsert-by-key approach is deliberately
+  contrasted with Kafka's ID-based dedup (storage-operation idempotency
+  vs. message-tracking idempotency); `orchestration-basics`'s live
+  `ready_tasks` readiness check is framed as distinct from CI/CD's
+  static `topological_order` (dynamic re-evaluation vs. one-shot
+  ordering).
 - Linux, PyTorch, C++ — **Planned** (metadata skeletons done as part
   of the wider ~70-90 skill catalog; module content not yet authored).
   Linux needs the CLI-simulation exercise type, which isn't implemented
@@ -465,20 +522,26 @@ every one of the resulting 45 built lesson pages was fetched from a live
 dev server to confirm it actually renders, before being committed to
 content.
 
-Two instances of the same MDX bug were caught this way: a
-backslash-escaped quote inside a JSX attribute (e.g.
-`caption="...\"#\"..."`) — JSX attributes don't support backslash-
+Three instances of the same MDX bug were caught this way (across
+multiple sessions): a backslash-escaped quote inside a JSX attribute
+(e.g. `caption="...\"#\"..."`) — JSX attributes don't support backslash-
 escaping, so it silently breaks MDX compilation for that one lesson (500
-on page load, with no typecheck/lint/build error). Found in the new
-`data-structures/modules/tries.mdx`, and — more notably — in the
-pre-existing `python/modules/functions.mdx`, which had apparently never
-been dev-server-rendered since it was first written. Both are fixed now.
+on page load, with no typecheck/lint/build error). Found in
+`data-structures/modules/tries.mdx`, the pre-existing
+`python/modules/functions.mdx` (which had apparently never been
+dev-server-rendered since it was first written), and — in the Batch 7
+"go to 50" push — `system-design/modules/scalability-basics.mdx`, where
+a caption embedded a quoted example phrase. All three are fixed now.
 **Rule for all future content:** never backslash-escape a quote inside a
 JSX attribute string; rephrase to avoid embedding the quote character
 instead. `content:sync` only validates frontmatter/JSON schema, not MDX
-body syntax — it will NOT catch this class of bug. Always load every new
-or edited lesson page in a running dev server before calling content
-done.
+body syntax — it will NOT catch this class of bug, and neither does
+`next build` (confirmed again this session: `npm run build` passed
+clean with the bug still present in the file — only an actual
+dev-server page fetch surfaced the 500). Always load every new or
+edited lesson page in a running dev server before calling content
+done, and grep new content for `caption="[^"]*\\"` as a fast
+pre-check before that full render sweep.
 
 Next content candidates (SQL/NumPy/Pandas/Probability/Statistics) all
 need new infrastructure first — either the sql.js sandbox provider, or

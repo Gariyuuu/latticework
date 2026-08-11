@@ -1,0 +1,11 @@
+{
+  "id": "automated-testing-gates-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def deployment_gate(pass_rate, coverage, min_pass_rate=0.95, min_coverage=0.80):\n    ...\n",
+  "cases": [
+    { "call": "deployment_gate(1.0, 0.85)", "expect": "approved" },
+    { "call": "deployment_gate(0.90, 0.85)", "expect": "blocked: pass rate too low" },
+    { "call": "deployment_gate(1.0, 0.70)", "expect": "blocked: coverage too low" }
+  ]
+}

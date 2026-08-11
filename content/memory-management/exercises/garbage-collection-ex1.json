@@ -1,0 +1,11 @@
+{
+  "id": "garbage-collection-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def simulate_refcounts(operations):\n    ...\n",
+  "cases": [
+    { "call": "simulate_refcounts([('alloc', 'a'), ('ref', 'a'), ('unref', 'a'), ('unref', 'a')])", "expect": "['a']" },
+    { "call": "simulate_refcounts([('alloc', 'a'), ('alloc', 'b'), ('unref', 'a')])", "expect": "['a']" },
+    { "call": "simulate_refcounts([('alloc', 'x'), ('ref', 'x'), ('ref', 'x'), ('unref', 'x'), ('unref', 'x')])", "expect": "[]" }
+  ]
+}

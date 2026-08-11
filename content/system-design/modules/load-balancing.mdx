@@ -1,0 +1,82 @@
+---
+slug: load-balancing
+title: Consistent Hashing
+estimatedMinutes: 24
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: disruption-explanation
+    type: explanation
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: load-balancing-ex1
+    difficulty: advanced
+    concept: system-design-consistent-hashing
+    prompt: "Using the provided `deterministic_hash` and `build_ring`, write `assign_key_to_node(ring, key)`: hash `key`, then walk the ring's sorted hash points and return the node at the FIRST point `>=` the key's hash — wrapping around to the smallest point if the key's hash exceeds every point on the ring."
+  - id: quiz-1
+    type: quiz
+    concept: system-design-consistent-hashing
+    question: "Networking Basics' load-balancing module covered simple round-robin distribution. Why does adding or removing a SERVER matter so much more for a naive `hash(key) % num_servers` scheme than for consistent hashing?"
+    options: ["Changing `num_servers` changes the modulus for every single key at once, reassigning almost all of them to a different server — consistent hashing instead only remaps the keys that fell in the specific ring segment near the added/removed node, leaving the rest untouched", "Naive hash % N and consistent hashing always produce identical reassignments", "Consistent hashing requires exactly 3 servers to work correctly", "Adding a server has no effect under either scheme"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Networking Basics' `load-balancing` module distributed REQUESTS round-
+robin, but that only works when requests are stateless and
+interchangeable. Sharding DATA across servers is a different problem:
+each key needs to consistently land on the SAME server every time, but
+naive `hash(key) % num_servers` breaks badly when a server is added or
+removed — changing `num_servers` reshuffles nearly every key's
+assignment at once. **Consistent hashing** fixes this by placing both
+servers and keys on the same circular hash space (a "ring"): a key
+belongs to whichever server's point comes next going clockwise. Each
+server gets several points on the ring (**virtual nodes**) for a more
+even spread.
+
+```python
+import hashlib
+
+def deterministic_hash(s):
+    return int(hashlib.md5(s.encode()).hexdigest(), 16) % (2 ** 32)
+
+def build_ring(nodes, num_virtual=3):
+    ring = {}
+    for node in nodes:
+        for v in range(num_virtual):
+            point = deterministic_hash(f"{node}-{v}")
+            ring[point] = node
+    return ring
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`import hashlib\n\ndef deterministic_hash(s):\n    return int(hashlib.md5(s.encode()).hexdigest(), 16) % (2 ** 32)\n\ndef build_ring(nodes, num_virtual=3):\n    ring = {}\n    for node in nodes:\n        for v in range(num_virtual):\n            point = deterministic_hash(f"{node}-{v}")\n            ring[point] = node\n    return ring\n\ndef assign_key_to_node(ring, key):\n    h = deterministic_hash(key)\n    sorted_points = sorted(ring.keys())\n    for point in sorted_points:\n        if h <= point:\n            return ring[point]\n    return ring[sorted_points[0]]   # wrap around past the largest point\n\nring = build_ring(["node-a", "node-b", "node-c"])\nprint(assign_key_to_node(ring, "user-1"))   # deterministic -- always the same node for this key\nprint(assign_key_to_node(ring, "user-1") == assign_key_to_node(ring, "user-1"))   # True`} caption="Note this uses hashlib.md5, NOT the simple polynomial hash from Kafka's topics-partitions module -- md5 spreads similar-looking strings (like 'node-a-0' vs 'node-a-1') much more evenly across the full hash space, which matters here because the RING needs good spread, not just 'any deterministic mod-N bucket' like Kafka's simpler partition count did." />
+
+<Explanation id="disruption-explanation">
+
+The payoff: adding a 4th server to a 3-server ring only remaps the
+keys that happen to fall in the ring segment now claimed by the new
+server's virtual nodes — everything else stays exactly where it was. A
+quick empirical check confirms this: hashing 200 sample keys against a
+3-node ring, then again against a 4-node ring, only about **8%** of
+keys actually move to a different node — versus nearly 100% under naive
+`hash(key) % num_servers`, since changing the modulus from 3 to 4
+reshuffles almost every key's remainder.
+
+</Explanation>
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement consistent hashing with virtual nodes, and understand why it minimizes key reassignment when the number of servers changes — unlike naive modulo-based sharding.
+</Checkpoint>

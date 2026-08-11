@@ -1,0 +1,11 @@
+{
+  "id": "tokenization-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def build_vocab(corpus_words):\n    ...\n",
+  "cases": [
+    { "call": "build_vocab(['the', 'cat', 'sat', 'on', 'the', 'mat'])", "expect": "{'the': 0, 'cat': 1, 'sat': 2, 'on': 3, 'mat': 4}" },
+    { "call": "build_vocab(['a', 'a', 'a'])", "expect": "{'a': 0}" },
+    { "call": "build_vocab([])", "expect": "{}" }
+  ]
+}

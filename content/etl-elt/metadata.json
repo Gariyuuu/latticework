@@ -10,22 +10,22 @@
   "usefulFor": [
     "data-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "batch-pipelines",
       "title": "Batch Pipelines",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "idempotency",
       "title": "Idempotency",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "orchestration-basics",
       "title": "Orchestration Basics",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

@@ -9,22 +9,22 @@
     "ai-engineer",
     "ml-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "tokenization",
       "title": "Tokenization",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "attention-intuition",
       "title": "Attention Intuition",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "context-windows",
       "title": "Context Windows",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "limitations",

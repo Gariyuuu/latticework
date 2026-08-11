@@ -1,0 +1,11 @@
+{
+  "id": "evaluation-ex2",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def recall_at_k(retrieved, relevant, k):\n    ...\n",
+  "cases": [
+    { "call": "recall_at_k(['c3', 'c1', 'c5', 'c2', 'c4'], {'c1', 'c2', 'c6'}, 3)", "expect": "0.3333" },
+    { "call": "recall_at_k(['c3', 'c1', 'c5', 'c2', 'c4'], {'c1', 'c2', 'c6'}, 5)", "expect": "0.6667" },
+    { "call": "recall_at_k(['c1', 'c2'], {'c1', 'c2'}, 2)", "expect": "1.0" }
+  ]
+}

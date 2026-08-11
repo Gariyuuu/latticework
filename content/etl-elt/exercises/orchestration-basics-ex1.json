@@ -1,0 +1,11 @@
+{
+  "id": "orchestration-basics-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def ready_tasks(dependencies, completed):\n    ...\n",
+  "cases": [
+    { "call": "ready_tasks({'extract': [], 'transform': ['extract'], 'load': ['transform'], 'notify': ['load']}, set())", "expect": "['extract']" },
+    { "call": "ready_tasks({'extract': [], 'transform': ['extract'], 'load': ['transform'], 'notify': ['load']}, {'extract', 'transform'})", "expect": "['load']" },
+    { "call": "ready_tasks({'extract': [], 'transform': ['extract'], 'load': ['transform'], 'notify': ['load']}, {'extract', 'transform', 'load', 'notify'})", "expect": "[]" }
+  ]
+}

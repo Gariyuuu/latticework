@@ -1,0 +1,11 @@
+{
+  "id": "idempotency-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def load_upsert(target, records, key_field):\n    ...\n\ndef simulate_double_load(records, key_field):\n    target = {}\n    load_upsert(target, records, key_field)\n    first_len = len(target)\n    load_upsert(target, records, key_field)\n    second_len = len(target)\n    return (first_len, second_len)\n",
+  "cases": [
+    { "call": "simulate_double_load([{'id': 1, 'val': 'a'}, {'id': 2, 'val': 'b'}], 'id')", "expect": "(2, 2)" },
+    { "call": "simulate_double_load([{'id': 1, 'val': 'x'}], 'id')", "expect": "(1, 1)" },
+    { "call": "simulate_double_load([{'id': 1, 'val': 'x'}, {'id': 1, 'val': 'y'}], 'id')", "expect": "(1, 1)" }
+  ]
+}

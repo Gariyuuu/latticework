@@ -1,0 +1,57 @@
+---
+slug: idempotency
+title: Idempotent Loads
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: idempotency-ex1
+    difficulty: intermediate
+    concept: etl-idempotency
+    prompt: "Write `load_upsert(target, records, key_field)`: for each record in `records`, set `target[record[key_field]] = record` (insert if new, overwrite if the key already exists). Return `target`."
+  - id: quiz-1
+    type: quiz
+    concept: etl-idempotency
+    question: "Why must an ETL pipeline's LOAD step be idempotent (safe to re-run with the same input, producing the same final result) rather than simply appending every batch?"
+    options: ["Pipelines fail and get retried — a failed batch that partially loaded, then gets re-run from the start, would create duplicate rows under a naive append; upserting by a stable key means re-running the exact same batch twice leaves the target in the same final state either way", "Idempotency is only a concern for real-time pipelines, never batch ones", "Appending is always faster and safer than upserting", "Idempotent loads are impossible to implement with a plain dictionary or database table"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Real pipelines fail partway through and get retried — a network
+hiccup, a worker crash, an orchestrator restart. If the LOAD step
+simply appends every record it sees, a retried batch creates duplicate
+rows. The fix is to make loading **idempotent**: upsert by a stable key
+(insert if new, overwrite if it already exists) so running the exact
+same batch twice leaves the target in the identical final state either
+way — this is the same guarantee Kafka's `delivery-guarantees` module
+achieved for message processing, applied here to the load step of a
+pipeline.
+
+```python
+def load_upsert(target, records, key_field):
+    for record in records:
+        target[record[key_field]] = record
+    return target
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def load_upsert(target, records, key_field):\n    for record in records:\n        target[record[key_field]] = record\n    return target\n\ntarget = {}\nrecords = [{"id": 1, "val": "a"}, {"id": 2, "val": "b"}]\nload_upsert(target, records, "id")\nprint(len(target))   # 2\n\n# a retry re-runs the EXACT SAME batch -- upsert means this is a no-op, not a duplicate\nload_upsert(target, records, "id")\nprint(len(target))   # still 2, not 4 -- the load is idempotent`} caption="Contrast this with Kafka's delivery-guarantees dedup_process, which detects and skips duplicate MESSAGES by ID -- here, idempotency comes from the STORAGE OPERATION itself (upsert-by-key naturally overwrites rather than duplicates), so there's no need to track which records were 'already seen' at all." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement an idempotent upsert-based load step, so a pipeline retry never produces duplicate data.
+</Checkpoint>

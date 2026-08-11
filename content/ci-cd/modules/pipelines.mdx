@@ -1,0 +1,63 @@
+---
+slug: pipelines
+title: Pipeline Stage Ordering
+estimatedMinutes: 20
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: pipelines-ex1
+    difficulty: intermediate
+    concept: ci-cd-pipelines
+    prompt: "Write `topological_order(stages)`: `stages` maps each stage name to a list of stages it depends on. Return a valid execution order where every stage appears AFTER all of its dependencies."
+  - id: quiz-1
+    type: quiz
+    concept: ci-cd-pipelines
+    question: "Why is a CI/CD pipeline's stage-dependency graph fundamentally the same problem as Algorithms' topological-sort module?"
+    options: ["A pipeline stage (like 'deploy') can't run before the stages it depends on (like 'test' and 'lint') finish — that's exactly the 'some tasks must come before others' constraint that topological sort exists to satisfy for any directed acyclic graph, not just build pipelines specifically", "CI/CD pipelines never actually have dependencies between stages", "Topological sort only works for exactly 4 stages, matching typical pipeline sizes", "Pipeline ordering is decided randomly and topological sort has nothing to do with it"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A CI/CD pipeline is a set of stages (build, test, lint, deploy...) with
+dependencies between them — `deploy` can't run until both `test` and
+`lint` pass, and neither of those can run until `build` produces
+something to test. This is exactly the same shape as Algorithms'
+`graph-algorithms` topological sort: given a directed acyclic graph of
+"must come before" constraints, find a valid linear order.
+
+```python
+def topological_order(stages):
+    visited = set()
+    order = []
+    def visit(stage):
+        if stage in visited:
+            return
+        visited.add(stage)
+        for dep in stages.get(stage, []):
+            visit(dep)
+        order.append(stage)
+    for stage in stages:
+        visit(stage)
+    return order
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def topological_order(stages):\n    visited = set()\n    order = []\n    def visit(stage):\n        if stage in visited:\n            return\n        visited.add(stage)\n        for dep in stages.get(stage, []):\n            visit(dep)\n        order.append(stage)\n    for stage in stages:\n        visit(stage)\n    return order\n\nstages = {\n    "build": [],\n    "test": ["build"],\n    "lint": ["build"],\n    "deploy": ["test", "lint"],\n}\nprint(topological_order(stages))\n# ['build', 'test', 'lint', 'deploy'] -- build first, deploy last, exactly as the dependencies require`} caption="This recurses into a stage's DEPENDENCIES before appending the stage itself to order -- a dependency can never be appended after something that needs it, because by the time a stage gets appended, every one of its dependencies has already fully recursed and appended first." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can compute a valid pipeline execution order from a stage-dependency graph via topological sort — the same algorithm behind `git bisect`-style dependency resolution and build systems generally.
+</Checkpoint>

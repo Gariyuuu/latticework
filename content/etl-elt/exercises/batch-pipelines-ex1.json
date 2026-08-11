@@ -1,0 +1,11 @@
+{
+  "id": "batch-pipelines-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def process_in_batches(items, batch_size, transform):\n    ...\n",
+  "cases": [
+    { "call": "process_in_batches([1, 2, 3, 4, 5], 2, lambda batch: [x * 2 for x in batch])", "expect": "[2, 4, 6, 8, 10]" },
+    { "call": "process_in_batches([1, 2, 3], 5, lambda batch: [x + 1 for x in batch])", "expect": "[2, 3, 4]" },
+    { "call": "process_in_batches([], 3, lambda batch: batch)", "expect": "[]" }
+  ]
+}

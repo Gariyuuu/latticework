@@ -1,0 +1,55 @@
+---
+slug: scalability-basics
+title: Scalability Basics
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: python
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: scalability-basics-ex1
+    difficulty: beginner
+    concept: system-design-scalability
+    prompt: "Write `shard_for_key(key, boundaries)`: `boundaries` is a sorted list of upper-bound values, one per shard except the last (unbounded) shard. Return the index of the first shard whose boundary is `>= key`, or the last shard's index if `key` exceeds every boundary."
+  - id: quiz-1
+    type: quiz
+    concept: system-design-scalability
+    question: "What's the main weakness of RANGE-based sharding (like `shard_for_key`) compared to hash-based sharding?"
+    options: ["If keys aren't evenly distributed across the value range (e.g. most user IDs are recent, high-numbered ones), some shards end up far more loaded than others — range boundaries don't automatically balance load the way a hash function does", "Range-based sharding cannot be implemented in any programming language", "Range-based sharding requires more shards than hash-based sharding", "Range-based sharding only works for string keys, never numbers"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+**Horizontal scaling** means spreading data (or load) across multiple
+machines instead of making one machine bigger. **Sharding** is how you
+decide which machine owns which piece of data. The simplest strategy is
+**range-based sharding**: divide the key space into contiguous ranges,
+one per shard — like assigning user IDs 0-999 to shard 0, 1000-1999 to
+shard 1, and so on.
+
+```python
+def shard_for_key(key, boundaries):
+    for i, boundary in enumerate(boundaries):
+        if key <= boundary:
+            return i
+    return len(boundaries)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="python" code={`def shard_for_key(key, boundaries):\n    for i, boundary in enumerate(boundaries):\n        if key <= boundary:\n            return i\n    return len(boundaries)\n\n# 4 shards: [0-100], (100-200], (200-300], (300, infinity)\nprint(shard_for_key(50, [100, 200, 300]))    # 0\nprint(shard_for_key(150, [100, 200, 300]))   # 1\nprint(shard_for_key(350, [100, 200, 300]))   # 3 -- beyond every boundary, falls into the last shard`} caption="Range sharding's big advantage is that a RANGE QUERY like give me everything between key 100 and 250 only needs to touch 1-2 shards -- unlike hash-based sharding, where a range query would need to scatter across every single shard, since a hash deliberately destroys any relationship between nearby keys." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can implement range-based sharding and understand its core tradeoff against hash-based sharding: efficient range queries vs. even load distribution.
+</Checkpoint>

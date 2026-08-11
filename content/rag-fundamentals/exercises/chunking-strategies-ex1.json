@@ -1,0 +1,11 @@
+{
+  "id": "chunking-strategies-ex1",
+  "type": "write-code",
+  "language": "python",
+  "starterCode": "def chunk_by_sentences(sentences, max_chars):\n    ...\n",
+  "cases": [
+    { "call": "chunk_by_sentences(['The cat sat.', 'It was warm.', 'The sun was bright.', 'A bird sang nearby.'], 25)", "expect": "['The cat sat. It was warm.', 'The sun was bright.', 'A bird sang nearby.']" },
+    { "call": "chunk_by_sentences(['The cat sat.', 'It was warm.', 'The sun was bright.', 'A bird sang nearby.'], 100)", "expect": "['The cat sat. It was warm. The sun was bright. A bird sang nearby.']" },
+    { "call": "chunk_by_sentences(['Short.'], 5)", "expect": "['Short.']" }
+  ]
+}
