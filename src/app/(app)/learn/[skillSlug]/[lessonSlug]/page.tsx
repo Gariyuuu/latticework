@@ -5,27 +5,29 @@ import { and, eq } from "drizzle-orm";
 import { getLessonSource, getSkillMetadata } from "@/lib/content/loader";
 import { LessonRenderer } from "@/components/lesson/lesson-renderer";
 import { getOrCreateLocalUser } from "@/lib/auth/current-user";
-import { db } from "@/lib/db/client";
+import { db, safeQuery } from "@/lib/db/client";
 import { courses, lessonProgress, lessons, modules, skills as skillsTable } from "@/lib/db/schema";
 
 async function getInitiallyCompleted(skillSlug: string, lessonSlug: string, userId: string | null): Promise<string[]> {
   if (!userId || !process.env.DATABASE_URL) return [];
-  const skill = await db.query.skills.findFirst({ where: eq(skillsTable.slug, skillSlug) });
-  if (!skill) return [];
-  const course = await db.query.courses.findFirst({ where: eq(courses.skillId, skill.id) });
-  if (!course) return [];
-  const row = await db
-    .select({ id: lessons.id })
-    .from(lessons)
-    .innerJoin(modules, eq(lessons.moduleId, modules.id))
-    .where(and(eq(modules.courseId, course.id), eq(lessons.slug, lessonSlug)))
-    .limit(1);
-  const lessonId = row[0]?.id;
-  if (!lessonId) return [];
-  const progress = await db.query.lessonProgress.findFirst({
-    where: and(eq(lessonProgress.userId, userId), eq(lessonProgress.lessonId, lessonId)),
-  });
-  return progress?.completedBlocks ?? [];
+  return safeQuery(async () => {
+    const skill = await db.query.skills.findFirst({ where: eq(skillsTable.slug, skillSlug) });
+    if (!skill) return [];
+    const course = await db.query.courses.findFirst({ where: eq(courses.skillId, skill.id) });
+    if (!course) return [];
+    const row = await db
+      .select({ id: lessons.id })
+      .from(lessons)
+      .innerJoin(modules, eq(lessons.moduleId, modules.id))
+      .where(and(eq(modules.courseId, course.id), eq(lessons.slug, lessonSlug)))
+      .limit(1);
+    const lessonId = row[0]?.id;
+    if (!lessonId) return [];
+    const progress = await db.query.lessonProgress.findFirst({
+      where: and(eq(lessonProgress.userId, userId), eq(lessonProgress.lessonId, lessonId)),
+    });
+    return progress?.completedBlocks ?? [];
+  }, []);
 }
 
 export default async function LessonPage({

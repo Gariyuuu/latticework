@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { eq, and } from "drizzle-orm";
 import { getProject } from "@/lib/projects/catalog";
 import { getOrCreateLocalUser } from "@/lib/auth/current-user";
-import { db } from "@/lib/db/client";
+import { db, safeQuery } from "@/lib/db/client";
 import { projectProgress, projects } from "@/lib/db/schema";
 import { Badge } from "@/components/ui/badge";
 import { MilestoneChecklist } from "@/components/projects/milestone-checklist";
@@ -19,11 +19,15 @@ export default async function ProjectDetailPage({
   const user = await getOrCreateLocalUser().catch(() => null);
   let initiallyCompleted: string[] = [];
   if (user && process.env.DATABASE_URL) {
-    const dbProject = await db.query.projects.findFirst({ where: eq(projects.slug, projectSlug) });
+    const dbProject = await safeQuery(() => db.query.projects.findFirst({ where: eq(projects.slug, projectSlug) }), undefined);
     if (dbProject) {
-      const progress = await db.query.projectProgress.findFirst({
-        where: and(eq(projectProgress.userId, user.id), eq(projectProgress.projectId, dbProject.id)),
-      });
+      const progress = await safeQuery(
+        () =>
+          db.query.projectProgress.findFirst({
+            where: and(eq(projectProgress.userId, user.id), eq(projectProgress.projectId, dbProject.id)),
+          }),
+        undefined,
+      );
       initiallyCompleted = progress?.completedMilestones ?? [];
     }
   }

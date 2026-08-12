@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { requireLocalUser } from "@/lib/auth/current-user";
-import { db } from "@/lib/db/client";
+import { db, safeQuery } from "@/lib/db/client";
 import { profiles } from "@/lib/db/schema";
 import { CAREER_TRACKS } from "@/lib/roadmap/tracks";
 
@@ -38,6 +38,6 @@ export async function PATCH(req: NextRequest) {
 export async function GET() {
   const user = await requireLocalUser().catch(() => null);
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const profile = await db.query.profiles.findFirst({ where: eq(profiles.userId, user.id) });
+  const profile = await safeQuery(() => db.query.profiles.findFirst({ where: eq(profiles.userId, user.id) }), undefined);
   return NextResponse.json({ profile });
 }

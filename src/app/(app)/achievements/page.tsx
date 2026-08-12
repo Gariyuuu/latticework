@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import { Lock, Trophy } from "lucide-react";
 import { getOrCreateLocalUser } from "@/lib/auth/current-user";
-import { db } from "@/lib/db/client";
+import { db, safeQuery } from "@/lib/db/client";
 import { achievements, userAchievements } from "@/lib/db/schema";
 import { ACHIEVEMENT_CATALOG } from "@/lib/scoring/achievements";
 import { Card } from "@/components/ui/card";
@@ -13,11 +13,15 @@ export default async function AchievementsPage() {
 
   const unlockedSlugs = new Set<string>();
   if (hasDb) {
-    const rows = await db
-      .select({ slug: achievements.slug })
-      .from(userAchievements)
-      .innerJoin(achievements, eq(userAchievements.achievementId, achievements.id))
-      .where(eq(userAchievements.userId, user!.id));
+    const rows = await safeQuery(
+      () =>
+        db
+          .select({ slug: achievements.slug })
+          .from(userAchievements)
+          .innerJoin(achievements, eq(userAchievements.achievementId, achievements.id))
+          .where(eq(userAchievements.userId, user!.id)),
+      [],
+    );
     rows.forEach((r) => unlockedSlugs.add(r.slug));
   }
 

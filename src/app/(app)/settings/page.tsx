@@ -1,13 +1,15 @@
 import { eq } from "drizzle-orm";
 import { getOrCreateLocalUser } from "@/lib/auth/current-user";
-import { db } from "@/lib/db/client";
+import { db, safeQuery } from "@/lib/db/client";
 import { profiles } from "@/lib/db/schema";
 import { SettingsForm } from "@/components/settings/settings-form";
 
 export default async function SettingsPage() {
   const user = await getOrCreateLocalUser().catch(() => null);
   const profile =
-    user && process.env.DATABASE_URL ? await db.query.profiles.findFirst({ where: eq(profiles.userId, user.id) }) : null;
+    user && process.env.DATABASE_URL
+      ? await safeQuery(() => db.query.profiles.findFirst({ where: eq(profiles.userId, user.id) }), undefined)
+      : null;
 
   return (
     <div className="mx-auto max-w-xl space-y-6">

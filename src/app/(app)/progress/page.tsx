@@ -1,6 +1,6 @@
 import { eq, desc } from "drizzle-orm";
 import { getOrCreateLocalUser } from "@/lib/auth/current-user";
-import { db } from "@/lib/db/client";
+import { db, safeQuery } from "@/lib/db/client";
 import { activity, skillRatings, skills, submissions } from "@/lib/db/schema";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -10,21 +10,28 @@ export default async function ProgressPage() {
   const hasDb = Boolean(process.env.DATABASE_URL) && user;
 
   const activityRows = hasDb
-    ? await db.query.activity.findMany({ where: eq(activity.userId, user!.id), orderBy: desc(activity.date), limit: 14 })
+    ? await safeQuery(
+        () => db.query.activity.findMany({ where: eq(activity.userId, user!.id), orderBy: desc(activity.date), limit: 14 }),
+        [],
+      )
     : [];
   const totalMinutes = activityRows.reduce((sum, a) => sum + a.minutesLearned, 0);
   const totalExercises = activityRows.reduce((sum, a) => sum + a.exercisesCompleted, 0);
 
-  const subs = hasDb ? await db.query.submissions.findMany({ where: eq(submissions.userId, user!.id) }) : [];
+  const subs = hasDb ? await safeQuery(() => db.query.submissions.findMany({ where: eq(submissions.userId, user!.id) }), []) : [];
   const accuracy = subs.length > 0 ? Math.round((subs.filter((s) => s.passed).length / subs.length) * 100) : null;
 
   const ratings = hasDb
-    ? await db
-        .select({ skillName: skills.name, rating: skillRatings.rating })
-        .from(skillRatings)
-        .innerJoin(skills, eq(skillRatings.skillId, skills.id))
-        .where(eq(skillRatings.userId, user!.id))
-        .orderBy(desc(skillRatings.rating))
+    ? await safeQuery(
+        () =>
+          db
+            .select({ skillName: skills.name, rating: skillRatings.rating })
+            .from(skillRatings)
+            .innerJoin(skills, eq(skillRatings.skillId, skills.id))
+            .where(eq(skillRatings.userId, user!.id))
+            .orderBy(desc(skillRatings.rating)),
+        [],
+      )
     : [];
 
   return (

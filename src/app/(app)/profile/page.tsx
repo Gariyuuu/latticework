@@ -1,7 +1,7 @@
 import { eq, desc } from "drizzle-orm";
 import Image from "next/image";
 import { getOrCreateLocalUser } from "@/lib/auth/current-user";
-import { db } from "@/lib/db/client";
+import { db, safeQuery } from "@/lib/db/client";
 import { activity, profiles, skillRatings, skills, streaks, xpEvents } from "@/lib/db/schema";
 import { levelForXP } from "@/lib/scoring/xp";
 import { getCareerTrack } from "@/lib/roadmap/generate";
@@ -12,25 +12,36 @@ export default async function ProfilePage() {
   const user = await getOrCreateLocalUser().catch(() => null);
   const hasDb = Boolean(process.env.DATABASE_URL) && user;
 
-  const profile = hasDb ? await db.query.profiles.findFirst({ where: eq(profiles.userId, user!.id) }) : null;
-  const streak = hasDb ? await db.query.streaks.findFirst({ where: eq(streaks.userId, user!.id) }) : null;
-  const xpRows = hasDb ? await db.query.xpEvents.findMany({ where: eq(xpEvents.userId, user!.id) }) : [];
+  const profile = hasDb
+    ? await safeQuery(() => db.query.profiles.findFirst({ where: eq(profiles.userId, user!.id) }), undefined)
+    : null;
+  const streak = hasDb
+    ? await safeQuery(() => db.query.streaks.findFirst({ where: eq(streaks.userId, user!.id) }), undefined)
+    : null;
+  const xpRows = hasDb ? await safeQuery(() => db.query.xpEvents.findMany({ where: eq(xpEvents.userId, user!.id) }), []) : [];
   const totalXP = xpRows.reduce((sum, e) => sum + e.amount, 0);
 
   const ratings = hasDb
-    ? await db
-        .select({ skillName: skills.name, rating: skillRatings.rating })
-        .from(skillRatings)
-        .innerJoin(skills, eq(skillRatings.skillId, skills.id))
-        .where(eq(skillRatings.userId, user!.id))
-        .orderBy(desc(skillRatings.rating))
+    ? await safeQuery(
+        () =>
+          db
+            .select({ skillName: skills.name, rating: skillRatings.rating })
+            .from(skillRatings)
+            .innerJoin(skills, eq(skillRatings.skillId, skills.id))
+            .where(eq(skillRatings.userId, user!.id))
+            .orderBy(desc(skillRatings.rating)),
+        [],
+      )
     : [];
 
   const strong = ratings.filter((r) => r.rating >= 4);
   const weak = ratings.filter((r) => r.rating > 0 && r.rating <= 2);
 
   const recentActivity = hasDb
-    ? await db.query.activity.findMany({ where: eq(activity.userId, user!.id), orderBy: desc(activity.date), limit: 30 })
+    ? await safeQuery(
+        () => db.query.activity.findMany({ where: eq(activity.userId, user!.id), orderBy: desc(activity.date), limit: 30 }),
+        [],
+      )
     : [];
 
   const track = profile?.careerGoal ? getCareerTrack(profile.careerGoal) : null;

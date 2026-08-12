@@ -3,7 +3,7 @@ import { CheckCircle2, Circle, Sparkles } from "lucide-react";
 import { getOrCreateLocalUser } from "@/lib/auth/current-user";
 import { generateRoadmap } from "@/lib/roadmap/generate";
 import { CAREER_TRACKS } from "@/lib/roadmap/tracks";
-import { db } from "@/lib/db/client";
+import { db, safeQuery } from "@/lib/db/client";
 import { profiles } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { Badge } from "@/components/ui/badge";
@@ -27,7 +27,7 @@ export default async function RoadmapPage({
 
   let activeTrack = trackParam;
   if (!activeTrack && user && process.env.DATABASE_URL) {
-    const profile = await db.query.profiles.findFirst({ where: eq(profiles.userId, user.id) });
+    const profile = await safeQuery(() => db.query.profiles.findFirst({ where: eq(profiles.userId, user.id) }), undefined);
     activeTrack = profile?.careerGoal ?? undefined;
   }
   activeTrack ??= CAREER_TRACKS[0].slug;

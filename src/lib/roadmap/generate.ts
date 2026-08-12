@@ -1,6 +1,6 @@
 import "server-only";
 import { and, eq, inArray } from "drizzle-orm";
-import { db } from "@/lib/db/client";
+import { db, safeQuery } from "@/lib/db/client";
 import { skillRatings, skills as skillsTable } from "@/lib/db/schema";
 import { getSkillMetadata } from "@/lib/content/loader";
 import { CAREER_TRACKS, type CareerTrackDef } from "./tracks";
@@ -37,18 +37,22 @@ export async function generateRoadmap(trackSlug: string, userId?: string): Promi
   let ratingsBySlug = new Map<string, number>();
   if (userId && process.env.DATABASE_URL) {
     const slugs = track.skills.map((s) => s.slug);
-    const skillRows = await db.query.skills.findMany({ where: inArray(skillsTable.slug, slugs) });
+    const skillRows = await safeQuery(() => db.query.skills.findMany({ where: inArray(skillsTable.slug, slugs) }), []);
     const idToSlug = new Map(skillRows.map((s) => [s.id, s.slug]));
     if (skillRows.length > 0) {
-      const ratingRows = await db.query.skillRatings.findMany({
-        where: and(
-          eq(skillRatings.userId, userId),
-          inArray(
-            skillRatings.skillId,
-            skillRows.map((s) => s.id)
-          )
-        ),
-      });
+      const ratingRows = await safeQuery(
+        () =>
+          db.query.skillRatings.findMany({
+            where: and(
+              eq(skillRatings.userId, userId),
+              inArray(
+                skillRatings.skillId,
+                skillRows.map((s) => s.id)
+              )
+            ),
+          }),
+        [],
+      );
       ratingsBySlug = new Map(ratingRows.map((r) => [idToSlug.get(r.skillId) ?? "", r.rating]));
     }
   }

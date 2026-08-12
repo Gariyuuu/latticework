@@ -2,7 +2,7 @@ import Link from "next/link";
 import { eq } from "drizzle-orm";
 import { ArrowRight, Flame, Trophy, Target } from "lucide-react";
 import { getOrCreateLocalUser } from "@/lib/auth/current-user";
-import { db } from "@/lib/db/client";
+import { db, safeQuery } from "@/lib/db/client";
 import { profiles, streaks, xpEvents, userAchievements, achievements } from "@/lib/db/schema";
 import { generateRoadmap, getCareerTrack } from "@/lib/roadmap/generate";
 import { levelForXP } from "@/lib/scoring/xp";
@@ -15,19 +15,27 @@ export default async function DashboardPage() {
   const user = await getOrCreateLocalUser().catch(() => null);
   const hasDb = Boolean(process.env.DATABASE_URL) && user;
 
-  const profile = hasDb ? await db.query.profiles.findFirst({ where: eq(profiles.userId, user!.id) }) : null;
-  const streak = hasDb ? await db.query.streaks.findFirst({ where: eq(streaks.userId, user!.id) }) : null;
-  const xpRows = hasDb ? await db.query.xpEvents.findMany({ where: eq(xpEvents.userId, user!.id) }) : [];
+  const profile = hasDb
+    ? await safeQuery(() => db.query.profiles.findFirst({ where: eq(profiles.userId, user!.id) }), undefined)
+    : null;
+  const streak = hasDb
+    ? await safeQuery(() => db.query.streaks.findFirst({ where: eq(streaks.userId, user!.id) }), undefined)
+    : null;
+  const xpRows = hasDb ? await safeQuery(() => db.query.xpEvents.findMany({ where: eq(xpEvents.userId, user!.id) }), []) : [];
   const totalXP = xpRows.reduce((sum, e) => sum + e.amount, 0);
   const level = levelForXP(totalXP);
 
   const recentUnlocks = hasDb
-    ? await db
-        .select({ title: achievements.title })
-        .from(userAchievements)
-        .innerJoin(achievements, eq(userAchievements.achievementId, achievements.id))
-        .where(eq(userAchievements.userId, user!.id))
-        .limit(3)
+    ? await safeQuery(
+        () =>
+          db
+            .select({ title: achievements.title })
+            .from(userAchievements)
+            .innerJoin(achievements, eq(userAchievements.achievementId, achievements.id))
+            .where(eq(userAchievements.userId, user!.id))
+            .limit(3),
+        [],
+      )
     : [];
 
   if (!profile?.careerGoal) {

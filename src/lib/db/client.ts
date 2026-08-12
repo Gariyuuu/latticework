@@ -34,3 +34,22 @@ function unconfiguredDb(): NeonHttpDatabase<typeof schema> {
 export const db: NeonHttpDatabase<typeof schema> = connectionString
   ? drizzle(neon(connectionString), { schema })
   : unconfiguredDb();
+
+/**
+ * Wraps a *read* query so a Neon hiccup (quota, connection drop) degrades to
+ * a safe empty value instead of throwing an uncaught error that crashes the
+ * whole page with a 500. Logs server-side so the failure is still visible.
+ * Distinct from `unconfiguredDb()` above (missing credential, a config
+ * error that should stay loud) -- this is for a query that fails at
+ * runtime against a properly configured database. Never wrap a write
+ * (insert/update/delete) with this -- a failed mutation must still surface
+ * to the caller.
+ */
+export async function safeQuery<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
+  try {
+    return await fn();
+  } catch (error) {
+    console.error("[db] query failed, returning fallback:", error);
+    return fallback;
+  }
+}
