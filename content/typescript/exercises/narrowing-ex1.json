@@ -1,0 +1,10 @@
+{
+  "id": "narrowing-ex1",
+  "type": "write-code",
+  "language": "typescript",
+  "starterCode": "function describe(x: string | number): string {\n  // if x is a string: return \"text:\" + its UPPERCASE form\n  // otherwise: return \"double:\" + (x * 2)\n}\n",
+  "cases": [
+    { "call": "describe(\"hi\")", "expect": "text:HI" },
+    { "call": "describe(5)", "expect": "double:10" }
+  ]
+}

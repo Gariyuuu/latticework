@@ -34,7 +34,7 @@ const MAX_HINT_LEVEL = 4; // 5th action is "reveal solution"
 export function Exercise({ id }: { id: string }) {
   const { frontmatter, testCases } = useLessonBlock(id);
   const { skillSlug, lessonSlug, completed, markComplete } = useLessonProgress();
-  const language = (testCases?.language ?? "python") as "python" | "sql" | "bash";
+  const language = (testCases?.language ?? "python") as "python" | "sql" | "bash" | "javascript" | "typescript";
   const { run, status } = useSandbox(language);
 
   const [code, setCode] = React.useState(testCases?.starterCode ?? "");

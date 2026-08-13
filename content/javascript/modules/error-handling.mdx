@@ -1,0 +1,61 @@
+---
+slug: error-handling
+title: Error Handling
+estimatedMinutes: 14
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: javascript
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: error-handling-ex1
+    difficulty: beginner
+    concept: js-error-handling
+    prompt: "Write `safeDivide(a, b)` — returns `a / b`, but throws `new Error(\"Cannot divide by zero\")` if `b` is 0. Then write `tryDivide(a, b)` that calls `safeDivide` and returns the error's `.message` string if it throws, or the numeric result otherwise."
+  - id: quiz-1
+    type: quiz
+    concept: js-error-handling
+    question: "What does `class ValidationError extends Error {}` give you that a plain `throw \"some string\"` doesn't?"
+    options: ["A real Error object with a .message, a stack trace, and a distinguishable type you can check with instanceof — a thrown string has none of that", "Nothing -- they behave identically in every way", "It makes the error impossible to catch", "It automatically logs the error to the console"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+`throw` raises an error, unwinding the call stack until a `try`/`catch`
+catches it (or it crashes the program). Always throw an `Error`
+object — `new Error("message")` — not a plain string, since `Error`
+carries a `.message`, a `.stack` trace, and a type you can distinguish
+from other errors. You can subclass `Error` (`class ValidationError
+extends Error {}`) to create your own error types, checkable with
+`instanceof` inside a `catch` block.
+
+```javascript
+function safeDivide(a, b) {
+  if (b === 0) throw new Error("Cannot divide by zero");
+  return a / b;
+}
+try {
+  safeDivide(10, 0);
+} catch (e) {
+  console.log(e.message);
+  // Cannot divide by zero
+}
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="javascript" code={`class ValidationError extends Error {}\nfunction checkAge(age) {\n  if (age < 0) throw new ValidationError("Age can't be negative");\n  return age;\n}\ntry {\n  checkAge(-5);\n} catch (e) {\n  console.log(e.message);\n  console.log(e instanceof ValidationError);\n}`} caption="instanceof still works correctly on the custom ValidationError class -- that's what lets a catch block react differently to specific error types instead of treating every thrown value the same way." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can throw and catch real Error objects, and understand why a custom Error subclass beats throwing a plain string.
+</Checkpoint>

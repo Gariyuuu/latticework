@@ -14,22 +14,22 @@
     "research-engineer",
     "full-stack-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "types-interfaces",
       "title": "Types & Interfaces",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "generics",
       "title": "Generics",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "narrowing",
       "title": "Narrowing",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "utility-types",

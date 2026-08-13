@@ -112,18 +112,20 @@ on a missing env var without surfacing that clearly in the UI — see
 
 ## Known limitations (see ROADMAP.md for the full, current list)
 
-- **77 skills have real lesson content** (up from the original
+- **79 skills have real lesson content** (up from the original
   Python-only MVP) — targets of 50, 60, then 70 were all reached in one
   session; a request to go to 99 (the full catalog) was assessed and
   found NOT fully achievable via content authoring alone at the time —
   see ROADMAP.md "Content coverage" for the precise, verified breakdown
-  of why 22 skills remain infra-blocked, not just unwritten. A later
-  session closed the single highest-leverage gap identified there — a
+  of why 20 skills remain infra-blocked, not just unwritten. A later
+  session closed the two highest-leverage gaps identified there: a
   CLI-simulation exercise type (`src/lib/sandbox/providers/cli-provider.ts`,
-  a deterministic in-memory Unix-shell simulator, not real bash) — which
+  a deterministic in-memory Unix-shell simulator, not real bash), which
   unblocked `bash` (4/4), `cli-terminal` (3/3), and `linux` (2/4;
   `processes`/`package-management` deliberately left Planned, no honest
-  fit for a filesystem-only simulator).
+  fit for a filesystem-only simulator); and a JS/TS sandboxed Worker
+  provider (`src/lib/sandbox/providers/js-provider.ts`), which unblocked
+  `javascript` (5/7) and `typescript` (3/5) — see below for both.
   Full per-track module counts and design notes are in ROADMAP.md, not
   duplicated here since it changes every session. Quick index: Python/
   Data Structures/Algorithms/NumPy/Pandas/Probability/Statistics (all
@@ -150,10 +152,17 @@ on a missing env var without surfacing that clearly in the UI — see
   execution model — `pyspark` is confirmed unavailable in Pyodide),
   Bash / Shell (4/4), Terminal / CLI (3/3), Linux (2/4 — filesystem,
   permissions; `processes`/`package-management` left Planned, no
-  honest fit for a filesystem-only CLI simulator, see ROADMAP.md). The
-  rest of the technology catalog is metadata-only, and for 22 of those
-  skills that's a hard infrastructure blocker, not a content gap — see
-  ROADMAP.md (by design — see also `docs/COURSE_CONTENT_SPEC.md`).
+  honest fit for a filesystem-only CLI simulator), JavaScript (5/7 —
+  syntax-variables, functions, objects-arrays, error-handling,
+  async-promises; `dom-basics`/`modules` left Planned — no DOM in a
+  Worker, no multi-file import graph in this exercise model), TypeScript
+  (3/5 — types-interfaces, narrowing, generics; `utility-types`/
+  `configuring-strict-mode` left Planned — purely compile-time features
+  with zero runtime footprint for a transpile-then-run grader to check,
+  see ROADMAP.md). The rest of the technology catalog is metadata-only,
+  and for 20 of those skills that's a hard infrastructure blocker, not a
+  content gap — see ROADMAP.md (by design — see also
+  `docs/COURSE_CONTENT_SPEC.md`).
   Monte Carlo and
   Stochastic Processes content need genuine randomness — made gradeable
   via `random.seed()`, only after verifying seeded `random.random()`/
@@ -202,6 +211,35 @@ on a missing env var without surfacing that clearly in the UI — see
   Verify any new cli-simulation exercise by running its exact reference
   solution through `CliProvider` headless in Node — never hand-type an
   expected value, same discipline as every other provider.
+- JavaScript/TypeScript exercises (`write-code` type, `language:
+  "javascript"` or `"typescript"`): reuses the same write-code `cases`
+  grading path as Python — `starterCode` runs first, then each
+  `cases[].call` expression runs against its persisted state. See
+  `src/lib/sandbox/providers/js-provider.ts`. Runs in a fresh, disposable
+  Web Worker per call, `fetch`/`XMLHttpRequest`/`WebSocket`/
+  `importScripts` stripped (docs/SECURITY.md's "no DOM/network access"
+  requirement). The student's code + every `cases[].call` are
+  concatenated into ONE script wrapped in a single `(async () => {
+  ... })()`, run through ONE indirect eval — NOT one eval call per piece
+  (separate calls silently break every `const`/`let` declaration, since
+  indirect eval's `function`/`var` hoist to the global object across
+  calls but `const`/`let` don't — idiomatic modern JS uses `const`, so
+  this bit real content before the single-eval fix) and NOT a non-async
+  wrapper (grades async code against stale state, since results would be
+  computed before any `await`ed work finishes). A real top-level `await`
+  works both inside the student's code AND inside a `cases[].call`
+  expression itself (e.g. `"await getUserName(1)"`) — the worker awaits
+  the IIFE's own promise before posting results back. TypeScript
+  transpiles first via the real `typescript` npm package's
+  `transpileModule` (same version as this repo's own `tsc`, loaded lazily
+  from CDN) — a per-file syntactic strip, NOT full type-checking, so only
+  TS features with an observable runtime footprint are gradeable (typeof
+  narrowing, a generic function's actual behavior — NOT utility types or
+  strict-mode config, which have zero runtime trace). Verify any new
+  exercise by running its exact reference solution through the real
+  algorithm (a Node `worker_threads` proxy mirrors a browser Worker's
+  isolated-realm + message-passing mechanics closely enough to catch both
+  bugs above for real) — never hand-type an expected value.
 - Pyodide package-loading: `RunOptions.packages` /
   `PyodideProvider.run()` / `testCaseFileSchema.packages` /
   `<CodeExample packages={[...]}>` — declare Pyodide package names an

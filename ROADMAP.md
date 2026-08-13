@@ -115,7 +115,38 @@ same change as any feature work.
   case, where `db.exec()` returns `[]` entirely rather than one
   empty-values result set — before writing any SQL content or grading
   logic around it.)
-- JS/TS sandboxed Worker provider — **Planned**
+- JS/TS sandboxed Worker provider — **Done**
+  (`src/lib/sandbox/providers/js-provider.ts`). A fresh, disposable Web
+  Worker per `run()` call, `fetch`/`XMLHttpRequest`/`WebSocket`/
+  `importScripts` explicitly stripped to honor docs/SECURITY.md's "no
+  DOM/network access" requirement (Workers can otherwise make outbound
+  requests by default). The student's code and every `cases[].call`
+  expression are concatenated into ONE script wrapped in a single
+  `(async () => { ... })()` IIFE, run through ONE indirect eval call —
+  verified necessary by actually running the alternatives, not assumed:
+  (1) separate eval calls per piece silently break every `const`/`let`
+  declaration (idiomatic modern JS) since indirect eval's `function`/`var`
+  hoist to the global object across calls but `const`/`let` don't; (2) a
+  non-async wrapper grades async code against stale state, since results
+  would be computed in the same synchronous tick before any `await`ed work
+  finishes. The single-async-IIFE design fixes both: shared function scope
+  (no global-object trick needed) and the worker's message handler awaits
+  the IIFE's own promise, so a real top-level `await` inside the student's
+  code — and inside a `cases[].call` expression itself, e.g.
+  `"await getUserName(1)"` — resolves fully before grading. TypeScript
+  transpiles first via the real `typescript` npm package's
+  `transpileModule` (same 5.9.3 version as this repo's own `tsc`, loaded
+  lazily from CDN, same pattern as Pyodide/sql.js) — a per-file syntactic
+  strip, NOT full static type-checking, so TS exercises can only grade
+  features with an observable runtime footprint (typeof narrowing, a
+  generic function's actual behavior) — purely compile-time features
+  (utility types, strict-mode config) have nothing to grade and are
+  deliberately left unbuilt, same "don't force a bad fit" discipline as
+  every other provider's documented subset. Core algorithm verified via a
+  Node `worker_threads` proxy (same isolated-realm + message-passing
+  mechanics as a browser Worker, different host API) before any content
+  was written — caught the const/let bug and the async-staleness bug for
+  real, not hypothetically.
 - Server-side sandbox for compiled languages (C++/Java/Go/Rust/…) — **Blocked**
   (requires a container/E2B/Judge0-style provider decision + credentials;
   architecture in `docs/SECURITY.md` is ready for it)
@@ -631,21 +662,22 @@ same change as any feature work.
   `transformers`/`huggingface_hub`, `pymysql`, `psycopg2` are **not
   available** in Pyodide's package index at all — no amount of content
   work can make an unavailable package loadable. `c`, `cpp`, `go`,
-  `java`, `javascript`, `julia`, `kotlin`, `matlab`, `r`, `rust`,
-  `swift`, `typescript` need their own language execution sandboxes,
-  none of which are built (`docs/ARCHITECTURE.md`'s execution provider
-  model only covers Python/SQL/bash); `html`/`jupyter` have no
+  `java`, `julia`, `kotlin`, `matlab`, `r`, `rust`, `swift` need their
+  own language execution sandboxes (compiler/interpreter or server-side,
+  per `docs/SECURITY.md`), none of which are built; `javascript`/
+  `typescript` were in this same list originally but were closed in a
+  later session — see below. `html`/`jupyter` have no
   meaningful code-testable angle in this platform's exercise model.
   `mysql`/`postgresql` were deliberately NOT force-fit onto the sql.js
   (SQLite) provider — their planned modules (storage-engines, EXPLAIN
   output, indexing internals) are genuinely dialect-specific behavior
   that sql.js's SQLite engine cannot honestly reproduce; testing them
   against SQLite would teach students something actively wrong about
-  MySQL/Postgres. These 22 tracks remain metadata-only skeletons by
-  necessity, not by oversight — closing them requires new
-  infrastructure (a JS/TS or other-language sandbox, or server-side
-  execution per `docs/SECURITY.md`), a distinct engineering effort from
-  content-authoring alone.
+  MySQL/Postgres. These (now 20, after javascript/typescript closed —
+  see below) tracks remain metadata-only skeletons by necessity, not by
+  oversight — closing them requires new infrastructure (a per-language
+  sandbox, or server-side execution per `docs/SECURITY.md`), a distinct
+  engineering effort from content-authoring alone.
 - **The CLI-simulation exercise type — the single highest-leverage gap
   identified above — was built in a later session, closing `bash`,
   `cli-terminal`, and `linux`.** See "Learning engine" above for
@@ -667,6 +699,24 @@ same change as any feature work.
   documented **subset** (`s/pattern/replacement/[g]` and `{print $N}`
   only) — verified by running each exercise's exact reference solution
   through the real provider, same as every other track.
+- **The JS/TS sandboxed Worker provider — built the same session as the
+  CLI-simulation push above, closing `javascript` and `typescript`.**
+  See "Code engine" above for `JsProvider`/`TsProvider`'s design. Fully
+  built: **JavaScript (5/7 — syntax-variables, functions,
+  objects-arrays, error-handling, async-promises; `dom-basics` left
+  Planned — no DOM inside a Worker, and adding one would defeat the
+  point of the sandbox; `modules` left Planned — ES import/export needs
+  a multi-file graph this single-snippet exercise model doesn't have)**,
+  **TypeScript (3/5 — types-interfaces, narrowing, generics;
+  `utility-types` and `configuring-strict-mode` left Planned — both are
+  purely compile-time with zero runtime footprint, nothing for a
+  transpile-then-run grader to check, same reasoning as every other
+  provider's documented subset)**. Reaches **79/99 skills built**. Every
+  exercise's expected value was generated by actually running the
+  verified worker algorithm (never hand-typed) — the async-promises
+  exercise specifically exercises `await` inside BOTH the student's code
+  and a `cases[].call` expression (`"await getUserName(1)"`), confirming
+  the single-async-IIFE design handles both correctly.
 - PyTorch, C++ — **Planned** (metadata skeletons only; module content
   not yet authored). Need their own execution infra decisions.
 - Remaining technologies from the brief — **Done** as metadata-only

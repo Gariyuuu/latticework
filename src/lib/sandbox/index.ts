@@ -2,6 +2,7 @@ import type { SandboxLanguage, SandboxProvider } from "./types";
 import { getPyodideProvider } from "./providers/pyodide-provider";
 import { getSqlProvider } from "./providers/sql-provider";
 import { getCliProvider } from "./providers/cli-provider";
+import { getJsProvider, getTsProvider } from "./providers/js-provider";
 
 export function getSandboxProvider(language: SandboxLanguage): SandboxProvider {
   switch (language) {
@@ -12,10 +13,9 @@ export function getSandboxProvider(language: SandboxLanguage): SandboxProvider {
     case "bash":
       return getCliProvider();
     case "javascript":
+      return getJsProvider();
     case "typescript":
-      // Planned — see ROADMAP.md "Code engine". A sandboxed Worker follows
-      // the same SandboxProvider interface as Pyodide/sql.js.
-      throw new Error(`Sandbox for "${language}" is not implemented yet`);
+      return getTsProvider();
   }
 }
 

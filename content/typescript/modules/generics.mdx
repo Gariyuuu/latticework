@@ -1,0 +1,58 @@
+---
+slug: generics
+title: Generics
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: typescript
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: generics-ex1
+    difficulty: intermediate
+    concept: ts-generics
+    prompt: "Write a generic function `firstOf<T>(items: T[]): T | undefined` that returns the first element of `items`, or `undefined` if the array is empty."
+  - id: quiz-1
+    type: quiz
+    concept: ts-generics
+    question: "Why write firstOf<T>(items: T[]): T | undefined instead of firstOf(items: any[]): any?"
+    options: ["With T, calling firstOf on a number[] gives back a number (not any) -- the caller keeps full type information through the function, and TypeScript can still catch a misuse like calling .toUpperCase() on the numeric result", "any and T behave identically in every situation", "T only works with number arrays", "any is required for the function to compile at all"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A **generic** function is written once but works correctly across
+many types, without losing type information the way `any` would.
+`<T>` declares a type PARAMETER — a placeholder TypeScript fills in
+based on how the function is actually called. `firstOf([1,2,3])`
+infers `T = number` and returns `number | undefined`; `firstOf(["a"])`
+infers `T = string` and returns `string | undefined` — same function
+body, different return type each time, checked correctly either way.
+This is different from `any`, which would compile but silently throw
+away all type information, letting mistakes slip through uncaught.
+
+```typescript
+function firstOf<T>(items: T[]): T | undefined {
+  return items[0];
+}
+console.log(firstOf([1, 2, 3]));
+// 1  (TypeScript infers T = number here)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="typescript" code={`function wrapInArray<T>(value: T): T[] { return [value]; }\nconsole.log(JSON.stringify(wrapInArray(5)));\nconsole.log(JSON.stringify(wrapInArray("hi")));`} caption="Same wrapInArray function, called with a number then a string -- T is inferred fresh at each call site, so the return type tracks whatever was actually passed in." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can write generic functions that preserve type information across different call sites, instead of falling back to any.
+</Checkpoint>

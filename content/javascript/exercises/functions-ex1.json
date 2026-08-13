@@ -1,0 +1,10 @@
+{
+  "id": "functions-ex1",
+  "type": "write-code",
+  "language": "javascript",
+  "starterCode": "const multiplyAll = (nums, factor = 2) => {\n  // return a NEW array, each element multiplied by factor\n};\n",
+  "cases": [
+    { "call": "JSON.stringify(multiplyAll([1,2,3]))", "expect": "[2,4,6]" },
+    { "call": "JSON.stringify(multiplyAll([1,2,3], 3))", "expect": "[3,6,9]" }
+  ]
+}

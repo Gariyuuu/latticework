@@ -1,0 +1,55 @@
+---
+slug: functions
+title: Functions
+estimatedMinutes: 14
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: javascript
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: functions-ex1
+    difficulty: beginner
+    concept: js-functions
+    prompt: "Write `multiplyAll`, an arrow function assigned to a `const`, taking `(nums, factor = 2)` — `factor` defaults to 2 if not given. Return a NEW array with every number multiplied by `factor` (don't mutate `nums`)."
+  - id: quiz-1
+    type: quiz
+    concept: js-functions
+    question: "In `const greet = (name = \"friend\") => ...`, what happens if you call greet() with no arguments?"
+    options: ["name gets the default value \"friend\" — default parameters only kick in when an argument is omitted (or explicitly undefined)", "It throws an error because name is required", "name becomes null", "The function silently returns undefined without running"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Arrow functions (`(args) => expression`) are a shorter alternative to
+`function` — for a single expression body, the value is returned
+automatically with no `return` keyword or `{}` needed. **Default
+parameters** (`(factor = 2)`) supply a fallback value used only when
+that argument is omitted (or passed as `undefined`) — not for `0`,
+`null`, or any other "falsy" value. Array methods like `.map()` return
+a brand-new array rather than modifying the original, which is why
+they're a common building block for "transform this list" logic.
+
+```javascript
+const multiplyAll = (nums, factor = 2) => nums.map((n) => n * factor);
+console.log(multiplyAll([1, 2, 3]));
+// [2, 4, 6]
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="javascript" code={`const greet = (name = "friend") => \`Hello, \${name}!\`;\nconsole.log(greet());\nconsole.log(greet("Grace"));\nconst doubled = [1, 2, 3].map((n) => n * 2);\nconsole.log(JSON.stringify(doubled));`} caption="greet() with zero arguments falls back to the default; greet('Grace') overrides it. .map() never touches the original [1,2,3] array — it always returns a new one." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can write arrow functions with default parameters and use array methods like map to transform data without mutating it.
+</Checkpoint>

@@ -1,0 +1,10 @@
+{
+  "id": "objects-arrays-ex1",
+  "type": "write-code",
+  "language": "javascript",
+  "starterCode": "const DEFAULTS = { theme: \"dark\", volume: 5 };\n\nfunction mergeDefaults(overrides) {\n  // return a NEW object: DEFAULTS with overrides layered on top\n}\n",
+  "cases": [
+    { "call": "JSON.stringify(mergeDefaults({volume:8}))", "expect": "{\"theme\":\"dark\",\"volume\":8}" },
+    { "call": "JSON.stringify(DEFAULTS)", "expect": "{\"theme\":\"dark\",\"volume\":5}" }
+  ]
+}

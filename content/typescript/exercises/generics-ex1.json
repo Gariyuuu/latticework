@@ -1,0 +1,11 @@
+{
+  "id": "generics-ex1",
+  "type": "write-code",
+  "language": "typescript",
+  "starterCode": "function firstOf<T>(items: T[]): T | undefined {\n  // return the first element, or undefined if items is empty\n}\n",
+  "cases": [
+    { "call": "firstOf([1,2,3])", "expect": "1" },
+    { "call": "firstOf([\"a\",\"b\"])", "expect": "a" },
+    { "call": "firstOf([])", "expect": "undefined" }
+  ]
+}

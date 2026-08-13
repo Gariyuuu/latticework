@@ -1,0 +1,9 @@
+{
+  "id": "types-interfaces-ex1",
+  "type": "write-code",
+  "language": "typescript",
+  "starterCode": "interface Point {\n  x: number;\n  y: number;\n}\n\nfunction distance(a: Point, b: Point): number {\n  // Euclidean distance between a and b\n}\n",
+  "cases": [
+    { "call": "distance({x:0,y:0}, {x:3,y:4})", "expect": "5" }
+  ]
+}

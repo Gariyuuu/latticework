@@ -1,0 +1,10 @@
+{
+  "id": "syntax-variables-ex1",
+  "type": "write-code",
+  "language": "javascript",
+  "starterCode": "function formatUser(user) {\n  // destructure user, return a template-literal string\n}\n",
+  "cases": [
+    { "call": "formatUser({name:\"Ada\", age:30})", "expect": "Ada is 30 years old" },
+    { "call": "formatUser({name:\"Grace\", age:41})", "expect": "Grace is 41 years old" }
+  ]
+}

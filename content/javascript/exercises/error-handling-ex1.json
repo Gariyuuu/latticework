@@ -1,0 +1,10 @@
+{
+  "id": "error-handling-ex1",
+  "type": "write-code",
+  "language": "javascript",
+  "starterCode": "function safeDivide(a, b) {\n  // throw new Error(\"Cannot divide by zero\") if b is 0\n}\n\nfunction tryDivide(a, b) {\n  // call safeDivide; on error, return e.message instead of throwing\n}\n",
+  "cases": [
+    { "call": "tryDivide(10, 2)", "expect": "5" },
+    { "call": "tryDivide(10, 0)", "expect": "Cannot divide by zero" }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "async-promises-ex1",
+  "type": "write-code",
+  "language": "javascript",
+  "starterCode": "async function getUserName(id) {\n  // await a 10ms delay: await new Promise((r) => setTimeout(r, 10));\n  // then look up id in a table -- return \"Unknown\" if missing\n}\n",
+  "cases": [
+    { "call": "await getUserName(1)", "expect": "Ada" },
+    { "call": "await getUserName(3)", "expect": "Unknown" }
+  ]
+}

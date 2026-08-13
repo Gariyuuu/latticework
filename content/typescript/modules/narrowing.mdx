@@ -1,0 +1,60 @@
+---
+slug: narrowing
+title: Narrowing
+estimatedMinutes: 14
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: typescript
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: narrowing-ex1
+    difficulty: intermediate
+    concept: ts-narrowing
+    prompt: "Write `describe(x: string | number): string`. If `x` is a string, return `\"text:\" + <its uppercase form>`. Otherwise (it's a number), return `\"double:\" + (x * 2)`."
+  - id: quiz-1
+    type: quiz
+    concept: ts-narrowing
+    question: "In `if (typeof x === \"string\") { x.toUpperCase(); }`, why does TypeScript let you call .toUpperCase() on x inside that block even though x's declared type is string | number?"
+    options: ["The typeof check NARROWS x's type to just string within that block -- TypeScript tracks control flow and knows every path that reaches .toUpperCase() already passed the check", "TypeScript ignores the check and allows any method on any type", "It only works if you also add a type assertion", "toUpperCase() exists on both string and number"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A **union type** (`string | number`) means a value could be either —
+so TypeScript won't let you call a string-only method on it directly,
+since it might be a number. **Narrowing** is how you resolve that: a
+runtime check like `typeof x === "string"` proves to the compiler
+that, INSIDE that branch, `x` can only be a `string` — so
+`x.toUpperCase()` becomes valid there, with no cast or assertion
+needed. This isn't a TypeScript-only trick — `typeof`/`instanceof`/
+equality checks are real JavaScript that runs and branches exactly the
+same way; TypeScript is just smart enough to track what each branch
+proves.
+
+```typescript
+function describe(x: string | number): string {
+  if (typeof x === "string") return "text:" + x.toUpperCase();
+  return "double:" + (x * 2); // TypeScript knows x is number here
+}
+console.log(describe("hi"));
+// text:HI
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="typescript" code={`function formatId(id: string | number): string {\n  if (typeof id === "number") return "#" + id.toString().padStart(4, "0");\n  return id.toUpperCase();\n}\nconsole.log(formatId(42));\nconsole.log(formatId("abc"));`} caption="Same function, two branches -- typeof id === 'number' narrows id to number in the first branch (so .toString()/.padStart() are valid there), and to string in the fallthrough (so .toUpperCase() is valid there)." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can write functions over union types and use typeof checks to narrow them, letting TypeScript verify each branch is type-safe.
+</Checkpoint>

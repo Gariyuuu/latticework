@@ -1,0 +1,65 @@
+---
+slug: async-promises
+title: Async/Promises
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: javascript
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: async-promises-ex1
+    difficulty: intermediate
+    concept: js-async-promises
+    prompt: "Write an `async function getUserName(id)`. First `await new Promise((r) => setTimeout(r, 10))` (a 10ms delay). Then look `id` up in the table `{ 1: \"Ada\", 2: \"Grace\" }` and return the name — or the string `\"Unknown\"` if `id` isn't in the table."
+  - id: quiz-1
+    type: quiz
+    concept: js-async-promises
+    question: "What does `await` actually do to a Promise?"
+    options: ["It pauses the enclosing async function until the Promise settles, then \"unwraps\" it to the resolved value (or throws the rejection as a catchable error) — the rest of the function keeps running after that", "It cancels the Promise immediately", "It converts the Promise into a synchronous value with zero delay", "It only works inside .then() callbacks, never standalone"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A `Promise` represents a value that isn't ready yet — it will either
+**resolve** (succeed, with a value) or **reject** (fail, with an
+error) at some point in the future. `async`/`await` is syntax for
+working with Promises that reads like ordinary synchronous code:
+`await somePromise` pauses that `async` function (without blocking
+anything else) until the Promise settles, then gives you the resolved
+value directly — no `.then()` callback needed. A rejected Promise
+becomes a normal catchable exception at the `await` point, so
+`try`/`catch` works on awaited code exactly like it does on
+synchronous code.
+
+```javascript
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+async function run() {
+  console.log("start");
+  await delay(10);
+  console.log("end");
+}
+run();
+// start
+// end  (printed ~10ms later)
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="javascript" code={`function delay(ms) { return new Promise((r) => setTimeout(r, ms)); }\nconsole.log("start");\nawait delay(10);\nconsole.log("end");`} caption="Between 'start' and 'end', this function is paused (not blocked -- the browser tab stays fully responsive) waiting on a real 10ms timer before continuing to the next line." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can write and reason about async/await code, including how awaiting a Promise pauses execution until it settles.
+</Checkpoint>

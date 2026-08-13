@@ -12,27 +12,27 @@
     "research-engineer",
     "full-stack-engineer"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "syntax-variables",
       "title": "Syntax & Variables",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "functions",
       "title": "Functions",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "objects-arrays",
       "title": "Objects & Arrays",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "async-promises",
       "title": "Async/Promises",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "dom-basics",
@@ -47,7 +47,7 @@
     {
       "slug": "error-handling",
       "title": "Error Handling",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

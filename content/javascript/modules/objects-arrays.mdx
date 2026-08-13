@@ -1,0 +1,56 @@
+---
+slug: objects-arrays
+title: Objects & Arrays
+estimatedMinutes: 14
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: javascript
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: objects-arrays-ex1
+    difficulty: beginner
+    concept: js-objects-arrays
+    prompt: "A `DEFAULTS` object `{ theme: \"dark\", volume: 5 }` already exists. Write `mergeDefaults(overrides)` that returns a NEW object — `DEFAULTS` with `overrides` layered on top (overrides win on conflicting keys) — using object spread, without mutating `DEFAULTS` itself."
+  - id: quiz-1
+    type: quiz
+    concept: js-objects-arrays
+    question: "In `{ ...DEFAULTS, ...overrides }`, if both objects have a `volume` key, which one wins?"
+    options: ["overrides — later spread properties overwrite earlier ones with the same key, left to right", "DEFAULTS always wins, since it's listed first", "It throws an error for the duplicate key", "Both values are kept in an array"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+The spread operator (`...`) copies an object or array's own properties
+into a new one: `{ ...base, c: 3 }` makes a NEW object with all of
+`base`'s keys plus `c` — `base` itself is untouched. When two spread
+sources share a key, whichever comes LAST in the literal wins. Array
+destructuring can skip elements with a blank slot: `const [a, , c] =
+[1, 2, 3]` skips index 1 entirely.
+
+```javascript
+const DEFAULTS = { theme: "dark", volume: 5 };
+function mergeDefaults(overrides) {
+  return { ...DEFAULTS, ...overrides };
+}
+console.log(mergeDefaults({ volume: 8 }));
+// { theme: "dark", volume: 8 } -- DEFAULTS itself is unchanged
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="javascript" code={`const base = { a: 1, b: 2 };\nconst extended = { ...base, c: 3 };\nconsole.log(JSON.stringify(extended));\nconst nums = [5, 10, 15];\nconst [x, , z] = nums;\nconsole.log(x, z);`} caption="extended is a brand-new object -- base still only has {a, b}. The array destructure grabs index 0 and index 2, skipping index 1 with the empty slot between commas." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can merge objects with spread (without mutating the originals) and skip elements when destructuring arrays.
+</Checkpoint>

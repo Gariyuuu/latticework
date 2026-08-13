@@ -1,0 +1,62 @@
+---
+slug: types-interfaces
+title: Types & Interfaces
+estimatedMinutes: 14
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: typescript
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: types-interfaces-ex1
+    difficulty: beginner
+    concept: ts-types-interfaces
+    prompt: "Define an `interface Point { x: number; y: number; }`, then write `distance(a: Point, b: Point): number` returning the Euclidean distance between them (`sqrt((a.x-b.x)^2 + (a.y-b.y)^2)`)."
+  - id: quiz-1
+    type: quiz
+    concept: ts-types-interfaces
+    question: "At runtime, in the compiled JavaScript, what happens to an `interface` declaration?"
+    options: ["It disappears entirely -- interfaces are a compile-time-only construct with zero runtime representation, used purely to catch type mismatches before the code ever runs", "It becomes a real JavaScript class", "It becomes a plain object with default values", "It throws a runtime error if violated"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+An `interface` describes the SHAPE an object must have — which
+properties, and their types — without providing any implementation.
+Unlike a class, an interface produces no runtime code at all: it's
+purely a compile-time contract the TypeScript compiler checks for you,
+then erases completely when it compiles down to plain JavaScript. A
+function parameter typed as `(p: Point)` gets full property
+autocomplete and a compile error if you pass something missing `x` or
+`y` — but the JAVASCRIPT that actually runs has no idea `Point` ever
+existed.
+
+```typescript
+interface Point {
+  x: number;
+  y: number;
+}
+function distance(a: Point, b: Point): number {
+  return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
+}
+console.log(distance({ x: 0, y: 0 }, { x: 3, y: 4 }));
+// 5
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="typescript" code={`interface Rect { width: number; height: number; }\nfunction area(r: Rect): number { return r.width * r.height; }\nconsole.log(area({width: 4, height: 5}));`} caption="This lesson's exercises grade by running the TRANSPILED JavaScript (types stripped), not full static type-checking -- so they can only verify TS features with an observable runtime effect, like this function's actual arithmetic." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can define interfaces to describe object shapes and use them to type function parameters, and you understand that they vanish entirely at runtime.
+</Checkpoint>

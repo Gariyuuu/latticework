@@ -1,0 +1,55 @@
+---
+slug: syntax-variables
+title: Syntax & Variables
+estimatedMinutes: 14
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: javascript
+  - id: exercise-1
+    type: exercise
+    exerciseType: write-code
+    testCasesId: syntax-variables-ex1
+    difficulty: beginner
+    concept: js-syntax-variables
+    prompt: "Write `formatUser(user)` — `user` is an object `{ name, age }`. Destructure it and return the string `\"<name> is <age> years old\"` using a template literal."
+  - id: quiz-1
+    type: quiz
+    concept: js-syntax-variables
+    question: "What's the difference between `const` and `let`?"
+    options: ["Both are block-scoped, but a const binding can't be reassigned after its initial value (though an object/array it points to can still be mutated) — let can be reassigned", "const is function-scoped and let is block-scoped", "They're identical in every way", "let can only hold numbers"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Modern JavaScript variables are declared with `const` (can't be
+reassigned) or `let` (can) — `var` still exists but is legacy, avoid it
+in new code. **Destructuring** pulls values out of objects (`const {
+name, age } = user`) or arrays (`const [first, second] = list`) in one
+step instead of repeated `.property`/`[index]` access. **Template
+literals** (backtick strings) embed expressions directly with
+`${...}`, instead of string concatenation with `+`.
+
+```javascript
+const user = { name: "Ada", age: 30 };
+const { name, age } = user;
+console.log(`${name} is ${age} years old`);
+// Ada is 30 years old
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="javascript" code={`const person = { name: "Ada", age: 30 };\nconst { name, age } = person;\nconsole.log(\`\${name} is \${age} years old\`);\nconst [first, second] = [10, 20];\nconsole.log(first + second);`} caption="Destructuring works the same way for objects (by key) and arrays (by position) — both just unpack a structure into named variables in one line instead of several." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can destructure objects and arrays, and build strings with template literals instead of concatenation.
+</Checkpoint>
