@@ -1,0 +1,58 @@
+---
+slug: environment-variables
+title: Environment Variables
+estimatedMinutes: 12
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: bash
+  - id: exercise-1
+    type: exercise
+    exerciseType: cli-simulation
+    testCasesId: environment-variables-ex1
+    difficulty: intro
+    concept: cli-environment-variables
+    prompt: "Export an environment variable `EDITOR` set to `nano`, then — using that variable, not the literal word `nano` — create a file `nano.log` containing the text `ready`."
+  - id: quiz-1
+    type: quiz
+    concept: cli-environment-variables
+    question: "Why is $HOME useful in a script instead of hard-coding a path like /home/user?"
+    options: ["The script keeps working correctly for any user, since $HOME always resolves to whoever is actually running it", "$HOME is faster to type but behaves identically to hard-coding", "$HOME only works for the root user", "Hard-coded paths are actually preferred in real scripts"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Environment variables are the shell's way of passing configuration around
+without hard-coding it: `export NAME=value` sets one, and `$NAME`
+substitutes its current value into any later command. A handful are set
+for you automatically — `$HOME` (your home directory) and `$PWD` (your
+current directory, always kept in sync by `cd`) are the two you'll lean on
+most. Using a variable instead of a literal value is what lets the exact
+same script work correctly across different users, machines, or
+environments.
+
+```bash
+export EDITOR=nano
+echo "using $EDITOR"
+# using nano
+echo config for $EDITOR > $EDITOR.conf
+cat $EDITOR.conf
+# config for nano
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="bash" code={`export APP_ENV=staging\necho "deploying to $APP_ENV"\nmkdir $APP_ENV\ntouch $APP_ENV/marker.txt\nls $APP_ENV`} caption="The same three lines would create a totally different directory if APP_ENV were set to production instead — that's the entire point of using a variable instead of writing the literal word staging directly." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can export environment variables and use them to make commands and scripts configurable instead of hard-coded.
+</Checkpoint>

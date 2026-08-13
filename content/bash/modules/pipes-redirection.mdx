@@ -1,0 +1,55 @@
+---
+slug: pipes-redirection
+title: Pipes & Redirection
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: bash
+  - id: exercise-1
+    type: exercise
+    exerciseType: cli-simulation
+    testCasesId: pipes-redirection-ex1
+    difficulty: intermediate
+    concept: bash-pipes-redirection
+    prompt: "A file `access.log` already exists with one status per line (some `OK`, some `ERROR`). Count how many lines contain `ERROR` and write JUST that number, on its own, to a file called `error-count.txt`."
+  - id: quiz-1
+    type: quiz
+    concept: bash-pipes-redirection
+    question: "In `grep ERROR access.log | wc -l > error-count.txt`, what does the pipe (`|`) do?"
+    options: ["It feeds grep's output directly into wc as its input, without ever creating a temporary file", "It runs both commands at the exact same time on unrelated data", "It redirects wc's output back into access.log", "It's a comment character, so everything after it is ignored"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+`>` writes a command's output to a file, replacing whatever was there;
+`>>` appends instead of replacing. A **pipe** (`|`) chains commands
+together — the output of the command on the left becomes the input of the
+command on the right, with no file ever touching disk in between. You can
+chain more than two: `cat f.txt | sort | head -n 5` sorts a file's lines
+and prints the first five, entirely in memory.
+
+```bash
+grep ERROR access.log | wc -l
+# 2
+grep ERROR access.log | wc -l > error-count.txt
+cat error-count.txt
+# 2
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="bash" code={`echo cherry > fruit.txt\necho apple >> fruit.txt\necho banana >> fruit.txt\ncat fruit.txt | sort\ncat fruit.txt | sort | head -n 2`} caption="Each stage only sees what the previous stage printed — sort never knows the data came from a file, and head never knows it came through a pipe instead of a file. That's what makes pipes composable: every command speaks the same plain-text interface." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can chain commands with pipes and redirect their final output to a file.
+</Checkpoint>

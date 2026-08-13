@@ -1,0 +1,55 @@
+---
+slug: shell-basics
+title: Shell Basics
+estimatedMinutes: 14
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: bash
+  - id: exercise-1
+    type: exercise
+    exerciseType: cli-simulation
+    testCasesId: shell-basics-ex1
+    difficulty: beginner
+    concept: bash-shell-basics
+    prompt: "Starting in your home directory, create a directory called `notes`, then inside it create a file `todo.txt` whose only line is `buy milk`."
+  - id: quiz-1
+    type: quiz
+    concept: bash-shell-basics
+    question: "What does `echo buy milk > notes/todo.txt` do if `notes/todo.txt` already exists and contains other text?"
+    options: ["It overwrites the file completely with just \"buy milk\"", "It appends \"buy milk\" as a new line after the existing content", "It throws an error because the file already exists", "It creates a second file named todo.txt.1"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Every shell session has a **current working directory** — the folder
+commands run relative to — and a small set of commands you'll type more
+than any others: `pwd` (print it), `cd` (change it), `ls` (list what's in
+it), `mkdir` (make a directory), `touch` (create an empty file), `cat`
+(print a file's contents), `echo` (print text — and, combined with `>`,
+write it to a file), and `rm` (delete). Paths can be relative to where you
+are (`notes/todo.txt`) or absolute from the root (`/home/user/notes/todo.txt`).
+
+```bash
+mkdir notes
+echo buy milk > notes/todo.txt
+cat notes/todo.txt
+# buy milk
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="bash" code={`mkdir logs\ntouch logs/app.log\necho server started > logs/app.log\nls logs\ncat logs/app.log`} caption="ls without a path lists the current directory; ls logs lists inside a specific one. Try changing the echo text and running it again — the file's contents update to match exactly what you wrote." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can navigate directories and create, write, and read files using the core shell commands.
+</Checkpoint>

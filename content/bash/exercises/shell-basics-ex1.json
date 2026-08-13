@@ -1,0 +1,10 @@
+{
+  "id": "shell-basics-ex1",
+  "type": "cli-simulation",
+  "language": "bash",
+  "starterCode": "# You start in your home directory.\n",
+  "cases": [
+    { "call": "cat notes/todo.txt", "expect": "buy milk\n" },
+    { "call": "ls notes", "expect": "todo.txt" }
+  ]
+}

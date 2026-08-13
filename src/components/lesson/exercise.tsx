@@ -34,7 +34,7 @@ const MAX_HINT_LEVEL = 4; // 5th action is "reveal solution"
 export function Exercise({ id }: { id: string }) {
   const { frontmatter, testCases } = useLessonBlock(id);
   const { skillSlug, lessonSlug, completed, markComplete } = useLessonProgress();
-  const language = (testCases?.language ?? "python") as "python" | "sql";
+  const language = (testCases?.language ?? "python") as "python" | "sql" | "bash";
   const { run, status } = useSandbox(language);
 
   const [code, setCode] = React.useState(testCases?.starterCode ?? "");
@@ -102,7 +102,8 @@ export function Exercise({ id }: { id: string }) {
 
     const res = await run(code, {
       evalExpressions: testCases.cases.map((c) => c.call),
-      packages: testCases.packages,
+      packages: testCases.type === "write-code" ? testCases.packages : undefined,
+      initialFiles: testCases.type === "cli-simulation" ? testCases.initialFiles : undefined,
     });
 
     if (res.error) {

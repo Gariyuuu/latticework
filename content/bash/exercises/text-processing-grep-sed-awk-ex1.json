@@ -1,0 +1,15 @@
+{
+  "id": "text-processing-grep-sed-awk-ex1",
+  "type": "cli-simulation",
+  "language": "bash",
+  "starterCode": "# log.txt already exists.\n",
+  "initialFiles": {
+    "log.txt": "INFO connected\nERROR secret leak on port 8080\nINFO ok\nERROR secret token invalid\n"
+  },
+  "cases": [
+    {
+      "call": "cat redacted-errors.txt",
+      "expect": "ERROR *** leak on port 8080\nERROR *** token invalid\n"
+    }
+  ]
+}

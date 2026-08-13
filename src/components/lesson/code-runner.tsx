@@ -24,6 +24,7 @@ const MONACO_LANGUAGE: Record<SandboxLanguage, string> = {
   javascript: "javascript",
   typescript: "typescript",
   sql: "sql",
+  bash: "shell",
 };
 
 interface CodeRunnerProps {

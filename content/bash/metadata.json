@@ -19,27 +19,27 @@
     "quant-researcher",
     "quant-trader"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "shell-basics",
       "title": "Shell Basics",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "pipes-redirection",
       "title": "Pipes & Redirection",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "scripting",
       "title": "Scripting",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "text-processing-grep-sed-awk",
       "title": "Text Processing (grep/sed/awk)",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

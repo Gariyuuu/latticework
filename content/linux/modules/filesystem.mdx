@@ -1,0 +1,58 @@
+---
+slug: filesystem
+title: Filesystem
+estimatedMinutes: 14
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: bash
+  - id: exercise-1
+    type: exercise
+    exerciseType: cli-simulation
+    testCasesId: filesystem-ex1
+    difficulty: beginner
+    concept: linux-filesystem
+    prompt: "Create the directories and files needed so that `var/log/app/access.log` and `var/log/app/error.log` both exist, then use `find` to list every file under `var` whose name ends in `.log`."
+  - id: quiz-1
+    type: quiz
+    concept: linux-filesystem
+    question: "Linux has a single unified filesystem tree rooted at `/`. What does that mean in practice, compared to something like `C:\\` and `D:\\` on Windows?"
+    options: ["Every file on the system — regardless of which physical disk or partition it actually lives on — has one path starting from the same root, with no separate per-drive letters", "Linux systems can only ever have one hard drive", "It means every Linux file is stored in RAM instead of on disk", "It has nothing to do with how paths are structured"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Everything on a Linux system — files, directories, and (conceptually)
+devices — lives under one tree rooted at `/`, no matter how many physical
+disks are actually involved; other drives get *mounted* at some directory
+inside that same tree rather than getting their own separate root. Your
+home directory (`/home/user` in this simulator) is where you start and
+where you typically keep your own files. `find PATH -name PATTERN`
+searches an entire directory tree recursively for files matching a
+name pattern — unlike `ls`, which only looks one level deep.
+
+```bash
+mkdir -p var/log/app
+touch var/log/app/access.log
+touch var/log/app/error.log
+find var -name "*.log"
+# /home/user/var/log/app/access.log
+# /home/user/var/log/app/error.log
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="bash" code={`mkdir -p project/src project/tests\ntouch project/src/main.py\ntouch project/tests/test_main.py\ntouch project/README.md\nfind project\nfind project -name "*.py"`} caption="find with no -name lists every file and directory in the tree; adding -name filters it down to just the paths whose final component matches the given pattern." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You understand Linux's single unified filesystem tree, and can search it recursively with find.
+</Checkpoint>

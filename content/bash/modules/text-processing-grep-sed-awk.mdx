@@ -1,0 +1,60 @@
+---
+slug: text-processing-grep-sed-awk
+title: Text Processing (grep/sed/awk)
+estimatedMinutes: 18
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: bash
+  - id: exercise-1
+    type: exercise
+    exerciseType: cli-simulation
+    testCasesId: text-processing-grep-sed-awk-ex1
+    difficulty: intermediate
+    concept: bash-text-processing
+    prompt: "A file `log.txt` already exists. Redact every occurrence of the word `secret` to `***`, then keep only the lines that contain `ERROR`, and write those (already-redacted) lines to `redacted-errors.txt`."
+  - id: quiz-1
+    type: quiz
+    concept: bash-text-processing
+    question: "What does the trailing `g` mean in `sed 's/a/b/g'`?"
+    options: ["Replace every match on each line, not just the first one", "Search the whole filesystem for the pattern", "Run the substitution in the background", "Enable case-insensitive matching"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Three tools cover most day-to-day text processing: `grep PATTERN file`
+prints only the lines matching a pattern (`-n` adds line numbers);
+`sed 's/OLD/NEW/'` replaces the FIRST match of `OLD` with `NEW` on each
+line (add a trailing `g` to replace every match, not just the first);
+`awk '{print $N}'` prints just the Nth whitespace-separated field of each
+line (1-indexed — `$1` is the first word, `$2` the second). All three read
+from a file OR from a pipe, which is what makes them so composable with
+each other.
+
+```bash
+echo "alice 29" > people.txt
+echo "bob 34" >> people.txt
+awk '{print $1}' people.txt
+# alice
+# bob
+sed 's/alice/ALICE/' people.txt
+# ALICE 29
+# bob 34
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="bash" code={`echo beta 30 > scores.txt\necho alpha 10 >> scores.txt\necho gamma 20 >> scores.txt\nawk '{print $2}' scores.txt\nawk '{print $2}' scores.txt | sort -n`} caption="awk pulls out just the score column; piping that into sort -n turns it into a sorted list of just the numbers, with no separate temp file needed anywhere in between." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can filter, substitute, and extract fields from text using grep, sed, and awk, and chain them together with pipes.
+</Checkpoint>

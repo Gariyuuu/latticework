@@ -1,0 +1,58 @@
+---
+slug: file-operations
+title: File Operations
+estimatedMinutes: 12
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: bash
+  - id: exercise-1
+    type: exercise
+    exerciseType: cli-simulation
+    testCasesId: file-operations-ex1
+    difficulty: intro
+    concept: cli-file-operations
+    prompt: "Create a file `draft.txt` containing the text `hello`, copy it to `draft-backup.txt`, rename `draft.txt` to `final.txt`, and finally delete `draft-backup.txt`."
+  - id: quiz-1
+    type: quiz
+    concept: cli-file-operations
+    question: "You run `rm important-dir` on a directory (not a file) without any flags. What happens?"
+    options: ["rm refuses, printing something like \"Is a directory\" — you need rm -r to remove a directory and everything inside it", "It deletes only the files directly inside, but keeps the directory itself", "It silently does nothing with no message at all", "It deletes the directory but asks for confirmation first"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+`cp source dest` copies a file (add `-r` to copy a directory and
+everything inside it); `mv source dest` renames or moves a file — there's
+no separate "rename" command, moving to a new name in the same directory
+IS a rename. `rm` deletes a file; deleting a directory requires `rm -r`
+explicitly, since removing a whole tree of files is destructive enough
+that the shell won't do it by accident. `rm -f` suppresses errors for
+files that don't exist, useful in scripts that shouldn't fail just because
+something was already cleaned up.
+
+```bash
+echo draft content > draft.txt
+cp draft.txt backup.txt
+mv draft.txt final.txt
+rm backup.txt
+ls
+# final.txt
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="bash" code={`mkdir scratch\ntouch scratch/a.txt\nls scratch\nrm scratch\nrm -r scratch\nls`} caption="The first rm on a directory fails on purpose — it's a safety rail. rm -r is the explicit, harder-to-typo-into-by-accident way to confirm you really do want to delete the whole tree." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can copy, move/rename, and delete files and directories, and you understand why deleting a directory needs an explicit flag.
+</Checkpoint>

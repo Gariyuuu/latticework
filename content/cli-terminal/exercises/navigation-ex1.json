@@ -1,0 +1,9 @@
+{
+  "id": "navigation-ex1",
+  "type": "cli-simulation",
+  "language": "bash",
+  "starterCode": "",
+  "cases": [
+    { "call": "pwd", "expect": "/home/user/projects/app/src" }
+  ]
+}

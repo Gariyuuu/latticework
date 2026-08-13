@@ -1,0 +1,10 @@
+{
+  "id": "scripting-ex1",
+  "type": "cli-simulation",
+  "language": "bash",
+  "starterCode": "",
+  "cases": [
+    { "call": "ls forge", "expect": "README.md" },
+    { "call": "echo $PROJECT", "expect": "forge" }
+  ]
+}

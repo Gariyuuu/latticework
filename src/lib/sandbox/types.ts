@@ -1,4 +1,4 @@
-export type SandboxLanguage = "python" | "javascript" | "typescript" | "sql";
+export type SandboxLanguage = "python" | "javascript" | "typescript" | "sql" | "bash";
 
 export interface RunResult {
   stdout: string;
@@ -22,6 +22,10 @@ export interface RunOptions {
   /** SQL only: schema + seed data to run against a fresh in-memory database
    * before the submitted query runs. Ignored by other providers. */
   setupSql?: string;
+  /** Bash only: path -> file content seeded into a fresh in-memory
+   * filesystem before the script runs. Parent directories are created
+   * automatically. Ignored by other providers. */
+  initialFiles?: Record<string, string>;
 }
 
 /**

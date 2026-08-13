@@ -103,12 +103,18 @@ on a missing env var without surfacing that clearly in the UI — see
 
 ## Known limitations (see ROADMAP.md for the full, current list)
 
-- **74 skills have real lesson content** (up from the original
-  Python-only MVP) — targets of 50, 60, then 70 were all reached this
-  session; a user request to go to 99 (the full catalog) was assessed
-  and found NOT fully achievable via content authoring alone — see
-  ROADMAP.md "Content coverage" for the precise, verified breakdown of
-  why the remaining 25 skills are infra-blocked, not just unwritten.
+- **77 skills have real lesson content** (up from the original
+  Python-only MVP) — targets of 50, 60, then 70 were all reached in one
+  session; a request to go to 99 (the full catalog) was assessed and
+  found NOT fully achievable via content authoring alone at the time —
+  see ROADMAP.md "Content coverage" for the precise, verified breakdown
+  of why 22 skills remain infra-blocked, not just unwritten. A later
+  session closed the single highest-leverage gap identified there — a
+  CLI-simulation exercise type (`src/lib/sandbox/providers/cli-provider.ts`,
+  a deterministic in-memory Unix-shell simulator, not real bash) — which
+  unblocked `bash` (4/4), `cli-terminal` (3/3), and `linux` (2/4;
+  `processes`/`package-management` deliberately left Planned, no honest
+  fit for a filesystem-only simulator).
   Full per-track module counts and design notes are in ROADMAP.md, not
   duplicated here since it changes every session. Quick index: Python/
   Data Structures/Algorithms/NumPy/Pandas/Probability/Statistics (all
@@ -132,8 +138,11 @@ on a missing env var without surfacing that clearly in the UI — see
   Matplotlib (2/4), Computer Networking (1/3), CSS (1/4), Docker (2/4),
   GitHub (2/3), Snowflake Fundamentals (2/3), Apache Spark Fundamentals
   (2/3, explicitly a verified pure-Python simulation of Spark's
-  execution model — `pyspark` is confirmed unavailable in Pyodide). The
-  rest of the technology catalog is metadata-only, and for 25 of those
+  execution model — `pyspark` is confirmed unavailable in Pyodide),
+  Bash / Shell (4/4), Terminal / CLI (3/3), Linux (2/4 — filesystem,
+  permissions; `processes`/`package-management` left Planned, no
+  honest fit for a filesystem-only CLI simulator, see ROADMAP.md). The
+  rest of the technology catalog is metadata-only, and for 22 of those
   skills that's a hard infrastructure blocker, not a content gap — see
   ROADMAP.md (by design — see also `docs/COURSE_CONTENT_SPEC.md`).
   Monte Carlo and
@@ -147,9 +156,11 @@ on a missing env var without surfacing that clearly in the UI — see
   grading model at all — each is fundamentally about something else
   (EXPLAIN QUERY PLAN text, DDL/normalization, real concurrency) and
   needs its own exercise type, not a forced-fit sql-query exercise — see
-  ROADMAP.md "Content coverage" for the full reasoning. Git/Linux need
-  the CLI-simulation exercise type, PyTorch/C++ need their own
-  sandbox/package infra.
+  ROADMAP.md "Content coverage" for the full reasoning. Git's remaining
+  modules (resolving-conflicts, remotes) need a separate git-simulation
+  exercise type (staging area / commit graph model, not just a
+  filesystem) — still Planned, distinct from cli-simulation, which is
+  now built. PyTorch/C++ need their own sandbox/package infra.
 - SQL exercises (`sql-query` type): `setupSql` seeds a fresh sql.js
   database per exercise, grading deep-compares the student's query's last
   result set against `expectedColumns`/`expectedRows` — exact row order,
@@ -161,6 +172,27 @@ on a missing env var without surfacing that clearly in the UI — see
   first — `db.exec()` returns `[]` (not one empty-values result set) when
   a query matches zero rows, a real edge case that bit the grading logic
   design before content was written.
+- CLI-simulation exercises (`cli-simulation` type): reuses the write-code
+  `cases` (call/expect) grading path — the student's `starterCode` script
+  runs first against a fresh virtual filesystem seeded from `initialFiles`
+  (paths relative to `/home/user` unless absolute), then each
+  `cases[].call` command runs afterward in that same persisted filesystem/
+  cwd/variable state. See `src/lib/sandbox/providers/cli-provider.ts` — a
+  deterministic in-memory Unix-shell simulator, NOT real bash (no
+  practical way to run real bash in a browser tab for this MVP). Two real
+  gotchas caught by verification, documented in that file's docstring:
+  (1) `echo ... > file` appends a trailing newline, so `cat`/`cp`/`mv` on
+  that file reproduce it verbatim (`cat` after `echo hi > f` returns
+  `"hi\n"`, not `"hi"`); (2) naive `content.split("\n")` on
+  newline-terminated content produces a bogus trailing empty line for
+  every line-oriented command — fixed via a shared `linesOf()` helper
+  (`wc -l` counts `\n` characters directly instead, unaffected). `sed`/
+  `awk` support only the single most common idiom each
+  (`s/pattern/replacement/[g]`, `{print $N}`) — anything else returns an
+  honest "unsupported script" error rather than mishandling it silently.
+  Verify any new cli-simulation exercise by running its exact reference
+  solution through `CliProvider` headless in Node — never hand-type an
+  expected value, same discipline as every other provider.
 - Pyodide package-loading: `RunOptions.packages` /
   `PyodideProvider.run()` / `testCaseFileSchema.packages` /
   `<CodeExample packages={[...]}>` — declare Pyodide package names an

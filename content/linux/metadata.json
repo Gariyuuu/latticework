@@ -21,17 +21,17 @@
     "quant-researcher",
     "quant-trader"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "filesystem",
       "title": "Filesystem",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "permissions",
       "title": "Permissions",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "processes",

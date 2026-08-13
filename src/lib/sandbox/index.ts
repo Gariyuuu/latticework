@@ -1,6 +1,7 @@
 import type { SandboxLanguage, SandboxProvider } from "./types";
 import { getPyodideProvider } from "./providers/pyodide-provider";
 import { getSqlProvider } from "./providers/sql-provider";
+import { getCliProvider } from "./providers/cli-provider";
 
 export function getSandboxProvider(language: SandboxLanguage): SandboxProvider {
   switch (language) {
@@ -8,6 +9,8 @@ export function getSandboxProvider(language: SandboxLanguage): SandboxProvider {
       return getPyodideProvider();
     case "sql":
       return getSqlProvider();
+    case "bash":
+      return getCliProvider();
     case "javascript":
     case "typescript":
       // Planned — see ROADMAP.md "Code engine". A sandboxed Worker follows

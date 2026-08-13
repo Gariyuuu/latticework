@@ -58,6 +58,7 @@ export const blockFrontmatterSchema = z.object({
       "code-ordering",
       "multiple-choice",
       "sql-query",
+      "cli-simulation",
       "refactor",
       "performance",
     ])
@@ -115,13 +116,37 @@ export const sqlQueryTestCaseFileSchema = z.object({
   expectedRows: z.array(z.array(z.union([z.string(), z.number(), z.null()]))),
 });
 
+/** A CLI-simulation exercise runs `starterCode` (the student's shell script)
+ * against a fresh in-memory filesystem seeded from `initialFiles`, then runs
+ * each `cases[].call` command in that same persisted filesystem/cwd state
+ * and compares its captured output to `cases[].expect` — same call/expect
+ * shape as write-code, run against `src/lib/sandbox/providers/cli-provider.ts`
+ * (a deterministic shell simulator, not real bash — see that file's
+ * docstring). `initialFiles` keys are paths relative to the home directory
+ * (`/home/user`) unless they start with `/`. */
+export const cliSimulationTestCaseFileSchema = z.object({
+  id: z.string(),
+  type: z.literal("cli-simulation"),
+  language: z.literal("bash"),
+  starterCode: z.string(),
+  initialFiles: z.record(z.string(), z.string()).optional(),
+  cases: z.array(
+    z.object({
+      call: z.string(),
+      expect: z.string(),
+    })
+  ),
+});
+
 export const testCaseFileSchema = z.discriminatedUnion("type", [
   writeCodeTestCaseFileSchema,
   sqlQueryTestCaseFileSchema,
+  cliSimulationTestCaseFileSchema,
 ]);
 
 export type WriteCodeTestCaseFile = z.infer<typeof writeCodeTestCaseFileSchema>;
 export type SqlQueryTestCaseFile = z.infer<typeof sqlQueryTestCaseFileSchema>;
+export type CliSimulationTestCaseFile = z.infer<typeof cliSimulationTestCaseFileSchema>;
 export type TestCaseFile = z.infer<typeof testCaseFileSchema>;
 
 /** Stable, deterministic exercise slug — computed identically at content-sync

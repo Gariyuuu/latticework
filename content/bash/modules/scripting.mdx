@@ -1,0 +1,58 @@
+---
+slug: scripting
+title: Scripting
+estimatedMinutes: 14
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: bash
+  - id: exercise-1
+    type: exercise
+    exerciseType: cli-simulation
+    testCasesId: scripting-ex1
+    difficulty: beginner
+    concept: bash-scripting-variables
+    prompt: "Set a variable `PROJECT` to `forge`, then create a directory named after it and create an empty file `README.md` inside that directory, using the variable both times (not the literal word `forge`)."
+  - id: quiz-1
+    type: quiz
+    concept: bash-scripting-variables
+    question: "What's the difference between `echo $NAME` and `echo '$NAME'` (single quotes)?"
+    options: ["Single quotes suppress variable expansion entirely, so it prints the literal text $NAME instead of the variable's value", "They always produce identical output", "Single quotes expand the variable but double quotes don't", "Single quotes are a syntax error around a variable"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A shell variable is just a name bound to text: `NAME=value` sets it (no
+spaces around `=`), and `$NAME` (or `${NAME}`) substitutes its value
+anywhere in a later command — including inside another string. `export`
+marks a variable so it's available beyond the current line the same way a
+plain assignment is here. Two built-in variables are always available:
+`$HOME` (your home directory) and `$PWD` (your current directory, updated
+automatically by `cd`). Wrapping a variable in **single quotes** turns off
+expansion — `'$NAME'` prints the literal four characters `$NAME`, not its
+value; double quotes still expand normally.
+
+```bash
+NAME=forge
+echo hello $NAME
+# hello forge
+mkdir $NAME
+touch $NAME/README.md
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="bash" code={`export GREETING=hi\necho "$GREETING there"\necho '$GREETING literally'\necho $HOME`} caption="export and a plain NAME=value assignment behave the same way in this simulator — there's no subshell boundary here for the distinction to matter. $HOME always resolves to /home/user, the directory every session starts in." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can set and use shell variables, and you understand how quoting affects expansion.
+</Checkpoint>

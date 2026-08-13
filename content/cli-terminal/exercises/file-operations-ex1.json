@@ -1,0 +1,10 @@
+{
+  "id": "file-operations-ex1",
+  "type": "cli-simulation",
+  "language": "bash",
+  "starterCode": "",
+  "cases": [
+    { "call": "ls", "expect": "final.txt" },
+    { "call": "cat final.txt", "expect": "hello\n" }
+  ]
+}

@@ -1,0 +1,60 @@
+---
+slug: navigation
+title: Navigation
+estimatedMinutes: 10
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: bash
+  - id: exercise-1
+    type: exercise
+    exerciseType: cli-simulation
+    testCasesId: navigation-ex1
+    difficulty: intro
+    concept: cli-navigation
+    prompt: "From your home directory, create the nested directories `projects/app/src` in a single command, then move into `src` using a relative path, and print your current absolute location."
+  - id: quiz-1
+    type: quiz
+    concept: cli-navigation
+    question: "What's the difference between `cd projects` and `cd /projects`?"
+    options: ["cd projects moves relative to where you currently are; cd /projects always means the projects folder directly under the filesystem root, no matter where you started", "They always go to the exact same place", "cd /projects is invalid syntax", "cd projects only works in your home directory"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+A path starting with `/` is **absolute** — it always means the same
+location, measured from the filesystem root, no matter where you
+currently are. A path that doesn't start with `/` is **relative** — it's
+measured from your current directory. Two special relative names show up
+constantly: `.` means "this directory" and `..` means "one directory up."
+`~` is shorthand for your home directory, so `cd ~` (or plain `cd` with no
+argument) always takes you home. `mkdir -p` creates a whole chain of
+nested directories in one call, making any missing parent along the way
+instead of erroring.
+
+```bash
+mkdir -p projects/app/src
+cd projects/app/src
+pwd
+# /home/user/projects/app/src
+cd ../..
+pwd
+# /home/user/projects
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="bash" code={`mkdir -p a/b/c\ncd a/b/c\npwd\ncd ..\npwd\ncd ~\npwd`} caption="cd .. always means one level up from wherever you currently are — it's relative, so the same command means something different depending on your current directory." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can navigate directory trees using absolute paths, relative paths, and the ~/../. shorthands.
+</Checkpoint>

@@ -19,22 +19,22 @@
     "quant-researcher",
     "quant-trader"
   ],
-  "status": "skeleton",
+  "status": "built",
   "modules": [
     {
       "slug": "navigation",
       "title": "Navigation",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "file-operations",
       "title": "File Operations",
-      "status": "planned"
+      "status": "built"
     },
     {
       "slug": "environment-variables",
       "title": "Environment Variables",
-      "status": "planned"
+      "status": "built"
     }
   ]
 }

@@ -1,0 +1,9 @@
+{
+  "id": "permissions-ex1",
+  "type": "cli-simulation",
+  "language": "bash",
+  "starterCode": "",
+  "cases": [
+    { "call": "ls -l", "expect": "-rwx--x--x  deploy.sh" }
+  ]
+}

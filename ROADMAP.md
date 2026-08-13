@@ -54,10 +54,46 @@ same change as any feature work.
   runs the student's query against a fresh sql.js database seeded from
   `setupSql` and deep-compares the last result set. See
   `src/components/lesson/exercise.tsx`.
+- **cli-simulation** — **Done**. Runs against `CliProvider`
+  (`src/lib/sandbox/providers/cli-provider.ts`), a deterministic in-memory
+  Unix-shell simulator — NOT real bash (no practical way to run real bash
+  in-browser for this MVP, same reasoning as the Apache Spark track's
+  verified pure-Python simulation). Test cases use the same call/expect
+  `cases` shape as write-code (`cliSimulationTestCaseFileSchema` in
+  `src/lib/content/schema.ts`) plus an optional `initialFiles` map (paths
+  relative to `/home/user` unless absolute) seeded into a fresh virtual
+  filesystem before the student's script runs; `cases[].call` commands run
+  afterward in the same persisted filesystem/cwd/variable state — exact
+  same reuse of the write-code grading path in
+  `src/components/lesson/exercise.tsx`, just with `initialFiles` swapped in
+  for `packages`. Supports: `pwd`/`cd`/`ls`(`-la`)/`mkdir`(`-p`)/`touch`/
+  `cat`/`echo`/`rm`(`-rf`)/`cp`(`-r`)/`mv`/`grep`(`-n`)/`find`(`-name`)/
+  `wc`(`-lwc`)/`head`/`tail`(`-n`)/`chmod`(octal or `+x`/`-x`)/`export`/
+  variable assignment + `$VAR`/`${VAR}` expansion (suppressed inside single
+  quotes, matching real bash)/pipes (`cmd1 | cmd2 | cmd3`, stdin threaded
+  through stdin-aware commands)/`>`+`>>` redirection/`sort`(`-n`/`-r`)/
+  `uniq`(`-c`)/a deliberate **subset** of `sed` (`s/pattern/replacement/[g]`
+  only) and `awk` (`{print $N}` only) — both return an honest "unsupported
+  script" error for anything outside that subset rather than silently
+  mishandling it. Ground truth for exercise authoring is the provider
+  itself, run headless in Node (never hand-typed) — see the file's
+  docstring for two real gotchas this surfaced during verification: (1)
+  `echo ... > file` appends a trailing newline (matching real bash), so
+  `cat`/`cp`/`mv` on that file reproduce it verbatim; (2) naively
+  `content.split("\n")` on newline-terminated file content produces a
+  bogus trailing empty "line" that real coreutils never shows — fixed via
+  a shared `linesOf()` helper used by every line-oriented command
+  (grep/sort/uniq/sed/awk/head/tail; `wc -l` counts `\n` characters
+  directly instead). Unblocks the `bash`, `cli-terminal`, and `linux`
+  skills (see "Content coverage" below) — `linux`'s `processes` and
+  `package-management` modules remain Planned since there's no
+  process-scheduler or package-manager model this filesystem-based
+  simulator can honestly support; forcing a fit would teach something
+  wrong, the same reasoning that kept `mysql`/`postgresql` unbuilt.
 - Fill-blank, fix-bug, predict-output, code-ordering, refactor, performance,
-  CLI-simulation, git-simulation exercise *types* — **Planned** (schema
-  supports arbitrary `exerciseType`; only write-code + multiple-choice +
-  sql-query have UI + validators implemented)
+  git-simulation exercise *types* — **Planned** (schema supports arbitrary
+  `exerciseType`; write-code + multiple-choice + sql-query + cli-simulation
+  have UI + validators implemented)
 
 ## Code engine
 - Monaco editor (lazy-loaded) — **Done**
@@ -560,36 +596,51 @@ same change as any feature work.
   runs), rather than claiming to run real Spark. Same honesty standard
   as Concurrency's `threads-locks` simulation.
 - **"go 99" assessed and found NOT fully achievable via content alone
-  — 25 of the 99 catalog skills are blocked by missing infrastructure,
-  not by unwritten content.** Verified precisely, not assumed: a
-  scratch `npm install pyodide` + `loadPackage()` sweep confirmed
-  `tensorflow`, `pytorch`/`torch`, `keras`, `plotly`, `polars`,
+  at the time — 25 of the 99 catalog skills were blocked by missing
+  infrastructure, not by unwritten content.** Verified precisely, not
+  assumed: a scratch `npm install pyodide` + `loadPackage()` sweep
+  confirmed `tensorflow`, `pytorch`/`torch`, `keras`, `plotly`, `polars`,
   `transformers`/`huggingface_hub`, `pymysql`, `psycopg2` are **not
   available** in Pyodide's package index at all — no amount of content
-  work can make an unavailable package loadable. Separately, `bash`,
-  `cli-terminal`, `linux` need a CLI-simulation exercise type that
-  doesn't exist (see "Learning engine"); `c`, `cpp`, `go`, `java`,
-  `javascript`, `julia`, `kotlin`, `matlab`, `r`, `rust`, `swift`,
-  `typescript` need their own language execution sandboxes, none of
-  which are built (`docs/ARCHITECTURE.md`'s execution provider model
-  only covers Python/SQL); `html`/`jupyter` have no meaningful
-  code-testable angle in this platform's exercise model. `mysql`/
-  `postgresql` were deliberately NOT force-fit onto the sql.js
+  work can make an unavailable package loadable. `c`, `cpp`, `go`,
+  `java`, `javascript`, `julia`, `kotlin`, `matlab`, `r`, `rust`,
+  `swift`, `typescript` need their own language execution sandboxes,
+  none of which are built (`docs/ARCHITECTURE.md`'s execution provider
+  model only covers Python/SQL/bash); `html`/`jupyter` have no
+  meaningful code-testable angle in this platform's exercise model.
+  `mysql`/`postgresql` were deliberately NOT force-fit onto the sql.js
   (SQLite) provider — their planned modules (storage-engines, EXPLAIN
   output, indexing internals) are genuinely dialect-specific behavior
   that sql.js's SQLite engine cannot honestly reproduce; testing them
   against SQLite would teach students something actively wrong about
-  MySQL/Postgres. These 25 tracks remain metadata-only skeletons by
+  MySQL/Postgres. These 22 tracks remain metadata-only skeletons by
   necessity, not by oversight — closing them requires new
-  infrastructure (a CLI-sim exercise type, a JS/TS or other-language
-  sandbox, or server-side execution per `docs/SECURITY.md`), which is
-  a distinct engineering effort from the content-authoring work this
-  entire "go to N" push has been.
-- Linux, PyTorch, C++ — **Planned** (metadata skeletons done as part
-  of the wider ~70-90 skill catalog; module content not yet authored).
-  Linux needs the CLI-simulation exercise type, which isn't implemented
-  yet (see "Learning engine" above); PyTorch/C++ need their own
-  execution infra decisions.
+  infrastructure (a JS/TS or other-language sandbox, or server-side
+  execution per `docs/SECURITY.md`), a distinct engineering effort from
+  content-authoring alone.
+- **The CLI-simulation exercise type — the single highest-leverage gap
+  identified above — was built in a later session, closing `bash`,
+  `cli-terminal`, and `linux`.** See "Learning engine" above for
+  `CliProvider`'s design/scope. Fully built: **Bash / Shell (4/4 —
+  shell-basics, pipes-redirection, scripting, text-processing-grep-sed-
+  awk)**, **Terminal / CLI (3/3 — navigation, file-operations,
+  environment-variables)**, **Linux (2/4 — filesystem, permissions;
+  `processes` and `package-management` left Planned — no process-
+  scheduler or package-manager model this filesystem-based simulator
+  can honestly support, same "don't force a bad fit" reasoning as
+  mysql/postgresql above)**. Reaches **77/99 skills built**. Every
+  exercise's expected value was generated by actually running
+  `CliProvider` headless in Node (never hand-typed) — this caught two
+  real bugs before they became grading bugs, both now documented in the
+  provider's file-level docstring: `echo > file`'s trailing newline
+  propagating through `cat`/`cp`/`mv`, and a naive `content.split("\n")`
+  producing a bogus trailing empty line for every line-oriented command
+  (fixed via a shared `linesOf()` helper). `sed`/`awk` are a deliberate,
+  documented **subset** (`s/pattern/replacement/[g]` and `{print $N}`
+  only) — verified by running each exercise's exact reference solution
+  through the real provider, same as every other track.
+- PyTorch, C++ — **Planned** (metadata skeletons only; module content
+  not yet authored). Need their own execution infra decisions.
 - Remaining technologies from the brief — **Done** as metadata-only
   skeletons (appear correctly in graph/Explore/roadmap, no lesson content)
 

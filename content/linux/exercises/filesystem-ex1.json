@@ -1,0 +1,12 @@
+{
+  "id": "filesystem-ex1",
+  "type": "cli-simulation",
+  "language": "bash",
+  "starterCode": "",
+  "cases": [
+    {
+      "call": "find var -name \"*.log\"",
+      "expect": "/home/user/var/log/app/access.log\n/home/user/var/log/app/error.log"
+    }
+  ]
+}

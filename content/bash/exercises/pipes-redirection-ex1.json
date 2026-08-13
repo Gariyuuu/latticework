@@ -1,0 +1,12 @@
+{
+  "id": "pipes-redirection-ex1",
+  "type": "cli-simulation",
+  "language": "bash",
+  "starterCode": "# access.log already exists with one status per line.\n",
+  "initialFiles": {
+    "access.log": "OK\nERROR\nOK\nERROR\nERROR\n"
+  },
+  "cases": [
+    { "call": "cat error-count.txt", "expect": "2\n" }
+  ]
+}

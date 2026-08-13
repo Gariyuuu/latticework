@@ -1,0 +1,60 @@
+---
+slug: permissions
+title: Permissions
+estimatedMinutes: 16
+blocks:
+  - id: intro
+    type: explanation
+  - id: try-it
+    type: codeExample
+    language: bash
+  - id: exercise-1
+    type: exercise
+    exerciseType: cli-simulation
+    testCasesId: permissions-ex1
+    difficulty: intermediate
+    concept: linux-permissions
+    prompt: "Create a file `deploy.sh`. First restrict it to `600` (read/write for the owner only, nothing for anyone else), then separately make it executable for everyone by adding the execute bit with `chmod +x`."
+  - id: quiz-1
+    type: quiz
+    concept: linux-permissions
+    question: "A file's permissions are shown as `rwxr-xr-x`. What do the three groups represent, left to right?"
+    options: ["The owner's permissions, then the group's permissions, then everyone else's permissions", "Read permissions, write permissions, and execute permissions, each shown three different ways", "Three different files with the same name", "The permissions for the last three users who edited the file"]
+    answer: 0
+  - id: checkpoint-1
+    type: checkpoint
+---
+
+<Explanation id="intro">
+
+Every file has three permission triplets — **owner**, **group**, and
+**other (everyone else)** — each made of read (`r`), write (`w`), and
+execute (`x`) bits. `chmod` changes them, either as a 3-digit octal number
+(each digit 0-7 encodes one triplet: `4`=read, `2`=write, `1`=execute,
+added together — `6` = read+write, `7` = read+write+execute) or
+symbolically (`chmod +x file` adds execute for everyone, `chmod -x file`
+removes it). `ls -l` shows the resulting permission string as ten
+characters: a leading `d`/`-` for directory-vs-file, then the three rwx
+triplets.
+
+```bash
+touch script.sh
+chmod 600 script.sh
+ls -l
+# -rw-------  script.sh
+chmod +x script.sh
+ls -l
+# -rwx--x--x  script.sh
+```
+
+</Explanation>
+
+<CodeExample id="try-it" language="bash" code={`touch shared.txt\nchmod 644 shared.txt\nls -l\nchmod 700 shared.txt\nls -l`} caption="644 (rw-r--r--) is the typical default for a plain file: the owner can edit it, everyone else can only read it. 700 (rwx------) locks it down to the owner alone." />
+
+<Exercise id="exercise-1" />
+
+<Quiz id="quiz-1" />
+
+<Checkpoint id="checkpoint-1">
+You can read and change file permissions with chmod, using both octal and symbolic (+x/-x) modes.
+</Checkpoint>

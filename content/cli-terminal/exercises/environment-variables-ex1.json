@@ -1,0 +1,10 @@
+{
+  "id": "environment-variables-ex1",
+  "type": "cli-simulation",
+  "language": "bash",
+  "starterCode": "",
+  "cases": [
+    { "call": "cat nano.log", "expect": "ready\n" },
+    { "call": "echo $EDITOR", "expect": "nano" }
+  ]
+}
