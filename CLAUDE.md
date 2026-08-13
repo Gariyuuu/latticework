@@ -60,6 +60,15 @@ rules in `docs/DESIGN_SYSTEM.md`. Use existing `src/components/ui/*`
 (shadcn) primitives before adding a new dependency for something a primitive
 already covers.
 
+Every color token in `src/app/globals.css` derives from a single
+`--accent-hue` CSS variable (default 264) rather than a hard-coded hue
+literal — user-facing accent customization (Settings -> Appearance, a hue
+wheel) works by overriding that one variable on `<html>`, live-retinting
+every token at once. Don't reintroduce a hard-coded hue into a new token;
+use `var(--accent-hue)` like the existing ones. See ROADMAP.md "Polish"
+for the full appearance-system writeup (background picker, persistence,
+no-FOUC script).
+
 ## Naming conventions
 
 - Route folders: kebab-case matching the nav labels (`/roadmap`,

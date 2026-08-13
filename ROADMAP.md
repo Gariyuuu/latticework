@@ -162,9 +162,37 @@ same change as any feature work.
   full sweep pending)
 - Accessibility pass — **In Progress** (Radix gives keyboard/focus for free;
   explicit `prefers-reduced-motion` + contrast audit pending)
-- Additional themes (OLED/Midnight/Terminal/Cyber/Solarized) — **Planned**
-  (Dark/Light done)
-- Changelog page (`/changelog`) — **Planned**
+- Accent color + background customization — **Done**. Settings ->
+  Appearance has a hue wheel (`src/components/settings/theme-wheel.tsx`,
+  drag or arrow-keys, 0-360°) that live-retints the whole app — every
+  color token in `src/app/globals.css` now derives from a single
+  `--accent-hue` CSS var instead of a hard-coded literal (see the
+  "Latticework design tokens" comment there), plus a background picker
+  (`src/components/settings/background-picker.tsx`): 6 built-in
+  abstract-art PNG presets in `public/backgrounds/` (generated
+  programmatically via `sharp` — no external image source needed/used;
+  regenerate with the same technique if more are ever wanted) or a
+  custom upload (downscaled + re-encoded to a JPEG data URL client-side
+  before persisting, keeping it well under localStorage's per-origin
+  quota). Both are `AppearanceProvider`
+  (`src/components/shell/appearance-provider.tsx`) state, persisted to
+  `localStorage` only — no DB column, no cross-device sync yet, deliberately
+  scoped that way for now. A blocking inline script
+  (`AppearanceScript`, rendered first inside `<body>` in
+  `src/app/layout.tsx`) applies both before first paint, same
+  no-FOUC reasoning as next-themes' own injected script for dark/light
+  mode.
+- Additional preset dark/light THEME variants (OLED/Midnight/Cyber/
+  Solarized as distinct token sets, not just a hue shift) — **Planned**
+  (superseded in priority by the hue-wheel approach above, which covers
+  the "I want a different accent color" need more flexibly than fixed
+  presets would)
+- Changelog page (`/changelog`) — **Done**, reworked into real UI/UX
+  patch notes (Features/Improvements/Fixes per entry, not just a flat
+  feature list)
+- Favicon — **Done** (`src/app/icon.svg` — Next.js App Router
+  auto-serves any `icon.{svg,png,...}` placed directly in `src/app/`;
+  previously fell back to a generic default)
 - Admin content system (§69) — **Planned**
 
 ## Content coverage

@@ -3,6 +3,7 @@ import { getOrCreateLocalUser } from "@/lib/auth/current-user";
 import { db, safeQuery } from "@/lib/db/client";
 import { profiles } from "@/lib/db/schema";
 import { SettingsForm } from "@/components/settings/settings-form";
+import { AppearanceSettings } from "@/components/settings/appearance-settings";
 
 export default async function SettingsPage() {
   const user = await getOrCreateLocalUser().catch(() => null);
@@ -26,6 +27,14 @@ export default async function SettingsPage() {
           dailyGoalMinutes: profile?.dailyGoalMinutes ?? 20,
         }}
       />
+
+      <div className="border-t border-border pt-6">
+        <h2 className="mb-1 text-lg font-medium">Appearance</h2>
+        <p className="mb-5 text-sm text-muted-foreground">
+          Saved on this device only — no account sync yet.
+        </p>
+        <AppearanceSettings />
+      </div>
     </div>
   );
 }

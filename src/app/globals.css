@@ -59,38 +59,44 @@
    for state (active/AI/success), never decoration. */
 
 :root {
-  --background: oklch(0.99 0.002 264);
-  --foreground: oklch(0.16 0.02 264);
+  /* Overridden inline on <html> by AppearanceProvider (see
+     src/components/shell/appearance-provider.tsx) — every token below that
+     references it re-tints live when the user picks a hue from the
+     Appearance settings wheel. 264 (the original hard-coded value) is the
+     default. */
+  --accent-hue: 264;
+  --background: oklch(0.99 0.002 var(--accent-hue));
+  --foreground: oklch(0.16 0.02 var(--accent-hue));
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.16 0.02 264);
+  --card-foreground: oklch(0.16 0.02 var(--accent-hue));
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.16 0.02 264);
-  --primary: oklch(0.56 0.21 264);
+  --popover-foreground: oklch(0.16 0.02 var(--accent-hue));
+  --primary: oklch(0.56 0.21 var(--accent-hue));
   --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.95 0.005 264);
-  --secondary-foreground: oklch(0.2 0.02 264);
-  --muted: oklch(0.95 0.005 264);
-  --muted-foreground: oklch(0.5 0.02 264);
-  --accent: oklch(0.94 0.02 264);
-  --accent-foreground: oklch(0.2 0.02 264);
+  --secondary: oklch(0.95 0.005 var(--accent-hue));
+  --secondary-foreground: oklch(0.2 0.02 var(--accent-hue));
+  --muted: oklch(0.95 0.005 var(--accent-hue));
+  --muted-foreground: oklch(0.5 0.02 var(--accent-hue));
+  --accent: oklch(0.94 0.02 var(--accent-hue));
+  --accent-foreground: oklch(0.2 0.02 var(--accent-hue));
   --destructive: oklch(0.577 0.22 27);
-  --border: oklch(0.9 0.008 264);
-  --input: oklch(0.9 0.008 264);
-  --ring: oklch(0.56 0.21 264 / 50%);
-  --chart-1: oklch(0.56 0.21 264);
+  --border: oklch(0.9 0.008 var(--accent-hue));
+  --input: oklch(0.9 0.008 var(--accent-hue));
+  --ring: oklch(0.56 0.21 var(--accent-hue) / 50%);
+  --chart-1: oklch(0.56 0.21 var(--accent-hue));
   --chart-2: oklch(0.7 0.16 195);
   --chart-3: oklch(0.63 0.19 300);
   --chart-4: oklch(0.65 0.17 155);
   --chart-5: oklch(0.75 0.15 70);
   --radius: 0.75rem;
-  --sidebar: oklch(0.98 0.003 264);
-  --sidebar-foreground: oklch(0.16 0.02 264);
-  --sidebar-primary: oklch(0.56 0.21 264);
+  --sidebar: oklch(0.98 0.003 var(--accent-hue));
+  --sidebar-foreground: oklch(0.16 0.02 var(--accent-hue));
+  --sidebar-primary: oklch(0.56 0.21 var(--accent-hue));
   --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.94 0.02 264);
-  --sidebar-accent-foreground: oklch(0.2 0.02 264);
-  --sidebar-border: oklch(0.9 0.008 264);
-  --sidebar-ring: oklch(0.56 0.21 264 / 50%);
+  --sidebar-accent: oklch(0.94 0.02 var(--accent-hue));
+  --sidebar-accent-foreground: oklch(0.2 0.02 var(--accent-hue));
+  --sidebar-border: oklch(0.9 0.008 var(--accent-hue));
+  --sidebar-ring: oklch(0.56 0.21 var(--accent-hue) / 50%);
   --forge-cyan: oklch(0.75 0.13 195);
   --forge-purple: oklch(0.63 0.19 300);
   --forge-success: oklch(0.65 0.17 155);
@@ -98,37 +104,37 @@
 }
 
 .dark {
-  --background: oklch(0.135 0.012 264);
-  --foreground: oklch(0.96 0.005 264);
-  --card: oklch(0.175 0.014 264);
-  --card-foreground: oklch(0.96 0.005 264);
-  --popover: oklch(0.175 0.014 264);
-  --popover-foreground: oklch(0.96 0.005 264);
-  --primary: oklch(0.66 0.19 264);
+  --background: oklch(0.135 0.012 var(--accent-hue));
+  --foreground: oklch(0.96 0.005 var(--accent-hue));
+  --card: oklch(0.175 0.014 var(--accent-hue));
+  --card-foreground: oklch(0.96 0.005 var(--accent-hue));
+  --popover: oklch(0.175 0.014 var(--accent-hue));
+  --popover-foreground: oklch(0.96 0.005 var(--accent-hue));
+  --primary: oklch(0.66 0.19 var(--accent-hue));
   --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.24 0.015 264);
-  --secondary-foreground: oklch(0.96 0.005 264);
-  --muted: oklch(0.22 0.013 264);
-  --muted-foreground: oklch(0.66 0.02 264);
-  --accent: oklch(0.26 0.02 264);
-  --accent-foreground: oklch(0.96 0.005 264);
+  --secondary: oklch(0.24 0.015 var(--accent-hue));
+  --secondary-foreground: oklch(0.96 0.005 var(--accent-hue));
+  --muted: oklch(0.22 0.013 var(--accent-hue));
+  --muted-foreground: oklch(0.66 0.02 var(--accent-hue));
+  --accent: oklch(0.26 0.02 var(--accent-hue));
+  --accent-foreground: oklch(0.96 0.005 var(--accent-hue));
   --destructive: oklch(0.68 0.2 25);
   --border: oklch(1 0 0 / 9%);
   --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.66 0.19 264 / 55%);
-  --chart-1: oklch(0.66 0.19 264);
+  --ring: oklch(0.66 0.19 var(--accent-hue) / 55%);
+  --chart-1: oklch(0.66 0.19 var(--accent-hue));
   --chart-2: oklch(0.75 0.13 195);
   --chart-3: oklch(0.7 0.18 300);
   --chart-4: oklch(0.7 0.16 155);
   --chart-5: oklch(0.78 0.15 80);
-  --sidebar: oklch(0.12 0.012 264);
-  --sidebar-foreground: oklch(0.96 0.005 264);
-  --sidebar-primary: oklch(0.66 0.19 264);
+  --sidebar: oklch(0.12 0.012 var(--accent-hue));
+  --sidebar-foreground: oklch(0.96 0.005 var(--accent-hue));
+  --sidebar-primary: oklch(0.66 0.19 var(--accent-hue));
   --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.22 0.015 264);
-  --sidebar-accent-foreground: oklch(0.96 0.005 264);
+  --sidebar-accent: oklch(0.22 0.015 var(--accent-hue));
+  --sidebar-accent-foreground: oklch(0.96 0.005 var(--accent-hue));
   --sidebar-border: oklch(1 0 0 / 9%);
-  --sidebar-ring: oklch(0.66 0.19 264 / 55%);
+  --sidebar-ring: oklch(0.66 0.19 var(--accent-hue) / 55%);
   --forge-cyan: oklch(0.78 0.14 195);
   --forge-purple: oklch(0.72 0.19 300);
   --forge-success: oklch(0.72 0.17 155);
@@ -141,6 +147,27 @@
   }
   body {
     @apply bg-background text-foreground;
+    position: relative;
+  }
+  /* Background image layer, set by AppearanceProvider via --app-bg-image —
+     a no-op (background: none) until the user picks one in Settings. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background: var(--app-bg-image, none) center / cover no-repeat fixed;
+  }
+  /* Scrim over the background image so text/cards stay legible — set
+     alongside --app-bg-image, transparent (no-op) otherwise. */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: var(--app-bg-scrim, transparent);
   }
   html {
     @apply font-sans;

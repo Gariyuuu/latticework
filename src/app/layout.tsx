@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/shell/theme-provider";
+import { AppearanceProvider, AppearanceScript } from "@/components/shell/appearance-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
+        <AppearanceScript />
         <ClerkProvider
           appearance={{
             variables: {
@@ -49,10 +51,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             enableSystem
             disableTransitionOnChange
           >
-            <TooltipProvider delayDuration={200}>
-              {children}
-              <Toaster />
-            </TooltipProvider>
+            <AppearanceProvider>
+              <TooltipProvider delayDuration={200}>
+                {children}
+                <Toaster />
+              </TooltipProvider>
+            </AppearanceProvider>
           </ThemeProvider>
         </ClerkProvider>
       </body>
